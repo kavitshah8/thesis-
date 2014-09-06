@@ -1,35 +1,60 @@
-\chapter{Secure Data Aggregation Scheme}
-
-	The goal of this thesis is to examine secure data aggregation schemes for various distributed systems. 
-
-	Many modern world system designs are distributed in nature. The system design includes small, individual components doing their tasks precisely and lots of these components synchronize with all other components to complete the bigger task.  
-
-
-	Many applications of sensor network are inharenlty distributed in nature.
-	For example, scientific data collection, building health monitoring , building safety monitoring systems are distributed systems.
-	Write an example how data aggregation happes in one particular application.\cite{wagner2004resilient}
-
-	The application design architecture for the internet of things is distributed as well. Write an example how data aggregation happens in one particular application.
-	\cite{green1982analysis}
-
-
 %
+%  revised  introduction.tex  2011-09-02  Mark Senn  http://engineering.purdue.edu/~mark
+%  created  introduction.tex  2002-06-03  Mark Senn  http://engineering.purdue.edu/~mark
 %
-\section{Network topology}
+%  This is the introduction chapter for a simple, example thesis.
+%
 
-%This is a sentence.
-%This is a sentence.
-Write about how all theses distributed systems can be classifieds into general tree structure.
 
-\subsection{Related work}
+\chapter{Introduction}
 
-%This is a sentence.
-%This is a sentence.
-Talk about existing aggregation schemes.
+	% This is the introduction.
+	% The first paragraph after a heading is not indented.
+	Advancements in compute, storage, networks and sensors technologies have led to many new promising applications. 
 
-\subsubsection{Subsubsection heading}
+	% This is a sentence.
+	% This is a sentence.
+	% This is a sentence.
+	% This is a sentence.
+	% This is a sentence.
+	\section{Sensor Networks}
 
-This is a sentence.
-This is a sentence.
+		The sensor networks of the near future are envisioned
+		to consist of hundreds to thousands of inexpensive
+		wireless sensor nodes, each with some computational power
+		and sensing capability, operating in an unattended mode.
+		They are intended for a broad range of environmental sensing
+		applications from vehicle tracking to habitat monitoring.
+		Give an example and talk about energy, security constraints.
 
-	
+	\section{Internet Of Things}
+
+		In the world of mass connectivity people need to get information all the time on an array of devices. Everything from your refrigerator to your thermostat is connected to wireless networks and joining the ``internet of things''. Write about bandwidth constraints.
+
+	\section{Big Data}
+		All the large internet companies process massive amounts of data also know as ``Big Data'' in real time applications.
+		These include batch-oriented jobs such as data mining, building search indices, log collection, log analysis, real time stream processing, web search and advertisement selection on big data.
+		To achieve high scalability, these applications distributes large input data set over many servers.
+		Each server process its share of the data, and generates local intermediate.
+		The set of intermediate results contained on all the servers is then aggregated to generate the final result.
+		Often the intermediate data is large so it is divided across multiple servers which perform aggregation on a subset of the data to generate the final result. 
+		If there are \emph{N} servers in the cluster, then using all \emph{N} servers to perform the aggregation provides the highest parallelism. Talk about compute constraints.
+		\cite{Goossens:1994}
+		
+		Airplanes are also a great example of ``big data''. 
+		In a new Boeing Co.747, almost every part of the plane is connected to the Internet, recording and sometimes sending continuous streams of data about its status.
+		According to General Electric Co. in a single flight one of its jet engines generates half a tera bytes of data.
+		This shows that we have too much of data and we are just getting started.
+
+	\section{Data Aggregation}
+
+		Data aggregation is an important technique used in many system architectures. 
+		The key idea is to combine the data coming from different sources eliminating the data redundancy, minimizing the number of packet transmissions thus saving energy, bandwidth and memory usage.
+		This technique allows us to focus more on data centric approaches for networking rather than address centric approaches.  \cite{krishnamachari2002impact}  
+
+	\section{Cloud Computing}
+
+	\section{Fog Computing}
+
+		\subsubsection{}
+
