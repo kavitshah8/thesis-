@@ -11,7 +11,10 @@ querier knows total number of sensor nodes $n$ and the network
 topology. All the wireless comuunication is peer-to-peer and we do 
 not consider local wireless broadcast. We also assume that the
 querier has the capacity to do peer to peer communication with 
-every sensor node in the network.
+every sensor node in the network. We also assume that all the sensor nodes 
+mapped to the vertices in the commitment tree who reported the authentication 
+codes with NACK messages during the collection of confirmations step are 
+honest. 
 
 \subsection{Sensor Nodes}
 
@@ -45,6 +48,7 @@ every sensor node in the network.
 
 	\textit{It is also poosible that all the internal vetices in the commitment tree are of different sensor nodes in the aggregation tree.}
 
+
 % subsection Commitment trees (end)
 
 \subsection{Collections of confirmations}
@@ -62,61 +66,53 @@ single authentication code from the base station that consists of the XOR of
 all the authentication codes received in the network. 
 
 \subsection{Verification of confirmations}
-Since the querier knows the secret key $K_{s}$ for each sensor node $s$ in the aggregation trees and it also knows the topology of the commitment trees in the forest, it can simulate the commitment trees in the forest. The querier simulates the commitment trees in the forest by computing the following authentication codes\\
-
+Since the querier knows the secret key $K_{s}$ for each sensor node $s$ in the aggregation tree and it also knows the topology of the commitment trees in the forest, it can simulate the commitment trees in the forest. The querier simulates the commitment trees in the forest by computing the following authentication codes\\
 
 MAC$_{K_{1}}(N||ACK)\,\oplus\,$ 
-MAC$_{K2}(N||ACK)\,\oplus\,$
+MAC$_{K_{2}}(N||ACK)\,\oplus\,$
 ...
 $\,\oplus\,$
 MAC$_{K_{n}}(N||ACK)$ ; \\
-
-
 MAC$_{K_{1}}(N||NACK)\,\oplus\,$ 
-MAC$_{K2}(N||NACK)\,\oplus\,$
+MAC$_{K_{2}}(N||NACK)\,\oplus\,$
 ...
 $\,\oplus\,$
 MAC$_{K_{n}}(N||NACK)$  \\
 
 
-and creates two simulated commitment trees, one with the authentication codes of ACK messages and one with the authentication codes of NACK messages; where ACK is an acknowledgemnet message, NACK is a negative acknowledgemnet message \& N is the query nounce. Then the querier merges all the commitment trees in the forest simulated with ACK messages, by taking XOR of the root of all the commitment trees in the forest and calculates a single root authentication code for the forest simulated with the authentication codes of ACK messages. The querier does the same procedure for the commitment trees' forest simulated with the authentication codes of NACK messages. The querier stores all the simulated commitment trees and root authentication codes in the memory. \\
+and creates two simulated commitment trees, one with the authentication codes of ACK messages and one with the authentication codes of NACK messages; where ACK is an acknowledgemnet message, NACK is a negative acknowledgemnet message \& N is the query nounce. Then the querier merges all the commitment trees in the forest simulated with the authentication codes of ACK messages, by taking XOR of the root of all the commitment trees in the forest and calculates a single root authentication code for the forest simulated with the authentication codes of ACK messages. The querier does the same procedure for the commitment trees' forest simulated with the authentication codes of NACK messages. The querier stores all the simulated commitment trees and root authentication codes in the memory. \\
 
 
-The querier receives a signle root authentication code from the base station during the collection of confirmation messages step. The querier compares the received root authentication code the with root authentication code of the commitment trees simulated with the authentication codes of ACK messages. If those two codes match it means every node in the network sent the authentication codes with ACK message during collection of confirmation step. If those two codes do not match it means one or more nodes in the network sent the authentication codes with NACK message during collection of confirmation step. In the case where root authentication codes do not match, the querier will proceed futher to find out which node or nodes in the network sent the authentication codes with NACK message during collection of confirmation messages step.\\
+The querier receives a signle root authentication code from the base station during the collection of confirmation messages step. The querier compares the received root authentication code with the relevant simulated authentication code of ACK messages. If those two codes match it means every vertices in the subtree rooted at that vertex sent the authentication codes with ACK message during collection of confirmation step. If those two codes do not match it means one or more vertices in the subtree rooted at that vertex sent the authentication codes with NACK message during collection of confirmation step. In the case where root authentication codes do not match, the querier proceeds futher to find out which vertex or vertices in the network sent the authentication codes with NACK message during collection of confirmation messages step.\\
 
 
-To find out which node or nodes in the network reported the authentication codes with NACK message, the querier will ask the base station to send the authentication codes of all the commitment trees' root in the forest. After receiving the authentication codes from the base station, the querier will compare those authentication codes with the authentication codes of the commitment trees simulated with the authentication codes of ACK messages. After this comparision, whose authentication codes do not match, the querier will classify those commitment trees as BAD TREES in the forest. \\
+To find out which vertex or vertices in the commitment tree reported the authentication codes with NACK message, the querier asks the base station to send the authentication codes of all the commitment trees' root in the forest. After receiving the authentication codes from the base station, the querier compares those authentication codes with the relevant simulated authentication codes of ACK messages. After this comparision, whose authentication codes do not match, the querier classifies those commitment trees as BAD TREES in the forest. \\
 
 
-Then the querier will compare the authentication codes of those BAD TREES with authentication codes of the commitment trees simulated with the authentication codes of NACK messages. If any of those authentication codes match it means all the nodes in that commitment tree sent the authentication codes with NACK message during collection of confirmation stpe. And the querier will stop doing the quiers to the subtree rooted at that vertex. If those authentication codes do not match then the querier will proceed furhter to find the senosr node or nodes who reported the authentication codes with NACK message in BAD TREES.\\
+Then the querier compares the authentication codes of those BAD TREES with the relevant simulated authentication codes of NACK messages. If any of those authentication codes match it means all the vertices rooted in that subtree sent the authentication codes with NACK message during the collection of confirmation stpe. And the querier stops doing the quiers to the subtree rooted at that vertex. If those authentication codes do not match then the querier proceeds furhter to find the senosr node or nodes who reported the authentication codes with NACK message in BAD TREES.\\
 
 
-\subsection{Algorithm for detecting node or nodes who reported authenctication codes with NACK messages }
+\subsection{Algorithm for detecting vertex or vertices who reported authenctication codes with NACK messages }
 
 For each BAD TREE in the forest the querier does the following :
 
 \begin{enumerate}
-  
-  \item  
-  The querier compares the authentication codes of the root vertices of the BAD TREES, with the relavant root vertices of the commitment trees simulated with the authentication codes of NACK messages. If those codes match it means all the vertices rooted in that subtree reported the authentication codes with NACK messages, during collection of confirmation steps. And the querier will stop doing the queries to the subtree rooted at that vertex. If those codes do not match it will go to step 2.
-
-  \item 
+ 
+   \item 
   The querier asks the relevant nodes in the aggregation tree to send the authentication codes of their children in the commitment trees.
 
   \item
-  The querier compares the received authentication codes in step 2 with the authentication codes of the relavant vertices of the commitment trees simulated with the authentication codes of ACK messages. The querier classifies the subtree rooted at those vertices as BAD SUBTREE, whose authentication codes do not match.
+  The querier compares the received authentication codes in step 1 with the authentication codes of the relavant vertices of the commitment trees simulated with the authentication codes of ACK messages. The querier classifies the subtree rooted at those vertices as BAD SUBTREES, whose authentication codes do not match.
 
   \item 
-  The querier compares the received authentication codes in step 2 with the authentication codes of the relavant vertices of the commitment trees simulated with the authentication codes of the authentication codes with NACK messages. If those codes match it means all the vertices rooted in that subtree reported NACK messages during collection of confirmation steps. And the querier will stop doing queries to that subtree. If those codes do not match then the querier will go to step 2. \\
+  The querier compares the received authentication codes in step 1 with the authentication codes of the relavant vertices of the commitment trees simulated with the authentication codes of NACK messages. If those codes match it means all the vertices rooted in that subtree reported NACK messages during collection of confirmation steps. And the querier stops doing the queries to that subtree. If those codes do not match then the querier goes to step 2. \\
 
-  The querier will follow this procedure until it finds all the node or nodes in the network who reported the authentication codes with NACK messages during collection of confirmation step.
+  The querier follows this algorithm until it finds all the vertices who reported the authentication codes with NACK messages in the commitment trees during collection of confirmation step.
 
 \end{enumerate}
 
 
-  
 
-To find the sensor node or nodes who sent NACK messages in the BAD TREES, the querier will ask the relavant sensor nodes in the aggregation tree to send the authentication codes of theier children in the commitment tree. The querier will compare those authentication codes with relevant simulated commitment trees in the forest. First the querier will compare those authentication codes with simulated trees with NACK messages. If any of those childerns' authentication codes match with the authentication codes from simulated trees of NACK messages, it means all the relevant nodes of those vertices rooted in that subtree sent NACK message. If those authentication codes do not match then the querier will compare those authentication codes with simulated trees of ACK messages. The querier will look for the node or nodes whose authentication codes do not match and then the querier will add those subtree rooted at those nodes as BAD SUBTREE. Then the querier will repeat this process recursively untill it finds the node or nodes who reported NACK messages.
 
 \subsection{Analysis} % (fold)
 \label{sub:analysis}
