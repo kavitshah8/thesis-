@@ -86,21 +86,41 @@ We make an assumption that the cheater can not say NACK during verification phas
 
 
 	\section{ Why do we need digital signatures ?}
-	Digital signatures allow us to achieve authenticity and integrity of the data. 
+	Digital signatures allow us to achieve authenticity of the message. 
 	The labels and signatures have the following format:
 
-	label = $<count, value, id>$;
+	id = id
 
-	signature = $E_{Private_key}( H( label ) )$\\
-	Where \textit{count} is the number of leaf vertices in the subtree rooted at this vertex;	
-	\textit{value} is the SUM aggregate computed over all the leaves in the subtree;\textit{id} is the sum of all the leaves id in the subtree;\textit{signature} is a cryptographic scheme for demonstrating the authenticity of a message. 
+	label = $<count, value, commitment>$
+
+	signature = $E_{Private_key}( H( N || label ) )$\\
+	Where \textit{count} is the number of leaf vertices in the subtree rooted at this vertex; 
+	\textit{value} is the SUM aggregate computed over all the leaves in the subtree; \textit{id} is the sum of all the leaves id in the subtree; \textit{signature} is a cryptographic scheme for demonstrating the authenticity of a message; \textit{N} is the query nonce. 
 	
 	There is one leaf vertex $u_{s}$ for each sensor node s, which we call the leaf vertex of s. The label of $u_{s}$ consists of count = 1, value = $a_{s}$ where $a_{s}$ is the data value of s, and signature is the node's unique ID.
 
-	Internal vertices represent aggregattion operations, and have labels that are defined based on their children.
-
-	Label: $I_{0}$ = $<1, 5, 10>$\\
-	
-	Signature: $Sign(I_{0})$ = $E_{K_{I}}(H(I_{0}))$
+	Internal vertices represent aggregattion operations, and have labels that are defined based on their children. Write up examples after talking to Dr.King : Do you have to aggregate ID's as well ?
 
 	\section{ Why digital signatures are not sufficient to detect a cheater ? or Why do we need public key infrastructure to detect a cheater ?}
+	Digital signatures allow us to achieve authenticity of the message but do not provide any mechanism to achieve integrity of the message. To achieve integrity we need public key infrastructure. 
+
+	For example, in figure 7.3 one set of possible lables could be the following:
+
+	$id_{A} = 1; A_{0} = <1, 5, H(N||1||5)>; Sig A_{0} = E_{K_{A}}(H(N||A_{0})); $
+
+	$id_{B} = 2; B_{0} = <1, 6, H(N||1||5)>; Sig B_{0} = E_{K_{B}}(H(N||B_{0})); $
+
+	$id_{I} = 3; I_{1} = <2, 11, H(N||2||11||A_{0}||B_{0})>; Sig I_{1} = E_{K_{I}}(H(N||I_{1})); $
+
+	$id_{J} = 4; J_{1} = <2, 15, H(N||2||15||C_{0}||D_{0})>; Sig J_{1} = E_{K_{J}}(H(N||J_{1})); $
+
+	$id_{M} = 5; M_{2} = <4, 26, H(N||4||26||I_{1}||J_{1})>; Sig M_{2} = E_{K_{M}}(H(N||M_{2})); $
+
+	Above labels and signatures are the case where no one is cheating in the network. If A, B say NACK message during the verification phase it means either M or I is a cheater. To preceisely find who is cheater we have following problems:
+
+	\begin{itemize}
+		\item M can say it received ($I_{1}^{'}, Sig I_{1}$) eventhough it received ($I_{1}, Sig I_{1}$) from I.
+		\item M can not verify that it received ($I_{1}^{'}, Sig I_{1}$) instead of ($I_{1}, Sig I_{1}$) from I.
+	\end{itemize}
+	Because of this we can not not detect cheater between I, M. The fundamental problem is that signatures can be verified only by the base station and not by any of the intermediate nodes. We want the ability in which an intermediate node can verify the signatures from its children. And that is why we need public key infrastructure.
+
