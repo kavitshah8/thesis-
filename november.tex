@@ -1,0 +1,14 @@
+\chapter{november}
+
+Various topics to write about:
+
+\textit{Why do you want to communicate an entire aggregation tree to the querier ?}
+	If the querier knows the entire aggregation tree and also if it knows the protocol which all the sensor nodes will be running then the querier can simulate the commitment trees on its own. Because of that we do not have to communicate the commitment tree every time we run the protocol which saves a lot of communications in the network. Also, note the fact that aggregation tree does not change often so the communication required to send the aggregation tree is negligible over time.
+
+\textit{How to communicate an entire aggregation tree to the querier ?}
+	The base station in the aggregation tree needs to know the entire network topology.
+	It will relay that information to the querier.
+
+\textit{How does the base station know the entire aggregation tree topology ?}
+	If every sensor nodes has a small table containing the path to reach to the certain destination then the base station can ask for this information to the individual sensor nodes. While it is receiving this information it can relay the same information to the querier. Note: the base station is also a simple sensor node like all other nodes it can not store all the forwarding tables so it will relay those table information directly to the querier and querier can make big table containing the information related to the aggregation tree.
+
