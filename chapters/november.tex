@@ -63,3 +63,15 @@ $SIGNATURE <E_{secretkey}(Message)>$
 \textit{Why don't we use aggregation tree as commitment tree ?}
 
 \textit{Why is commitment tree binary ? (proof)}
+
+\begin{algorithm}[H]
+\caption {CommitmentTreeGeneration()}\label{number3}
+	\begin {algorithmic}[1]
+		\FORALL {$\node \in {\cal N}$}
+			\STATE Create message and signature of that message and attach that to your forest
+			\STATE If you have children then for all of your children do the following:
+			\STATE Verify messages using its signature 
+			\STATE If all the messages are verified true then merge the children with same count value (use some logic to resolve conflict) and create new node and attach that to your forest
+		\ENDFOR
+	\end{algorithmic}
+\end{algorithm}
