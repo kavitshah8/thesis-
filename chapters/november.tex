@@ -11,8 +11,12 @@ Various topics to write about:
 
 \textit{How does the base station know the entire aggregation tree topology ?}
 	If every sensor nodes has a small table containing the path to reach to the certain destination then the base station can ask for this information to the individual sensor nodes. While it is receiving this information it can relay the same information to the querier. Note: the base station is also a simple sensor node like all other nodes it can not store all the forwarding tables so it will relay those table information directly to the querier and querier can make big table containing the information related to the aggregation tree.
+
 \textit{Mobility}
 	You can talk about the aggregation tree topology is mobile. It's increasingly mobile technology not leap mobility.
+
+\textit{Caching of certificates}
+		Certificates are sent only once for the first time. For subsequent communication they are cached. Every node in the tree needs to know the certificates of all the root nodes in its forest.
 
 \textit{Why does the internal vertex in the commitment tree need to send what it received and what it sent to its parent ?}
 	
