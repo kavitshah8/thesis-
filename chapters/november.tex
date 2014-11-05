@@ -13,33 +13,42 @@ Various topics to write about:
 	If every sensor nodes has a small table containing the path to reach to the certain destination then the base station can ask for this information to the individual sensor nodes. While it is receiving this information it can relay the same information to the querier. Note: the base station is also a simple sensor node like all other nodes it can not store all the forwarding tables so it will relay those table information directly to the querier and querier can make big table containing the information related to the aggregation tree.
 
 \textit{Mobility}
-	You can talk about the aggregation tree topology is mobile. It's increasingly mobile technology not leap mobility.
+	You can talk about the aggregation tree topology is mobile. It's increasingly mobile topology not leap mobility.
 
 \textit{Caching of certificates}
-		Certificates are sent only once for the first time. For subsequent communication they are cached. Every node in the tree needs to know the certificates of all the root nodes in its forest.
+		Certificates are sent only once for the first time. They are cached for subsequent communications. Every node in the tree needs to know the certificates of all the root nodes in its forest.
 
 \textit{Why does the internal vertex in the commitment tree need to send what it received and what it sent to its parent ?}
-	
 	To detect a cheater, if an internal vertex send ( to the querier ) only the values which it sent to its parent in the commitment tree then it is no value to the querier. Because the querier can not verify that value and the signature. For the querier to verify the aggregated data and its signature it needs both the values over which aggregation has happend. 
 
-\textit{Why don't you need backward signatures ?}
+\textit{Why don't you need backward signatures ?} Because according to the protocol, every parent checks its children's message and its signature. If those two do not match then it will not accept the message.
 
-\textit{Why do you need signatures on the forests ?}
+\textit{Do you need signature on forest ? If yes, then why ? If no, then why ?}
 
-\textit{Why being root in many trees add security to the protocol ?}
+\textit{Analyses of being root in as many tree as possible:}
+	
+	\begin{itemize}
+		\item \textit{Bandwidth perspective}
+	
+			\textit{Off path values}
+	
+			\textit{Certificates}
 
-\textit{Why being root in many trees saves bandwidth ?}
+		\item \textit{Security perspective}
+	\end{itemize}
 
 \textit{Packet structure}
 
-	$MESSAGE <ID, LABEL, SIGNATURE>$
+	The message has the following structure:
 
-	$ID <unique id of a node>$
+	\begin{tabular}{ | l | l | l | l |}
+		\hline
+		ID & COUNT & VALUE & COMMITMENT\\
+		\hline
+	\end{tabular}
 
-	$LABEL <count, value, HASH(N||count||value)>$
-
-	$SIGNATURE <E_{secretkey}(Message)>$
-
+	The signature of the message is Encryption of Hash(Message) with its secret key.
+	
 \textit{Why do we need authenticated broadcast from the querier ?}
 
 \textit{Significance of Nonce}
@@ -51,25 +60,25 @@ Various topics to write about:
 \textit{Why is commitment tree binary ? (proof)}
 
 \begin{algorithm}[H]
-\caption {CommitmentTreeGeneration()}\label{number3}
+\caption {CommitmentTreeGeneration}\label{number3}
 	\begin {algorithmic}[1]
 		\FORALL {$\node \in {\cal N}$}
 			\STATE Create message and signature of that message and attach that to your forest
 			\STATE If you have children then for all of your children do the following:
-			\STATE Verify messages using its signature 
-			\STATE If all the messages are verified true then merge the children with same count value (use some logic to resolve conflict) and create new node and attach that to your forest
+			\STATE Verify your childrens' messages using its signature 
+			\STATE If all the messages are verified true then merge the children with same count value (use some logic to resolve conflict) by creating a new node with its message and its signature 
+			\STATE Attach that new node to your forest
 		\ENDFOR
 	\end{algorithmic}
 \end{algorithm}
 
 \begin{algorithm}
 \caption{Pseudo algorithm to detect a cheater}
-	\begin{enumerate}
-		\item The querier finds out the nodes who are complaining 
-		\item The querier asks the complainer to send their reading \& signatures
-		\item The querier finds possible cheaters based on complaines
-		\item The querier asks possible cheaters to send the messages \& signatures they received and also the messages \& signatures they send. It can ask the complainers parents to do so.
-		\item The querier determines the cheater. 
-	\end{enumerate}
-
+	\begin{algorithmic}[1]
+			\STATE The querier finds out the nodes who are complaining 
+			\STATE The querier asks the complainer to send their reading \& signatures
+			\STATE The querier finds possible cheaters based on complaines
+			\STATE The querier asks possible cheaters to send the messages \& signatures they received and also the messages \& signatures they send. It can ask the complainers parents to do so.
+			\STATE The querier determines the cheater. 
+	\end{algorithmic}
 \end{algorithm}
