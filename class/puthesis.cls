@@ -17,7 +17,7 @@
 \usepackage{ifthen}
 \newcommand{\ifthen}[2]{\ifthenelse{#1}{#2}{}}
 \usepackage{endnotes}
-\usepackage{pulongtable}
+\usepackage{styles/pulongtable}
 \usepackage{rotating}
 \usepackage{lscape}
 
