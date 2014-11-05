@@ -34,7 +34,7 @@
 % Define "align" environment used in demo-mathematics.tex.
 % CHANGE NEXT LINE?
 \usepackage{amsmath}
-
+\usepackage{color}
 % Define "multicols" environment environment used in demo-multicols.tex.
 % CHANGE NEXT LINE?
 \usepackage{multicol}
@@ -42,6 +42,8 @@
 % Define "subfigure" environment used in "demo-figure.tex".
 % CHANGE NEXT LINE?
 \usepackage{subfigure}
+\usepackage{algorithm}
+\usepackage{algorithmic}
 
 % Title of thesis (used on cover and in abstract). The title shown must be the full, official title of the thesis.
 % Superscripts and subscripts are not permitted in the title. Reference: TM 26.
@@ -139,6 +141,7 @@
 % more.
 % CHANGE NEXT LINE?
 %\includeonly{front,introduction}
+\newcommand{\node}{\textsf{node}}
 
 \begin{document}
 
@@ -152,7 +155,7 @@
 
 % Put chapter \include commands here.
 % CHANGE \include{...} COMMANDS BELOW?
-\include{ch1}
+\include{chapters/ch1}
 \include{ch2}
 \include{ch3}
 \include{ch4}
@@ -168,6 +171,7 @@
 % major division(s) of the text.
 % Reference: TM 32.
 % CHANGE NEXT LINE?
+\include{algo}
 \include{summary}
 
 % Recommendations are optional.
