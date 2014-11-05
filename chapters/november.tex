@@ -11,26 +11,8 @@ Various topics to write about:
 
 \textit{How does the base station know the entire aggregation tree topology ?}
 	If every sensor nodes has a small table containing the path to reach to the certain destination then the base station can ask for this information to the individual sensor nodes. While it is receiving this information it can relay the same information to the querier. Note: the base station is also a simple sensor node like all other nodes it can not store all the forwarding tables so it will relay those table information directly to the querier and querier can make big table containing the information related to the aggregation tree.
-
-\textit{Pseudo algorithm to detect a cheater}
-	
-	\begin{itemize}
-
-	\item{The querier finds out the nodes who are complaining in the aggregation tree.}
-
-	\item{Ask the complainers to send their readings and relevant signatures.}
-
-	\item{Find possible cheaters based on complainers.}
-
-	\item{Ask possible cheaters to send what they received \& what they sent to theri parents in the commitment tree.}
-
-	\item{Ask possible cheaters parent what they received.}
-
-	\item{Start investing possible cheaters from the heighest level of height.}
-
-	\item{Take relevant actions for found all the cheaters.} 
-
-	\end{itemize}
+\textit{Mobility}
+	You can talk about the aggregation tree topology is mobile. It's increasingly mobile technology not leap mobility.
 
 \textit{Why does the internal vertex in the commitment tree need to send what it received and what it sent to its parent ?}
 	
@@ -46,13 +28,13 @@ Various topics to write about:
 
 \textit{Packet structure}
 
-$MESSAGE <ID, LABEL, SIGNATURE>$
+	$MESSAGE <ID, LABEL, SIGNATURE>$
 
-$ID <unique id of a node>$
+	$ID <unique id of a node>$
 
-$LABEL <count, value, HASH(N||count||value)>$
+	$LABEL <count, value, HASH(N||count||value)>$
 
-$SIGNATURE <E_{secretkey}(Message)>$
+	$SIGNATURE <E_{secretkey}(Message)>$
 
 \textit{Why do we need authenticated broadcast from the querier ?}
 
@@ -74,4 +56,16 @@ $SIGNATURE <E_{secretkey}(Message)>$
 			\STATE If all the messages are verified true then merge the children with same count value (use some logic to resolve conflict) and create new node and attach that to your forest
 		\ENDFOR
 	\end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}
+\caption{Pseudo algorithm to detect a cheater}
+	\begin{enumerate}
+		\item The querier finds out the nodes who are complaining 
+		\item The querier asks the complainer to send their reading \& signatures
+		\item The querier finds possible cheaters based on complaines
+		\item The querier asks possible cheaters to send the messages \& signatures they received and also the messages \& signatures they send. It can ask the complainers parents to do so.
+		\item The querier determines the cheater. 
+	\end{enumerate}
+
 \end{algorithm}
