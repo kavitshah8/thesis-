@@ -65,7 +65,7 @@ Various topics to write about:
 		\FORALL {$\node \in {\cal N}$}
 			\STATE Create message and signature of that message and attach that to your forest
 			\STATE If you have children then for all of your children do the following:
-			\STATE Verify your childrens' messages using its signature 
+			\STATE Verify your childrens' messages using their signatures 
 			\STATE If all the messages are verified true then merge the children with same count value (use some logic to resolve conflict) by creating a new node with its message and its signature 
 			\STATE Attach that new node to your forest
 		\ENDFOR
@@ -82,3 +82,11 @@ Various topics to write about:
 			\STATE The querier determines the cheater. 
 	\end{algorithmic}
 \end{algorithm}
+
+
+\textit{Properties of commitment tree and aggregation tree}
+
+
+	If you have $O(n)$ descendents then you need $O(log(n))$ certificates \& signatures to verify the received messages.
+	 
+	If you have $O(n)$ children then you need $O(n)$ certificates \& signatures to verify the received messages.
