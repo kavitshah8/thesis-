@@ -65,9 +65,10 @@ Various topics to write about:
 		\FORALL {$\node \in {\cal N}$}
 			\STATE Create message and signature of that message and attach that to your forest
 			\STATE If you have children then for all of your children do the following:
-			\STATE Verify your childrens' messages using their signatures 
-			\STATE If all the messages are verified true then merge the children with same count value (use some logic to resolve conflict) by creating a new node with its message and its signature 
-			\STATE Attach that new node to your forest
+			\STATE Get the message, certificate and signature of every tree root in your childrens' forest
+			\STATE Verify every tree root in your childrens' forest using their signatures 
+			\STATE If all the tree roots in your childrens' forest are verified then merge the relevant trees and create new trees
+			\STATE Attach new trees to your forest
 		\ENDFOR
 	\end{algorithmic}
 \end{algorithm}
@@ -88,5 +89,5 @@ Various topics to write about:
 
 
 	If you have $O(n)$ descendents then you need $O(log(n))$ certificates \& signatures to verify the received messages.
-	 
+
 	If you have $O(n)$ children then you need $O(n)$ certificates \& signatures to verify the received messages.
