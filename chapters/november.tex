@@ -31,10 +31,16 @@ Various topics to write about:
 		\item \textit{Bandwidth perspective}
 	
 			\textit{Off path values}
-	
+				
+				It takes same bandwidth (same hop counts) to distribute off path values in include itself or exclude itself stratergy. You can have inductive argument for it to prove it.
+
 			\textit{Certificates}
+				Parent node needs to deal with less nodes in the aggregation tree means it needs less certificates, means less memory storage. For example, in pseudo palm tree case if we use include it self streategy then it is possible that one node has to propagate its value from the bottom to the top of the tree. It means all the intermediate nodes need to know its certificate. This can be avoided by using exclude itself( being root in as many possible tree as possible ) stratergy.
 
 		\item \textit{Security perspective}
+
+				Exclude itself stratergy is more secure in the sense that aggregator needs to partner with two nodes to achieve cheating. If it includes itself then it has to partner with only one node which is relatively easy.
+
 	\end{itemize}
 
 \textit{Packet structure}
@@ -57,17 +63,19 @@ Various topics to write about:
 
 \textit{Why don't we use aggregation tree as commitment tree ?}
 
-\textit{Why is commitment tree binary ? (proof)}
+\textit{Why is commitment tree binary and not n-ary ? (proof)}
 
 \begin{algorithm}[H]
 \caption {CommitmentTreeGeneration}\label{number3}
 	\begin {algorithmic}[1]
-		\FORALL {$\node \in {\cal N}$}
-			\STATE Create message and signature of that message and attach that to your forest
+			\STATE Starting with highest depth in decreasing order 
+			\FORALL {$\node \in {\cal N}$}
+			\STATE Create message, signature of it and attach that to your forest
 			\STATE If you have children then for all of your children do the following:
-			\STATE Get the message, certificate and signature of every tree root in your childrens' forest
-			\STATE Verify every tree root in your childrens' forest using their signatures 
-			\STATE If all the tree roots in your childrens' forest are verified then merge the relevant trees and create new trees
+			\STATE Get the message and signature of all tree roots in your childrens' forest
+			\STATE If you don't have the certificate of all tree roots in your childrens' forest, get the missing ceretificates
+			\STATE Verify all tree roots in your childrens' forest using their signatures 
+			\STATE If all the tree roots in your childrens' forest are verified then merge the relevant trees by creating new trees
 			\STATE Attach new trees to your forest
 		\ENDFOR
 	\end{algorithmic}
@@ -87,7 +95,6 @@ Various topics to write about:
 
 \textit{Properties of commitment tree and aggregation tree}
 
+	If you have $O(n)$ children then you need $O(n)$ certificates \& signatures to verify the received messages.
 
 	If you have $O(n)$ descendents then you need $O(log(n))$ certificates \& signatures to verify the received messages.
-
-	If you have $O(n)$ children then you need $O(n)$ certificates \& signatures to verify the received messages.
