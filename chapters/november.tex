@@ -47,11 +47,18 @@ Various topics to write about:
 
 	The message has the following structure:
 
-	\begin{tabular}{ | l | l | l | l |}
+	\begin{tabular}{ | l | l | l | l | l |}
 		\hline
-		ID & COUNT & VALUE & COMMITMENT\\
+		ID & COUNT & VALUE & COMMITMENT & CERTIFICATE\\
+		\hline
+		20 bits & 21 bits & 20 bits & 256 bits & 1520 bits\\
 		\hline
 	\end{tabular}
+	\newline
+	\newline
+	CERTIFICSTE SIZE \\
+	= Signature + Public key + ID \\
+	= 500 + 1000 + 20 = 1520 bits
 
 	The signature of the message is Encryption of Hash(Message) with its secret key.
 	
@@ -65,8 +72,8 @@ Various topics to write about:
 
 \textit{Why is commitment tree binary and not n-ary ? (proof)}
 
-\begin{algorithm}[H]
-\caption {CommitmentTreeGeneration}\label{number3}
+\begin{algorithm}[H]\label{number3}
+\caption {CommitmentTreeGeneration}
 	\begin {algorithmic}[1]
 			\STATE Starting with highest depth in decreasing order 
 			\FORALL {$\node \in {\cal N}$}
@@ -92,6 +99,7 @@ Various topics to write about:
 	\end{algorithmic}
 \end{algorithm}
 
+\ref{number3}
 
 \textit{Properties of commitment tree and aggregation tree}
 
