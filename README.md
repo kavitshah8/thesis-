@@ -1,6 +1,6 @@
 This is just a scratch work of my thesis writing.
 
-* Misc. commands
+* Useful commands
 	
 	```
 	cd master
