@@ -61,16 +61,19 @@ Various topics to write about:
 				\STATE Create message, signature of it and attach that to your forest
 					\IF {Children}
 						\FORALL {Children}
-							\IF {Don't have certificate of your the children you are processing}
-								\STATE Get the certificate and verify it
-							\ELSE
-								\STATE Get the message and signature of all tree roots in your childrens' forest
-								\STATE Verify all tree roots in your childrens' forest using their signatures 
-								\IF {All the tree roots in your childrens' forest are verified}
-									\STATE Merge the relevant trees by creating new trees
-									\STATE Attach new trees to your forest
+							\FORALL {Tree root in the forest}
+								\IF {!Certificate}
+									\STATE Get the missing certificate and verify it
+								\ELSE
+									\STATE Get the message, signature and verify the message using its signature 
+									\IF {Verified}
+										\STATE Merge the relevant trees by creating new trees
+										\STATE Attach new trees to your forest
+									\ELSE
+										\STATE Raise an alarm
+									\ENDIF
 								\ENDIF
-							\ENDIF
+							\ENDFOR
 						\ENDFOR
 					\ENDIF
 			\ENDFOR
