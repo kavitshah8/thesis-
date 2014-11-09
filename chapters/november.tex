@@ -88,17 +88,15 @@ Misc. topics to write about:
 \caption{Pseudo algorithm to detect a cheater}
 	\begin{algorithmic}[1]
 			\STATE The querier finds out the nodes who are complaining 
-			\STATE The querier asks the complainer to send their reading \& signatures
+			\STATE The querier asks the complainers to send their reading \& signature
 			\STATE The querier finds possible cheaters based on complaines
-			\STATE The querier asks possible cheaters to send the messages \& signatures they received and also the messages \& signatures they send. It can ask the complainers parents to do so.
-			\STATE The querier determines the cheater. 
+			\STATE The querier asks possible cheaters to send the messages \& signatures they received and also the messages \& signatures they send. It can also asks the parents of the possible cheaters to do so
+			\STATE The querier determines the cheater 
 	\end{algorithmic}
 \end{algorithm}
 
-\ref{number3}
-
 \textit{Properties of commitment tree and aggregation tree}
 
-	If you have $O(n)$ children then you need $O(n)$ certificates \& signatures to verify the received messages.
+	If you have $O(n)$ children then you need atleast $\Omega(n)$ \& at max $O(nlog(n))$ certificates.
 
-	If you have $O(n)$ descendents then you need $O(log(n))$ certificates \& signatures to verify the received messages.
+	If you have $O(n)$ descendents then you need $\Omega(log(n))$  \& at max $O(nlog(n))$ certificates.
