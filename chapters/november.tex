@@ -47,15 +47,28 @@ Various topics to write about:
 
 	The message has the following structure:
 
-	\begin{tabular}{ | l | l | l | l | l |}
+	\begin{tabular}{ | l | l | l | l |}
 		\hline
-		ID & COUNT & VALUE & COMMITMENT & CERTIFICATE\\
+		ID & COUNT & VALUE & COMMITMENT \\
 		\hline
-		20 bits & 21 bits & 20 bits & 256 bits & 1520 bits\\
+		20 bits & 21 bits & 20 bits & 256 bits\\
 		\hline
 	\end{tabular}
 	\newline
 	\newline
+
+	The signature of the message has the following structure:
+	
+	\begin{tabular}{ | l | }
+		\hline
+		Signature( Message )\\
+		\hline
+		500 bits \\
+		\hline
+	\end{tabular}
+	\newline
+	\newline
+	
 	CERTIFICSTE SIZE \\
 	= Signature + Public key + ID \\
 	= 500 + 1000 + 20 = 1520 bits
