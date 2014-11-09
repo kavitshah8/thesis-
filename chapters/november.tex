@@ -58,22 +58,23 @@ Misc. topics to write about:
 	\begin {algorithmic}[1]
 		\STATE Starting with highest depth in decreasing order 
 			\FORALL {$\node \in {\cal N}$}
-				\STATE Create message, signature of it and attach that to your forest
+				\STATE Create a message, a signature of it and attach those to your forest
 					\IF {Children}
 						\FORALL {Children}
 							\FORALL {Tree roots in the forest}
-								\IF {!Certificate}
-									\STATE Get the missing certificate and verify it
-										\IF {!Verified}
-											\STATE Raise an alarm
-										\ENDIF
-								\ELSE
-									\STATE Get the message, signature and verify the message using its signature 
+								\IF {Certificate}
+									\STATE Get a message and a signature of the message
+									\STATE Verify the message using its signature 
 									\IF {Verified}
 										\STATE Merge the relevant trees by creating new trees
 										\STATE Attach new trees to your forest
 									\ELSE
 										\STATE Raise an alarm
+									\ENDIF
+								\ELSE
+									\STATE Get the missing certificate and verify it
+										\IF {!Verified}
+											\STATE Raise an alarm
 									\ENDIF
 								\ENDIF
 							\ENDFOR
