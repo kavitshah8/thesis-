@@ -61,9 +61,12 @@ Various topics to write about:
 				\STATE Create message, signature of it and attach that to your forest
 					\IF {Children}
 						\FORALL {Children}
-							\FORALL {Tree root in the forest}
+							\FORALL {Tree roots in the forest}
 								\IF {!Certificate}
 									\STATE Get the missing certificate and verify it
+										\IF {!Verified}
+											\STATE Raise an alarm
+										\ENDIF
 								\ELSE
 									\STATE Get the message, signature and verify the message using its signature 
 									\IF {Verified}
