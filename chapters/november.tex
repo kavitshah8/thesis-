@@ -57,14 +57,14 @@ Misc. topics to write about:
 \begin{algorithm}[H]\label{number3} \caption {CommitmentTreeGeneration}
 	\begin {algorithmic}[1]
 		\STATE Starting with highest depth in decreasing order 
-			\FORALL {$\node \in {\cal N}$}
-				\STATE Create a message, a signature of it and attach those to your forest
+			\FORALL {\node \   $\in$ \aggregationTree }
+				\STATE Create a \msg, a \sign$_{\cal{N}}$ (\msg)  of it and attach those to your forest
 					\IF {Children}
 						\FORALL {Children}
-							\FORALL {Tree roots in the forest}
-								\IF {Certificate}
-									\STATE Get a message and a signature of the message
-									\STATE Verify the message using its signature 
+							\FORALL {\tree roots in the \forest}
+								\IF {\cert}
+									\STATE Get a message and a \sign of the message
+									\STATE Verify the message using its \sign  
 									\IF {Verified}
 										\STATE Merge the relevant trees by creating new trees
 										\STATE Attach new trees to your forest
@@ -88,9 +88,9 @@ Misc. topics to write about:
 \caption{Pseudo algorithm to detect a cheater}
 	\begin{algorithmic}[1]
 			\STATE The querier finds out the nodes who are complaining 
-			\STATE The querier asks the complainers to send their reading \& signature
+			\STATE The querier asks the complainers to send their reading \& \sign 
 			\STATE The querier finds possible cheaters based on complaines
-			\STATE The querier asks possible cheaters to send the messages \& signatures they received and also the messages \& signatures they send. It can also asks the parents of the possible cheaters to do so
+			\STATE The querier asks possible cheaters to send the messages \& \sign s they received and also the messages \& \sign s they send. It can also asks the parents of the possible cheaters to do so
 			\STATE The querier determines the cheater 
 	\end{algorithmic}
 \end{algorithm}
@@ -100,3 +100,5 @@ Misc. topics to write about:
 	If you have $O(n)$ children then you need atleast $\Omega(n)$ \& at max $O(nlog(n))$ certificates.
 
 	If you have $O(n)$ descendents then you need $\Omega(log(n))$  \& at max $O(nlog(n))$ certificates.
+
+\forest
