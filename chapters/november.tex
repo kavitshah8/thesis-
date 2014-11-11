@@ -56,32 +56,47 @@ Misc. topics to write about:
 
 \begin{algorithm}[H]\label{number3} \caption {CommitmentTreeGeneration}
 	\begin {algorithmic}[1]
+
 		\STATE Starting with highest depth in decreasing order 
+
 			\FORALL {\node \   $\in$ \aggregationTree }
-				\STATE Create a \msg, a \sign$_{\cal{N}}$ (\msg)  of it and attach those to your forest
-					\IF {Children}
-						\FORALL {Children}
-							\FORALL {\tree roots in the \forest}
-								\IF {\cert}
-									\STATE Get a message and a \sign of the message
-									\STATE Verify the message using its \sign  
-									\IF {Verified}
-										\STATE Merge the relevant trees by creating new trees
-										\STATE Attach new trees to your forest
-									\ELSE
-										\STATE Raise an alarm
+
+					\STATE Create a \node $_{0}$, a \sign $_{\cal{N}}$ ( \node$_{0}$ ) and attach it to \forest $_{ \cal{N } }$
+
+					\IF {\node \ has \children}
+
+						\FORALL {\children \ $\in$ \node}
+
+							\FORALL {\treeRoot \ $\in$ \forest $_{ \mathcal{CHILDREN}}$}
+
+								\IF {\node \ has \cert$_{\mathcal{R}}$}
+
+									\IF {\cert$_{\mathcal{R}}$ \ is verified by \node} 
+
+										\STATE \node \ gets $\mathcal{R}$, \sign$_{\mathcal{R}}$
+										\STATE \node \ verifies $\mathcal{R}$, \sign$_{\mathcal{R}}$
+
+										\IF {\treeRoot \ is Verified by \node}
+
+											\STATE Add \treeRoot \ to \forest$_{\mathcal{N}}$
+											\STATE Run Huffman coding on \forest$_{\mathcal{N}}$
+									
+										\ENDIF
+
 									\ENDIF
-								\ELSE
-									\STATE Get the missing certificate and verify it
-										\IF {!Verified}
-											\STATE Raise an alarm
-									\ENDIF
+
 								\ENDIF
+
 							\ENDFOR
+
 						\ENDFOR
+
 					\ENDIF
+
 			\ENDFOR
+
 	\end{algorithmic}
+
 \end{algorithm}
 
 \begin{algorithm}
