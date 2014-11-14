@@ -61,25 +61,23 @@ Misc. topics to write about:
 
 			\FORALL {\node \   $\in$ \aggregationTree }
 
-					\STATE Create a \node $_{0}$, a \sign $_{\cal{N}}$ ( \node$_{0}$ ) and attach it to \forest $_{ \cal{N } }$
+					\STATE Create a \node.\msg, a \sign $_{\cal{N}}$(\node.\msg)
+					\STATE Attach \node.\msg, a \sign $_{\cal{N}}$(\node.\msg) to \node.\forest
 
-					\IF {\node \ has \children}
+						\FORALL {\node.\children }
 
-						\FORALL {\children \ $\in$ \node}
+							\FORALL {\treeRoot \ $\in$ \children.\forest}
 
-							\FORALL {\treeRoot \ $\in$ \forest $_{ \mathcal{CHILDREN}}$}
+								\IF {\node \ has \treeRoot.\cert}
 
-								\IF {\node \ has \cert$_{\mathcal{R}}$}
+									\IF {\treeRoot.\cert \ is verified by \node} 
 
-									\IF {\cert$_{\mathcal{R}}$ \ is verified by \node} 
-
-										\STATE \node \ gets $\mathcal{R}$, \sign$_{\mathcal{R}}$
-										\STATE \node \ verifies $\mathcal{R}$, \sign$_{\mathcal{R}}$
+										\STATE \node \ gets \treeRoot.\msg, \sign$_{\mathcal{R}}$(\treeRoot.\msg)
 
 										\IF {\treeRoot \ is Verified by \node}
 
-											\STATE Add \treeRoot \ to \forest$_{\mathcal{N}}$
-											\STATE Run Huffman coding on \forest$_{\mathcal{N}}$
+											\STATE Add \treeRoot \ to \node.\forest
+											\STATE Run Huffman coding like procedure on \node.\forest
 									
 										\ENDIF
 
@@ -91,8 +89,6 @@ Misc. topics to write about:
 
 						\ENDFOR
 
-					\ENDIF
-
 			\ENDFOR
 
 	\end{algorithmic}
@@ -101,12 +97,28 @@ Misc. topics to write about:
 
 \begin{algorithm}
 \caption{Pseudo algorithm to detect a cheater}
+
 	\begin{algorithmic}[1]
-			\STATE The querier finds out the nodes who are complaining 
-			\STATE The querier asks the complainers to send their reading \& \sign 
-			\STATE The querier finds possible cheaters based on complaines
-			\STATE The querier asks possible cheaters to send the messages \& \sign s they received and also the messages \& \sign s they send. It can also asks the parents of the possible cheaters to do so
-			\STATE The querier determines the cheater 
+
+			\STATE \querier \ finds out all the \complainer$_{\mathcal{N}}$ $\in$ \aggregationTree \ using a complainer detecting algorithm
+
+			\FORALL {\complainer$_{\mathcal{N}}$}
+
+				\STATE \querier \ gets \node$_{0}$, \sign $_{\cal{N}}$ ( \node$_{0}$ )
+			
+			\ENDFOR
+
+			\STATE \querier \  finds possible \cheater \ based on \complainer$_{\mathcal{N}}$
+
+			\FORALL {\cheater}
+
+				\STATE \querier \  gets \node$_{\mathcal{I}}$, \sign $_{\cal{N}}$ ( \node$_{I}$ ) \cheater \  receives and sends. 
+				\STATE If needed \querier \  gets \node$_{\mathcal{I}}$, \sign $_{\cal{N}}$ ( \node$_{I}$ ) of the \parent \ \cheater 
+			
+			\ENDFOR
+
+			\STATE \querier \  determines the \cheater \ based on recived information
+
 	\end{algorithmic}
 \end{algorithm}
 
@@ -117,3 +129,19 @@ Misc. topics to write about:
 	If you have $O(n)$ descendents then you need $\Omega(log(n))$  \& at max $O(nlog(n))$ certificates.
 
 \forest
+
+
+\begin{theorem} \label{min certificates}
+	Given an aggregation tree with N nodes, in totality network needs $\Omega(N)$ certificates.
+\end{theorem}
+
+\begin{proof}
+	
+	Let $T$ \ represent a node in an aggregation tree whose number of children are $T$.$CHILDREN$, $C$is one of its children and $P$ is its parent.\\
+	We can say that $T$ needs certificates of all of its children because while creating a commitment tree $T$ receives at least one $C$.\msg \ and \sign$_{C}$ ($C$.\msg)  from all $T$.$CHILDREN$
+
+	If your aggregation tree is such that $\forall T$ needs to send only one message to $P$ then every $P$ receives only $P.CHILDREN$ number of messages from all of its children. Hence, $P$ needs $P.CHILDREN$ number of certificates.
+
+	So, every $P$ needs only need certificates of its children and we have N nodes in the network and and every node has a unique parent as aggregation tree is a rooted tree in totality we need only N certificates in the network.
+
+\end{proof}
