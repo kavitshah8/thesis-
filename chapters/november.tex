@@ -43,7 +43,6 @@ Misc. topics to write about:
 
 	\end{itemize}
 
-
 \textit{Why do we need authenticated broadcast from the querier ?}
 
 \textit{Significance of Nonce}
@@ -53,6 +52,10 @@ Misc. topics to write about:
 \textit{Why don't we use aggregation tree as commitment tree ?}
 
 \textit{Why is commitment tree binary and not n-ary ? (proof)}
+
+\textit{How to detect following cheating ?}
+	The querier knows an aggregation tree and a protocol. So the querier can simulate commitment tree.
+	All the nodes in the network are supposed to run the same protocol. Suppose if they don't then the commitment tree will look different. How will you detect such cheating ?
 
 \begin{algorithm}[H]\label{number3} \caption {CommitmentTreeGeneration}
 	\begin {algorithmic}[1]
@@ -123,8 +126,6 @@ Misc. topics to write about:
 	If you have $O(n)$ children then you need atleast $\Omega(n)$ \& at max $O(nlog(n))$ certificates.
 
 	If you have $O(n)$ descendents then you need $\Omega(log(n))$  \& at max $O(nlog(n))$ certificates.
-
-\forest
 
 
 \begin{theorem} \label{min certificates}
