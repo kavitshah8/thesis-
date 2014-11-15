@@ -68,21 +68,17 @@ Misc. topics to write about:
 
 							\FORALL {\treeRoot \ $\in$ \children.\forest}
 
-								\IF {\node \ has \treeRoot.\cert}
-
-									\IF {\treeRoot.\cert \ is verified by \node} 
+								\IF {\node \ has \treeRoot.\cert (else get \treeRoot.\cert )} 
 
 										\STATE \node \ gets \treeRoot.\msg, \sign$_{\mathcal{R}}$(\treeRoot.\msg)
 
-										\IF {\treeRoot \ is Verified by \node}
+										\IF {\treeRoot.\msg \ is Verified by \node (else raise an alarm)}
 
-											\STATE Add \treeRoot \ to \node.\forest
+											\STATE Add \treeRoot.\msg \ to \node.\forest
 											\STATE Run Huffman coding like procedure on \node.\forest
-									
+										
 										\ENDIF
-
-									\ENDIF
-
+								
 								\ENDIF
 
 							\ENDFOR
@@ -140,8 +136,8 @@ Misc. topics to write about:
 	Let $T$ \ represent a node in an aggregation tree whose number of children are $T$.$CHILDREN$, $C$is one of its children and $P$ is its parent.\\
 	We can say that $T$ needs certificates of all of its children because while creating a commitment tree $T$ receives at least one $C$.\msg \ and \sign$_{C}$ ($C$.\msg)  from all $T$.$CHILDREN$
 
-	If your aggregation tree is such that $\forall T$ needs to send only one message to $P$ then every $P$ receives only $P.CHILDREN$ number of messages from all of its children. Hence, $P$ needs $P.CHILDREN$ number of certificates.
+	If your aggregation tree is such that $\forall T$ needs to send only one message to $P$ then every $P$ receives only $P.CHILDREN$ number of messages. Hence, $P$ needs $P.CHILDREN$ number of certificates.
 
-	So, every $P$ needs only need certificates of its children and we have N nodes in the network and and every node has a unique parent as aggregation tree is a rooted tree in totality we need only N certificates in the network.
+	So, if every $P$ needs certificates only of its children  and we have N nodes in the network then since every node has a unique parent as aggregation tree is a rooted tree, in totality we need only N certificates in the network.
 
 \end{proof}
