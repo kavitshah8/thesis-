@@ -142,3 +142,13 @@ Misc. topics to write about:
 	So, if every $P$ needs certificates only of its children  and we have N nodes in the network then since every node has a unique parent as aggregation tree is a rooted tree, in totality we need only N certificates in the network.
 
 \end{proof}
+
+
+\begin{theorem}
+	Given an aggregation tree with N + 1 nodes, where at all nodes at same depth have same number of childrent, in totality network needs $\Omega(N)$ certificates.
+\end{theorem}
+
+\begin{proof}
+	Let say we have N + 1 nodes in an aggregation tree, root has has $n_{1}$ children, all $n_{1}$ nodes at depth 1 have $n_{2}$ children, all $n_{2}$  nodes at depth 2 have $n_{3}$ children and all $n_{n-1}$ nodes at depth $n - 1$ have $n_{n}$ children. \\
+	$ N + 1 = 1 + n_{1} + n_{1} * n_{2} + n_{1} * n_{2} * n_{3} + ... + n_{1} * n_{2} ... n_{n} $
+\end{proof}
