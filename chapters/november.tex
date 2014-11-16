@@ -145,10 +145,19 @@ Misc. topics to write about:
 
 
 \begin{theorem}
-	Given an aggregation tree with N + 1 nodes, where at all nodes at same depth have same number of childrent, in totality network needs $\Omega(N)$ certificates.
+	Given an aggregation tree with N + 1 nodes, if all nodes at same depth have same number of children then in totality network needs $\Omega(N)$ certificates.
 \end{theorem}
 
 \begin{proof}
-	Let say we have N + 1 nodes in an aggregation tree, root has has $n_{1}$ children, all $n_{1}$ nodes at depth 1 have $n_{2}$ children, all $n_{2}$  nodes at depth 2 have $n_{3}$ children and all $n_{n-1}$ nodes at depth $n - 1$ have $n_{n}$ children. \\
-	$ N + 1 = 1 + n_{1} + n_{1} * n_{2} + n_{1} * n_{2} * n_{3} + ... + n_{1} * n_{2} ... n_{n} $
+	Let say we have N + 1 nodes in an aggregation tree, also $d_{i}$ represents depth at level i. Tree is constructed such that root has $n_{1}$ children, all $n_{1}$ nodes at $d_{1}$ have $n_{2}$ children, all ($n_{1} * n_{2}$)  nodes at $d_{2}$ have $n_{3}$ children and all ($n_{1} * n_{2} * n_{3} ... n_{n-1}$) nodes at $d_{n-1}$ have $n_{n}$ children.\\
+	$ N + 1 = (1 + (n_{1}) + (n_{2} * (n_{1})) + (n_{3} * (n_{2} * n_{1})) + ... + (n_{n} * (n_{n-1} * n_{n-2} * n_{n-3} ... n_{1}) ) ) $\\
+	
+	All $ (n_{n-1} * n_{n-2} * n_{n-3} ... n_{1}) $ nodes at $ d_{n-1} $ need to know certificates of all of their $n_{n}$ children.
+	If there is only one carry after aggregation then all nodes at $d_{n-1}$ need to send only one certificate to their parent.\\
+	All $ (n_{n-2} * n_{n-3} * n_{n-4} ... n_{1}) $ nodes at $ d_{n-2} $ need to know certificates of all of their $ n-1 $ children.\\
+	All $ n_{1} $ nodes at $ d_{1} $ need to know certificates of all of their $ n-2 $ children.\\
+	The root need to know the certificates of all of its $ n_{1} $ children.\\
+	Also, the querier needs to know the certificate of the root.\\
+	So, in totality we need $ (1 + (n_{1}) + (n_{2} * (n_{1})) + (n_{3} * (n_{2} * n_{1})) + ... + (n_{n} * (n_{n-1} * n_{n-2} * n_{n-3} ... n_{1}) ) ) $ which is $\Omega(N)$. Hence, prooved.
+
 \end{proof}
