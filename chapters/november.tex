@@ -161,3 +161,19 @@ Misc. topics to write about:
 	So, in totality we need $ (1 + (n_{1}) + (n_{2} * (n_{1})) + (n_{3} * (n_{2} * n_{1})) + ... + (n_{n} * (n_{n-1} * n_{n-2} * n_{n-3} ... n_{1}) ) ) $ which is $\Omega(N)$. Hence, prooved.
 
 \end{proof}
+
+\begin{theorem}
+	Given an aggregation tree with N + 1 nodes, having $n_{i}!$ nodes at depth $d_{i}$ equally distributed among thier $n_{i-1}$ parents then in totality network needs $O(N*log(C))$ certificates where $C$ is a constant.
+\end{theorem}
+
+\begin{proof}
+	Given aggregation tree has N + 1 nodes, having $n_{i}!$ nodes at depth $d_{i}$ equally distributed among thier $n_{i-1}$ parents, we can write the following:\\
+	$ N + 1 = 1 + n_{1}! + n_{2}! + n_{3}! + ... + n_{n - 3}! + n_{n - 2}! + n_{n - 1}! + n_{n}! $
+
+	Totality $T$ is defined as number of certificates required within the network. To find $T$ let say $T_{i}$ represents number of certificates received at $d_{i}$.
+
+	All $ n_{n-1} ! $ nodes at $ d_{n-1} $ need to know certificates of all of their $ n_{n} $ children so $T_{n-1} = n_{n-1} ! * n_{n} $. At max all nodes at $d_{n-1}$ need to send two certificate to their parent.\\
+
+	All $ n_{n-2} ! $ nodes at $ d_{n-2} $ need to know certificates of all of their $ n_{n-1} $ children so $T_{n-1} = n_{n-1} ! * n_{n} $. At max all nodes at $d_{n-1}$ need to send two certificate to their parent.\\
+
+\end{proof}
