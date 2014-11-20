@@ -172,8 +172,10 @@ Misc. topics to write about:
 
 	Totality $T$ is defined as number of certificates required within the network. To find $T$ let say $T_{i}$ represents number of certificates received at $d_{i}$.
 
-	All $ n_{n-1} ! $ nodes at $ d_{n-1} $ need to know certificates of all of their $ n_{n} $ children so $T_{n-1} = n_{n-1} ! * n_{n} $. At max all nodes at $d_{n-1}$ need to send two certificate to their parent.\\
+	All $ n_{n-1} ! $ nodes at $ d_{n-1} $ receives one certificate from all of their $ n_{n} $ children so $T_{n-1} = n_{n-1} ! * n_{n} $. At max each node at $d_{n-1}$ sends $2$ certificate to their parent.\\
 
-	All $ n_{n-2} ! $ nodes at $ d_{n-2} $ need to know certificates of all of their $ n_{n-1} $ children so $T_{n-1} = n_{n-1} ! * n_{n} $. At max all nodes at $d_{n-1}$ need to send two certificate to their parent.\\
+	All $ n_{n-2} ! $ nodes at $ d_{n-2} $ receives $2$ certificates from all of their $ n_{n-1} $ children so $T_{n-2} = n_{n-2} ! * 2 $. At max each nodes at $d_{n-2}$ sends $\lceil log(2 + 1) \rceil = \lceil log(3) \rceil $ certificates to their parent.\\
+
+	Each node at $ d_{n-3} $ receives $\lceil log(3) \rceil$ certificates from all of their $ n_{n-2} $ children so $T_{n-3} = n_{n-3} ! * \lceil log(3) \rceil $. At max each nodes at $d_{n-2}$ sends $\lceil log(2 + 1) \rceil = \lceil log(3) \rceil $ certificates to their parent.\\
 
 \end{proof}
