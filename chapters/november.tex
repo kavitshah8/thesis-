@@ -219,6 +219,130 @@ Total number of nodes in a tree
 \end{proof}
 
 
-Things discuss:
-	Individual throughput for each node.
-	Factorial error (discuss again, I think that is correct)
+Things discuss:\\
+	Every node does the same thing\\
+	Individual throughput for each node\\
+
+With n(= 4) bit forest, uniform children distribution and fanout of 2, savings of n certificates :
+
+\begin{multicols}{2}
+
+	\begin{tabular}{ l | l l c r }
+	  1 & 1 & 1 & 1 & 0 \\
+	  \hline
+	  0 & 1 & 1 & 1 & 1 \\
+	  0 & 1 & 1 & 1 & 1 \\
+	  0 & 0 & 0 & 0 & 1 \\
+	  \hline	
+	  A & C & C & C & C\\
+	\end{tabular}
+\columnbreak{|}
+	\begin{tabular}{ l | l l c r }
+	  1 & 1 & 1 & 1 & 0 \\
+	  \hline
+	  0 & 1 & 1 & 1 & 1 \\
+	  0 & 1 & 1 & 1 & 1 \\
+	  0 & 0 & 0 & 0 & 1 \\
+	  \hline	
+	  A & A & A & A & A\\
+	\end{tabular}
+\end{multicols}
+
+With n(= 4) bit forest, uniform children distribution and fanout of 3, savings of n - 1 certificates :
+
+\begin{multicols}{2}
+
+	\begin{tabular}{ l l |l l c r }
+	  0 & 1 & 1 & 1 & 1 & 0 \\
+	  1 & 1 & 1 & 1 & 1 & 0 \\
+	  \hline
+	  0 & 0 & 1 & 1 & 1 & 1 \\
+	  0 & 0 & 1 & 1 & 1 & 1 \\
+	  0 & 0 & 1 & 1 & 1 & 1 \\
+	  0 & 0 & 0 & 0 & 0 & 1 \\
+	  \hline	
+	  A & 0 & C & C & C & 0 \\
+	\end{tabular}
+\columnbreak{|}
+	\begin{tabular}{ l l | l l c r }
+	  0 & 1 & 1 & 1 & 1 & 0 \\
+	  1 & 1 & 1 & 1 & 1 & 0 \\
+	  \hline
+	  0 & 0 & 1 & 1 & 1 & 1 \\
+	  0 & 0 & 1 & 1 & 1 & 1 \\
+	  0 & 0 & 1 & 1 & 1 & 1 \\
+	  0 & 0 & 0 & 0 & 0 & 1 \\
+	  \hline
+	  A & 0 & A & A & A & 0\\
+
+	\end{tabular}
+
+\end{multicols}
+
+With n(= 4) bit forest, uniform children distribution and fanout of 4, savings of n - 1 certificates :
+
+\begin{multicols}{2}
+
+	\begin{tabular}{ l l |l l c r }
+	  
+	  0 & 1 & 1 & 1 & 0 & 0 \\
+	  0 & 1 & 1 & 1 & 1 & 0 \\
+	  1 & 1 & 1 & 1 & 1 & 0 \\
+	  \hline
+	  0 & 0 & 1 & 1 & 1 & 1 \\
+	  0 & 0 & 1 & 1 & 1 & 1 \\
+	  0 & 0 & 1 & 1 & 1 & 1 \\
+	  0 & 0 & 1 & 1 & 1 & 1 \\
+	  0 & 0 & 0 & 0 & 0 & 1 \\
+	  \hline	
+	  A & A & C & C & 0 & C \\
+	
+	\end{tabular}
+\columnbreak{|}
+	\begin{tabular}{ l l | l l c r }
+	  0 & 1 & 1 & 1 & 0 & 0 \\
+	  0 & 1 & 1 & 1 & 1 & 0 \\
+	  1 & 1 & 1 & 1 & 1 & 0 \\
+	  \hline
+	  0 & 0 & 1 & 1 & 1 & 1 \\
+	  0 & 0 & 1 & 1 & 1 & 1 \\
+	  0 & 0 & 1 & 1 & 1 & 1 \\
+	  0 & 0 & 1 & 1 & 1 & 1 \\
+	  0 & 0 & 0 & 0 & 0 & 1 \\
+	  \hline
+	  A & A & A & A & 0 & A\\
+
+	\end{tabular}
+
+\end{multicols}
+
+With n(= 4) bit forest, uniform children distribution and fanout of 2 \& 3, No savings :
+
+\begin{multicols}{2}
+
+	\begin{tabular}{ l |l l c r }
+	  
+	  1 & 0 & 1 & 0 & 0 \\
+	  \hline
+	  0 & 1 & 0 & 1 & 0 \\
+	  0 & 1 & 0 & 1 & 0 \\
+	  0 & 0 & 0 & 0 & 1 \\
+	  \hline	
+	  A & 0 & A & 0 & A \\
+	
+	\end{tabular}
+\columnbreak{|}
+	\begin{tabular}{ l |l l c r }
+	  
+	  1 & 0 & 1 & 0 & 0 \\
+	  \hline
+	  0 & 1 & 0 & 1 & 0 \\
+	  0 & 1 & 0 & 1 & 0 \\
+	  0 & 1 & 0 & 1 & 0 \\
+	  0 & 0 & 0 & 0 & 1 \\
+	  \hline	
+	  A & C & A & C & A \\
+	
+	\end{tabular}
+
+\end{multicols}
