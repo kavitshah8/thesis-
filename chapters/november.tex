@@ -149,6 +149,7 @@ Misc. topics to write about:
 \end{theorem}
 
 \begin{proof}
+
 	Let say we have N + 1 nodes in an aggregation tree, also $d_{i}$ represents depth at level i. Tree is constructed such that root has $n_{1}$ children, all $n_{1}$ nodes at $d_{1}$ have $n_{2}$ children, all ($n_{1} * n_{2}$)  nodes at $d_{2}$ have $n_{3}$ children and all ($n_{1} * n_{2} * n_{3} ... n_{n-1}$) nodes at $d_{n-1}$ have $n_{n}$ children.\\
 	$ N + 1 = (1 + (n_{1}) + (n_{2} * (n_{1})) + (n_{3} * (n_{2} * n_{1})) + ... + (n_{n} * (n_{n-1} * n_{n-2} * n_{n-3} ... n_{1}) ) ) $\\
 	
@@ -174,7 +175,7 @@ $c_{i}$ is the number of certificates sent by each node at $d_{i}$
 
 $N_{i}$ is the number of nodes at $d_{i}$  
 
-												$= n_{i}!$
+												$= \Pi_{k=1}^i n_k$
 
 $T_{i}$ is the totality at $d_{i}$ where totality is the number of certificates received/needed
 											
@@ -201,3 +202,23 @@ Total number of nodes in a tree
 	Case III: For $d_{n - 2}\\ N_{n - 2} = n_{n - 2}!\\ T_{n -2} = n_{n - 2}! * (n_{n - 1} * c_{n - 1}) = n_{n - 2}! * (n_{n - 1 } * 2) \\ c_{n - 2} = \lceil log((n_{n - 1} *c_{n - 1}) + 1) \rceil = \lceil log((n_{n - 1} * 2) + 1) \rceil $\\
 	Case IV: For $d_{n - 3}\\ N_{n - 3} = n_{n - 3}!\\ T_{n -3} = n_{n - 3}! * (n_{n - 2} * c_{n - 2}) = n_{n - 3}! * (n_{n - 2 } * \lceil log((n_{n - 1} * 2 ) + 1) \rceil ) \\ c_{n - 3} = \lceil log((n_{n - 2} * c_{n - 2}) + 1) \rceil = \lceil log( n_{n - 2} *\lceil log((n_{n - 1} * 2 ) + 1) \rceil + 1) \rceil $\\
 \end{proof}
+
+\begin{theorem}
+		Given an aggregation tree with N + 1 nodes, having $N_{i} = n_{i}!$ nodes at depth $d_{i}$, equally distributed among thier $n_{i-1}!$ parents then in totality network needs $\Omega(N)$ certificates.
+\end{theorem}
+
+\begin{proof}
+
+	Case I: For $d_{n}\ ; N_{n} = n_{n}!\ ; T_{n} = 0\ ; c_{n} = 1 $\\
+	Case II: For $d_{n - 1}\\ N_{n - 1} = n_{n - 1}!\\ T_{n - 1} = n_{n - 1}! * (n_{n} * c_{n}) = n_{n - 1}! * n_{n}\\ c_{n - 1} = 1\\ $
+	Case III: For $d_{n - 2}\\ N_{n - 2} = n_{n - 2}!\\ T_{n -2} = n_{n - 2}! * (n_{n - 1} * c_{n - 1}) = n_{n - 2}! * n_{n - 1 } \\ c_{n - 2} = 1$\\
+	Case IV: For $d_{n - 3}\\ N_{n - 3} = n_{n - 3}!\\ T_{n -3} = n_{n - 3}! * (n_{n - 2} * c_{n - 2}) = n_{n - 3}! * n_{n - 2 } \\$     $c_{n - 3} = 1$\\ \\
+	Case n-2: For $d_{2}\\ N_{2} = n_{2}!\\ T_{2} = n_{2}! * (n_{3} * c_{3}) = n_{2}! * n_{3} \\$  $c_{2} = 1$\\
+	Case n-1: For $d_{1}\\ N_{1} = n_{1}!\\ T_{1} = n_{1}! * (n_{2} * c_{2}) = n_{1}! * n_{2} \\$  $c_{n-1} = 1$\\
+
+\end{proof}
+
+
+Things discuss:
+	Individual throughput for each node.
+	Factorial error (discuss again, I think that is correct)
