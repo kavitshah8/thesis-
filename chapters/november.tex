@@ -145,10 +145,11 @@ Misc. topics to write about:
 
 
 \begin{theorem}
-	Given an aggregation tree with N + 1 nodes, if all nodes at same depth have same number of children then in totality network needs $\Omega(N)$ certificates.
+		Given an aggregation tree with N + 1 nodes, having $N_{i} = n_{i}!$ nodes at depth $d_{i}$, equally distributed among thier $n_{i-1}!$ parents then in totality network needs $\Omega(N)$ certificates.
 \end{theorem}
 
 \begin{proof}
+
 	Let say we have N + 1 nodes in an aggregation tree, also $d_{i}$ represents depth at level i. Tree is constructed such that root has $n_{1}$ children, all $n_{1}$ nodes at $d_{1}$ have $n_{2}$ children, all ($n_{1} * n_{2}$)  nodes at $d_{2}$ have $n_{3}$ children and all ($n_{1} * n_{2} * n_{3} ... n_{n-1}$) nodes at $d_{n-1}$ have $n_{n}$ children.\\
 	$ N + 1 = (1 + (n_{1}) + (n_{2} * (n_{1})) + (n_{3} * (n_{2} * n_{1})) + ... + (n_{n} * (n_{n-1} * n_{n-2} * n_{n-3} ... n_{1}) ) ) $\\
 	
@@ -161,3 +162,192 @@ Misc. topics to write about:
 	So, in totality we need $ (1 + (n_{1}) + (n_{2} * (n_{1})) + (n_{3} * (n_{2} * n_{1})) + ... + (n_{n} * (n_{n-1} * n_{n-2} * n_{n-3} ... n_{1}) ) ) $ which is $\Omega(N)$. Hence, prooved.
 
 \end{proof}
+
+Tree properties \& notations
+
+$d_{i}$ is the depth at $i$
+
+$n_{i}$ is the fanout at $d_{i-1}$
+
+$c_{i}$ is the number of certificates sent by each node at $d_{i}$
+ 												
+ 												$= \lceil log((n_{i+1} * c_{i+1}) + 1) \rceil$
+
+$N_{i}$ is the number of nodes at $d_{i}$  
+
+												$= \Pi_{k=1}^i n_k$
+
+$T_{i}$ is the totality at $d_{i}$ where totality is the number of certificates received/needed
+											
+												$= N_{i} * (n_{i+1} * c_{i+1})$
+
+Total number of nodes in a tree  
+												
+												$= N + 1$
+												
+												$= N_{0} + N_{1} + N_{2} + + N_{3} + ... + N_{n-2} + N_{n-1} + N_{n}$
+												
+												$= n_{0}! + n_{1}! + n_{2}! + n_{3}! + ...	+ n_{n-2}!  + n_{n-1}! + n_{n}!$
+												
+												$= 1 + n_{1}! + n_{2}! + n_{3}! + ...	+ n_{n-2}!  + n_{n-1}! + n_{n}!$
+
+\begin{theorem}
+	Given an aggregation tree with N + 1 nodes, having $N_{i} = n_{i}!$ nodes at depth $d_{i}$, equally distributed among thier $n_{i-1}!$ parents then in totality network needs $O(N*log(C))$ certificates where $C$ is a constant.
+\end{theorem}
+
+\begin{proof}
+	
+	Case I: For $d_{n}\ ; N_{n} = n_{n}!\ ; T_{n} = 0\ ; c_{n} = 1 $\\
+	Case II: For $d_{n - 1}\\ N_{n - 1} = n_{n - 1}!\\ T_{n - 1} = n_{n - 1}! * (n_{n} * c_{n}) = n_{n - 1}! * (n_{n} )\\ c_{n - 1} = 2\\ $
+	Case III: For $d_{n - 2}\\ N_{n - 2} = n_{n - 2}!\\ T_{n -2} = n_{n - 2}! * (n_{n - 1} * c_{n - 1}) = n_{n - 2}! * (n_{n - 1 } * 2) \\ c_{n - 2} = \lceil log((n_{n - 1} *c_{n - 1}) + 1) \rceil = \lceil log((n_{n - 1} * 2) + 1) \rceil $\\
+	Case IV: For $d_{n - 3}\\ N_{n - 3} = n_{n - 3}!\\ T_{n -3} = n_{n - 3}! * (n_{n - 2} * c_{n - 2}) = n_{n - 3}! * (n_{n - 2 } * \lceil log((n_{n - 1} * 2 ) + 1) \rceil ) \\ c_{n - 3} = \lceil log((n_{n - 2} * c_{n - 2}) + 1) \rceil = \lceil log( n_{n - 2} *\lceil log((n_{n - 1} * 2 ) + 1) \rceil + 1) \rceil $\\
+\end{proof}
+
+\begin{theorem}
+		Given an aggregation tree with N + 1 nodes, having $N_{i} = n_{i}!$ nodes at depth $d_{i}$, equally distributed among thier $n_{i-1}!$ parents then in totality network needs $\Omega(N)$ certificates.
+\end{theorem}
+
+\begin{proof}
+
+	Case I: For $d_{n}\ ; N_{n} = n_{n}!\ ; T_{n} = 0\ ; c_{n} = 1 $\\
+	Case II: For $d_{n - 1}\\ N_{n - 1} = n_{n - 1}!\\ T_{n - 1} = n_{n - 1}! * (n_{n} * c_{n}) = n_{n - 1}! * n_{n}\\ c_{n - 1} = 1\\ $
+	Case III: For $d_{n - 2}\\ N_{n - 2} = n_{n - 2}!\\ T_{n -2} = n_{n - 2}! * (n_{n - 1} * c_{n - 1}) = n_{n - 2}! * n_{n - 1 } \\ c_{n - 2} = 1$\\
+	Case IV: For $d_{n - 3}\\ N_{n - 3} = n_{n - 3}!\\ T_{n -3} = n_{n - 3}! * (n_{n - 2} * c_{n - 2}) = n_{n - 3}! * n_{n - 2 } \\$     $c_{n - 3} = 1$\\ \\
+	Case n-2: For $d_{2}\\ N_{2} = n_{2}!\\ T_{2} = n_{2}! * (n_{3} * c_{3}) = n_{2}! * n_{3} \\$  $c_{2} = 1$\\
+	Case n-1: For $d_{1}\\ N_{1} = n_{1}!\\ T_{1} = n_{1}! * (n_{2} * c_{2}) = n_{1}! * n_{2} \\$  $c_{n-1} = 1$\\
+
+\end{proof}
+
+
+Things discuss:\\
+	Every node does the same thing\\
+	Individual throughput for each node\\
+
+With n(= 4) bit forest, uniform children distribution and fanout of 2, savings of n certificates (can increase n = 4 to n = n to achieve maximum savings):
+
+\begin{multicols}{2}
+
+	\begin{tabular}{ l | l l c r }
+	  1 & 1 & 1 & 1 & 0 \\
+	  \hline
+	  0 & 1 & 1 & 1 & 1 \\
+	  0 & 1 & 1 & 1 & 1 \\
+	  0 & 0 & 0 & 0 & 1 \\
+	  \hline	
+	  A & C & C & C & C\\
+	\end{tabular}
+\columnbreak{|}
+	\begin{tabular}{ l | l l c r }
+	  1 & 1 & 1 & 1 & 0 \\
+	  \hline
+	  0 & 1 & 1 & 1 & 1 \\
+	  0 & 1 & 1 & 1 & 1 \\
+	  0 & 0 & 0 & 0 & 1 \\
+	  \hline	
+	  A & A & A & A & A\\
+	\end{tabular}
+\end{multicols}
+
+With n(= 4) bit forest, uniform children distribution and fanout of 3, savings of n - 1 certificates :
+
+\begin{multicols}{2}
+
+	\begin{tabular}{ l l |l l c r }
+	  0 & 1 & 1 & 1 & 1 & 0 \\
+	  1 & 1 & 1 & 1 & 1 & 0 \\
+	  \hline
+	  0 & 0 & 1 & 1 & 1 & 1 \\
+	  0 & 0 & 1 & 1 & 1 & 1 \\
+	  0 & 0 & 1 & 1 & 1 & 1 \\
+	  0 & 0 & 0 & 0 & 0 & 1 \\
+	  \hline	
+	  A & 0 & C & C & C & 0 \\
+	\end{tabular}
+\columnbreak{|}
+	\begin{tabular}{ l l | l l c r }
+	  0 & 1 & 1 & 1 & 1 & 0 \\
+	  1 & 1 & 1 & 1 & 1 & 0 \\
+	  \hline
+	  0 & 0 & 1 & 1 & 1 & 1 \\
+	  0 & 0 & 1 & 1 & 1 & 1 \\
+	  0 & 0 & 1 & 1 & 1 & 1 \\
+	  0 & 0 & 0 & 0 & 0 & 1 \\
+	  \hline
+	  A & 0 & A & A & A & 0\\
+
+	\end{tabular}
+
+\end{multicols}
+
+With n(= 4) bit forest, uniform children distribution and fanout of 4, savings of n - 1 certificates :
+
+\begin{multicols}{2}
+
+	\begin{tabular}{ l l |l l c r }
+	  
+	  0 & 1 & 1 & 1 & 0 & 0 \\
+	  0 & 1 & 1 & 1 & 1 & 0 \\
+	  1 & 1 & 1 & 1 & 1 & 0 \\
+	  \hline
+	  0 & 0 & 1 & 1 & 1 & 1 \\
+	  0 & 0 & 1 & 1 & 1 & 1 \\
+	  0 & 0 & 1 & 1 & 1 & 1 \\
+	  0 & 0 & 1 & 1 & 1 & 1 \\
+	  0 & 0 & 0 & 0 & 0 & 1 \\
+	  \hline	
+	  A & A & C & C & 0 & C \\
+	
+	\end{tabular}
+\columnbreak{|}
+	\begin{tabular}{ l l | l l c r }
+	  0 & 1 & 1 & 1 & 0 & 0 \\
+	  0 & 1 & 1 & 1 & 1 & 0 \\
+	  1 & 1 & 1 & 1 & 1 & 0 \\
+	  \hline
+	  0 & 0 & 1 & 1 & 1 & 1 \\
+	  0 & 0 & 1 & 1 & 1 & 1 \\
+	  0 & 0 & 1 & 1 & 1 & 1 \\
+	  0 & 0 & 1 & 1 & 1 & 1 \\
+	  0 & 0 & 0 & 0 & 0 & 1 \\
+	  \hline
+	  A & A & A & A & 0 & A\\
+
+	\end{tabular}
+
+\end{multicols}
+
+With n(= 4) bit forest, uniform children distribution and fanout of 2 \& 3, No savings :
+
+\begin{multicols}{2}
+
+	\begin{tabular}{ l |l l c r }
+	  
+	  1 & 0 & 1 & 0 & 0 \\
+	  \hline
+	  0 & 1 & 0 & 1 & 0 \\
+	  0 & 1 & 0 & 1 & 0 \\
+	  0 & 0 & 0 & 0 & 1 \\
+	  \hline	
+	  A & 0 & A & 0 & A \\
+	
+	\end{tabular}
+\columnbreak{|}
+	\begin{tabular}{ l |l l c r }
+	  
+	  1 & 0 & 1 & 0 & 0 \\
+	  \hline
+	  0 & 1 & 0 & 1 & 0 \\
+	  0 & 1 & 0 & 1 & 0 \\
+	  0 & 1 & 0 & 1 & 0 \\
+	  0 & 0 & 0 & 0 & 1 \\
+	  \hline	
+	  A & C & A & C & A \\
+	
+	\end{tabular}
+
+\end{multicols}
+
+Meeting:
+
+	Find cases where you can say it will be always A's.
+	Analyze palm tree / pseudo palm tree 
