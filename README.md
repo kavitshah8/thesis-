@@ -1,4 +1,4 @@
-This is just a scratch work of my thesis writing.
+This is outline of my thesis writing.
 
 * Useful commands
 	
