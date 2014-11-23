@@ -2,30 +2,30 @@
 
 Misc. topics to write about:
 
-\textit{Why do you want to communicate an entire aggregation tree to the querier ?}
+\textbf{\textit{Why do you want to communicate an entire aggregation tree to the querier ?}}\\
 	If the querier knows the entire aggregation tree and also if it knows the protocol which all the sensor nodes will be running then the querier can simulate the commitment trees on its own. Because of that we do not have to communicate the commitment tree every time we run the protocol which saves a lot of communications in the network. Also, note the fact that aggregation tree does not change often so the communication required to send the aggregation tree is negligible over time.
 
-\textit{How to communicate an entire aggregation tree to the querier ?}
+\textbf{\textit{How to communicate an entire aggregation tree to the querier ?}}\\
 	The base station in the aggregation tree needs to know the entire network topology.
 	It will relay that information to the querier.
 
-\textit{How does the base station know the entire aggregation tree topology ?}
+\textbf{\textit{How does the base station know the entire aggregation tree topology ?}}\\
 	If every sensor nodes has a small table containing the path to reach to the certain destination then the base station can ask for this information to the individual sensor nodes. While it is receiving this information it can relay the same information to the querier. Note: the base station is also a simple sensor node like all other nodes it can not store all the forwarding tables so it will relay those table information directly to the querier and querier can make big table containing the information related to the aggregation tree.
 
-\textit{Mobility}
+\textbf{\textit{Mobility}}\\
 	You can talk about the aggregation tree topology is mobile. It's increasingly mobile topology not leap mobility.
 
-\textit{Caching of certificates}
+\textbf{\textit{Caching of certificates}}\\
 		Certificates are sent only once for the first time. They are cached for subsequent communications. Every node in the tree needs to know the certificates of all the root nodes in its forest.
 
-\textit{Why does the internal vertex in the commitment tree need to send what it received and what it sent to its parent ?}
+\textbf{\textit{Why does the internal vertex in the commitment tree need to send what it received and what it sent to its parent ?}}\\
 	To detect a cheater, if an internal vertex send ( to the querier ) only the values which it sent to its parent in the commitment tree then it is no value to the querier. Because the querier can not verify that value and the signature. For the querier to verify the aggregated data and its signature it needs both the values over which aggregation has happend. 
 
-\textit{Why don't you need backward signatures ?} Because according to the protocol, every parent checks its children's message and its signature. If those two do not match then it will not accept the message.
+\textbf{\textit{Why don't you need backward signatures ?}}\\ Because according to the protocol, every parent checks its children's message and its signature. If those two do not match then it will not accept the message.
 
-\textit{Do you need signature on forest ? If yes, then why ? If no, then why ?}
+\textbf{\textit{Do you need signature on forest ?}}\\No, we do not need the signature on forest.
 
-\textit{Analyses of being root in as many tree as possible:}
+\textbf{\textit{Analyses of being root in as many tree as possible:}}
 	
 	\begin{itemize}
 		\item \textit{Bandwidth perspective}
@@ -43,24 +43,26 @@ Misc. topics to write about:
 
 	\end{itemize}
 
-\textit{Why do we need authenticated broadcast from the querier ?}
+\textbf{\textit{Why do we need authenticated broadcast from the querier ?}}\\
 
-\textit{Significance of Nonce}
+\textbf{\textit{Significance of Nonce}}\\
 
-\textit{Why do we need public key infrastructure ?}
+\textbf{\textit{Why do we need public key infrastructure ?}}\\
 
-\textit{Why don't we use aggregation tree as commitment tree ?}
+\textbf{\textit{Why don't we use aggregation tree as commitment tree ?}}\\
 
-\textit{Why is commitment tree binary and not n-ary ? (proof)}
+\textbf{\textit{Why is commitment tree binary and not n-ary ? (proof)}}\\
 
-\textit{How to detect following cheating ?}
+\textbf{\textit{How to detect following cheating ?}}\\
 	The querier knows an aggregation tree and a protocol. So the querier can simulate commitment tree.
 	All the nodes in the network are supposed to run the same protocol. Suppose if they don't then the commitment tree will look different. How will you detect such cheating ?
 
+\newpage
 \begin{algorithm}[H]\label{number3} \caption {CommitmentTreeGeneration}
 	\begin {algorithmic}[1]
 
-		\STATE Starting with highest depth in decreasing order 
+		\STATE depth = $MAXDEPTH$
+		\WHILE {depth $\geq$ 0}
 
 			\FORALL {\node \   $\in$ \aggregationTree }
 
@@ -90,6 +92,8 @@ Misc. topics to write about:
 
 			\ENDFOR
 
+			\STATE {depth = depth - 1; }
+		\ENDWHILE
 	\end{algorithmic}
 
 \end{algorithm}
