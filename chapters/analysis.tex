@@ -147,26 +147,98 @@
 
 	\end{multicols}
 
+\newpage
 
 \section{Psudo Palm Tree}
+	\begin{figure}[H]
+		\centering
+		\includegraphics{images/pseudo_palm_tree}
+	\end{figure}
 	
 	\begin{multicols}{4}
-		\begin{tabular}{ l l l }
-			1 & 1 & 1 
+		\begin{tabular}{ l | l }
+			1 & 0 \\
+			\hline
+			0 & 1 \\
+			0 & 1 \\
+			0 & 1 \\
+			\hline
+			A & C \\
 		\end{tabular}
-	\columnbreak{|}
-		\begin{tabular}{ l l l }
-			1 & 1 & 1 
+		\columnbreak{|}
+		\begin{tabular}{ l | l l }
+			1 & 1 & 0 \\
+			\hline
+			0 & 0 & 1 \\
+			0 & 0 & 1 \\
+			0 & 1 & 1 \\
+			\hline
+			A & 0 & C \\
 		\end{tabular}
-	\columnbreak{|}
+		\columnbreak{|}
 		\begin{tabular}{ l l l }
-			2 & 2 & 2 
+			0 & 1 & 0 \\
+			\hline
+			0 & 0 & 1 \\
+			0 & 0 & 1 \\
+			1 & 0 & 1 \\
+			\hline
+			C & A & C \\
 		\end{tabular}
-	\columnbreak{|}
-		\begin{tabular}{ l l l }
-			2 & 2 & 2 
+		\columnbreak{|}
+		\begin{tabular}{ l | l l l }
+			1 & 1 & 1 & 0 \\
+			\hline
+			0 & 0 & 0 & 1 \\
+			0 & 0 & 0 & 1 \\
+			0 & 1 & 1 & 1 \\
+			\hline
+			A & 0 & 0 & C \\
 		\end{tabular}
 	\end{multicols}
+
+	\begin{multicols}{4}
+		\begin{tabular}{ l | l }
+			1 & 0 \\
+			\hline
+			0 & 1 \\
+			0 & 1 \\
+			0 & 1 \\
+			\hline
+			A & A \\
+		\end{tabular}
+		\columnbreak{|}
+		\begin{tabular}{ l | l l }
+			1 & 1 & 0 \\
+			\hline
+			0 & 0 & 1 \\
+			0 & 0 & 1 \\
+			0 & 1 & 1 \\
+			\hline
+			A & 0 & A \\
+		\end{tabular}
+		\columnbreak{|}
+		\begin{tabular}{ l l l }
+			0 & 1 & 0 \\
+			\hline
+			0 & 0 & 1 \\
+			0 & 0 & 1 \\
+			1 & 0 & 1 \\
+			\hline
+			C & A & A \\
+		\end{tabular}
+		\columnbreak{|}
+		\begin{tabular}{ l | l l l }
+			1 & 1 & 1 & 0 \\
+			\hline
+			0 & 0 & 0 & 1 \\
+			0 & 0 & 0 & 1 \\
+			0 & 1 & 1 & 1 \\
+			\hline
+			A & 0 & 0 & A \\
+		\end{tabular}
+	\end{multicols}
+
 Meeting:
 
 	Find cases where you can say it will be always A's.
