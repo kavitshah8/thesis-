@@ -37,7 +37,8 @@
 	\end{tabular}
 
 	\newpage
-	\begin{algorithm}[H]\label{number3} \caption {CommitmentTreeGeneration}
+
+\begin{algorithm}[H]\label{number3} \caption {CommitmentTreeGeneration}
 	\begin {algorithmic}[1]
 
 		\STATE depth = $MAXDEPTH$
@@ -48,9 +49,9 @@
 					\STATE Create \node.\msg, \sign $_{\cal{N}}$(\node.\msg)
 					\STATE Attach \node.\msg, \sign $_{\cal{N}}$(\node.\msg) to \node.\forest
 
-						\FORALL {\node.\children }
+						\FORALL {$x$ $\in$ \node.\children }
 
-							\FORALL {\treeRoot.\forest \ $\in$ \children.\forest}
+							\FORALL {tree root \treeRoot \ $\in$ $x$.\forest}
 
 								\IF {\node \ has \treeRoot.\cert (else get \treeRoot.\cert )} 
 
@@ -77,6 +78,11 @@
 	\end{algorithmic}
 
 \end{algorithm}
+
+\begin{algorithm}[H]\caption{Kavit Coding}
+\end{algorithm}
+
+\newpage
 
 \begin{algorithm}
 \caption{Pseudo algorithm to detect a cheater}
