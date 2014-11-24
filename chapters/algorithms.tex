@@ -49,9 +49,9 @@
 					\STATE Create \node.\msg, \sign $_{\cal{N}}$(\node.\msg)
 					\STATE Attach \node.\msg, \sign $_{\cal{N}}$(\node.\msg) to \node.\forest
 
-						\FORALL {$x$ $\in$ \node.\children }
+						\FORALL {\child \ $\in$ \node.\children }
 
-							\FORALL {tree root \treeRoot \ $\in$ $x$.\forest}
+							\FORALL {tree root \treeRoot \ $\in$ \child.\forest}
 
 								\IF {\node \ has \treeRoot.\cert (else get \treeRoot.\cert )} 
 
@@ -60,13 +60,14 @@
 										\IF {\treeRoot.\msg \ is Verified by \node (else raise an alarm)}
 
 											\STATE Add \treeRoot \ to \node.\forest
-											\STATE Call subroutine Kavit Coding
 										
 										\ENDIF
 								
 								\ENDIF
 
 							\ENDFOR
+
+						\STATE Call subroutine Kavit Coding
 
 						\ENDFOR
 			
