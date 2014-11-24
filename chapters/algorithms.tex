@@ -43,14 +43,14 @@
 		\STATE depth = $MAXDEPTH$
 		\WHILE {depth $\geq$ 0}
 
-			\FORALL {\node \   $\in$ \aggregationTree }
+			\FORALL {\node \   $\in$ \aggregationTree.depth }
 
-					\STATE Create a \node.\msg, a \sign $_{\cal{N}}$(\node.\msg)
-					\STATE Attach \node.\msg, a \sign $_{\cal{N}}$(\node.\msg) to \node.\forest
+					\STATE Create \node.\msg, \sign $_{\cal{N}}$(\node.\msg)
+					\STATE Attach \node.\msg, \sign $_{\cal{N}}$(\node.\msg) to \node.\forest
 
 						\FORALL {\node.\children }
 
-							\FORALL {\treeRoot \ $\in$ \children.\forest}
+							\FORALL {\treeRoot.\forest \ $\in$ \children.\forest}
 
 								\IF {\node \ has \treeRoot.\cert (else get \treeRoot.\cert )} 
 
@@ -58,8 +58,8 @@
 
 										\IF {\treeRoot.\msg \ is Verified by \node (else raise an alarm)}
 
-											\STATE Add \treeRoot.\msg \ to \node.\forest
-											\STATE Run Huffman coding like procedure on \node.\forest
+											\STATE Add \treeRoot \ to \node.\forest
+											\STATE Call subroutine Kavit Coding
 										
 										\ENDIF
 								
@@ -69,7 +69,7 @@
 
 						\ENDFOR
 			
-				\STATE {depth = depth - 1; }
+					\STATE {depth = depth - 1 }
 
 			\ENDFOR
 
