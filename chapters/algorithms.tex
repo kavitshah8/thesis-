@@ -60,7 +60,7 @@
 
 										\STATE \node \ gets \treeRoot.\msg, \sign$_{\mathcal{R}}$(\treeRoot.\msg)
 
-										\IF {\treeRoot.\msg \ is Verified by \node (else raise an alarm)}
+										\IF {\treeRoot.\msg \ is verified by \node (else raise an alarm)}
 
 											\STATE Add \treeRoot \ to \node.\forest
 										
@@ -70,7 +70,6 @@
 
 							\ENDFOR
 
-								\STATE \node.\forest \ = SortLinkedList( \node.\forest \ )
 								\STATE CommitmentTreeCoding ( \node.\forest \ ) 
 						\ENDFOR
 		
@@ -88,20 +87,28 @@
 
 \begin{algorithm}[H]\caption{CommitmentTreeCoding}
 	\begin{algorithmic}[1]
-		\STATE \temp \ =  \node.\forest
+
+		\STATE \temp \ = sortLinkedList( \node.\forest \ )
+
 		\WHILE {\temp.\nextTree \ $\neq$ \ 0}
+
 			\IF {\temp.\height \ $\neq$ \ \temp.\nextTree.\height } 
 				\STATE \temp \ = \temp.\nextTree
 			\ELSE
+
 				\STATE Create \aggregator 
 				\STATE \aggregator.\height \ = \temp.\height \ + 1
 				\STATE \aggregator.\lc \ = \temp
 				\STATE \aggregator.\rc \ = \temp.\nextTree
 				\STATE Insert \aggregator \ to \node.\forest
 				\STATE \temp \ = sortLinkedList( \node.\forest \ )
+
 			\ENDIF
+
 		\ENDWHILE		
+
 	\end{algorithmic}
+
 \end{algorithm}
 
 \newpage
