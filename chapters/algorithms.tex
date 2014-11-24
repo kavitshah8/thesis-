@@ -1,5 +1,6 @@
 \chapter{algorithms}
-
+	
+	The commitment tree is a tree where each vertex has an associated label representing the data that is passed on to its parent. The messages have the following format: 
 	\textit{MESSAGE}
 	\newline
 	
@@ -49,6 +50,8 @@
 					\STATE Create \node.\msg, \sign $_{\cal{N}}$(\node.\msg)
 					\STATE Attach \node.\msg, \sign $_{\cal{N}}$(\node.\msg) to \node.\forest
 
+					\IF {\node.\children \ $\neq$ \ 0}
+
 						\FORALL {\child \ $\in$ \node.\children }
 
 							\FORALL {tree root \treeRoot \ $\in$ \child.\forest}
@@ -67,20 +70,38 @@
 
 							\ENDFOR
 
-						\STATE Call subroutine Kavit Coding
-
+								\STATE \node.\forest \ = SortLinkedList( \node.\forest \ )
+								\STATE CommitmentTreeCoding ( \node.\forest \ ) 
 						\ENDFOR
-			
-					\STATE {depth = depth - 1 }
+		
+					\ENDIF
+
 
 			\ENDFOR
 
-	\ENDWHILE
+			\STATE {depth = depth - 1 }
+
+		\ENDWHILE
 	\end{algorithmic}
 
 \end{algorithm}
 
-\begin{algorithm}[H]\caption{Kavit Coding}
+\begin{algorithm}[H]\caption{CommitmentTreeCoding}
+	\begin{algorithmic}[1]
+		\STATE \temp \ =  \node.\forest
+		\WHILE {\temp.\nextTree \ $\neq$ \ 0}
+			\IF {\temp.\height \ $\neq$ \ \temp.\nextTree.\height } 
+				\STATE \temp = \temp.\nextTree
+			\ELSE
+				\STATE Create \aggregator 
+				\STATE \aggregator.\height \ = \temp.\height \ + 1
+				\STATE \aggregator.\lc \ = \temp
+				\STATE \aggregator.\rc \ = \temp.\nextTree
+				\STATE Insert \aggregator \ to \node.\forest
+				\STATE \temp \ = sortLinkedList( \node.\forest \ )
+			\ENDIF
+		\ENDWHILE		
+	\end{algorithmic}
 \end{algorithm}
 
 \newpage
