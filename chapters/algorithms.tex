@@ -42,7 +42,7 @@
 \begin{algorithm}[H]\label{number3} \caption {CommitmentTreeGeneration}
 	\begin {algorithmic}[1]
 
-		\STATE depth = $MAXDEPTH$
+		\STATE depth = \aggregationTree.maxDepth
 		\WHILE {depth $\geq$ 0}
 
 			\FORALL {\node \   $\in$ \aggregationTree.depth }
@@ -91,7 +91,7 @@
 		\STATE \temp \ =  \node.\forest
 		\WHILE {\temp.\nextTree \ $\neq$ \ 0}
 			\IF {\temp.\height \ $\neq$ \ \temp.\nextTree.\height } 
-				\STATE \temp = \temp.\nextTree
+				\STATE \temp \ = \temp.\nextTree
 			\ELSE
 				\STATE Create \aggregator 
 				\STATE \aggregator.\height \ = \temp.\height \ + 1
