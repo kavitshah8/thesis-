@@ -62,3 +62,38 @@ Total number of nodes in a tree
 Things to include in above analysis:\\
 	Every node does the same thing\\
 	Individual throughput for each node\\
+
+\begin{theorem} \label{min certificates}
+	Given an aggregation tree with N nodes, in totality network needs $\Omega(N)$ certificates.
+\end{theorem}
+
+\begin{proof}
+	
+	Let $T$ \ represent a node in an aggregation tree whose number of children are $T$.$CHILDREN$, $C$is one of its children and $P$ is its parent.\\
+	We can say that $T$ needs certificates of all of its children because while creating a commitment tree $T$ receives at least one $C$.\msg \ and \sign$_{C}$ ($C$.\msg)  from all $T$.$CHILDREN$
+
+	If your aggregation tree is such that $\forall T$ needs to send only one message to $P$ then every $P$ receives only $P.CHILDREN$ number of messages. Hence, $P$ needs $P.CHILDREN$ number of certificates.
+
+	So, if every $P$ needs certificates only of its children  and we have N nodes in the network then since every node has a unique parent as aggregation tree is a rooted tree, in totality we need only N certificates in the network.
+
+\end{proof}
+
+
+\begin{theorem}
+		Given an aggregation tree with N + 1 nodes, having $N_{i} = n_{i}!$ nodes at depth $d_{i}$, equally distributed among thier $n_{i-1}!$ parents then in totality network needs $\Omega(N)$ certificates.
+\end{theorem}
+
+\begin{proof}
+
+	Let say we have N + 1 nodes in an aggregation tree, also $d_{i}$ represents depth at level i. Tree is constructed such that root has $n_{1}$ children, all $n_{1}$ nodes at $d_{1}$ have $n_{2}$ children, all ($n_{1} * n_{2}$)  nodes at $d_{2}$ have $n_{3}$ children and all ($n_{1} * n_{2} * n_{3} ... n_{n-1}$) nodes at $d_{n-1}$ have $n_{n}$ children.\\
+	$ N + 1 = (1 + (n_{1}) + (n_{2} * (n_{1})) + (n_{3} * (n_{2} * n_{1})) + ... + (n_{n} * (n_{n-1} * n_{n-2} * n_{n-3} ... n_{1}) ) ) $\\
+	
+	All $ (n_{n-1} * n_{n-2} * n_{n-3} ... n_{1}) $ nodes at $ d_{n-1} $ need to know certificates of all of their $n_{n}$ children.
+	If there is only one carry after aggregation then all nodes at $d_{n-1}$ need to send only one certificate to their parent.\\
+	All $ (n_{n-2} * n_{n-3} * n_{n-4} ... n_{1}) $ nodes at $ d_{n-2} $ need to know certificates of all of their $ n-1 $ children.\\
+	All $ n_{1} $ nodes at $ d_{1} $ need to know certificates of all of their $ n-2 $ children.\\
+	The root need to know the certificates of all of its $ n_{1} $ children.\\
+	Also, the querier needs to know the certificate of the root.\\
+	So, in totality we need $ (1 + (n_{1}) + (n_{2} * (n_{1})) + (n_{3} * (n_{2} * n_{1})) + ... + (n_{n} * (n_{n-1} * n_{n-2} * n_{n-3} ... n_{1}) ) ) $ which is $\Omega(N)$. Hence, prooved.
+
+\end{proof}
