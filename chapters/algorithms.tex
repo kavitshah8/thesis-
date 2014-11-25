@@ -42,14 +42,15 @@
 \begin{algorithm}[H]\label{number3} \caption {CommitmentTreeGeneration}
 	\begin {algorithmic}[1]
 
-		\STATE depth = \aggregationTree.maxDepth
+		\STATE depth = \at.MaxDepth
 		\WHILE {depth $\geq$ 0}
 
-			\FORALL {\node \   $\in$ \aggregationTree.depth }
+			\FORALL {\node \   $\in$ \at.depth }
 
-					\STATE Create \node.\msg, \sign $_{\cal{N}}$(\node.\msg)
-					\STATE Attach \node.\msg, \sign $_{\cal{N}}$(\node.\msg) to \node.\forest
-
+			\STATE \node.\forest = NULL
+					\STATE Create (\node.\msg, \sign $_{\cal{N}}$(\node.\msg))
+					\STATE Attach (\node.\msg, \sign $_{\cal{N}}$(\node.\msg)) to \node.\forest
+					
 					\IF {\node.\children \ $\neq$ \ 0}
 
 						\FORALL {\child \ $\in$ \node.\children }
@@ -58,19 +59,18 @@
 
 								\IF {\node \ has \treeRoot.\cert (else get \treeRoot.\cert )} 
 
-										\STATE \node \ gets \treeRoot.\msg, \sign$_{\mathcal{R}}$(\treeRoot.\msg)
+									\IF {\node verifies \treeRoot.msg (else raise an alarm)}
 
-										\IF {\treeRoot.\msg \ is verified by \node (else raise an alarm)}
-
-											\STATE Add \treeRoot \ to \node.\forest
+										\STATE Add \treeRoot \ to \node.\forest
 										
-										\ENDIF
+									\ENDIF
 								
 								\ENDIF
 
 							\ENDFOR
 
-								\STATE CommitmentTreeCoding ( \node.\forest \ ) 
+							\STATE \node.\forest \ =	CommitmentTreeCoding ( \node.\forest \ ) 
+						
 						\ENDFOR
 		
 					\ENDIF
@@ -88,7 +88,7 @@
 \begin{algorithm}[H]\caption{CommitmentTreeCoding}
 	\begin{algorithmic}[1]
 
-		\STATE \temp \ = sortLinkedList( \node.\forest \ )
+		\STATE \temp \ = SortLinkedList( \node.\forest \ )
 
 		\WHILE {\temp.\nextTree \ $\neq$ \ 0}
 
@@ -101,11 +101,15 @@
 				\STATE \aggregator.\lc \ = \temp
 				\STATE \aggregator.\rc \ = \temp.\nextTree
 				\STATE Insert \aggregator \ to \node.\forest
-				\STATE \temp \ = sortLinkedList( \node.\forest \ )
+				\STATE Remove \temp
+				\STATE Remove \temp.\nextTree
+				\STATE \temp \ = SortLinkedList( \node.\forest \ )
 
 			\ENDIF
 
 		\ENDWHILE		
+
+		\STATE return \temp
 
 	\end{algorithmic}
 
@@ -118,7 +122,7 @@
 
 	\begin{algorithmic}[1]
 
-			\STATE \querier \ finds out all the \complainer$_{\mathcal{N}}$ $\in$ \aggregationTree \ using a complainer detecting algorithm
+			\STATE \querier \ finds out all the \complainer$_{\mathcal{N}}$ $\in$ \at \ using a complainer detecting algorithm
 
 			\FORALL {\complainer$_{\mathcal{N}}$}
 
