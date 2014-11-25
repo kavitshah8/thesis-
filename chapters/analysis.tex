@@ -2,11 +2,25 @@
 
 \section{Star Tree}
 	
-	To do : Material on star tree, star tree analysis gives you 1 cert savings, Following tolopogies are not exactly star  
+	To do : Material on star tree, star tree analysis gives you 1 cert savings.
 
-	Analysis is true for any n bit forest size.
+	\begin{figure}[H]\label{star-aggregation-tree}
+  	\centering
+  		\includegraphics[scale=0.4]{images/star-tree.png}\\
+  		\caption{Star aggregation tree}
+  \end{figure}
 
+\newpage
+
+\section{Maximum savings}
+	Analysis is true for any n bit forest size.	Give names to the following tolopogies.  
 	\textbf{Maximum savings}, with n(=4) bit forest, fanout(=2), savings of n(=4) certificates:
+
+	\begin{figure}[hp]
+		\centering
+		\includegraphics[scale=0.5]{images/symmetric-tree.png}\\
+		\caption{Symmetric Tree}
+	\end{figure}
 
 	\begin{multicols}{2}
 
@@ -152,15 +166,37 @@
 \newpage
 
 \section{Pseudo Palm Tree}
-	\begin{figure}[H]
+	\begin{figure}[hp]
 		\centering
-		\includegraphics{images/pseudo_palm_tree}
+		\includegraphics[scale = 0.5]{images/pseudo-palm-tree}
+		\caption{Pseudo palm tree}
 	\end{figure}
 	
-	Write up:\\
-	Classify nodes as aggregator vs no aggregator
-	This tree has following property: \\
-		Every aggregator has odd number of children\\
+	Properties: \\
+		Every aggregator has odd number of messages to aggregate, including itself.\\
+		At every level you can save one certificate, if an aggregator excludes itself in the aggregation.\\
+		General form of aggregation looks like the following:
+	\begin{multicols}{2}
+		\begin{tabular}{ l | l l l l }
+			0 & 0 & 0 & 1 & 0 \\
+			\hline
+			0 & 0 & 0 & 0 & 1 \\
+			0 & 0 & 0 & 0 & 1 \\
+			X & X & X & X & 1 \\
+			\hline
+			X & X & X & X & C \\
+		\end{tabular}
+		\columnbreak{|}
+		\begin{tabular}{ l | l l l l }
+			0 & 0 & 0 & 1 & 0 \\
+			\hline
+			0 & 0 & 0 & 0 & 1 \\
+			0 & 0 & 0 & 0 & 1 \\
+			X & X & X & X & 1 \\
+			\hline
+			X & X & X & X & A \\
+		\end{tabular}
+	\end{multicols}
 
 	\begin{multicols}{4}
 		\begin{tabular}{ l | l }
