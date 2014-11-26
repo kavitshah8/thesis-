@@ -166,123 +166,45 @@
 \newpage
 
 \section{Pseudo Palm Tree}
+	
 	\begin{figure}[hp]
 		\centering
-		\includegraphics[scale = 0.5]{images/pseudo-palm-tree}
+		\includegraphics[scale = 0.3]{images/pseudo-palm-tree}
 		\caption{Pseudo palm tree}
+		\label{fig:pseudo}
 	\end{figure}
+
+	\begin{theorem}
+		If an aggregator priorities aggregating its childrens' messages over its own message, it can save bandwidth by not sending its childrens' certificates to its parent at given level.
+	\end{theorem}
+
+	\begin{proof}
+		We can see from Figure~\ref{fig:pseudo} that every aggregator has odd number of messages to aggregate, including itself.
+		It means an aggregator at each level has odd number of $1's$ in therir least significant bit. 
+		If an aggregator aggregates messages of its children and creates a carry then it needs to send its own certificate to its parent or else it has to send one of its children's certificate as well.
+		Following example illustrates the idea, where C means an aggregator has to send its child's certificate to its parent, A means an aggregator has to send its own certificate to its parent and X is don't care.
+		\begin{multicols}{2}
+			\begin{tabular}{ l | l l l l }
+				0 & 0 & 0 & 1 & 0 \\
+				\hline
+				0 & 0 & 0 & 0 & 1 \\
+				0 & 0 & 0 & 0 & 1 \\
+				X & X & X & X & 1 \\
+				\hline
+				X & X & X & X & C \\
+			\end{tabular}
+			\columnbreak{|}
+			\begin{tabular}{ l | l l l l }
+				0 & 0 & 0 & 1 & 0 \\
+				\hline
+				0 & 0 & 0 & 0 & 1 \\
+				0 & 0 & 0 & 0 & 1 \\
+				X & X & X & X & 1 \\
+				\hline
+				X & X & X & X & A \\
+			\end{tabular}
+		\end{multicols}
+		
+		Hence, this approach saves bandwidth by sending one less certificate at each level. 
 	
-	Properties: \\
-		Every aggregator has odd number of messages to aggregate, including itself.\\
-		At every level you can save one certificate, if an aggregator excludes itself in the aggregation.\\
-		General form of aggregation looks like the following:
-	\begin{multicols}{2}
-		\begin{tabular}{ l | l l l l }
-			0 & 0 & 0 & 1 & 0 \\
-			\hline
-			0 & 0 & 0 & 0 & 1 \\
-			0 & 0 & 0 & 0 & 1 \\
-			X & X & X & X & 1 \\
-			\hline
-			X & X & X & X & C \\
-		\end{tabular}
-		\columnbreak{|}
-		\begin{tabular}{ l | l l l l }
-			0 & 0 & 0 & 1 & 0 \\
-			\hline
-			0 & 0 & 0 & 0 & 1 \\
-			0 & 0 & 0 & 0 & 1 \\
-			X & X & X & X & 1 \\
-			\hline
-			X & X & X & X & A \\
-		\end{tabular}
-	\end{multicols}
-
-	\begin{multicols}{4}
-		\begin{tabular}{ l | l }
-			1 & 0 \\
-			\hline
-			0 & 1 \\
-			0 & 1 \\
-			0 & 1 \\
-			\hline
-			A & C \\
-		\end{tabular}
-		\columnbreak{|}
-		\begin{tabular}{ l | l l }
-			1 & 1 & 0 \\
-			\hline
-			0 & 0 & 1 \\
-			0 & 0 & 1 \\
-			0 & 1 & 1 \\
-			\hline
-			A & 0 & C \\
-		\end{tabular}
-		\columnbreak{|}
-		\begin{tabular}{ l l l }
-			0 & 1 & 0 \\
-			\hline
-			0 & 0 & 1 \\
-			0 & 0 & 1 \\
-			1 & 0 & 1 \\
-			\hline
-			C & A & C \\
-		\end{tabular}
-		\columnbreak{|}
-		\begin{tabular}{ l | l l l }
-			1 & 1 & 1 & 0 \\
-			\hline
-			0 & 0 & 0 & 1 \\
-			0 & 0 & 0 & 1 \\
-			0 & 1 & 1 & 1 \\
-			\hline
-			A & 0 & 0 & C \\
-		\end{tabular}
-	\end{multicols}
-
-	\begin{multicols}{4}
-		\begin{tabular}{ l | l }
-			1 & 0 \\
-			\hline
-			0 & 1 \\
-			0 & 1 \\
-			0 & 1 \\
-			\hline
-			A & A \\
-		\end{tabular}
-		\columnbreak{|}
-		\begin{tabular}{ l | l l }
-			1 & 1 & 0 \\
-			\hline
-			0 & 0 & 1 \\
-			0 & 0 & 1 \\
-			0 & 1 & 1 \\
-			\hline
-			A & 0 & A \\
-		\end{tabular}
-		\columnbreak{|}
-		\begin{tabular}{ l l l }
-			0 & 1 & 0 \\
-			\hline
-			0 & 0 & 1 \\
-			0 & 0 & 1 \\
-			1 & 0 & 1 \\
-			\hline
-			C & A & A \\
-		\end{tabular}
-		\columnbreak{|}
-		\begin{tabular}{ l | l l l }
-			1 & 1 & 1 & 0 \\
-			\hline
-			0 & 0 & 0 & 1 \\
-			0 & 0 & 0 & 1 \\
-			0 & 1 & 1 & 1 \\
-			\hline
-			A & 0 & 0 & A \\
-		\end{tabular}
-	\end{multicols}
-
-Meeting:
-
-	Find cases where you can say it will be always A's.
-	Analyze palm tree / pseudo palm tree 
+	\end{proof}
