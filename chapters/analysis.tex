@@ -1,5 +1,9 @@
 \chapter{analysis}
 
+\section{Background}
+	Aggregation tree
+	Commitment tree
+	Analogy with binary representation
 \section{Star Tree}
 	
 	To do : Material on star tree, star tree analysis gives you 1 cert savings.
@@ -175,12 +179,12 @@
 	\end{figure}
 
 	\begin{theorem}
-		If an aggregator priorities aggregating its childrens' messages over its own message, it can save bandwidth by not sending its childrens' certificates to its parent at given level.
+		At any given level, if an aggregator priorities aggregating its childrens' messages over its own message, it can save bandwidth by not sending its childrens' certificates to its parent.
 	\end{theorem}
 
 	\begin{proof}
 		We can see from Figure~\ref{fig:pseudo} that every aggregator has odd number of messages to aggregate, including itself.
-		It means an aggregator at each level has odd number of $1's$ in therir least significant bit. 
+		It means an aggregator at each level has odd number of $1's$ in therir least significant bits. 
 		If an aggregator aggregates messages of its children and creates a carry then it needs to send its own certificate to its parent or else it has to send one of its children's certificate as well.
 		Following example illustrates the idea, where C means an aggregator has to send its child's certificate to its parent, A means an aggregator has to send its own certificate to its parent and X is don't care.
 		\begin{multicols}{2}
@@ -208,3 +212,15 @@
 		Hence, this approach saves bandwidth by sending one less certificate at each level. 
 	
 	\end{proof}
+
+\section{Binary tree}
+	\begin{figure}[hp]
+		\centering
+		\includegraphics[scale = 0.3]{images/binary-tree}
+		\caption{Binary tree}
+		\label{fig:binary}
+	\end{figure}
+
+	\begin{theorem}
+		At any given level, if an aggregator priorities aggregating its childrens' messages over its own message, it can save bandwidth by not sending $\lceil lg(n /2) \rceil$ certificates, n is number of descendants for given node, to its parent.
+	\end{theorem}
