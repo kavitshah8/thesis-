@@ -39,14 +39,15 @@
 
 	\newpage
 
-\section{Aggregation-Commit Step}
-	In this step, the sensor nodes construct a commitment structure. 
+\section{Aggregation-Commit Phase}
+	In this phase, the sensor nodes construct a commitment forest. 
 	First, the sensor nodes at the highest depth in the aggregation tree (leaf nodes) send their messages to their parents in the aggregation tree.
 	Each internal sensor node in the aggregation tree performs an aggregation operation whenever it receives messages from all of its children.
-	Whenever a sensor node $s$ performs an aggregation operation, $s$ creates a commitment to the set of inputs used to compute the aggregate by computing a hash over all the inputs (including the commitments that were computed by its children). 
-	Both the aggregation result and the commitment are then passed on to the parent of $s$.
-	Once the final commitment values are sent to the querier, the adversary gets caught if it tries to claim a different aggregation structure.
-	Our algorithm generates perfectly balanced commitment trees to save the bandwidth in the verification phase.
+	Whenever a sensor node performs an aggregation operation, it creates a commitment to the set of inputs used to compute the aggregate by computing a hash over all the inputs (including the commitments that were computed by its children). 
+	Both the aggregation result and the commitment creates a message.
+	Then the message, with the signature of the message signed by the sensor node are passed on to the parent of the sensor node.
+	Once the final messages and the signatures of those messages are sent to the querier, if the adversary tries to claim a different aggregation structure it gets caught.
+	Our algorithm generates perfectly balanced binary trees to create commitment forest which saves the bandwidth in the verification phase.
 
 
 \newpage
