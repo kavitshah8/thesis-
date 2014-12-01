@@ -46,16 +46,16 @@
 	Whenever a sensor node performs an aggregation operation, it creates a commitment to the set of inputs used to compute the aggregate by computing a hash over all the inputs (including the commitments that were computed by its children). 
 	Both the aggregation result and the commitment creates a message.
 	Then the message, with the signature of the message signed by the sensor node are passed on to the parent of the sensor node.
-	Once the final messages and the signatures of those messages are sent to the querier, if the adversary tries to claim a different aggregation structure it gets caught.
+	Once the final messages and the signatures of those messages are sent to the querier, if an adversary tries to claim a different aggregation structure it gets caught.
 	Our algorithm generates perfectly balanced binary trees to create commitment forest which saves the bandwidth in the verification phase.
 
 
-	\begin{definition}
+	\begin{definition}\cite{chan2006secure}
 		A \textbf{\textit{commitment tree}} is a logical tree build on top of an \textbf{\textit{aggregation tree}} in which each vertex has an associated message to it, representing data being passed on to its parent. The messages have the following format:\\
 
 		$<id, count, value, commmitment>$\\
 		\newline
-		Where $id$ is the unique id of each vertex; $count$ is the number of leaf vertices in the subtree rooted at this vertex; $value$ is the aggregate computed over all the leaves rooted in the subtree; and commitment is the cryptographic commitment.
+		Where $id$ is the unique id of each node; $count$ is the number of leaf vertices in the subtree rooted at this vertex; $value$ is the aggregate computed over all the leaves rooted in the subtree; and commitment is the cryptographic commitment.
 
 	\end{definition}
 
@@ -64,18 +64,16 @@
 	Internal vertices represent aggregation operations, and have messages that are defined based on their children. Suppose an internal vertex has child vertices $v_{1}, v_{2},\dotsc, v_{q}$ with the following messages: $m_{1}, m_{2},\dotsc, m_{q}$, where $m_{i}$ = $<i.id$, $i.count$, $i.value$, $i.commitment>$.
 	Then the vertex has message $<id, count, value, commitment>$ where $id = s.id$, $count = \sum{i.count}$, $value = \sum{i.value}$ and $commitment$ = $H[$ $N\ || $ $id\ || $ $count\ || $ $value\ ||$ $m_{1}\ ||\ m_{2}\ || \dotsb ||\ m_{q}]$.
 
-	Since we use the hash function which is collision resistant its impossible for an adversary to change the any of the commitments.
-
-	\textit{\textbf{Write about off-path values also about forests }}
+	% Since we use the hash function which is collision resistant its impossible for an adversary to change the any of the commitments.
+	% \textit{\textbf{Write about off-path values also about forests }}
 
 	\begin{figure}[hp]
 		\centering
-		\includegraphics[scale=0.8]{images/featured-tree.png}\\
+		\includegraphics[scale=0.5]{images/featured-tree.png}\\
 		\caption{Fetured Tree}
 	\end{figure}
 
 	\textit{\textbf{Output forest for given sensor node using binary representaion}}
-
 	Binary representation of number of descendants for a given sensor node tells us about the structure of that sensor node's output forest. 
 	It tells us the number of binary trees with their respective heights for given sensor node's output forest.
 	For example, if sensor node $A$ has $8$ descendants then $A$ has to aggregate $9$ messages including itself during aggregation process.
@@ -83,7 +81,6 @@
 	It means $A$ has two binary trees in its output forest, one with height of three and one with height of one.
 
 	\textit{\textbf{ Aggregation using binary representation}}
-
 	\[ 
 		\begin{array}{lcccc}
 			\mbox{Carry} & 0 & 1 & 1 & 0\\
