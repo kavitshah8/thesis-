@@ -1,4 +1,4 @@
-\chapter{algorithms}
+\chapter{protocol}
 	
 	The commitment tree is a tree where each vertex has an associated label representing the data that is passed on to its parent. The messages have the following format: 
 	\textit{MESSAGE}
@@ -39,6 +39,17 @@
 
 	\newpage
 
+\section{Aggregation-Commit Step}
+	In this step, the sensor nodes construct a commitment structure. 
+	First, the sensor nodes at the highest depth in the aggregation tree (leaf nodes) send their messages to their parents in the aggregation tree.
+	Each internal sensor node in the aggregation tree performs an aggregation operation whenever it receives messages from all of its children.
+	Whenever a sensor node $s$ performs an aggregation operation, $s$ creates a commitment to the set of inputs used to compute the aggregate by computing a hash over all the inputs (including the commitments that were computed by its children). 
+	Both the aggregation result and the commitment are then passed on to the parent of $s$.
+	Once the final commitment values are sent to the querier, the adversary gets caught if it tries to claim a different aggregation structure.
+	Our algorithm generates perfectly balanced commitment trees to save the bandwidth in the verification phase.
+
+
+\newpage
 \begin{algorithm}[H]\label{number3} \caption {CommitmentTreeGeneration}
 	\begin {algorithmic}[1]
 
