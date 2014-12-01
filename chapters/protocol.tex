@@ -50,6 +50,22 @@
 	Our algorithm generates perfectly balanced binary trees to create commitment forest which saves the bandwidth in the verification phase.
 
 
+\begin{definition}
+	A \textbf{\textit{commitment tree}} is a logical tree build on top of an \textbf{\textit{aggregation tree}} in which each vertex has an associated message to it, representing data being passed on to its parent. The messages have the following format:\\
+
+	$<id, count, value, commmitment>$\\
+	\newline
+	Where $id$ is the unique id of each vertex; $count$ is the number of leaf vertices in the subtree rooted at this vertex; $value$ is the aggregate computed over all the leaves rooted in the subtree; and commitment is the cryptographic commitment.
+
+\end{definition}
+
+There is one leaf vertex $v_{s}$ for each sensor node $s$ with the message $m_{s}$ = $< s.id, 1,s.value, Hash( N\ ||\  s.id\ ||\  1\  ||\  s.value) > $, where N is the query nounce.
+
+Internal vertices represent aggregation operations, and have messages that are defined based on their children. Suppose an internal vertex has child vertices $v_{1}, v_{2},\dotsc, v_{q}$ with the following messages: $m_{1}, m_{2},\dotsc, m_{q}$, where $m_{i}$ = $<i.id$, $i.count$, $i.value$, $i.commitment>$.
+Then the vertex has message $<id, count, value, commitment>$ where $id = s.id$, $count = \sum{i.count}$, $value = \sum{i.value}$ and $commitment$ = $H[$ $N\ || $ $id\ || $ $count\ || $ $value\ ||$ $m_{1}\ ||\ m_{2}\ || \dotsb ||\ m_{q}]$.
+
+
+Since we use the hash function which is collision resistant its impossible for an adversary to change the any of the commitments.
 \newpage
 \begin{algorithm}[H]\label{number3} \caption {CommitmentTreeGeneration}
 	\begin {algorithmic}[1]
