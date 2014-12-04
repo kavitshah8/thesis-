@@ -40,33 +40,55 @@
 	\newpage
 
 \section{Aggregation-Commit Phase}
-	In this phase, the network construct a commitment structure. 
-	First, the sensor nodes at the highest depth in the aggregation tree (leaf nodes) send their payloads to their parents in the aggregation tree.
-	Each internal sensor node in the aggregation tree performs an aggregation operation whenever it receives payloads from all of its children.
+	In this phase, the network constructs a commitment structure. 
+	First, the sensor nodes at the highest depth in the aggregation tree (leaf nodes) send their \payloads to their parents in the aggregation tree.
+	Each internal sensor node in the aggregation tree performs an aggregation operation whenever it receives \payloads from all of its children.
 	Whenever a sensor node performs an aggregation operation, it creates a commitment to the set of inputs used to compute the aggregate by computing a hash over all the inputs (including the commitments that were computed by its children). 
 	Both the aggregation result and the commitment creates a payload for the aggregator.
 	Then the payload, with the signature of the payload signed by the sensor node are passed on to the parent of the sensor node.
-	Once the final payloads and the signatures of those payloads are sent to the querier, if an adversary tries to claim a different aggregation structure it gets caught.
+	Once the final \payloads and the signatures of those \payloads are sent to the querier, if an adversary tries to claim a different aggregation structure it gets caught.
 	Our algorithm generates perfectly balanced binary trees to create commitment forest which saves the bandwidth in the verification phase.
 
 	\begin{definition}\cite{chan2006secure}
 		A \textbf{\textit{commitment tree}} is a tree build on top of an \textbf{\textit{aggregation tree}} where each vertex has an associated payload to it, representing data being passed on to its parent. The payload has the following format:
 
-		$<id, count, value, commitment>$\\
+		$\{id, count, value, commitment\}$\\
 		Where $id$ is the unique id of the node; $count$ is the number of leaf vertices in the subtree rooted at this vertex; $value$ is the aggregate computed over all the leaves rooted in the subtree; and commitment is the cryptographic commitment.
 
 	\end{definition}
 
 	Our payload format is different than the label format in \cite{chan2006secure}.
-	Payload format adds an id field and removes the complement field from the label. 
-	Our protocol helps to detect an adversary, to achieve that we send the signatures of the payload. 
-	And to verify the signatures, the verifier needs the id of that node.
-	Complement field is used to verify the upper bound on the aggregation result by the querier. We can achieve the same result with count so sending complement is redundant and no longer required.     
+	The payload format adds an ID field and removes the complement field from the label. 
+	Our protocol helps to detect an adversary, to achieve this we send the signatures of the payload. 
+	And to verify the signatures, the verifier needs the ID of that node.
+	The complement field was used to verify the upper bound on the aggregation result by the querier. We can achieve the same result with count so sending complement is redundant and no longer required.     
 
-	There is one leaf vertex $v_{s}$ for each sensor node $s$ with payload $p_{s}$ = $< s.id$, $1$,$s.value$, $Hash( N\ ||\  s.id\ ||\  1\  ||\  s.value) > $, where N is the query nonce.
+	There is one leaf vertex $v_{s}$ for each sensor node $s$ with payload ,
+	\begin{equation}
+		p_{s} = \{ s.id, 1,s.value, Hash( N\ ||\  s.id\ ||\  1\  ||\  s.value ) \} 
+	\end{equation}
+	where $N$ is the query nonce.
 
-	Internal vertices represent aggregation operations, and have payloads that are defined based on their children. Suppose an internal vertex has child vertices $v_{1}, v_{2},\dotsc, v_{q}$ with the following payloads: $p_{1}, p_{2},\dotsc, p_{q}$, where $p_{i}$ = $< i.id$, $i.count$, $i.value$, $i.commitment >$.
-	Then the vertex has payload $<id, count, value, commitment>$ where $id = s.id$, $count = \sum{i.count}$, $value = \sum{i.value}$ and $commitment$ = $H[$ $N\ || $ $id\ || $ $count\ || $ $value\ ||$ $p_{1}\ ||\ p_{2}\ || \dotsb ||\ p_{q}]$.
+	Internal vertices represent aggregation operations, and have \payloads that are defined based on their children. Suppose an internal vertex has child vertices $v_{1}, v_{2},\dotsc, v_{q}$ with the following \payloads: $p_{1}, p_{2},\dotsc, p_{q}$, where
+	\begin{equation}
+		p_{i} = \{ i.id, i.count, i.value, i.commitment\} 
+	\end{equation}
+	Then the internal vertex has payload 
+	\begin{equation}
+		p_{s} = \{ id, count, value, commitment \} 
+	\end{equation}
+	\begin{equation}
+		id = s.id 
+	\end{equation}	
+	\begin{equation}
+		count = \sum{i.count}		
+	\end{equation}
+	\begin{equation}
+		value = \sum{i.value}		
+	\end{equation}
+	\begin{equation}
+		commitment = H (N\ ||  id\ ||  count\ ||  value\ || p_{1}\ ||\ p_{2}\ || \dotsb ||\ p_{q})		
+	\end{equation}
 
 	A vertex is a logical element in a graph while a sensor node is a physical device.
 	We refer to the vertices in the commitment tree; the term nodes always refers to the physical	sensor node device.
@@ -76,7 +98,7 @@
 	% \textit{\textbf{Write about off-path values also about forests }}
 
 	\subsection{Commitment Forest}
-		Each sensor node passes on the payloads of the root vertices of a set of commitment subtrees F = \{ $T_{1}$, $T_{2}$, $\dotsc$, $T_{q}$ \} , called  a commitment forest.
+		Each sensor node passes on the \payloads of the root vertices of a set of commitment subtrees F = \{ $T_{1}$, $T_{2}$, $\dotsc$, $T_{q}$ \} , called  a commitment forest.
 
 		\begin{definition}\cite{chan2006secure}
 		A commitment forest is a set of complete binary commitment trees such that there is at most one commitment tree of any given height.
@@ -87,12 +109,32 @@
 		It means $s$ has four binary trees in its outgoing forest, with height of four, two, one and zero. It's also clear that for given sensor node's forest no two trees have the same height.
 
 	\subsection{Commitment Forest Generation}
-		Leaf sensor nodes in the aggregation tree originate a single-vertex commitment forest, which they then communicate to their parent sensor nodes. Each internal sensor node s originates a similar single-vertex commitment forest. In addition, s also receives commitment forests from each of its children. Sensor node s keeps track of which root vertices were received from which of its children. It then combines all the forests to form a new forest as follows.
+		The sensor nodes at the highest depth in the aggregation tree (leaf nodes) initiate a single-vertex commitment forest, which they transmit to their parent sensor node.
+		Each internal sensor node $s$ initiates a similar single-vertex commitment forest.
+		In addition, $s$ also receives commitment forests from each of its children.
+		Sensor node $s$ keeps track of which root vertices are received from which of its children.
+		It then aggregates all the forests to form a new forest as follows.
 		
+		Suppose $s$ wishes to combine $q$ commitment forests $F_{1}$, $\dotsc$, $F_{q}$.
+		All the commitment forests have their binary representation and all the commitment trees in the commitment forests are complete binary trees. 
+		Sensor node $s$ aggregates commitment trees with same count values and creates an initiates a new commitment tree with $count = count + 1$. It repeats this process until all the trees have unique height in the forest.Figure shows an example.
+
 	\begin{figure}[hp]
 		\centering
 		\includegraphics[scale = 0.5]{images/example-tree.png}\\
 		\caption{Example Tree}
+	\end{figure}
+
+	\begin{figure}[hp]
+		\centering
+		\includegraphics[scale = 0.5]{images/commitment-tree-example-1.png}\\
+		\caption{NA}
+	\end{figure}
+
+	\begin{figure}[hp]
+		\centering
+		\includegraphics[scale = 0.5]{images/commitment-tree-example-2.png}\\
+		\caption{First Merge: $A_{1}$ vertex created by A}
 	\end{figure}
 
 	\textit{\textbf{ Aggregation using binary representation}}
@@ -100,14 +142,14 @@
 		\begin{array}{lcccc}
 			\mbox{Carry} & 0 & 1 & 1 & 0\\
 			\hline
-			\mbox{Trees in B's forest} & 0 & 0 & 0 & 1 \\
+			\mbox{B's forest} & 0 & 0 & 0 & 1 \\
 			\mbox{ } & 0 & 0 & 1 & 0 \\
 			\hline
-			\mbox{Tree in C's forest} & 0 & 1 & 0 & 0 \\
+			\mbox{C's forest} & 0 & 1 & 0 & 0 \\
 			\hline
-			\mbox{Tree in D's forest} & 0 & 0 & 0 & 1 \\
+			\mbox{D's forest} & 0 & 0 & 0 & 1 \\
 			\hline
-			\mbox{A's own message} & 0 & 0 & 0 & 1 \\
+			\mbox{A's payload} & 0 & 0 & 0 & 1 \\
 			\hline
 			\mbox{Aggregation} & 1 & 0 & 0 & 1 
 		\end{array}
