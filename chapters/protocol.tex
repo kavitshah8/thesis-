@@ -57,13 +57,13 @@
 
 	\end{definition}
 
-	Our payload format is different than the label format in \cite{chan2006secure}.
-	The payload format adds an ID field and removes the complement field from the label. 
-	Our protocol helps to detect an adversary, to achieve this we send the signatures of the payload. 
+	Our \payload format is different than the label format in \cite{chan2006secure}.
+	The \payload format adds an ID field and removes the complement field from the label. 
+	Our protocol helps detecting an adversary, to achieve this we send the signature of the \payload. 
 	And to verify the signatures, the verifier needs the ID of that node.
-	The complement field was used to verify the upper bound on the aggregation result by the querier. We can achieve the same result with count so sending complement is redundant and no longer required.     
+	The complement field was used to verify the upper bound on the aggregation result by the querier. We can achieve the same result with count so sending complement was redundant and no longer required.     
 
-	There is one leaf vertex $v_{s}$ for each sensor node $s$ with payload ,
+	There is one leaf vertex $v_{s}$ for each sensor node $s$ with \payload ,
 	\begin{equation}
 		p_{s} = \{ s.id, 1,s.value, Hash( N\ ||\  s.id\ ||\  1\  ||\  s.value ) \} 
 	\end{equation}
@@ -90,13 +90,29 @@
 		commitment = H (N\ ||  id\ ||  count\ ||  value\ || p_{1}\ ||\ p_{2}\ || \dotsb ||\ p_{q})		
 	\end{equation}
 
-	A vertex is a logical element in a graph while a sensor node is a physical device.
-	We refer to the vertices in the commitment tree; the term nodes always refers to the physical	sensor node device.
-	All the communication happens between nodes in the aggregation tree.
+	Talk about signatures of the \payloads.
+
+	We use the term vertex for the members in the commitment tree and node for the members of the aggregation tree.
 	
 	We use the collision resistant hash function so its impossible for an adversary to tamper any of the commitments once they are created.
 	% \textit{\textbf{Write about off-path values also about forests }}
 
+	\subsection{Aggregation-Commit approach}
+		Talk about 1, N, log(N) communication.
+		The \at is a rooted tree. We use the term \bs for the root of the \at and \q for the trusted third party. One such \at is shown in Figure ~\ref{fig:at}
+
+		\begin{figure}[hp]
+			\centering
+			\includegraphics[scale = 1]{images/example-tree.png}\\
+			\caption{Example Tree}
+			\label{fig:at}
+		\end{figure}
+
+		The \q is interested in the overall behavior of the network. 
+		For example, the \q is interested in the average of all the sensor readings. 
+		The \bs can send the \q data of all of its children without doing any aggregation and then \q can compute the average of all the sensor nodes.
+		Doing so requires the \bs to send $N$ \payloads to the \q. 
+	
 	\subsection{Commitment Forest}
 		Each sensor node passes on the \payloads of the root vertices of a set of commitment subtrees F = \{ $T_{1}$, $T_{2}$, $\dotsc$, $T_{q}$ \} , called  a commitment forest.
 
@@ -119,11 +135,6 @@
 		All the commitment forests have their binary representation and all the commitment trees in the commitment forests are complete binary trees. 
 		Sensor node $s$ aggregates commitment trees with same count values and creates an initiates a new commitment tree with $count = count + 1$. It repeats this process until all the trees have unique height in the forest.Figure shows an example.
 
-	\begin{figure}[hp]
-		\centering
-		\includegraphics[scale = 0.7]{images/example-tree.png}\\
-		\caption{Example Tree}
-	\end{figure}
 
 	\newpage
 	\begin{figure}[hp]
