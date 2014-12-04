@@ -121,21 +121,41 @@
 
 	\begin{figure}[hp]
 		\centering
-		\includegraphics[scale = 0.5]{images/example-tree.png}\\
+		\includegraphics[scale = 0.7]{images/example-tree.png}\\
 		\caption{Example Tree}
 	\end{figure}
 
+	\newpage
 	\begin{figure}[hp]
 		\centering
-		\includegraphics[scale = 0.5]{images/commitment-tree-example-1.png}\\
+		\includegraphics[scale = 0.7]{images/commitment-tree-example-1.png}\\
 		\caption{NA}
 	\end{figure}
 
+	The sensor node $A$ receives following \payloads:
+
+	\begin{equation}
+		A_{0} = [\ A.id,\ 1,\ A.value,\ H  (\ N\ ||\ A.id\ ||\ 1\ ||\ A.value)\ ]\ (internal)
+	\end{equation}
+	\begin{equation}
+		D_{0} = [\ D.id,\ 1,\ D.value,\ H(\ N\ ||\ D.id\ ||\ 1\ ||\ D.value)\ ]\ (from\ D)
+	\end{equation}
+	\begin{equation}
+		B_{0} = [\ B.id,\ 1,\ B.value,\ H(\ N\ ||\ B.id\ ||\ 1\ ||\ B.value)\ ]\ (from\ B)
+	\end{equation}
+	\begin{equation}
+		B_{1} = [\ B.id,\ 2,\ B_{1}.value,\ H(\ N\ ||\ B.id\ ||\ 2\ ||\ B_{1}.value)\ ]\ (from\ B)
+	\end{equation}
+	\begin{equation}
+		C_{2} = [\ C.id,\ 4,\ C_{2}.value,\ H(\ N\ ||\ C.id\ ||\ 4\ ||\ C_{2}.value)\ ]\ (from\ C)
+	\end{equation}
+	
 	\begin{figure}[hp]
 		\centering
-		\includegraphics[scale = 0.5]{images/commitment-tree-example-2.png}\\
+		\includegraphics[scale = 0.7]{images/commitment-tree-example-2.png}\\
 		\caption{First Merge: $A_{1}$ vertex created by A}
 	\end{figure}
+
 
 	\textit{\textbf{ Aggregation using binary representation}}
 	\[ 
