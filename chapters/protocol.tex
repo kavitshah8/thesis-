@@ -41,15 +41,15 @@
 
 \section{Aggregation-Commit Phase}
 	In this phase, the network constructs a commitment structure. 
-	First, the sensor nodes at the highest depth in the aggregation tree (leaf nodes) send their \payloads to their parents in the aggregation tree.
+	First, the sensor nodes at the highest depth in the aggregation tree (leaf nodes) send their \payloads, defined in \ref{def:ct}, to their parents in the aggregation tree.
 	Each internal sensor node in the aggregation tree performs an aggregation operation whenever it receives \payloads from all of its children.
 	Whenever a sensor node performs an aggregation operation, it creates a commitment to the set of inputs used to compute the aggregate by computing a hash over all the inputs (including the commitments that were computed by its children). 
 	Both the aggregation result and the commitment creates a payload for the aggregator.
 	Then the payload, with the signature of the payload signed by the sensor node are passed on to the parent of the sensor node.
 	Once the final \payloads and the signatures of those \payloads are sent to the querier, if an adversary tries to claim a different aggregation structure it gets caught.
-	Our algorithm generates perfectly balanced binary trees to create commitment forest which saves the bandwidth in the verification phase.
+	Our algorithm generates perfectly balanced binary trees to create commitment forest which saves the bandwidth in the verification phase compared to other approaches.
 
-	\begin{definition}\cite{chan2006secure}
+	\begin{definition}\cite{chan2006secure}\label{def:ct}
 		A \textbf{\textit{commitment tree}} is a tree build on top of an \textbf{\textit{aggregation tree}} where each vertex has an associated payload to it, representing data being passed on to its parent. The payload has the following format:
 
 		$\{id, count, value, commitment\}$\\
@@ -61,7 +61,8 @@
 	The \payload format adds an ID field and removes the complement field from the label. 
 	Our protocol helps detecting an adversary, to achieve this we send the signature of the \payload. 
 	And to verify the signatures, the verifier needs the ID of that node.
-	The complement field was used to verify the upper bound on the aggregation result by the querier. We can achieve the same result with count so sending complement was redundant and no longer required.     
+	The complement field was used to verify the upper bound on the aggregation result by the \q.
+	We can achieve the same result with count so sending complement was redundant and no longer required.     
 
 	There is one leaf vertex $v_{s}$ for each sensor node $s$ with \payload ,
 	\begin{equation}
@@ -94,11 +95,11 @@
 
 	We use the term vertex for the members in the commitment tree and node for the members of the aggregation tree.
 	
-	We use the collision resistant hash function so its impossible for an adversary to tamper any of the commitments once they are created.
+	We use the collision resistant hash function so it's impossible for an adversary to tamper any of the commitments once they are created.
 	% \textit{\textbf{Write about off-path values also about forests }}
 
 	\subsection{Aggregation-Commit approach}
-		The \at is a rooted tree created from the network graph. To create an \at from the given network graph is outside the scope of this thesis. One possible \at for given network graph in Figure \ref{fig:ng} is shown in the Figure \ref{fig:at}.
+		The \at is a rooted tree created from the network graph. To create an optimal \at from the given network graph is outside the scope of this thesis. Our algorithm takes any arbitrary \at as an input. One possible \at for given network graph in Figure \ref{fig:ng} is shown in the Figure \ref{fig:at}.
 
 		We use the term \bs for the root of the \at and \q for the trusted third party. In Figure \ref{fig:at} $A$ is the \bs and $Q$ is the \q.
 		
@@ -116,27 +117,32 @@
 			\label{fig:at}
 		\end{figure}
 
-		The \q is interested in the overall behavior of the network. 
-		For example, the \q is interested in the average of all the sensor readings in the network.
-		
-		One way to achieve this is to send all the $N$ \payloads to the \q, where $N$ is the number of nodes in the network.
+		Each sensor node $s$ has it's own sensor reading $s.value$. The querier is interested in overall behavior of the network, which is some function $f$ of all those sensor readings.
+		\begin{equation}
+			f(s_{1}.value, s_{2}.value, s_{3}.value, \dotsc, s_{n}.value)
+		\end{equation}
+		We discuss the case for the $SUM$ function, but the techniques discussed here can be applied to any other function with little or no modification. 
+		\begin{equation}
+			SUM = \sum\limits_{i=1}^n s_{i}.value
+		\end{equation}
+
+		One way to achieve this is to send all the $n$ \payloads to the \q.
 		It means all the internal nodes in the network send all the \payloads received from their children to their parent.
-		The \q also knows the $N$.
-		Once the \q has all the \payloads, it can compute the average.  
+		Once the \q has all $n$ \payloads, it can compute the summation.  
 		This approach is completely secure but it has several disadvantages:
 		\begin{itemize}
-			\item Requires $O(N)$ bandwidth between the \bs and the \q.
-			\item Requires $O(C)$ bandwidth between the internal node and its parent, where $C$ is the number of children a node has.
+			\item Requires $O(n)$ bandwidth between the \bs and the \q.
+			\item Requires $O(d)$ bandwidth between the internal node and its parent, where $d$ is the number of descendants for a given node.
 		\end{itemize}
 		
 		Another way to achieve this is to send only one \payload to the \q.
-		It means all the internal nodes in the network pass only one \payload to their parents after doing the aggregation (summation).
-		Once the \q knows the sum, it can compute the average.
+		It means all the internal nodes in the network, after receiving all the readings from their children, does the summation over all the readings including its own reading and pass the resulted \payload to their parents'.
+		This approach is shown in the figure:
 		This approach is most efficient in terms of bandwidth but it makes aggregated value more vulnerable to various security attacks which will be discussed later.
 
 		Above two approaches are the extreme cases. The aggregate-commit approach of \cite{chan2006secure} tries to get the best of above two extreme cases.
-		In aggregate-commit approach the \bs sends at most $log(N)$ \payloads to the \q. 
-		It means all the internal nodes in the network pass $log(D + 1)$ \payloads to their parents after doing the aggregation (summation), where $D$ is the number of descendants for the given node. 
+		In aggregate-commit approach the \bs sends at most $log(n)$ \payloads to the \q. 
+		It means all the internal nodes in the network pass $log(d + 1)$ \payloads to their parents after doing the aggregation (summation), where $d$ is the number of descendants for the given node. 
 		This approach is explained in detail in the following section.     
 
 
