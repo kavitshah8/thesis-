@@ -98,21 +98,48 @@
 	% \textit{\textbf{Write about off-path values also about forests }}
 
 	\subsection{Aggregation-Commit approach}
-		Talk about 1, N, log(N) communication.
-		The \at is a rooted tree. We use the term \bs for the root of the \at and \q for the trusted third party. One such \at is shown in Figure ~\ref{fig:at}
+		The \at is a rooted tree created from the network graph. To create an \at from the given network graph is outside the scope of this thesis. One possible \at for given network graph in Figure \ref{fig:ng} is shown in the Figure \ref{fig:at}.
+
+		We use the term \bs for the root of the \at and \q for the trusted third party. In Figure \ref{fig:at} $A$ is the \bs and $Q$ is the \q.
+		
+		\begin{figure}[hp]
+			\centering
+			\includegraphics[scale = 0.6]{images/network-graph.png}\\
+			\caption{Network graph}
+			\label{fig:ng}
+		\end{figure}
 
 		\begin{figure}[hp]
 			\centering
-			\includegraphics[scale = 1]{images/example-tree.png}\\
-			\caption{Example Tree}
+			\includegraphics[scale = 0.6]{images/aggregation-tree.png}\\
+			\caption{Aggregation tree for network graph in figure \ref{fig:ng}}
 			\label{fig:at}
 		\end{figure}
 
 		The \q is interested in the overall behavior of the network. 
-		For example, the \q is interested in the average of all the sensor readings. 
-		The \bs can send the \q data of all of its children without doing any aggregation and then \q can compute the average of all the sensor nodes.
-		Doing so requires the \bs to send $N$ \payloads to the \q. 
-	
+		For example, the \q is interested in the average of all the sensor readings in the network.
+		
+		One way to achieve this is to send all the $N$ \payloads to the \q, where $N$ is the number of nodes in the network.
+		It means all the internal nodes in the network send all the \payloads received from their children to their parent.
+		The \q also knows the $N$.
+		Once the \q has all the \payloads, it can compute the average.  
+		This approach is completely secure but it has several disadvantages:
+		\begin{itemize}
+			\item Requires $O(N)$ bandwidth between the \bs and the \q.
+			\item Requires $O(C)$ bandwidth between the internal node and its parent, where $C$ is the number of children a node has.
+		\end{itemize}
+		
+		Another way to achieve this is to send only one \payload to the \q.
+		It means all the internal nodes in the network pass only one \payload to their parents after doing the aggregation (summation).
+		Once the \q knows the sum, it can compute the average.
+		This approach is most efficient in terms of bandwidth but it makes aggregated value more vulnerable to various security attacks which will be discussed later.
+
+		Above two approaches are the extreme cases. The aggregate-commit approach of \cite{chan2006secure} tries to get the best of above two extreme cases.
+		In aggregate-commit approach the \bs sends at most $log(N)$ \payloads to the \q. 
+		It means all the internal nodes in the network pass $log(D + 1)$ \payloads to their parents after doing the aggregation (summation), where $D$ is the number of descendants for the given node. 
+		This approach is explained in detail in the following section.     
+
+
 	\subsection{Commitment Forest}
 		Each sensor node passes on the \payloads of the root vertices of a set of commitment subtrees F = \{ $T_{1}$, $T_{2}$, $\dotsc$, $T_{q}$ \} , called  a commitment forest.
 
