@@ -68,7 +68,7 @@
 	\begin{equation}
 		p_{s} = \{ s.id, 1,s.value, Hash( N\ ||\  s.id\ ||\  1\  ||\  s.value ) \} 
 	\end{equation}
-	where $N$ is the query nonce.
+	where $N$ is the query nonce which is disseminated with each query.
 
 	Internal vertices represent aggregation operations, and have \payloads that are defined based on their children. Suppose an internal vertex has child vertices $v_{1}, v_{2},\dotsc, v_{q}$ with the following \payloads: $p_{1}, p_{2},\dotsc, p_{q}$, where
 	\begin{equation}
@@ -98,60 +98,85 @@
 	We use the collision resistant hash function so it's impossible for an adversary to tamper any of the commitments once they are created.
 	% \textit{\textbf{Write about off-path values also about forests }}
 
-	\subsection{Aggregation-Commit approach}
-		The \at is a rooted tree created from the network graph. To create an optimal \at from the given network graph is outside the scope of this thesis. Our algorithm takes any arbitrary \at as an input. One possible \at for given network graph in Figure \ref{fig:ng} is shown in the Figure \ref{fig:at}.
+	The \at is a rooted tree created from the network graph. To create an optimal \at from the given network graph is outside the scope of this thesis. Our algorithm takes any arbitrary \at as an input. One possible \at for given network graph in Figure \ref{fig:ng}is shown in the Figure \ref{fig:at}.
 
-		We use the term \bs for the root of the \at and \q for the trusted third party. In Figure \ref{fig:at} $A$ is the \bs and $Q$ is the \q.
+	We use the term \bs for the root of the \at and \q for the trusted third party. In Figure \ref{fig:at} $A$ is the \bs and $Q$ is the \q.
 		
-		\begin{figure}[hp]
-			\centering
-			\includegraphics[scale = 0.6]{images/network-graph.png}\\
-			\caption{Network graph}
-			\label{fig:ng}
-		\end{figure}
+	\begin{figure}[hp]
+		\centering
+		\includegraphics[scale = 0.6]{images/network-graph.png}\\
+		\caption{Network graph}
+		\label{fig:ng}
+	\end{figure}
 
-		\begin{figure}[hp]
-			\centering
-			\includegraphics[scale = 0.6]{images/aggregation-tree.png}\\
-			\caption{Aggregation tree for network graph in figure \ref{fig:ng}}
-			\label{fig:at}
-		\end{figure}
+	\begin{figure}[hp]
+		\centering
+		\includegraphics[scale = 0.6]{images/aggregation-tree.png}\\
+		\caption{Aggregation tree for network graph in figure \ref{fig:ng}}
+		\label{fig:at}
+	\end{figure}
 
-		Each sensor node $s$ has it's own sensor reading $s.value$. The querier is interested in overall behavior of the network, which is some function $f$ of all those sensor readings.
-		\begin{equation}
-			f(s_{1}.value, s_{2}.value, s_{3}.value, \dotsc, s_{n}.value)
-		\end{equation}
-		We discuss the case for the $SUM$ function, but the techniques discussed here can be applied to any other function with little or no modification. 
-		\begin{equation}
-			SUM = \sum\limits_{i=1}^n s_{i}.value
-		\end{equation}
+	Each sensor node $s$ has it's own sensor reading $s.value$. The querier is interested in overall behavior of the network, which is some function $f$ of all those sensor readings.
+	\begin{equation}
+		f(s_{1}.value, s_{2}.value, s_{3}.value, \dotsc, s_{n}.value)
+	\end{equation}
+	We discuss the case for the $SUM$ function, but the techniques discussed here can be applied to any other function with little or no modification. 
+	\begin{equation}
+		SUM = \sum\limits_{i=1}^n s_{i}.value
+	\end{equation}
 
-		One way to achieve this is to send all the $n$ \payloads to the \q.
-		It means all the internal nodes in the network send all the \payloads received from their children to their parent.
-		Once the \q has all $n$ \payloads, it can compute the summation.  
-		This approach is completely secure but it has several disadvantages:
+	\subsection{No aggregation}
+		One way to achieve calculate the $SUM$ is to send all the $n$ \payloads to the \q.
+		It means all the internal nodes in the network send all the \payloads received from their descendants to their parent.
+		Once the \q has all $n$ \payloads, it computes the summation.
+		For any given node, the \inforate is 1. \inforate is defined in \ref{def:ir}. 	
+			
+		Advantages of no aggregation:
+		\begin{itemize}
+			\item Perfectly secure.
+		\end{itemize}  
+			
+		Disadvantages of no aggregation:
 		\begin{itemize}
 			\item Requires $O(n)$ bandwidth between the \bs and the \q.
 			\item Requires $O(d)$ bandwidth between the internal node and its parent, where $d$ is the number of descendants for a given node.
+			\item Very high \inforate
 		\end{itemize}
-		
-		Another way to achieve this is to send only one \payload to the \q.
-		It means all the internal nodes in the network, after receiving all the readings from their children, does the summation over all the readings including its own reading and pass the resulted \payload to their parents'.
-		This approach is shown in the figure:
-		This approach is most efficient in terms of bandwidth but it makes aggregated value more vulnerable to various security attacks which will be discussed later.
+			
+	\begin{definition}\label{def:ir}
+		The \inforate for a particular node is the \payloads ratio, (number of \payloads received ) / (number of \payloads sent).
+	\end{definition}
 
-		Above two approaches are the extreme cases. The aggregate-commit approach of \cite{chan2006secure} tries to get the best of above two extreme cases.
-		In aggregate-commit approach the \bs sends at most $log(n)$ \payloads to the \q. 
+	\subsection{Naive approach}
+
+			Another way to achieve calculate the $SUM$ is to send only one \payload to the \q.
+			It means all the internal nodes in the network, after receiving readings from all of their children, does the summation including their own reading and then pass the resulted \payload to their parents' as shown in figure NA.
+			For any given node, the \inforate is $1 / (c + 1)$, where $c$ is the number of children for the give node.
+
+			Advantages of naive approach:
+			\begin{itemize}
+				\item Optimal \inforate.
+			\end{itemize}
+
+			Disadvantages of naive approach:
+			\begin{itemize}
+				\item Makes aggregated value more vulnerable to various security attacks.
+				\item Requires more bandwidth in the verification phase.
+			\end{itemize}
+
+	\subsection{Aggregate-commit approach}
+		The no aggregation and naive approaches are two extreme approaches.
+		The aggregate-commit approach of \cite{chan2006secure} is between these two extreme cases by combining best of both approaches.
+		In aggregate-commit approach the \bs sends at most $log(n)$ \payloads to the \q, where $n$ is the number of nodes in the network . 
 		It means all the internal nodes in the network pass $log(d + 1)$ \payloads to their parents after doing the aggregation (summation), where $d$ is the number of descendants for the given node. 
+		For any given node in the network, the information rate is $log(d+1)/(d+1)$.
 		This approach is explained in detail in the following section.     
 
+	Each sensor node passes on the \payloads of the commitment forest to their parents.
 
-	\subsection{Commitment Forest}
-		Each sensor node passes on the \payloads of the root vertices of a set of commitment subtrees F = \{ $T_{1}$, $T_{2}$, $\dotsc$, $T_{q}$ \} , called  a commitment forest.
-
-		\begin{definition}\cite{chan2006secure}
+	\begin{definition}\cite{chan2006secure}
 		A commitment forest is a set of complete binary commitment trees such that there is at most one commitment tree of any given height.
-		\end{definition}
+	\end{definition}
 
 		We claim that the binary representation of a number $x$ illustrates the forest decomposition of the sensor node $s$, where $x$ = $1\ +$ number of descendants of $s$.
 		For example, if sensor node $s$ has $22$ descendants then $x =23$, $(x)_{10}$ = $(10111)_{2}$. 
