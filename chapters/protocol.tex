@@ -41,7 +41,7 @@
 
 \section{Aggregation-Commit Phase}
 	In this phase, the network constructs a commitment structure. 
-	First, the sensor nodes at the highest depth in the aggregation tree (leaf nodes) send their \payloads, defined according to \ref{def:ct}, to their parents in the aggregation tree.
+	First, the sensor nodes at the highest depth in the aggregation tree (leaf nodes) send their \payloads,defined according to \ref{def:ct}, to their parents in the aggregation tree.
 	Each internal sensor node in the aggregation tree performs an aggregation operation whenever it receives \payloads from all of its children.
 	Whenever a sensor node performs an aggregation operation, it creates a commitment to the set of inputs used to compute the aggregate by computing a hash over all the inputs (including the commitments that were computed by its children). 
 	Both the aggregation result and the commitment creates a payload for the aggregator.
@@ -91,7 +91,7 @@
 		commitment = H (N\ ||  id\ ||  count\ ||  value\ || p_{1}\ ||\ p_{2}\ || \dotsb ||\ p_{q})		
 	\end{equation}
 
-	Talk about signatures of the \payloads.
+	\textcolor{red}{Talk about signatures of the \payloads.}
 	
 	We use the collision resistant hash function so it's impossible for an adversary to tamper any of the commitments once they are created.
 
@@ -102,7 +102,7 @@
 
 	The \at is a rooted tree created from the network graph. To create an optimal \at from the given network graph is outside the scope of this thesis. Our algorithm takes any arbitrary \at as an input. One possible \at for given network graph in Figure \ref{fig:ng}is shown in the Figure \ref{fig:at}.
 
-	We use the term \bs for the root of the \at and the \q for the trusted third party. In Figure \ref{fig:at} $A$ is the \bs and $Q$ is the \q.
+	We use the term \bs\  for the trusted third party. In Figure \ref{fig:at} $BS$ is the \bs.
 		
 	\begin{figure}[hp]
 		\centering
@@ -131,18 +131,16 @@
 		One way to calculate the $SUM$ is to send all the $n$ \payloads to the \q.
 		It means all the internal nodes in the network send all the \payloads received from their descendants to their parent.
 		Once the \q has all $n$ \payloads, it computes the summation.
-		For any given node, the \inforate is 1. \inforate is defined in \ref{def:ir}. 	
-			
-		Advantages of no aggregation:
+		For any given node, the \inforate is 1. \inforate is defined in \ref{def:ir}.\\
+		Advantages:
 		\begin{itemize}
 			\item Perfectly secure.
-		\end{itemize}  
-			
-		Disadvantages of no aggregation:
+		\end{itemize}
+		Disadvantages:
 		\begin{itemize}
 			\item Requires $O(n)$ bandwidth between the \bs and the \q.
 			\item Requires $O(d)$ bandwidth between the internal node and its parent, where $d$ is the number of descendants for a given node.
-			\item Very high \inforate
+			\item Very high \inforate.
 		\end{itemize}
 			
 	\begin{definition}\label{def:ir}
@@ -150,17 +148,14 @@
 	\end{definition}
 
 	\subsection{Naive approach}
-
-			Another way to calculate the $SUM$ is to send only one \payload to the \q.
-			It means all the internal nodes in the network, after receiving readings from all of their children, does the summation including their own reading and then pass the resulted \payload to their parents' as shown in figure NA.
-			For any given node, the \inforate is $1 / (c + 1)$, where $c$ is the number of children for the give node.
-
-			Advantages of naive approach:
+		Another way to calculate the $SUM$ is to send only one \payload to the \q.
+		It means all the internal nodes in the network, after receiving readings from all of their children, does the summation including their own reading and then pass the resulted \payload to their parents' as shown in figure NA.
+		For any given node, the \inforate is $1 / (c + 1)$, where $c$ is the number of children for the give node.\\
+		Advantages:
 			\begin{itemize}
 				\item Optimal \inforate.
 			\end{itemize}
-
-			Disadvantages of naive approach:
+		Disadvantages:
 			\begin{itemize}
 				\item Makes aggregated value more vulnerable to various security attacks.
 				\item Requires more bandwidth in the verification phase.
@@ -184,13 +179,13 @@
 
 		The commitment forest with $n$ leaf vertices has the following properties:
 		\begin{itemize}
-			\item The tallest tree in the forest has height at most $log(n)$.
-			\item There are at most $log(n)$ trees in the forest
+			\item The tallest tree in the forest has height at most $\log(n)$.
+			\item There are at most $\log(n)$ trees in the forest
 		\end{itemize}
 		In the following section we describe how to build commitment forest with an example and also how to reason about commitment forest using binary addition. 
 
-		% It means all the internal nodes in the network pass $log(d + 1)$ \payloads to their parents after doing the aggregation (summation), where $d$ is the number of descendants for the given node. 
-		% For any given node in the network, the information rate is $log(d+1)/(d+1)$.
+		% It means all the internal nodes in the network pass $\log(d + 1)$ \payloads to their parents after doing the aggregation (summation), where $d$ is the number of descendants for the given node. 
+		% For any given node in the network, the information rate is $\log(d+1)/(d+1)$.
 		% This approach is explained in detail in the following section.     
 
 	\subsection{Commitment Forest Generation}
@@ -365,9 +360,9 @@
 
 \textit{Properties of commitment tree and aggregation tree}
 
-	If you have $O(n)$ children then you need atleast $\Omega(n)$ \& at max $O(nlog(n))$ certificates.
+	If you have $O(n)$ children then you need at least $\Omega(n)$ \& at max $O(n\log(n))$ certificates.
 
-	If you have $O(n)$ descendents then you need $\Omega(log(n))$  \& at max $O(nlog(n))$ certificates.
+	If you have $O(n)$ descendants then you need $\Omega(\log(n))$  \& at max $O(n\log(n))$ certificates.
 
 
 \section{Advantages of this protocol}
