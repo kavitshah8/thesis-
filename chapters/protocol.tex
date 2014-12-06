@@ -148,8 +148,14 @@
 	\end{definition}
 
 	\subsection{Naive approach}
+		\begin{figure}[hp]
+			\centering
+			\includegraphics[scale = 0.6]{images/naive-commitment-tree.png}\\
+			\caption{Network graph}
+			\label{fig:naive-commitment-tree}
+		\end{figure}
 		Another way to calculate the $SUM$ is to send only one \payload to the \q.
-		It means all the internal nodes in the network, after receiving readings from all of their children, does the summation including their own reading and then pass the resulted \payload to their parents' as shown in figure NA.
+		It means all the internal nodes in the network, after receiving readings from all of their children, does the summation including their own reading and then pass the resulted \payload to their parents' as shown in Figure NA.
 		For any given node, the \inforate is $1 / (c + 1)$, where $c$ is the number of children for the give node.\\
 		Advantages:
 			\begin{itemize}
@@ -196,19 +202,18 @@
 		It then aggregates all the forests to form a new forest as follows.
 		
 		Suppose $s$ wishes to combine $q$ commitment forests $F_{1}$, $\dotsc$, $F_{q}$ and create an aggregated forest $F$.
-		To do so, the sensor node $s$ merges trees with the same height in its forests, and creates a new tree with the height incremented by $1$. 
+		To do so, the sensor node $s$ merges trees with the same height in its forests by creating a new tree with the height incremented by $1$. 
 		It repeats this process until no two trees in its forest have the same height. 
 		Let $T_{1}, T_{2}$ have the height $h$, where $h$ is the smallest height in $F$.
-		The sensor node $s$ merges $T_{1} \& T_{2}$ into a tree of height $h + 1$ by creating a new vertex according to equation \ref{def:internal-vertice}.
-		It repeats this process until all the trees have unique height in the forest.Figure \textcolor{red}{refer} shows an example of commitment forest generation process for node $A$ in Figure \ref{fig:at}.
+		The sensor node $s$ merges $T_{1}, T_{2}$ into a tree of height $h + 1$ by creating a new vertex according to equation \ref{def:internal-vertice}.
+		It repeats this process until all the trees have unique height in the forest.
+		An example of commitment forest generation process for the sensor node $A$ in Figure \ref{fig:at} is illustrated in the Figures \ref{fig:commitment-tree-example-1}, \ref{fig:commitment-tree-example-2}, \ref{fig:commitment-tree-example-3}, \ref{fig:commitment-tree-example-4}.
 
-
-	\newpage
 	\begin{figure}[hp]
 		\centering
 		\includegraphics[scale = 0.7]{images/commitment-tree-example-1.png}\\
-		\caption{NA}
-
+		\caption{Forests received by sensor node $A$}
+		\label{fig:commitment-tree-example-1}
 		The sensor node $A$ receives the following \payloads:
 
 		\begin{equation}
@@ -233,6 +238,7 @@
 		\centering
 		\includegraphics[scale = 0.7]{images/commitment-tree-example-2.png}\\
 		\caption{First Merge: $A_{1}$ vertex created by A}
+		\label{fig:commitment-tree-example-2}
 		\begin{equation}
 			A_{1} = \{\ A.id,\ 2,\ A_{1}.value,\ H(\ N\ ||\ A.id\ ||\ 2\ ||\ A{1}.value\ )\ \}
 		\end{equation}
@@ -241,39 +247,51 @@
 		\end{equation}
 	\end{figure}
 
-	\begin{equation}
-		A_{2} = \{\ A.id,\ 4,\ A_{2}.value,\ H(\ N\ ||\ A.id\ ||\ 4\ ||\ A{2}.value\ )\ \} 
-	\end{equation}
-	\begin{equation}
-		A_{2}.value = A_{1}.value + B_{1}.value
-	\end{equation}
+	\begin{figure}[hp]
+		\centering
+		\includegraphics[scale = 0.7]{images/commitment-tree-example-3.png}\\
+		\caption{Second Merge: $A_{2}$ vertex created by A}
+		\label{fig:commitment-tree-example-3}
+		\begin{equation}
+			A_{2} = \{\ A.id,\ 4,\ A_{2}.value,\ H(\ N\ ||\ A.id\ ||\ 4\ ||\ A_{2}.value\ )\ \} 
+		\end{equation}
+		\begin{equation}
+			A_{2}.value = A_{1}.value + B_{1}.value
+		\end{equation}
+	\end{figure}
 
-	\begin{equation}
-		A_{3} = \{\ A.id,\ 8,\ A_{3}.value,\ H(\ N\ ||\ A.id\ ||\ 8\ ||\ A{3}.value\ )\ \} 
-	\end{equation}
-	\begin{equation}
-		A_{3}.value = A_{2}.value + C_{2}.value
-	\end{equation}
+	\begin{figure}[hp]
+		\centering
+		\includegraphics[scale = 0.7]{images/commitment-tree-example-4.png}\\
+		\caption{Third Merge: $A_{3}$ vertex created by A}
+		\label{fig:commitment-tree-example-4}
+		\begin{equation}
+			A_{3} = \{\ A.id,\ 8,\ A_{3}.value,\ H(\ N\ ||\ A.id\ ||\ 8\ ||\ A_{3}.value\ )\ \} 
+		\end{equation}
+		\begin{equation}
+			A_{3}.value = A_{2}.value + C_{2}.value
+		\end{equation}
+	\end{figure}
 
-	\textit{\textbf{ Aggregation using binary representation}}
-	\[ 
-		\begin{array}{lcccc}
-			\mbox{Carry} & 0 & 1 & 1 & 0\\
-			\hline
-			\mbox{B's forest} & 0 & 0 & 0 & 1 \\
-			\mbox{ } & 0 & 0 & 1 & 0 \\
-			\hline
-			\mbox{C's forest} & 0 & 1 & 0 & 0 \\
-			\hline
-			\mbox{D's forest} & 0 & 0 & 0 & 1 \\
-			\hline
-			\mbox{A's payload} & 0 & 0 & 0 & 1 \\
-			\hline
-			\mbox{Aggregation} & 1 & 0 & 0 & 1 
-		\end{array}
-	\] 
+	\subsection{Binary representation of Aggregation-Commit approach}
+		\textit{\textbf{ Aggregation using binary representation}}
+		\[ 
+			\begin{array}{lcccc}
+				\mbox{Carry} & 0 & 1 & 1 & 0\\
+				\hline
+				\mbox{B's forest} & 0 & 0 & 0 & 1 \\
+				\mbox{ } & 0 & 0 & 1 & 0 \\
+				\hline
+				\mbox{C's forest} & 0 & 1 & 0 & 0 \\
+				\hline
+				\mbox{D's forest} & 0 & 0 & 0 & 1 \\
+				\hline
+				\mbox{A's payload} & 0 & 0 & 0 & 1 \\
+				\hline
+				\mbox{Aggregation} & 1 & 0 & 0 & 1 
+			\end{array}
+		\] 
 
-	\subsection{aggregator centric Aggregation-Commit approach}
 
 
 \newpage
