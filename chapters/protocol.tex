@@ -71,8 +71,8 @@
 	where $N$ is the query nonce which is disseminated with each query.
 
 	Internal vertices represent aggregation operations, and have \payloads that are defined based on their children. Suppose an internal vertex has child vertices $v_{1}, v_{2},\dotsc, v_{q}$ with the following \payloads: $p_{1}, p_{2},\dotsc, p_{q}$, where
-	\begin{equation}
-		p_{i} = \{ i.id, i.count, i.value, i.commitment\} 
+	\begin{equation}\label{def:internal-vertice}
+		p_{i} = \{ i.id, i.count, i.value, i.commitment\}
 	\end{equation}
 	Then the internal vertex has payload 
 	\begin{equation}
@@ -195,9 +195,12 @@
 		Sensor node $s$ keeps track of which root vertices are received from which of its children.
 		It then aggregates all the forests to form a new forest as follows.
 		
-		Suppose $s$ wishes to combine $q$ commitment forests $F_{1}$, $\dotsc$, $F_{q}$.
-		All the commitment forests have their binary representation and all the commitment trees in the commitment forests are complete binary trees. 
-		Sensor node $s$ aggregates commitment trees with same count values and creates an initiates a new commitment tree with $count = count + 1$. It repeats this process until all the trees have unique height in the forest.Figure shows an example.
+		Suppose $s$ wishes to combine $q$ commitment forests $F_{1}$, $\dotsc$, $F_{q}$ and create an aggregated forest $F$.
+		To do so, the sensor node $s$ merges trees with the same height in its forests, and creates a new tree with the height incremented by $1$. 
+		It repeats this process until no two trees in its forest have the same height. 
+		Let $T_{1}, T_{2}$ have the height $h$, where $h$ is the smallest height in $F$.
+		The sensor node $s$ merges $T_{1} \& T_{2}$ into a tree of height $h + 1$ by creating a new vertex according to equation \ref{def:internal-vertice}.
+		It repeats this process until all the trees have unique height in the forest.Figure \textcolor{red}{refer} shows an example of commitment forest generation process for node $A$ in Figure \ref{fig:at}.
 
 
 	\newpage
@@ -205,32 +208,52 @@
 		\centering
 		\includegraphics[scale = 0.7]{images/commitment-tree-example-1.png}\\
 		\caption{NA}
+
+		The sensor node $A$ receives the following \payloads:
+
+		\begin{equation}
+			A_{0} = \{\ A.id,\ 1,\ A.value,\ H  (\ N\ ||\ A.id\ ||\ 1\ ||\ A.value)\ \}\ (internal)
+		\end{equation}
+		\begin{equation}
+			D_{0} = \{\ D.id,\ 1,\ D.value,\ H(\ N\ ||\ D.id\ ||\ 1\ ||\ D.value)\ \}\ (from\ D)
+		\end{equation}
+		\begin{equation}
+			B_{0} = \{\ B.id,\ 1,\ B.value,\ H(\ N\ ||\ B.id\ ||\ 1\ ||\ B.value)\ \}\ (from\ B)
+		\end{equation}
+		\begin{equation}
+			B_{1} = \{\ B.id,\ 2,\ B_{1}.value,\ H(\ N\ ||\ B.id\ ||\ 2\ ||\ B_{1}.value)\ \}\ (from\ B)
+		\end{equation}
+		\begin{equation}
+			C_{2} = \{\ C.id,\ 4,\ C_{2}.value,\ H(\ N\ ||\ C.id\ ||\ 4\ ||\ C_{2}.value)\ \}\ (from\ C)
+		\end{equation}
+		
 	\end{figure}
-
-	The sensor node $A$ receives following \payloads:
-
-	\begin{equation}
-		A_{0} = [\ A.id,\ 1,\ A.value,\ H  (\ N\ ||\ A.id\ ||\ 1\ ||\ A.value)\ ]\ (internal)
-	\end{equation}
-	\begin{equation}
-		D_{0} = [\ D.id,\ 1,\ D.value,\ H(\ N\ ||\ D.id\ ||\ 1\ ||\ D.value)\ ]\ (from\ D)
-	\end{equation}
-	\begin{equation}
-		B_{0} = [\ B.id,\ 1,\ B.value,\ H(\ N\ ||\ B.id\ ||\ 1\ ||\ B.value)\ ]\ (from\ B)
-	\end{equation}
-	\begin{equation}
-		B_{1} = [\ B.id,\ 2,\ B_{1}.value,\ H(\ N\ ||\ B.id\ ||\ 2\ ||\ B_{1}.value)\ ]\ (from\ B)
-	\end{equation}
-	\begin{equation}
-		C_{2} = [\ C.id,\ 4,\ C_{2}.value,\ H(\ N\ ||\ C.id\ ||\ 4\ ||\ C_{2}.value)\ ]\ (from\ C)
-	\end{equation}
 	
 	\begin{figure}[hp]
 		\centering
 		\includegraphics[scale = 0.7]{images/commitment-tree-example-2.png}\\
 		\caption{First Merge: $A_{1}$ vertex created by A}
+		\begin{equation}
+			A_{1} = \{\ A.id,\ 2,\ A_{1}.value,\ H(\ N\ ||\ A.id\ ||\ 2\ ||\ A{1}.value\ )\ \}
+		\end{equation}
+		\begin{equation}
+			A_{1}.value = A.value + D.value
+		\end{equation}
 	\end{figure}
 
+	\begin{equation}
+		A_{2} = \{\ A.id,\ 4,\ A_{2}.value,\ H(\ N\ ||\ A.id\ ||\ 4\ ||\ A{2}.value\ )\ \} 
+	\end{equation}
+	\begin{equation}
+		A_{2}.value = A_{1}.value + B_{1}.value
+	\end{equation}
+
+	\begin{equation}
+		A_{3} = \{\ A.id,\ 8,\ A_{3}.value,\ H(\ N\ ||\ A.id\ ||\ 8\ ||\ A{3}.value\ )\ \} 
+	\end{equation}
+	\begin{equation}
+		A_{3}.value = A_{2}.value + C_{2}.value
+	\end{equation}
 
 	\textit{\textbf{ Aggregation using binary representation}}
 	\[ 
