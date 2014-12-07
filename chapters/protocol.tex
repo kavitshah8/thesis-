@@ -184,7 +184,7 @@
 		\begin{itemize}
 			\item The tallest tree in the forest has height at most $\log(n)$.
 			\item There are at most $\log(n)$ trees in the forest.
-			\item The \inforate\ is $\log(n+1)$.
+			\item The \inforate\ is $\log(n+1) / n$.
 		\end{itemize}
 		We claim that the binary representation of a number $x$ illustrates the forest decomposition of the sensor node $s$, where $x$ = $1\ +$ number of descendants of $s$.
 		For example, if sensor node $s$ has $22$ descendants then $x =23$, $(x)_{10}$ = $(10111)_{2}$. 
@@ -192,14 +192,10 @@
 		Note that all the trees in the commitment forest are complete binary trees and no two trees have the same height.
 		In the following section we describe how to build commitment forest with an example and also how to reason about commitment forest using binary addition. 
 
-		% It means all the internal nodes in the network pass $\log(d + 1)$ \payloads to their parents after doing the aggregation (summation), where $d$ is the number of descendants for the given node. 
-		% For any given node in the network, the information rate is $\log(d+1)/(d+1)$.
-		% This approach is explained in detail in the following section.     
-
 	\subsection{Commitment Forest Generation}
 		The sensor nodes at the highest depth in the aggregation tree (leaf nodes) initiate a single-vertex commitment forest, which they transmit to their parent sensor node.
 		Each internal sensor node $s$ initiates a similar single-vertex commitment forest.
-		In addition, $s$ also receives commitment forests from each of its children.
+		In addition, $s$ also receives commitment 	forests from each of its children.
 		Sensor node $s$ keeps track of which root vertices are received from which of its children.
 		It then aggregates all the forests to form a new forest as follows.
 		
@@ -209,15 +205,18 @@
 		Let $T_{1}, T_{2}$ have the height $h$, where $h$ is the smallest height in $F$.
 		The sensor node $s$ merges $T_{1}, T_{2}$ into a tree of height $h + 1$ by creating a new vertex according to equation \ref{def:internal-vertice}.
 		It repeats this process until all the trees have unique height in the forest.
-		An example of commitment forest generation process for the sensor node $A$ in Figure \ref{fig:at} is illustrated in the Figures \ref{fig:commitment-tree-example-1}, \ref{fig:commitment-tree-example-2}, \ref{fig:commitment-tree-example-3}, \ref{fig:commitment-tree-example-4}.
+		An example of the commitment forest generation process for the sensor node $A$ in Figure \ref{fig:at} is illustrated in the Figures \ref{fig:commitment-tree-example-1}, \ref{fig:commitment-tree-example-2}, \ref{fig:commitment-tree-example-3}, \ref{fig:commitment-tree-example-4}.
+
+		In aggregation-commit approach there are at most $\log(n+1)$ commitment trees in each forest transmitted by any sensor node to its parent, which is greater than $1$.
+		But all trees have height less than or equal to $\log(n)$, which makes transmission of off-path values communication efficient which we will see in the verification phase.
 
 	\begin{figure}[hp]
 		\centering
 		\includegraphics[scale = 0.7]{images/commitment-tree-example-1.png}\\
-		\caption{Forests received by sensor node $A$}
+		\caption{$A$ receives $C_{2}$ from $C$, $(B_{1},B_{0})$ from $B$, $D_{0}$ from $D$ and generates $A_{0}$. The commitment forest received from a given sensor node is indicated by dashed-line box.}
 		\label{fig:commitment-tree-example-1}
-		The sensor node $A$ receives the following \payloads:
-
+	\end{figure}
+	The sensor node $A$ receives the following \payloads:
 		\begin{equation}
 			A_{0} = \{\ A.id,\ 1,\ A.value,\ H  (\ N\ ||\ A.id\ ||\ 1\ ||\ A.value)\ \}\ (internal)
 		\end{equation}
@@ -233,9 +232,7 @@
 		\begin{equation}
 			C_{2} = \{\ C.id,\ 4,\ C_{2}.value,\ H(\ N\ ||\ C.id\ ||\ 4\ ||\ C_{2}.value)\ \}\ (from\ C)
 		\end{equation}
-		
-	\end{figure}
-	
+
 	\begin{figure}[hp]
 		\centering
 		\includegraphics[scale = 0.7]{images/commitment-tree-example-2.png}\\
@@ -275,29 +272,49 @@
 		\end{equation}
 	\end{figure}
 
-	\subsection{Binary representation of Aggregation-Commit approach}
-		\textit{\textbf{ Aggregation using binary representation}}
-		\[ 
-			\begin{array}{lcccc}
-				\mbox{Carry} & 0 & 1 & 1 & 0\\
-				\hline
-				\mbox{B's forest} & 0 & 0 & 0 & 1 \\
-				\mbox{ } & 0 & 0 & 1 & 0 \\
-				\hline
-				\mbox{C's forest} & 0 & 1 & 0 & 0 \\
-				\hline
-				\mbox{D's forest} & 0 & 0 & 0 & 1 \\
-				\hline
-				\mbox{A's payload} & 0 & 0 & 0 & 1 \\
-				\hline
-				\mbox{Aggregation} & 1 & 0 & 0 & 1 
-			\end{array}
-		\] 
-
-
+	% \subsection{Binary representation of Aggregation-Commit approach}
+	The commitment forest generation process for the sensor node $A$ in Figure \ref{fig:at}, can be illustrated in the binary format as follows: 
+	\[ 
+		\begin{array}{lcccc}
+			\mbox{Carry} & 0 & 1 & 1 & 0\\
+			\hline
+			\mbox{B's forest} & 0 & 0 & 0 & 1 \\
+			\mbox{ } & 0 & 0 & 1 & 0 \\
+			\hline
+			\mbox{C's forest} & 0 & 1 & 0 & 0 \\
+			\hline
+			\mbox{D's forest} & 0 & 0 & 0 & 1 \\
+			\hline
+			\mbox{A's payload} & 0 & 0 & 0 & 1 \\
+			\hline
+			\mbox{Aggregation} & 1 & 0 & 0 & 1 
+		\end{array}
+	\]
+	The sensor node $A$ receives $B, C, D's $ forests and creates its own single vertex forest. Creating a commitment forest is similar to doing summation on the received forests' binary format.
+	Also, generating a carry in the summation is equivalent to creating a new vertex in the commitment forest by merging two trees. Observe that $A$ has several ways of doing the summation.
+	For example, while adding lowest significant bits it has $1's$ at three places. The aggregation node $A$ can use any two $1's$ to generate a carry. If $A$ uses $1's$ from $B, D's$ forest than in the final aggregation lowest significant bit represents $A's$ vertex. 
+	Also, the carry is always generated of the aggregation node.
+	We show that for the aggregation node being root in as many as possible trees is communication efficient in the analysis chapter.
+	If vertex related is represented by its letter than above summation process can be represented in the following ways.
+	\[ 
+		\begin{array}{lcccclcccclcccc}
+			\mbox{Carry} & 0 & A & A & 0\  \vline & 0 & A & A & 0\ \vline & 0 & A & A & 0\ \\
+			\hline
+			\mbox{B's forest} & 0 & 0 & 0 & 1\ \vline & 0 & 0 & 0 & 1\ \vline & 0 & 0 & 0 & 1\ \\
+			\mbox{ } & 0 & 0 & 1 & 0\ \vline & 0 & 0 & 1 & 0\ \vline & 0 & 0 & 1 & 0\ \\
+			\hline
+			\mbox{C's forest} & 0 & 1 & 0 & 0\ \vline & 0 & 1 & 0 & 0\ \vline & 0 & 1 & 0 & 0\ \\
+			\hline
+			\mbox{D's forest} & 0 & 0 & 0 & 1\ \vline & 0 & 0 & 0 & 1\ \vline & 0 & 0 & 0 & 1\ \\
+			\hline
+			\mbox{A's payload} & 0 & 0 & 0 & 1\ \vline & 0 & 0 & 0 & 1\ \vline & 0 & 0 & 0 & 1\ \\
+			\hline
+			\mbox{Aggregation} & A & 0 & 0 & A\ \vline & A & 0 & 0 & B\ \vline & A & 0 & 0 & D\ \\  
+		\end{array}
+	\]	
 
 \newpage
-\begin{algorithm}[H]\label{number3} \caption {CommitmentTreeGeneration}
+\begin{algorithm}[H]\label{number3} \caption{CommitmentTreeGeneration}
 	\begin {algorithmic}[1]
 
 		\STATE depth = \at.MaxDepth
