@@ -44,67 +44,67 @@
 	First, the sensor nodes at the highest depth in the aggregation tree (leaf nodes) send their \payloads,defined according to Definition \ref{def:ct}, to their parents in the aggregation tree.
 	Each internal sensor node in the aggregation tree performs an aggregation operation whenever it receives \payloads\  from all of its children.
 	Whenever a sensor node performs an aggregation operation, it creates a commitment to the set of inputs used to compute the aggregate by computing a hash over all the inputs (including the commitments that were computed by its children). 
-	Both the aggregation result and the commitment creates a payload for the aggregator.
-	Then the payload, with the signature of the payload signed by the sensor node are passed on to the parent of the sensor node.
-	Once the final \payloads\  and the signatures of those \payloads\  are sent to the querier, if an adversary tries to claim a different aggregation structure it gets caught.
+	Both the aggregation result and the commitment creates a \payload\ for the aggregator.
+	Then the \payload, with the signature of the \payload\ signed by the sensor node are passed on to the parent of the sensor node.
+	Once the final \payloads\  and the signatures of those \payloads\  are sent to the querier, if an adversary tries to claim a different commitment structure it gets caught during the verification phase.
 	Our algorithm generates perfectly balanced binary trees to create commitment forests which saves the bandwidth in the verification phase compared to other approaches.
 
 	\begin{definition}\cite{chan2006secure}\label{def:ct}
 		A \textbf{\textit{commitment tree}} is a logical tree build on top of an \textbf{\textit{aggregation tree}} where each vertex has an associated \payload\ to it, representing data being passed on to its parent. The \payload\ has the following format:
 
-		$\{id, count, value, commitment\}$\\
-		Where $id$ is the unique id of the node; $count$ is the number of leaf vertices in the subtree rooted at this vertex; $value$ is the aggregate computed over all the leaves rooted in the subtree; and commitment is the cryptographic commitment.
+		$\{\ id,\ count,\ value,\ commitment\ \}$\\
+		Where $id$ is the unique identity number of the node; $count$ is the number of leaf vertices in the subtree rooted at this vertex; $value$ is the aggregate computed over all the leaves rooted in the subtree; and commitment is the cryptographic commitment.
 
 	\end{definition}
 
 	Our \payload\ format is different than the label format in \cite{chan2006secure}.
 	The \payload\ format adds an ID field and removes the complement field from the label. 
 	Our protocol helps detecting an adversary, to achieve this we send the signature of the \payload. 
-	And to verify the signatures, the verifier needs the ID of that node.
+	And to verify the signature, the verifier needs the ID of that node.
 	The complement field was used to verify the upper bound on the aggregation result by the \q.
-	We can achieve the same result with count so sending complement was redundant and no longer required.     
+	We claim that the result can be achieved by sending count only, sending complement was redundant and no longer required.     
 
 	There is one leaf vertex $s.v$ for each sensor node $s$ with the \payload,
 	\begin{equation}\label{eq:vertex}
-		s.p = \{ s.id, 1,s.value, Hash( N\ ||\  s.id\ ||\  1\  ||\  s.value ) \} 
+		s.p = \{\ s.id,\ 1,\ s.value,\ Hash( N\ ||\  s.id\ ||\  1\  ||\  s.value\ ) \} 
 	\end{equation}
 	where $N$ is the query nonce which is disseminated with each query.
 
 	Internal vertices represent aggregation operations, and have \payloads\  that are defined based on their children. Suppose an internal vertex has child vertices $s_{1}.v, s_{2}.v,\dotsc, s_{q}.v$ with the following \payloads: $s_{1}.p, s_{2}.p,\dotsc, s_{q}.p$, where
 	\begin{equation}\label{def:internal-vertice}
-		s_{i}.p = \{ s_{i}.id, s_{i}.count, s_{i}.value, s_{i}.commitment\}
+		s_{i}.p = \{\ s_{i}.id,\ s_{i}.count,\ s_{i}.value,\ s_{i}.commitment\ \}
 	\end{equation}
-	Then the internal vertex has payload 
+	Then the internal vertex has \payload, 
 	\begin{equation}
-		s.p = \{ id, count, value, commitment \} 
+		s.p = \{\ id,\ count,\ value,\ commitment\ \} 
 	\end{equation}
 	\begin{equation}
 		id = s.id 
 	\end{equation}	
 	\begin{equation}
-		count = \sum{s_{i}.count}		
+		count = \sum\limits_{i=1}^q {s_{i}.count}		
 	\end{equation}
 	\begin{equation}
-		value = \sum{s_{i}.value}		
+		value = \sum\limits_{i=1}^q {s_{i}.value}		
 	\end{equation}
 	\begin{equation}
-		commitment = H (N\ ||\ id\ ||\ count\ ||\ value\ ||\ s_{1}.p\ ||\ s_{2}.p\ || \dotsb ||\ s_{q}.p)		
+		commitment = H (N\ ||\ id\ ||\ count\ ||\ value\ ||\textcolor{red}{\ s_{1}.p\ ||\ s_{2}.p\ || \dotsb ||\ s_{q}.p})		
 	\end{equation}
 
-	Every \payload\ has an associated signature to it, which is the encryption using node's private key of the hash of the payload. For example, signature associated with equation \ref{eq:vertex} is the following:  
+	Every \payload\ has an associated signature to it, which is the encryption of the hash of the \payload\ using node's private key. For example, signature associated with equation \ref{eq:vertex} is the following:  
 	\begin{equation}
-		sign(p_{s}) = E_{p_{s}}(H (p_{s}))
+		s.sign(p) = E_{s.{private-key}}(H (s.p))
 	\end{equation}
-
-	We use the collision resistant hash function so it's impossible for an adversary to tamper any of the commitments once they are created.
+	We use elliptic curve cryptography to minimize keys and signatures bit size. 
+	Also, we use the collision resistant hash function so it's impossible for an adversary to tamper any of the commitments once they are created.
 
 	There is a mapping between the vertices in the commitment tree and the sensor nodes in the aggregation tree, a vertex is a logical element while a node is a physical device.
 	To avoid confusion, we use the term vertex for the members in the commitment tree and node for the members of the aggregation tree.
 	
-	% \textit{\textbf{Write about off-path values also about forests }}
-
-	The \at is a rooted tree created from the network graph. To create an optimal \at from the given network graph is outside the scope of this thesis. Our algorithm takes any arbitrary \at as an input. One possible \at for given network graph in Figure \ref{fig:ng}is shown in the Figure \ref{fig:at}.
-
+	The \at\ is a rooted tree created from the network graph. 
+	To create an optimal \at\ from the given network graph is outside the scope of this thesis.
+	Our algorithm takes any arbitrary \at\ as an input. 
+	One possible \at\ for given network graph in Figure \ref{fig:ng} is shown in the Figure \ref{fig:at}.
 	We use the term \bs\  for the trusted third party. In Figure \ref{fig:at} $BS$ is the \bs.
 		
 	\begin{figure}[hp]
@@ -121,7 +121,7 @@
 		\label{fig:at}
 	\end{figure}
 
-	Each sensor node $s$ has it's own sensor reading $s.value$. The querier is interested in overall behavior of the network, which is some function $f$ of all those sensor readings.
+	Each sensor node $s$ has it's own sensor reading $s.value$. The \bs\ is interested in overall behavior of the network, which is some function $f$ of all $n$ sensor readings.
 	\begin{equation}
 		f(s_{1}.value, s_{2}.value, s_{3}.value, \dotsc, s_{n}.value)
 	\end{equation}
@@ -131,35 +131,29 @@
 	\end{equation}
 
 	\subsection{No aggregation}
-		One way to calculate the $SUM$ is to send all the $n$ \payloads to the \q.
-		It means all the internal nodes in the network send all the \payloads received from their descendants to their parent.
-		Once the \q has all $n$ \payloads, it computes the summation.
-		For any given node, the \inforate is 1. \inforate is defined in \ref{def:ir}.\\
+		One way to calculate the $SUM$ is to send all the $n$ \payloads\ to the \bs.
+		It means all the internal nodes in the network send all the \payloads\ received from their descendants to their parent.
+		Once the \bs\ has all $n$ \payloads, it computes the summation.
+		For any given node, the \inforate\ is 1. \inforate\ is defined in Definition \ref{def:ir}.\\
 		Advantages:
 		\begin{itemize}
 			\item Perfectly secure.
 		\end{itemize}
 		Disadvantages:
 		\begin{itemize}
-			\item Requires $O(n)$ bandwidth between the \bs and the \q.
+			\item Requires $O(n)$ bandwidth between the \bs and the \bs.
 			\item Requires $O(d)$ bandwidth between the internal node and its parent, where $d$ is the number of descendants for a given node.
 			\item Very high \inforate.
 		\end{itemize}
 			
 	\begin{definition}\label{def:ir}
-		The \inforate for a particular node is the \payloads ratio, (number of \payloads sent) / (number of \payloads received ).
+		The \inforate\ for a particular node is the \payloads\ ratio, number of \payloads\ sent / number of \payloads\ received.
 	\end{definition}
 
 	\subsection{Naive approach}
-		\begin{figure}[hp]
-			\centering
-			\includegraphics[scale = 0.6]{images/naive-commitment-tree.png}\\
-			\caption{Network graph}
-			\label{fig:naive-commitment-tree}
-		\end{figure}
-		Another way to calculate the $SUM$ is to send only one \payload to the \q.
-		It means all the internal nodes in the network, after receiving readings from all of their children, does the summation including their own reading and then pass the resulted \payload to their parents' as shown in Figure NA.
-		For any given node, the \inforate is $1 / (c + 1)$, where $c$ is the number of children for the give node.\\
+		Another way to calculate the $SUM$ is to send only one \payload\ to the \bs.
+		It means all the internal nodes in the network, after receiving readings from all of their children, does the summation including their own reading and then pass the resulted \payload\ to their parents' as shown in Figure \ref{fig:naive-commitment-tree}.
+		For any given node, the \inforate\ is $1 / (c + 1)$, where $c$ is the number of children for the give node.\\
 		Advantages:
 			\begin{itemize}
 				\item Optimal \inforate.
@@ -169,28 +163,33 @@
 				\item Makes aggregated value more vulnerable to various security attacks.
 				\item Requires more bandwidth in the verification phase.
 			\end{itemize}
+		\begin{figure}[hp]
+			\centering
+			\includegraphics[scale = 0.6]{images/naive-commitment-tree.png}\\
+			\caption{Naive commitment tree}
+			\label{fig:naive-commitment-tree}
+		\end{figure}
 
 	\subsection{Aggregate-commit approach}
 		The no aggregation and naive approaches are two extreme approaches.
-		The aggregate-commit approach of \cite{chan2006secure} is between these two extreme cases. It combines the advantages of both those two extreme approaches.
+		The aggregate-commit approach of \cite{chan2006secure} is between these two extreme cases. It combines the advantages of both the approaches.
 
-		In the naive approach, each sensor node $s$ sends to its parent a single message containing the \payload of the root vertex of its commitment subtree $T_{s}$.
-		In the aggregate-commit approach, each sensor node $s$ sends the \payloads of the root vertices of a set of commitment subtrees $F = \{ T_{1},T_{2},\dotsc,T_{q} \} $, called commitment forest. 
+		In the naive approach, each sensor node $s$ sends to its parent a single message containing the \payload\ of the root vertex of its commitment subtree $T_{s}$.
+		In the aggregate-commit approach, each sensor node $s$ sends the \payloads\ of the root vertices of a set of commitment subtrees $F = \{ T_{1},T_{2},\dotsc,T_{q} \} $, called commitment forest. 
 
 		\begin{definition}\cite{chan2006secure}
 			A commitment forest is a set of complete binary commitment trees such that there is	at most one commitment tree of any given height.
 		\end{definition}
-
-		We claim that the binary representation of a number $x$ illustrates the forest decomposition of the sensor node $s$, where $x$ = $1\ +$ number of descendants of $s$.
-		For example, if sensor node $s$ has $22$ descendants then $x =23$, $(x)_{10}$ = $(10111)_{2}$. 
-		It means $s$ has four binary trees in its outgoing forest, with the height of four, two, one and zero.
-		Also, all trees in the commitment forest are complete binary and no two trees have the same height.
-
 		The commitment forest with $n$ leaf vertices has the following properties:
 		\begin{itemize}
 			\item The tallest tree in the forest has height at most $\log(n)$.
-			\item There are at most $\log(n)$ trees in the forest
+			\item There are at most $\log(n)$ trees in the forest.
+			\item The \inforate\ is $\log(n+1)$.
 		\end{itemize}
+		We claim that the binary representation of a number $x$ illustrates the forest decomposition of the sensor node $s$, where $x$ = $1\ +$ number of descendants of $s$.
+		For example, if sensor node $s$ has $22$ descendants then $x =23$, $(x)_{10}$ = $(10111)_{2}$. 
+		It means $s$ has four complete binary trees in its outgoing forest, with the height of four, two, one and zero.
+		Note that all the trees in the commitment forest are complete binary trees and no two trees have the same height.
 		In the following section we describe how to build commitment forest with an example and also how to reason about commitment forest using binary addition. 
 
 		% It means all the internal nodes in the network pass $\log(d + 1)$ \payloads to their parents after doing the aggregation (summation), where $d$ is the number of descendants for the given node. 
@@ -380,7 +379,7 @@
 
 	\begin{algorithmic}[1]
 
-			\STATE \querier \ finds out all the \complainer$_{\mathcal{N}}$ $\in$ \at \ using a complainer detecting algorithm
+			\STATE \bs \ finds out all the \complainer$_{\mathcal{N}}$ $\in$ \at \ using a complainer detecting algorithm
 
 			\FORALL {\complainer$_{\mathcal{N}}$}
 
