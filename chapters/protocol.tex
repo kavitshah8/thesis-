@@ -192,7 +192,7 @@
 		Note that all the trees in the commitment forest are complete binary trees and no two trees have the same height.
 		In the following section we describe how to build commitment forest with an example and also how to reason about commitment forest using binary addition. 
 
-	\subsection{Commitment Forest Generation}
+	\subsection{Commitment forest generation}
 		The sensor nodes at the highest depth in the aggregation tree (leaf nodes) initiate a single-vertex commitment forest, which they transmit to their parent sensor node.
 		Each internal sensor node $s$ initiates a similar single-vertex commitment forest.
 		In addition, $s$ also receives commitment 	forests from each of its children.
@@ -208,7 +208,7 @@
 		An example of the commitment forest generation process for the sensor node $A$ in Figure \ref{fig:at} is illustrated in the Figures \ref{fig:commitment-tree-example-1}, \ref{fig:commitment-tree-example-2}, \ref{fig:commitment-tree-example-3}, \ref{fig:commitment-tree-example-4}.
 
 		In aggregation-commit approach there are at most $\log(n+1)$ commitment trees in each forest transmitted by any sensor node to its parent, which is greater than $1$.
-		But all trees have height less than or equal to $\log(n)$, which makes transmission of off-path values communication efficient which we will see in the verification phase.
+		But all the trees have height less than or equal to $\log(n)$, which makes transmission of off-path values communication efficient which will be discussed in the verification phase.
 
 	\begin{figure}[hp]
 		\centering
