@@ -96,7 +96,7 @@
 		s.sign(p) = E_{s.{private-key}}(H (s.p))
 	\end{equation}
 	We use elliptic curve cryptography to minimize keys and signatures bit size. 
-	Also, we use the collision resistant hash function so it's impossible for an adversary to tamper any of the commitments once they are created.
+	Also, we use the collision resistant hash function so it's impossible for an adversary to tamper with any of the commitments once they are created.	
 
 	There is a mapping between the vertices in the commitment tree and the sensor nodes in the aggregation tree, a vertex is a logical element while a node is a physical device.
 	To avoid confusion, we use the term vertex for the members in the commitment tree and node for the members of the aggregation tree.
@@ -109,14 +109,14 @@
 		
 	\begin{figure}[hp]
 		\centering
-		\includegraphics[scale = 0.6]{images/network-graph.png}\\
+		\includegraphics[scale = 0.5]{images/network-graph.png}\\
 		\caption{Network graph}
 		\label{fig:ng}
 	\end{figure}
 
 	\begin{figure}[hp]
 		\centering
-		\includegraphics[scale = 0.6]{images/aggregation-tree.png}\\
+		\includegraphics[scale = 0.5]{images/aggregation-tree.png}\\
 		\caption{Aggregation tree for network graph in figure \ref{fig:ng}}
 		\label{fig:at}
 	\end{figure}
@@ -130,7 +130,7 @@
 		SUM = \sum\limits_{i=1}^n s_{i}.value
 	\end{equation}
 
-	\subsection{No aggregation}
+	\subsection{No aggregation approach}
 		One way to calculate the $SUM$ is to send all the $n$ \payloads\ to the \bs.
 		It means all the internal nodes in the network send all the \payloads\ received from their descendants to their parent.
 		Once the \bs\ has all $n$ \payloads, it computes the summation.
