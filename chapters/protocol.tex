@@ -64,31 +64,31 @@
 	The complement field was used to verify the upper bound on the aggregation result by the \q.
 	We can achieve the same result with count so sending complement was redundant and no longer required.     
 
-	There is one leaf vertex $v_{s}$ for each sensor node $s$ with the \payload,
+	There is one leaf vertex $s.v$ for each sensor node $s$ with the \payload,
 	\begin{equation}\label{eq:vertex}
-		p_{s} = \{ s.id, 1,s.value, Hash( N\ ||\  s.id\ ||\  1\  ||\  s.value ) \} 
+		s.p = \{ s.id, 1,s.value, Hash( N\ ||\  s.id\ ||\  1\  ||\  s.value ) \} 
 	\end{equation}
 	where $N$ is the query nonce which is disseminated with each query.
 
-	Internal vertices represent aggregation operations, and have \payloads\  that are defined based on their children. Suppose an internal vertex has child vertices $v_{1}, v_{2},\dotsc, v_{q}$ with the following \payloads: $p_{1}, p_{2},\dotsc, p_{q}$, where
+	Internal vertices represent aggregation operations, and have \payloads\  that are defined based on their children. Suppose an internal vertex has child vertices $s_{1}.v, s_{2}.v,\dotsc, s_{q}.v$ with the following \payloads: $s_{1}.p, s_{2}.p,\dotsc, s_{q}.p$, where
 	\begin{equation}\label{def:internal-vertice}
-		p_{i} = \{ i.id, i.count, i.value, i.commitment\}
+		s_{i}.p = \{ s_{i}.id, s_{i}.count, s_{i}.value, s_{i}.commitment\}
 	\end{equation}
 	Then the internal vertex has payload 
 	\begin{equation}
-		p_{s} = \{ id, count, value, commitment \} 
+		s.p = \{ id, count, value, commitment \} 
 	\end{equation}
 	\begin{equation}
 		id = s.id 
 	\end{equation}	
 	\begin{equation}
-		count = \sum{i.count}		
+		count = \sum{s_{i}.count}		
 	\end{equation}
 	\begin{equation}
-		value = \sum{i.value}		
+		value = \sum{s_{i}.value}		
 	\end{equation}
 	\begin{equation}
-		commitment = H (N\ ||  id\ ||  count\ ||  value\ || p_{1}\ ||\ p_{2}\ || \dotsb ||\ p_{q})		
+		commitment = H (N\ ||\ id\ ||\ count\ ||\ value\ ||\ s_{1}.p\ ||\ s_{2}.p\ || \dotsb ||\ s_{q}.p)		
 	\end{equation}
 
 	Every \payload\ has an associated signature to it, which is the encryption using node's private key of the hash of the payload. For example, signature associated with equation \ref{eq:vertex} is the following:  
