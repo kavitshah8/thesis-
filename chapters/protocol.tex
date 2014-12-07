@@ -46,7 +46,7 @@
 	Whenever a sensor node performs an aggregation operation, it creates a commitment to the set of inputs used to compute the aggregate by computing a hash over all the inputs (including the commitments that were computed by its children). 
 	Both the aggregation result and the commitment creates a \payload\ for the aggregator.
 	Then the \payload, with the signature of the \payload\ signed by the sensor node are passed on to the parent of the sensor node.
-	Once the final \payloads\  and the signatures of those \payloads\  are sent to the querier, if an adversary tries to claim a different commitment structure it gets caught during the verification phase.
+	Once the final \payloads\  and the signatures of those \payloads\  are sent to the \bs, if an adversary tries to claim a different commitment structure it gets caught during the verification phase.
 	Our algorithm generates perfectly balanced binary trees to create commitment forests which saves the bandwidth in the verification phase compared to other approaches.
 
 	\begin{definition}\cite{chan2006secure}\label{def:ct}
@@ -61,7 +61,7 @@
 	The \payload\ format adds an ID field and removes the complement field from the label. 
 	Our protocol helps detecting an adversary, to achieve this we send the signature of the \payload. 
 	And to verify the signature, the verifier needs the ID of that node.
-	The complement field was used to verify the upper bound on the aggregation result by the \q.
+	The complement field was used to verify the upper bound on the aggregation result by the \bs.
 	We claim that the result can be achieved by sending count only, sending complement was redundant and no longer required.     
 
 	There is one leaf vertex $s.v$ for each sensor node $s$ with the \payload,
