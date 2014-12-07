@@ -291,11 +291,13 @@
 		\end{array}
 	\]
 	The sensor node $A$ receives $B, C, D's $ forests and creates its own single vertex forest. Creating a commitment forest is similar to doing summation on the received forests' binary format.
-	Also, generating a carry in the summation is equivalent to creating a new vertex in the commitment forest by merging two trees. Observe that $A$ has several ways of doing the summation.
-	For example, while adding lowest significant bits it has $1's$ at three places. The aggregation node $A$ can use any two $1's$ to generate a carry. If $A$ uses $1's$ from $B, D's$ forest than in the final aggregation lowest significant bit represents $A's$ vertex. 
+	Also, generating a carry in the summation is equivalent to creating a new vertex in the commitment forest by merging two trees. 
 	Also, the carry is always generated of the aggregation node.
-	We show that for the aggregation node being root in as many as possible trees is communication efficient in the analysis chapter.
-	If vertex related is represented by its letter than above summation process can be represented in the following ways.
+	In the analysis chapter, we show that for the aggregation node being root in as many as possible trees is communication efficient.
+
+	Observe that $A$ has several ways of doing the summation.
+	For example, while adding lowest significant bits it has $1's$ at three places. The aggregation node $A$ can use any two $1's$ to generate a carry. If $A$ uses $1's$ from $B, D's$ forest than in the final aggregation lowest significant bit represents $A's$ vertex. 
+	If vertex related to node is represented by its letter than above summation process can be represented in the following ways.
 	\[ 
 		\begin{array}{lcccclcccclcccc}
 			\mbox{Carry} & 0 & A & A & 0\  \vline & 0 & A & A & 0\ \vline & 0 & A & A & 0\ \\
