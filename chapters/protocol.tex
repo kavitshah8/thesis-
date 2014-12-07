@@ -41,36 +41,36 @@
 
 \section{Aggregation-Commit Phase}
 	In this phase, the network constructs a commitment structure. 
-	First, the sensor nodes at the highest depth in the aggregation tree (leaf nodes) send their \payloads,defined according to \ref{def:ct}, to their parents in the aggregation tree.
-	Each internal sensor node in the aggregation tree performs an aggregation operation whenever it receives \payloads from all of its children.
+	First, the sensor nodes at the highest depth in the aggregation tree (leaf nodes) send their \payloads,defined according to Definition \ref{def:ct}, to their parents in the aggregation tree.
+	Each internal sensor node in the aggregation tree performs an aggregation operation whenever it receives \payloads\  from all of its children.
 	Whenever a sensor node performs an aggregation operation, it creates a commitment to the set of inputs used to compute the aggregate by computing a hash over all the inputs (including the commitments that were computed by its children). 
 	Both the aggregation result and the commitment creates a payload for the aggregator.
 	Then the payload, with the signature of the payload signed by the sensor node are passed on to the parent of the sensor node.
-	Once the final \payloads and the signatures of those \payloads are sent to the querier, if an adversary tries to claim a different aggregation structure it gets caught.
+	Once the final \payloads\  and the signatures of those \payloads\  are sent to the querier, if an adversary tries to claim a different aggregation structure it gets caught.
 	Our algorithm generates perfectly balanced binary trees to create commitment forests which saves the bandwidth in the verification phase compared to other approaches.
 
 	\begin{definition}\cite{chan2006secure}\label{def:ct}
-		A \textbf{\textit{commitment tree}} is a logical tree build on top of an \textbf{\textit{aggregation tree}} where each vertex has an associated \payload to it, representing data being passed on to its parent. The \payload has the following format:
+		A \textbf{\textit{commitment tree}} is a logical tree build on top of an \textbf{\textit{aggregation tree}} where each vertex has an associated \payload\ to it, representing data being passed on to its parent. The \payload\ has the following format:
 
 		$\{id, count, value, commitment\}$\\
 		Where $id$ is the unique id of the node; $count$ is the number of leaf vertices in the subtree rooted at this vertex; $value$ is the aggregate computed over all the leaves rooted in the subtree; and commitment is the cryptographic commitment.
 
 	\end{definition}
 
-	Our \payload format is different than the label format in \cite{chan2006secure}.
-	The \payload format adds an ID field and removes the complement field from the label. 
+	Our \payload\ format is different than the label format in \cite{chan2006secure}.
+	The \payload\ format adds an ID field and removes the complement field from the label. 
 	Our protocol helps detecting an adversary, to achieve this we send the signature of the \payload. 
 	And to verify the signatures, the verifier needs the ID of that node.
 	The complement field was used to verify the upper bound on the aggregation result by the \q.
 	We can achieve the same result with count so sending complement was redundant and no longer required.     
 
 	There is one leaf vertex $v_{s}$ for each sensor node $s$ with the \payload,
-	\begin{equation}
+	\begin{equation}\label{eq:vertex}
 		p_{s} = \{ s.id, 1,s.value, Hash( N\ ||\  s.id\ ||\  1\  ||\  s.value ) \} 
 	\end{equation}
 	where $N$ is the query nonce which is disseminated with each query.
 
-	Internal vertices represent aggregation operations, and have \payloads that are defined based on their children. Suppose an internal vertex has child vertices $v_{1}, v_{2},\dotsc, v_{q}$ with the following \payloads: $p_{1}, p_{2},\dotsc, p_{q}$, where
+	Internal vertices represent aggregation operations, and have \payloads\  that are defined based on their children. Suppose an internal vertex has child vertices $v_{1}, v_{2},\dotsc, v_{q}$ with the following \payloads: $p_{1}, p_{2},\dotsc, p_{q}$, where
 	\begin{equation}\label{def:internal-vertice}
 		p_{i} = \{ i.id, i.count, i.value, i.commitment\}
 	\end{equation}
@@ -91,8 +91,11 @@
 		commitment = H (N\ ||  id\ ||  count\ ||  value\ || p_{1}\ ||\ p_{2}\ || \dotsb ||\ p_{q})		
 	\end{equation}
 
-	\textcolor{red}{Talk about signatures of the \payloads.}
-	
+	Every \payload\ has an associated signature to it, which is the encryption using node's private key of the hash of the payload. For example, signature associated with equation \ref{eq:vertex} is the following:  
+	\begin{equation}
+		sign(p_{s}) = E_{p_{s}}(H (p_{s}))
+	\end{equation}
+
 	We use the collision resistant hash function so it's impossible for an adversary to tamper any of the commitments once they are created.
 
 	There is a mapping between the vertices in the commitment tree and the sensor nodes in the aggregation tree, a vertex is a logical element while a node is a physical device.
