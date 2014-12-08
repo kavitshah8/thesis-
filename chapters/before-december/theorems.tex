@@ -1,0 +1,99 @@
+\chapter{theorems}
+Tree properties \& notations
+
+Every node is identical, following the same procedure
+
+Add picture of the topology
+
+$d_{i}$ is the depth at $i$
+
+$n_{i}$ is the fanout at $d_{i-1}$
+
+$c_{i}$ is the number of certificates forwarded by each node at $d_{i}$ to its parent
+ 												
+ 												$= \lceil log((n_{i+1} * c_{i+1}) + 1) \rceil$
+
+$N_{i}$ is the number of nodes at $d_{i}$  
+
+												$= \Pi_{k=1}^i n_k$
+
+$T_{i}$ is the totality at $d_{i}$ where totality is the number of certificates received/needed
+											
+												$= N_{i} * (n_{i+1} * c_{i+1})$
+
+Total number of nodes in a tree  
+												
+												$= N + 1$
+												
+												$= N_{0} + N_{1} + N_{2} + + N_{3} + ... + N_{n-2} + N_{n-1} + N_{n}$
+												
+												$= n_{0}! + n_{1}! + n_{2}! + n_{3}! + ...	+ n_{n-2}!  + n_{n-1}! + n_{n}!$
+												
+												$= 1 + n_{1}! + n_{2}! + n_{3}! + ...	+ n_{n-2}!  + n_{n-1}! + n_{n}!$
+
+\begin{theorem}
+	Given an aggregation tree with N + 1 nodes, having $N_{i} = n_{i}!$ nodes at depth $d_{i}$, equally distributed among thier $n_{i-1}!$ parents then in totality network needs $O(N*log(C))$ certificates where $C$ is a constant.
+\end{theorem}
+
+\begin{proof}
+	
+	Case I: For $d_{n}\ ; N_{n} = n_{n}!\ ; T_{n} = 0\ ; c_{n} = 1 $\\
+	Case II: For $d_{n - 1}\\ N_{n - 1} = n_{n - 1}!\\ T_{n - 1} = n_{n - 1}! * (n_{n} * c_{n}) = n_{n - 1}! * (n_{n} )\\ c_{n - 1} = 2\\ $
+	Case III: For $d_{n - 2}\\ N_{n - 2} = n_{n - 2}!\\ T_{n -2} = n_{n - 2}! * (n_{n - 1} * c_{n - 1}) = n_{n - 2}! * (n_{n - 1 } * 2) \\ c_{n - 2} = \lceil log((n_{n - 1} *c_{n - 1}) + 1) \rceil = \lceil log((n_{n - 1} * 2) + 1) \rceil $\\
+	Case IV: For $d_{n - 3}\\ N_{n - 3} = n_{n - 3}!\\ T_{n -3} = n_{n - 3}! * (n_{n - 2} * c_{n - 2}) = n_{n - 3}! * (n_{n - 2 } * \lceil log((n_{n - 1} * 2 ) + 1) \rceil ) \\ c_{n - 3} = \lceil log((n_{n - 2} * c_{n - 2}) + 1) \rceil = \lceil log( n_{n - 2} *\lceil log((n_{n - 1} * 2 ) + 1) \rceil + 1) \rceil $\\
+\end{proof}
+
+\begin{theorem}
+		Given an aggregation tree with N + 1 nodes, having $N_{i} = n_{i}!$ nodes at depth $d_{i}$, equally distributed among thier $n_{i-1}!$ parents then in totality network needs $\Omega(N)$ certificates.
+\end{theorem}
+
+\begin{proof}
+
+	Case I: For $d_{n}\ ; N_{n} = n_{n}!\ ; T_{n} = 0\ ; c_{n} = 1 $\\
+	Case II: For $d_{n - 1}\\ N_{n - 1} = n_{n - 1}!\\ T_{n - 1} = n_{n - 1}! * (n_{n} * c_{n}) = n_{n - 1}! * n_{n}\\ c_{n - 1} = 1\\ $
+	Case III: For $d_{n - 2}\\ N_{n - 2} = n_{n - 2}!\\ T_{n -2} = n_{n - 2}! * (n_{n - 1} * c_{n - 1}) = n_{n - 2}! * n_{n - 1 } \\ c_{n - 2} = 1$\\
+	Case IV: For $d_{n - 3}\\ N_{n - 3} = n_{n - 3}!\\ T_{n -3} = n_{n - 3}! * (n_{n - 2} * c_{n - 2}) = n_{n - 3}! * n_{n - 2 } \\$     $c_{n - 3} = 1$\\ \\
+	Case n-2: For $d_{2}\\ N_{2} = n_{2}!\\ T_{2} = n_{2}! * (n_{3} * c_{3}) = n_{2}! * n_{3} \\$  $c_{2} = 1$\\
+	Case n-1: For $d_{1}\\ N_{1} = n_{1}!\\ T_{1} = n_{1}! * (n_{2} * c_{2}) = n_{1}! * n_{2} \\$  $c_{n-1} = 1$\\
+
+\end{proof}
+
+
+Things to include in above analysis:\\
+	Every node does the same thing\\
+	Individual throughput for each node\\
+
+\begin{theorem} \label{min certificates}
+	Given an aggregation tree with N nodes, in totality network needs $\Omega(N)$ certificates.
+\end{theorem}
+
+\begin{proof}
+	
+	Let $T$ \ represent a node in an aggregation tree whose number of children are $T$.$CHILDREN$, $C$is one of its children and $P$ is its parent.\\
+	We can say that $T$ needs certificates of all of its children because while creating a commitment tree $T$ receives at least one $C$.\msg \ and \sign$_{C}$ ($C$.\msg)  from all $T$.$CHILDREN$
+
+	If your aggregation tree is such that $\forall T$ needs to send only one message to $P$ then every $P$ receives only $P.CHILDREN$ number of messages. Hence, $P$ needs $P.CHILDREN$ number of certificates.
+
+	So, if every $P$ needs certificates only of its children  and we have N nodes in the network then since every node has a unique parent as aggregation tree is a rooted tree, in totality we need only N certificates in the network.
+
+\end{proof}
+
+
+\begin{theorem}
+		Given an aggregation tree with N + 1 nodes, having $N_{i} = n_{i}!$ nodes at depth $d_{i}$, equally distributed among thier $n_{i-1}!$ parents then in totality network needs $\Omega(N)$ certificates.
+\end{theorem}
+
+\begin{proof}
+
+	Let say we have N + 1 nodes in an aggregation tree, also $d_{i}$ represents depth at level i. Tree is constructed such that root has $n_{1}$ children, all $n_{1}$ nodes at $d_{1}$ have $n_{2}$ children, all ($n_{1} * n_{2}$)  nodes at $d_{2}$ have $n_{3}$ children and all ($n_{1} * n_{2} * n_{3} ... n_{n-1}$) nodes at $d_{n-1}$ have $n_{n}$ children.\\
+	$ N + 1 = (1 + (n_{1}) + (n_{2} * (n_{1})) + (n_{3} * (n_{2} * n_{1})) + ... + (n_{n} * (n_{n-1} * n_{n-2} * n_{n-3} ... n_{1}) ) ) $\\
+	
+	All $ (n_{n-1} * n_{n-2} * n_{n-3} ... n_{1}) $ nodes at $ d_{n-1} $ need to know certificates of all of their $n_{n}$ children.
+	If there is only one carry after aggregation then all nodes at $d_{n-1}$ need to send only one certificate to their parent.\\
+	All $ (n_{n-2} * n_{n-3} * n_{n-4} ... n_{1}) $ nodes at $ d_{n-2} $ need to know certificates of all of their $ n-1 $ children.\\
+	All $ n_{1} $ nodes at $ d_{1} $ need to know certificates of all of their $ n-2 $ children.\\
+	The root need to know the certificates of all of its $ n_{1} $ children.\\
+	Also, the querier needs to know the certificate of the root.\\
+	So, in totality we need $ (1 + (n_{1}) + (n_{2} * (n_{1})) + (n_{3} * (n_{2} * n_{1})) + ... + (n_{n} * (n_{n-1} * n_{n-2} * n_{n-3} ... n_{1}) ) ) $ which is $\Omega(N)$. Hence, prooved.
+
+\end{proof}
