@@ -319,8 +319,8 @@
 \begin{algorithm}[H]\label{number3} \caption{CommitmentTreeGeneration}
 	\begin {algorithmic}[1]
 
-		\STATE depth = \at.MaxDepth
-		\WHILE {depth $\geq$ 0}
+		\STATE d = \at.MaxDepth
+		\WHILE {d $\geq$ 0}
 
 			\FORALL {\node \   $\in$ \at.depth }
 
@@ -334,11 +334,11 @@
 
 							\FORALL {tree root \treeRoot \ $\in$ \child.\forest}
 
-								\IF {\node \ has \treeRoot.\cert (else get \treeRoot.\cert )} 
+								\IF {\node \ has \treeRoot.\cert\  (else get \treeRoot.\cert )} 
 
-									\IF {\node verifies \treeRoot.msg (else raise an alarm)}
+									\IF {\node verifies \treeRoot.\msg\ (else raise an alarm)}
 
-										\STATE Add \treeRoot \ to \node.\forest
+										\STATE Add \treeRoot \ into \node.\forest
 										
 									\ENDIF
 								
@@ -355,7 +355,7 @@
 
 			\ENDFOR
 
-			\STATE {depth = depth - 1 }
+			\STATE {d = d - 1 }
 
 		\ENDWHILE
 	\end{algorithmic}
@@ -364,7 +364,7 @@
 \begin{algorithm}[H]\caption{CommitmentTreeCoding}
 	\begin{algorithmic}[1]
 
-		\STATE \temp \ = SortLinkedList( \node.\forest \ )
+		\STATE \temp \ = SortLinkedList( \node, \node.\forest \ ) /*returns head of the linked list*/
 
 		\WHILE {\temp.\nextTree \ $\neq$ \ 0}
 
@@ -376,10 +376,10 @@
 				\STATE \aggregator.\height \ = \temp.\height \ + 1
 				\STATE \aggregator.\lc \ = \temp
 				\STATE \aggregator.\rc \ = \temp.\nextTree
-				\STATE Insert \aggregator \ to \node.\forest
+				\STATE Insert \aggregator \ into \node.\forest
 				\STATE Remove \temp
 				\STATE Remove \temp.\nextTree
-				\STATE \temp \ = SortLinkedList( \node.\forest \ )
+				\STATE \temp \ = SortLinkedList( \node, \node.\forest \ )
 
 			\ENDIF
 
