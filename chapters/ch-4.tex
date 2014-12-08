@@ -8,13 +8,13 @@
 	Also, data communication between nodes consumes a large portion of the total energy consumption. 
 	The in-network data aggregation reduces the energy consumption by eliminating redundant data being transmitted to the base station.
 	For example, in-network data aggregation of the \textit{SUM} function can be performed as follows. 
-	Each intermediate sensor node in the network forwards a single sensor reading containing the sum of all the sensor readings of all of its descendants, rather than forwarding each descendants sensor reading one at a time to the base station.
-	It is shown that the energy-savings achieved by in-network data-aggregation are significant \cite{madden2002tag}.
+	Each intermediate sensor node in the network forwards a single sensor reading containing the sum of all the sensor readings from all of its descendants, rather than forwarding each descendants sensor reading one at a time to the base station.
+	It is shown that the energy savings achieved by in-network data-aggregation are significant \cite{madden2002tag}.
 	The in-network data aggregation approach requires the sensor nodes to do more computations.
 	But studies show that data transmission requires more energy than data computation. 
 	Hence, in-data aggregation is an efficient and widely used approach for saving bandwidth by doing less communications between sensor nodes and ultimately giving longer battery life to sensor nodes in the network.
 
-	We define following terms to help us define goals of in-network data-aggregation approach.
+	We define following terms to help us define the goals of in-network data-aggregation approach.
 	\begin{definition}\label{def:payload}
 		\textbf{Payload} is the part of the transmitted data which is the fundamental purpose of the transmission, to the exclusion of information sent with it such as metadata solely to facilitate the delivery.
 	\end{definition}
@@ -26,15 +26,12 @@
 
 \section{Security in In-network data aggregation}
 	In-network data aggregation approach saves bandwidth by transmitting less \payloads\  between sensor nodes but it gives more power to the intermediate aggregator sensor nodes. 
-	For example, an intermediate malicious sensor node who is doing aggregation over all of its descendants \payloads, needs to tamper with only one aggregated \payload\ instead of tampering with all the \payloads\ from all of its descendants. 
-	It means an intermediate malicious sensor node needs to do less work to skew the final aggregated \payload.
-	Also, an adversary controlling few sensor nodes in the network can cause the network to return unpredictable results, making an entire sensor network unreliable.
+	For example, a malicious intermediate sensor node who is doing aggregation over all of its descendants \payloads, needs to tamper with only one aggregated \payload\ instead of tampering with all the \payloads\ received from all of its descendants. 
+	It means a malicious intermediate sensor node needs to do less work to skew the final aggregated \payload.
+	Also, an adversary controlling few sensor nodes in the network can cause the network to return unpredictable \payloads, making an entire sensor network unreliable.
 	Notice that, the more descendants an intermediate sensor node has the more powerful it becomes.
-	Despite the fact that in-network aggregation makes an intermediate sensor nodes more powerful, many in-network aggregation schemes assumes that all the sensor nodes in the network are honest \cite{yao2002cougar, madden2003design}.
-
-In network aggregation in a single hop network cite papers.
+	Despite the fact that in-network aggregation makes an intermediate sensor nodes more powerful, some aggregation approaches requires strong network topology assumptions or honest behaviors from the sensor nodes.
+	For example, in-network aggregation schemes in \cite{yao2002cougar, madden2003design} assumes that all the sensor nodes in the network are honest. Secure Information Aggregation (SIA) of \cite{przydatek2003sia}, provides security for the network topology with a single-aggregator model.  
 
 In network aggregation in a  multi hop network cite papers.
-
-Payload, information rate.
 
