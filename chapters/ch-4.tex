@@ -1,4 +1,30 @@
 \chapter{In-network Data-Aggregation Overview} % (fold)
 \label{cha:In-network Data-Aggregation Overview}
 
-% chapter In-network Data-Aggregation Overview (end)
+\section{In network aggregation}
+	Sensor networks are being used in scientific data collection, fire alarm systems, traffic monitoring, wildfire tracking, wildlife monitoring and many other applications.
+	In sensor networks, thousands of sensor nodes interact with physical environment and collectively monitors an area, generating a large amount of data to be transmitted and reason about.
+	The sensor nodes in the network often have limited resources, such as computation power, memory, storage, communication capacity and most significantly, battery power.
+	Also, data communication between nodes consumes a large portion of the total energy consumption. 
+	The in-network data aggregation reduces the energy consumption by eliminating redundant data being transmitted to the base station.
+	For example, in-network data aggregation of the \textit{SUM} function can be performed as follows. 
+	Each intermediate sensor node in the network forwards a single sensor reading containing the sum of all the sensor readings of all of its descendants, rather than forwarding each descendants sensor reading one at a time to the base station.
+	It is shown that the energy-savings achieved by in-network data-aggregation are significant \cite{madden2002tag}.
+	The in-network data aggregation approach requires the sensor nodes to do more computations.
+	But studies shows that data transmission requires more energy than data computation. 
+	Hence, in-data aggregation is an efficient and widely used approach for saving bandwidth by doing less communications between sensor nodes and ultimately giving longer battery life to sensor nodes in the network. 
+
+\section{Security in In-network data aggregation}
+	In-network data aggregation approach saves bandwidth by achieving less communications between sensor nodes but it gives more power to the intermediate aggregator sensor nodes. 
+	For example, an intermediate malicious sensor node who is doing aggregation over all of its descendants sensor readings, needs to tamper with only one aggregated sensor reading instead of tampering with all the sensor readings from all of its descendants. 
+	It means an intermediate malicious sensor node needs to do less work to skew the final aggregated value.
+	Also, an adversary controlling few sensor nodes in the network can cause the network to return unpredictable results, making an entire sensor network unreliable.
+	Notice that, the more descendants an intermediate sensor node has the more powerful it becomes.
+	Despite the fact that in-network aggregation makes an intermediate sensor nodes more powerful, many in-network aggregation schemes assumes that all the sensor nodes in the network are honest \cite{yao2002cougar, madden2003design}.
+
+In network aggregation in a single hop network cite papers.
+
+In network aggregation in a  multi hop network cite papers.
+
+Payload, information rate.
+
