@@ -125,13 +125,13 @@
 	\begin{equation}
 		f(s_{1}.value, s_{2}.value, s_{3}.value, \dotsc, s_{n}.value)
 	\end{equation}
-	We discuss the case for the $SUM$ function, but the protocols discussed here can be applied to any other function with little or no modification. 
+	We discuss the case for the \textit{SUM} function, but the protocols discussed here can be applied to any other function with little or no modification. 
 	\begin{equation}
-		SUM = \sum\limits_{i=1}^n s_{i}.value
+		\textit{SUM} = \sum\limits_{i=1}^n s_{i}.value
 	\end{equation}
 
 	\subsection{No aggregation approach}
-		One way to calculate the $SUM$ is to send all the $n$ \payloads\ to the \bs.
+		One way to calculate the \textit{SUM} is to send all the $n$ \payloads\ to the \bs.
 		It means all the internal nodes in the network send all the \payloads\ received from their descendants to their parent.
 		Once the \bs\ has all $n$ \payloads, it computes the summation.
 		For any given node, the \inforate\ is 1. \inforate\ is defined in Definition \ref{def:ir}.\\
@@ -151,7 +151,7 @@
 	\end{definition}
 
 	\subsection{Naive approach}
-		Another way to calculate the $SUM$ is to send only one \payload\ to the \bs.
+		Another way to calculate the \textit{SUM} is to send only one \payload\ to the \bs.
 		It means all the internal nodes in the network, after receiving readings from all of their children, does the summation including their own reading and then pass the resulted \payload\ to their parents' as shown in Figure \ref{fig:naive-commitment-tree}.
 		For any given node, the \inforate\ is $1 / (c + 1)$, where $c$ is the number of children for the give node.\\
 		Advantages:
