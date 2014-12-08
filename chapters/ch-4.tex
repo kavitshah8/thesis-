@@ -12,7 +12,17 @@
 	It is shown that the energy-savings achieved by in-network data-aggregation are significant \cite{madden2002tag}.
 	The in-network data aggregation approach requires the sensor nodes to do more computations.
 	But studies shows that data transmission requires more energy than data computation. 
-	Hence, in-data aggregation is an efficient and widely used approach for saving bandwidth by doing less communications between sensor nodes and ultimately giving longer battery life to sensor nodes in the network. 
+	Hence, in-data aggregation is an efficient and widely used approach for saving bandwidth by doing less communications between sensor nodes and ultimately giving longer battery life to sensor nodes in the network.
+
+	We define following terms to give precise goals of in-network data-aggregation.
+	\begin{definition}\label{def:payload}
+		\textbf{Payload} is the part of the transmitted data which is the fundamental purpose of the transmission, to the exclusion of information sent with it such as metadata solely to facilitate the delivery.
+	\end{definition}
+	\begin{definition}\label{def:information-rate}
+		\textbf{Information-rate} for a given node is the ratio of the \payloads, number of \payloads\ sent divided by the number of \payloads\ received.
+	\end{definition}
+	The goal of the aggregation process is to achieve lowest possible \informationRate.
+	In the following section we show that reducing \informationRate\ makes the intermediate sensor nodes more powerful. Also, it makes aggregated \payload\  more fragile and vulnerable to various security attacks.
 
 \section{Security in In-network data aggregation}
 	In-network data aggregation approach saves bandwidth by achieving less communications between sensor nodes but it gives more power to the intermediate aggregator sensor nodes. 
