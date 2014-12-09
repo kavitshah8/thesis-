@@ -7,7 +7,7 @@
 	The sensor nodes in the network often have limited resources, such as computation power, memory, storage, communication capacity and most significantly, battery power.
 	Also, data communication between nodes consumes a large portion of the total energy consumption. 
 	The in-network data aggregation reduces the energy consumption by eliminating redundant data being transmitted to the base station.
-	For example, in-network data aggregation of the \textit{SUM} function can be performed as follows. 
+	For example, in-network data aggregation of the $\textit{SUM}$ function can be performed as follows. 
 	Each intermediate sensor node in the network forwards a single sensor reading containing the sum of all the sensor readings from all of its descendants, rather than forwarding each descendants sensor reading one at a time to the base station.
 	It is shown that the energy savings achieved by in-network data-aggregation are significant \cite{madden2002tag}.
 	The in-network data aggregation approach requires the sensor nodes to do more computations.
@@ -22,7 +22,33 @@
 		\textbf{Information-rate} for a given node is the ratio of the \payloads, number of \payloads\ sent divided by the number of \payloads\ received.
 	\end{definition}
 	The goal of the aggregation process is to achieve lowest possible \informationRate.
-	In the following section, we show that reducing \informationRate\ makes the intermediate (aggregator) sensor nodes more powerful. Also, it makes aggregated \payload\ more fragile and vulnerable to various security attacks.
+	In the following sections, we show that reducing \informationRate\ makes the intermediate (aggregator) sensor nodes more powerful.
+	Also, it makes aggregated \payload\ more fragile and vulnerable to various security attacks.
+	We describe bandwidth analysis of different in-network aggregation approaches.
+
+\section{Bandwidth analysis}
+	Congestion is widely used parameter while doing bandwidth analysis of networking applications. 
+	The congestion for any given node is defined as follows:
+	\begin{equation}
+		Congestion = edgeCongestion * fanout
+	\end{equation}
+	Congestion is very useful factor while analyzing sensor network as it measures how quickly the sensor nodes will exhaust their batteries \cite{madden2003design}. 
+	To transmit a $k$ - bit packet at distance $d$, the energy dissipated is:
+	\begin{equation}
+		E_{tx}(k, d) = E_{elec} * k + \varepsilon_{amp} * k * d^{2}
+	\end{equation}
+	and to receive the k - bit packet, the radio expends
+	\begin{equation}
+		E_{rx}(k) = E_{elec} * k
+	\end{equation}
+	For $\mu Amp$\ wireless sensor, $E_{elec} = 50nJ/b$\ and $\varepsilon_{amp} = 100pJ/b/m^2$. \textcolor{red}{cite papers and add more details on the equations}
+
+	Also, some nodes in the sensor network have more congestion than the other. 
+	The highly congested nodes are the most important to the the network connectivity, for example, the nodes closer to the base station are essential for the network connectivity.
+	The failure of the highly congested nodes may cause the network to partition even though other nodes in the network have high battery levels.
+	A low congestion on the highly congested nodes is thus desirable even though it costs more congestion within the overall sensor network. 
+
+	\textit{SHIA} tries to achieve uniform congestion in the network.	
 
 \section{Security in In-network data aggregation}
 	In-network data aggregation approach saves bandwidth by transmitting less \payloads\  between sensor nodes but it gives more power to the intermediate aggregator sensor nodes. 
