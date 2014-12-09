@@ -29,7 +29,7 @@
 \section{Bandwidth analysis}
 	Congestion is widely used parameter while doing bandwidth analysis of networking applications. 
 	The congestion for any given node is defined as follows:
-	\begin{equation}
+	\begin{equation}\label{def:congestion}
 		Congestion = edgeCongestion * fanout
 	\end{equation}
 	Congestion is very useful factor while analyzing sensor network as it measures how quickly the sensor nodes will exhaust their batteries \cite{madden2003design}. 
@@ -45,8 +45,17 @@
 
 	Also, some nodes in the sensor network have more congestion than the other. 
 	The highly congested nodes are the most important to the the network connectivity, for example, the nodes closer to the base station are essential for the network connectivity.
-	The failure of the highly congested nodes may cause the network to partition even though other nodes in the network have high battery levels.
-	A low congestion on the highly congested nodes is thus desirable even though it costs more congestion within the overall sensor network. 
+	The failure of the highly congested nodes may cause the sensor network to fail even though most of the nodes in the network are working.
+	Hence it is desirable to have a lower congestion on the highly congested nodes even though it costs more congestion within the overall sensor network. 
+
+	To achieve the lowest possible \informationRate, we can construct an aggregation protocol where each node transmits a single data-item defined in $X.X$ to its parent in the aggregation tree.
+	It implies there is $\Omega(1)$ congestion on each edge in the aggregation tree, thus resulting in $\Omega(d)$ congestion on the node, where $d$ is the fanout of that node according to Definition \ref{def:congestion}.
+	In this approach fanout $d$ is dependent on the given aggregation tree, which can be as $O(n)$ for the star tree topology and $O(1)$ for the palm tree topology.
+	This can create some highly congested nodes in the aggregation tree which is highly undesirable.
+	In most of the real world applications we can not control $d$ as the aggregation tree is random.
+	Hence, it is desirable to have almost uniform \informationRate across the aggregation tree.
+
+	Talk about No aggregation approach.
 
 	\textit{SHIA} tries to achieve uniform congestion in the network.	
 
