@@ -1,65 +1,83 @@
 \chapter{Verification}
 
-\[ 
-	\left( 
-		\begin{array}{cccc}
-			1 & 0 & 0 & 1 \\ 
-			0 & 1 & 1 & 0 \\
-			0 & 1 & 0 & 1 \\
-			0 & 0 & 1 & 1 \\
-			\hline
-			1 & 0 & 0 & 1 
-		\end{array}
-	\right)
-%
-	\left( 
-		\begin{array}{cccc}
-			1 & 1 & 0 & 1 \\ 
-			1 & 1 & 1 & 1 \\
-			0 & 1 & 1 & 1 \\
-			1 & 1 & 1 & 0 \\
-			\hline
-			1 & 0 & 1 & 1 
-		\end{array}
-	\right)
-\]
+\section{Find a complainer}
 
-The querier receives the following:
-\[ 
-	\left( 
-		\begin{array}{cccc}
-			1 & 0 & 0 & 1 \\ 
-			0 & 1 & 1 & 0 \\
-			0 & 1 & 0 & 1 \\
-			1 & 1 & 1 & 0 \\
-			\hline
-			0 & 1 & 0 & 0 
-		\end{array}
-	\right)
-\]
+	If there is only one complainer in the aggregation tree, the base station can find the complainer in linear time.
+	
+	At the end of the verification phase, the base station gets one single authentication code from the root of the aggregation tree.
+	The authentication codes with positive and negative acknowledgment message for sensor node $s$ are defined as follows:
+	\begin{equation}
+		MAC_{K_{s}}(N\ ||\ ACK)
+	\end{equation}
+	\begin{equation}
+		MAC_{K_{s}}(N\ ||\ NACK)
+	\end{equation}
+	$K_{s}$ is the key that $s$ shares with the base station;
+	$ACK$ is a message for positive acknowledgment and
+	$NACK$ is a message for negative acknowledgment.
 
-The querier does the following:
+	\[ 
+		\left( 
+			\begin{array}{cccc}
+				1 & 0 & 0 & 1 \\ 
+				0 & 1 & 1 & 0 \\
+				0 & 1 & 0 & 1 \\
+				0 & 0 & 1 & 1 \\
+				\hline
+				1 & 0 & 0 & 1 
+			\end{array}
+		\right)
+	%
+		\left( 
+			\begin{array}{cccc}
+				1 & 1 & 0 & 1 \\ 
+				1 & 1 & 1 & 1 \\
+				0 & 1 & 1 & 1 \\
+				1 & 1 & 1 & 0 \\
+				\hline
+				1 & 0 & 1 & 1 
+			\end{array}
+		\right)
+	\]
 
-\[
-	\left( 
-		\begin{array}{cccc cccc cccc cccc}
-			1 & 0 & 0 & 1\ \vline\  0 & 1 & 1 & 0\ \vline\  0 & 1 & 0 & 1\ \vline\  0 & 0 & 1 & 1 \\
-			1 & 1 & 0 & 1\ \vline\  1 & 1 & 1 & 1\ \vline\	0 & 1 & 1 & 1\ \vline\	1 & 1 & 1 & 0 \\ 
-			\hline
-			0 & 1 & 0 & 0\ \vline\ 1 & 0 & 0 & 1\ \vline\ 0 & 0 & 1 & 0\ \vline\ 1 & 1 & 0 & 1\\
-		\end{array}
-	\right)
-\]
+	The base station receives the following:
+	\[ 
+		\left( 
+			\begin{array}{cccc}
+				1 & 0 & 0 & 1 \\ 
+				0 & 1 & 1 & 0 \\
+				0 & 1 & 0 & 1 \\
+				1 & 1 & 1 & 0 \\
+				\hline
+				0 & 1 & 0 & 0 
+			\end{array}
+		\right)
+	\]
 
-\[ 
-	\left( 
-		\begin{array}{cccc}
-			1 & 0 & 0 & 1 \\ 
-			0 & 1 & 0 & 0 \\
-			\hline
-			1 & 1 & 0 & 1 \\
-		\end{array}
-	\right)
-\]
+	The base station does the following:
 
-And concludes that node $4 $ is complaining.
+	\[
+		\left( 
+			\begin{array}{cccc cccc cccc cccc}
+				1 & 0 & 0 & 1\ \vline\  0 & 1 & 1 & 0\ \vline\  0 & 1 & 0 & 1\ \vline\  0 & 0 & 1 & 1 \\
+				1 & 1 & 0 & 1\ \vline\  1 & 1 & 1 & 1\ \vline\	0 & 1 & 1 & 1\ \vline\	1 & 1 & 1 & 0 \\ 
+				\hline
+				0 & 1 & 0 & 0\ \vline\ 1 & 0 & 0 & 1\ \vline\ 0 & 0 & 1 & 0\ \vline\ 1 & 1 & 0 & 1\\
+			\end{array}
+		\right)
+	\]
+
+	\[ 
+		\left( 
+			\begin{array}{cccc}
+				1 & 0 & 0 & 1 \\ 
+				0 & 1 & 0 & 0 \\
+				\hline
+				1 & 1 & 0 & 1 \\
+			\end{array}
+		\right)
+	\]
+
+	And concludes that node $4 $ is complaining.
+
+\section{Detect an adversary}
