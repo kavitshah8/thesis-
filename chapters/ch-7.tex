@@ -1,20 +1,33 @@
 \chapter{Verification}
 
 \section{Find a complainer}
-
-	If there is only one complainer in the aggregation tree, the base station can find the complainer in linear time.
-	
-	At the end of the verification phase, the base station gets one single authentication code from the root of the aggregation tree.
 	The authentication codes with positive and negative acknowledgment message for sensor node $s$ are defined as follows:
 	\begin{equation}
-		MAC_{K_{s}}(N\ ||\ ACK)
+		MAC_{K_{s}}(N\ ||\ \textit{ACK})
 	\end{equation}
 	\begin{equation}
-		MAC_{K_{s}}(N\ ||\ NACK)
+		MAC_{K_{s}}(N\ ||\ \textit{NACK})
 	\end{equation}
 	$K_{s}$ is the key that $s$ shares with the base station;
-	$ACK$ is a message for positive acknowledgment and
-	$NACK$ is a message for negative acknowledgment.
+	$\textit{ACK}$, $\textit{NACK}$ are special messages for positive and negative acknowledgment respectively.
+	To detect a complainer, the base station calculates the following equations and stores their values.
+	\begin{equation}
+		\resizebox{.9\hsize}{!} 
+		{$MAC_{root}(ACK) = MAC_{K_{1}}(N\ ||\ \textit{ACK}) \oplus MAC_{K_{2}}(N\ ||\ \textit{ACK}) \oplus \dotsc \oplus MAC_{K_{n}}(N\ ||\ \textit{ACK})$}
+	\end{equation}
+	\begin{equation}
+		\resizebox{.9\hsize}{!} 
+		{$MAC_{root}(\textit{NACK}) = MAC_{K_{1}}(N\ ||\ \textit{NACK}) \oplus MAC_{K_{2}}(N\ ||\ \textit{NACK}) \oplus \dotsc \oplus MAC_{K_{n}}(N\ ||\ \textit{NACK})$}
+	\end{equation}
+	$\forall i \in [1,n]$
+	\begin{equation}
+		c_{i} = MAC_{K_{i}}(N\ ||\ \textit{ACK}) \oplus MAC_{K_{i}}(N\ ||\ \textit{NACK})
+	\end{equation}
+	At the end of the verification phase, the base station receives single authentication code $MAC_{root}$ from the root of the aggregation tree.
+	\begin{equation}
+		c = MAC_{root} \oplus MAC_{root}(ACK)
+	\end{equation}
+	If there is only one complainer in the aggregation tree, then the value of $c$ must match one of the values of $c_{1}$, $c_{2}$, $\dotsc$, $c_{n}$. The matching value node is the complainer.The base station needs to do $n$ comparison to find a complainer in the aggregation tree. So, the base station can find the complainer in linear time.
 
 	\[ 
 		\left( 
