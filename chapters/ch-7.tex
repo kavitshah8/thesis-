@@ -17,36 +17,56 @@
 	The authentication code with $\textit{ACK}$ message is sent by the sensor node if it verifies its contribution correctly to the root commitment value during the 
 	\textit{verification of inclusion} phase and vice versa.
 	
-	To verify that every sensor node has sent its authentication code with \ack, the base station computes the $MAC_{root}(ACK)$ as follows.
+	To verify that every sensor node has sent its authentication code with \ack, the base station computes the $\mac_{root}(ACK)$ as follows:
 	\begin{equation}
 		\resizebox{.9\hsize}{!} 
-		{$MAC_{root}(ACK) = MAC_{K_{1}}(N\ ||\ \textit{ACK}) \oplus MAC_{K_{2}}(N\ ||\ \textit{ACK}) \oplus \dotsc \oplus MAC_{K_{n}}(N\ ||\ \textit{ACK})$}
+		{$\mac_{root}(ACK) = \mac_{K_{1}}(N\ ||\ \textit{ACK}) \oplus \mac_{K_{2}}(N\ ||\ \textit{ACK}) \oplus \dotsc \oplus \mac_{K_{n}}(N\ ||\ \textit{ACK})$}
 	\end{equation}
-	The base station can compute $MAC_{root}(ACK)$ as it knows $K_{s}$\ for each sensor node $s$.
-	Then it compares the computed $MAC_{root}(ACK)$\ with the received root authentication code $MAC_{root}$\ from the root of the aggregation tree. 
+	The base station can compute $\mac_{root}(ACK)$ as it knows $K_{s}$\ for each sensor node $s$.
+	Then it compares the computed $\mac_{root}(ACK)$\ with the received root authentication code $\mac_{root}$\ from the root of the aggregation tree. 
 	If those two codes match then it accepts the aggregated value or else it proceeds further to find an adversary. 
 
 	To detect an adversary, the base station needs to identify which nodes in the aggregation tree sent its authentication codes with \nack\ during the verification of inclusion phase.
-	The node who sent authentication code with \nack\ during the verification of inclusion phase is called \complainer. 
-	We claim that if there is only one complainer in the aggregation tree during the verification of inclusion phase then the base station can find the complainer in linear time.
-
-	\begin{equation}
-		\resizebox{.9\hsize}{!} 
-		{$MAC_{root}(\textit{NACK}) = MAC_{K_{1}}(N\ ||\ \textit{NACK}) \oplus MAC_{K_{2}}(N\ ||\ \textit{NACK}) \oplus \dotsc \oplus MAC_{K_{n}}(N\ ||\ \textit{NACK})$}
+	The node who sent authentication code with \nack\ during the verification of inclusion phase is called a \complainer. 
+	We claim that if there is a single complainer in the aggregation tree during the verification of inclusion phase then the base station can find the complainer in linear time.
+	To find a complainer, the base station computes the complainer code $c$\ according to Equation \ref{eq:complainer}.
+	\begin{equation}\label{eq:complainer}
+		c = \textit{MAC}_{root} \oplus \textit{MAC}_{root}(ACK)
 	\end{equation}
+	Then it computes the complainer code $c_{i}$\ for node $i$\ according to Equation \ref{eq:caomplainer-node}.\\ 
 	$\forall i \in [1,n]$
-	\begin{equation}
+	\begin{equation}\label{eq:caomplainer-node}
 		c_{i} = MAC_{K_{i}}(N\ ||\ \textit{ACK}) \oplus MAC_{K_{i}}(N\ ||\ \textit{NACK})
 	\end{equation}
-	At the end of the \textit{collection of authentication codes} phase, the base station receives single authentication code $MAC_{root}$ from the root of the aggregation tree. Once the base station receives the $MAC_{root}$ it calculates the following:
+	Then it compares $c$\ with all $c_{i}$\ one at a time. 
+	The matching code indicates the complainer node.
+	The base station needs to do $n$ comparison to find a complainer in the aggregation tree. 
+	Hence, the base station can find a single complainer in linear time.
+	For example, if there are four nodes ${s_{1},s_{2},s_{3},s_{4}}$ in the aggregation tree and their authentication codes with \ack, \nack\ messages in the binary format are defined as follows :
 	\begin{equation}
-		c = MAC_{root} \oplus MAC_{root}(ACK)
+		\resizebox{.4\hsize}{!} 
+		{$\mac_{K_{1}}(N\ ||\ \ack)$ = $(1001)_{2}\ ;\ $}
+		\resizebox{.4\hsize}{!} 
+		{$\mac_{K_{1}}(N\ ||\ \nack)$ = $(1101)_{2}$}	
 	\end{equation}
-	If there is only one complainer in the aggregation tree, then the value of $c$ must match one of the values of $c_{1}$, $c_{2}$, $\dotsc$, $c_{n}$.
-	As $MAC_{root}$ contains only one authentication code with $\textit{NACK}$\ message $XOR$ing $MAC_{root}(ACK)$\ negates all the authentication codes with positive acknowledgment messages. 
-	Hence, $c$ is the $XOR$ of authentication codes with positive and negative acknowledgment messages of the complainer.
-	The matching value node is the complainer.The base station needs to do $n$ comparison to find a complainer in the aggregation tree. So, the base station can find the complainer in linear time.
-
+	\begin{equation}
+		\resizebox{.4\hsize}{!} 
+		{$\mac_{K_{2}}(N\ ||\ \ack)$ = $(0110)_{2}\ ;\ $}
+		\resizebox{.4\hsize}{!} 
+		{$\mac_{K_{2}}(N\ ||\ \nack)$ = $(1111)_{2}$}	
+	\end{equation}
+	\begin{equation}
+		\resizebox{.4\hsize}{!} 
+		{$\mac_{K_{3}}(N\ ||\ \ack)$ = $(0101)_{2}\ ;\ $}
+		\resizebox{.4\hsize}{!} 
+		{$\mac_{K_{3}}(N\ ||\ \nack)$ = $(0111)_{2}$}	
+	\end{equation}
+	\begin{equation}
+		\resizebox{.4\hsize}{!} 
+		{$\mac_{K_{4}}(N\ ||\ \ack)$ = $(0011)_{2}\ ;\ $}
+		\resizebox{.4\hsize}{!} 
+		{$\mac_{K_{4}}(N\ ||\ \nack)$ = $(1110)_{2}$}	
+	\end{equation}
 	\[ 
 		\left( 
 			\begin{array}{cccc}
