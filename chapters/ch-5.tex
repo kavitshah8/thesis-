@@ -1,11 +1,41 @@
 \chapter{Secure Hierarchical In-network data aggregation} % (fold)
 \label{cha:Secure Hierarchical In-network data aggregation}
 
-We describe the Secure Hierarchical In-network data aggregation $\textit{(SHIA)}$ protocol of \cite{chan2006secure} as our work enhances this protocol by making it more efficient and adding new capabilities to the protocol.
+We describe the Secure Hierarchical In-network data aggregation $\textit{(SHIA)}$ protocol of \cite{chan2006secure} as our work enhances this protocol by making it more efficient and adding new capabilities to the protocol. The goal of $\textit{SHIA}$ is to compute aggregate functions (such as $\textit{SUM}$, $\textit{AVERAGE}$, $\textit{COUNT}$) of the sensed values by the sensor nodes while assuming that a portion of the sensor nodes are controlled by an adversary which is attempting to skew the final result.
 
-The goal of $\textit{SHIA}$ is to compute aggregate functions (such as $\textit{SUM}$, $\textit{AVERAGE}$, $\textit{COUNT}$) of the sensed values by the sensor nodes while assuming that a portion of the sensor nodes are controlled by an adversary which is attempting yo skew the final result.
+\section{Network Assumptions}
+\section{Security Infrastructure}
+\section{Attacker Model}
+\section{Problem Definition}
+\section{The SUM Aggregate Algorithm}
+	In this algorithm, the aggregate function $f$\ is addition meaning that we want to compute $a_{1} + a_{2} + \dotsc + a_{n}$, where $a_{i}$\ is the sensed data value of the node $i$.
+	This algorithm has three main phases:
+	\begin{itemize}
+		\item Query dissemination
+		\item Aggregate commit
+		\item Result checking
+	\end{itemize}
 
-Describe their label format with an example.
+	\subsection{Query dissemination}
+		Prior to this phase an aggregation trees is created using a tree generation algorithm.
+		We can use any tree generation algorithm as this protocol works on any aggregation tree structure.
+		For completeness of this protocol, one can use Tiny Aggregation Service (TaG)\cite{madden2002tag}.
+		TaG uses broadcast message from the base station to initiate a tree generation.
+		Each node selects its parent from whichever node it first receives the tree formation message.  
+
+		To initiate the query dissemination phase, the base station broadcasts the query request message with the query nonce $N$\ in the aggregation tree. 
+		The query request message contains new query nonce $N$\ for each query to prevent replay attacks in the network.
+		It is very important that the same nonce is never re-used by the base station.
+		$SHIA$\ uses \textbf{hash chain} to generate new nonce for each query. 
+		A hash chain is constructed by repeatedly evaluating a pre-image resistant hash function $h$\ on some initial random value, the final value (or ``anchor value'') is preloaded on the nodes in the network.
+		The base station uses the pre-image of the last used  value as the nonce for the next broadcast.
+		A hash chain prevents an adversary from predicting the query nonce for future queries as it has to reverse the hash chain computation to get an acceptable pre-image.
+
+	\subsection{Aggregate commit} % (fold)
+	\label{sub:aggregate_commit}
+	
+	% subsection aggregate_commit (end)
+
 Then elaborate your approach.
 Two differences:
 	data-item format

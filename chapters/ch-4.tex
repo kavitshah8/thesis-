@@ -24,7 +24,7 @@
 	The goal of the aggregation process is to achieve the lowest possible \informationRate.
 	In the following sections, we show that reducing \informationRate\ makes the intermediate (aggregator) sensor nodes more powerful.
 	Also, it makes aggregated \payload\ more fragile and vulnerable to various security attacks.
-	We describe bandwidth analysis of different in-network aggregation approaches.
+	Now, we describe bandwidth analysis of different in-network aggregation approaches.
 
 \section{Bandwidth analysis}
 	Congestion is widely used parameter while doing bandwidth analysis of networking applications. 
@@ -48,7 +48,7 @@
 	The failure of the highly congested nodes may cause the sensor network to fail even though most of the nodes in the network are working.
 	Hence it is desirable to have a lower congestion on the highly congested nodes even though it costs more congestion within the overall sensor network. 
 
-	To achieve the lowest possible \informationRate, we can construct an aggregation protocol where each node transmits a single data-item defined in $X.X$ to its parent in the aggregation tree.
+	To achieve the lowest possible \informationRate, we can construct an aggregation protocol where each node transmits a single \textbf{data-item} defined in $X.X$ to its parent in the aggregation tree.
 	It implies there is $\Omega(1)$ congestion on each edge in the aggregation tree, thus resulting in $\Omega(f)$ congestion on the node, where $f$ is the fanout of that node according to Definition \ref{def:congestion}.
 	In this approach, $f$ is dependent on the given aggregation tree, which can be $O(n)$ for the star tree topology and $O(1)$ for the palm tree topology.
 	This can create some highly congested nodes in the aggregation tree which is highly undesirable.
