@@ -16,13 +16,13 @@ We describe the Secure Hierarchical In-network data aggregation $\textit{(SHIA)}
 		\item Result checking
 	\end{itemize}
 
-	\subsection{Query dissemination}
+	\section{Query dissemination}
 		Prior to this phase an aggregation trees is created using a tree generation algorithm.
 		We can use any tree generation algorithm as this protocol works on any aggregation tree structure.
 		For completeness of this protocol, one can use Tiny Aggregation Service (TaG)\cite{madden2002tag}.
 		TaG uses broadcast message from the base station to initiate a tree generation.
 		Each node selects its parent from whichever node it first receives the tree formation message.
-		One possible aggregation tree for given network graph in Fig \ref{fig:ng} is shown in Fig \ref{fig:at}. 
+		One possible aggregation tree for given network graph in Figure \ref{fig:ng} is shown in Figure \ref{fig:at}. 
 		\begin{figure}[hp]
 			\centering
 			\includegraphics[scale = 0.7]{images/network-graph.png}\\
@@ -42,11 +42,11 @@ We describe the Secure Hierarchical In-network data aggregation $\textit{(SHIA)}
 		\begin{figure}[hp]
 			\centering
 			\includegraphics[scale = 0.7]{images/aggregation-tree.png}\\
-			\caption{Aggregation tree for network graph in figure \ref{fig:ng}}
+			\caption{Aggregation tree for network graph in Figure \ref{fig:ng}}
 			\label{fig:at}
 		\end{figure}		
 
-	\subsection{Aggregate commit} 
+	\section{Aggregate commit} 
 	% (fold)
 		\label{sub:aggregate_commit}
 		The aggregation-commit phase constructs cryptographic commitments to the data values and to the intermediate in-network aggregation operations.
