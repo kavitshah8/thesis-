@@ -106,20 +106,6 @@
 	Our algorithm takes any arbitrary \at\ as an input. 
 	One possible \at\ for given network graph in Figure \ref{fig:ng} is shown in the Figure \ref{fig:at}.
 	We use the term \bs\  for the trusted third party. In Figure \ref{fig:at} $BS$ is the \bs.
-		
-	\begin{figure}[hp]
-		\centering
-		\includegraphics[scale = 0.5]{images/network-graph.png}\\
-		\caption{Network graph}
-		\label{fig:ng}
-	\end{figure}
-
-	\begin{figure}[hp]
-		\centering
-		\includegraphics[scale = 0.5]{images/aggregation-tree.png}\\
-		\caption{Aggregation tree for network graph in figure \ref{fig:ng}}
-		\label{fig:at}
-	\end{figure}
 
 	Each sensor node $s$ has it's own sensor reading $s.value$. The \bs\ is interested in overall behavior of the network, which is some function $f$ of all $n$ sensor readings.
 	\begin{equation}
@@ -163,12 +149,6 @@
 				\item Makes aggregated value more vulnerable to various security attacks.
 				\item Requires more bandwidth in the verification phase.
 			\end{itemize}
-		\begin{figure}[hp]
-			\centering
-			\includegraphics[scale = 0.6]{images/naive-commitment-tree.png}\\
-			\caption{Naive commitment tree}
-			\label{fig:naive-commitment-tree}
-		\end{figure}
 
 	\subsection{Aggregate-commit approach}
 		The no aggregation and naive approaches are two extreme approaches.

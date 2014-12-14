@@ -53,8 +53,30 @@ We describe the Secure Hierarchical In-network data aggregation $\textit{(SHIA)}
 		These commitments are then passed on to the base station by the root of an aggregation tree.
 		The base station then rebroadcasts the commitments to the sensor network using an authenticated broadcast so that the rest of the sensor nodes in the network can verify that their respective data values have been incorporated into the final aggregate value.
 
+		\subsection{Aggregate commit: Naive Approach}
+		% (fold)
+			\label{sub:aggregate_commit_naive_approach}
+			In the naive approach, during aggregation process each sensor node computes a cryptographic hash of all its inputs (including its own data value).
+			The aggregation result along with the hash value called a label, is then passed on to the parent in the aggregation tree.
+			The label is defined in Definition \ref.
+			Figure \ref{fig:naive-commitment-tree} shows a commitment tree.
+			Conceptually, a commitment tree is a hash tree defined in \cite{przydatek2003sia} with additional aggregate information attached to the nodes to help us in result checking phase.
+			\begin{figure}[hp]
+				\centering
+				\includegraphics[scale = 0.7]{images/naive-commitment-tree.png}\\
+				\caption{Naive commitment tree}
+				\label{fig:naive-commitment-tree}
+			\end{figure}
 
-	% subsection aggregate_commit (end)
+			\begin{definition}
+				Definition 3 A commitment tree is a tree where each vertex has an associated label representing the data that is passed on to its parent. The labels have the following format:
+				count, value, complement, commitment Where count is the number of leaf vertices in the subtree rooted at this vertex; value is the SUM aggregate computed over all the leaves in the subtree; complement is the aggregate over the COMPLEMENT of the data values; and commitment is a cryptographic
+				commitment.
+				\label{def:label}
+			\end{definition}
+		% subsection aggregate_commit_naive_approach (end)
+
+	% section aggregate_commit (end)
 
 Then elaborate your approach.
 Two differences:
