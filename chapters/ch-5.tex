@@ -21,8 +21,15 @@ We describe the Secure Hierarchical In-network data aggregation $\textit{(SHIA)}
 		We can use any tree generation algorithm as this protocol works on any aggregation tree structure.
 		For completeness of this protocol, one can use Tiny Aggregation Service (TaG)\cite{madden2002tag}.
 		TaG uses broadcast message from the base station to initiate a tree generation.
-		Each node selects its parent from whichever node it first receives the tree formation message.  
-
+		Each node selects its parent from whichever node it first receives the tree formation message.
+		One possible aggregation tree for given network graph in Fig \ref{fig:ng} is shown in Fig \ref{fig:at}. 
+		\begin{figure}[hp]
+			\centering
+			\includegraphics[scale = 0.7]{images/network-graph.png}\\
+			\caption{Network graph}
+			\label{fig:ng}
+		\end{figure}
+		
 		To initiate the query dissemination phase, the base station broadcasts the query request message with the query nonce $N$\ in the aggregation tree. 
 		The query request message contains new query nonce $N$\ for each query to prevent replay attacks in the network.
 		It is very important that the same nonce is never re-used by the base station.
@@ -32,11 +39,21 @@ We describe the Secure Hierarchical In-network data aggregation $\textit{(SHIA)}
 		For example, if the last known value of the hash chain is $h^m(R)$, then the next broadcast uses $h^{m-1}(R)$ as the nonce; $R$ is the initial random value.  
 		A hash chain prevents an adversary from predicting the query nonce for future queries as it has to reverse the hash chain computation to get an acceptable pre-image.
 
-	\subsection{Aggregate commit} % (fold)
-	\label{sub:aggregate_commit}
-	The goal of the aggregation-commit phase is to construct cryptographic commitments to data values and to intermediate in-network aggregation operations.
-	This commitment is then passed on to the base station by the root of an aggregation tree.
-	The base station then rebroadcasts the commitment to the sensor network using an authenticated broadcast so that the rest of the sensor network is able to verify that their respective data values have been incorporated into the final aggregate value.
+		\begin{figure}[hp]
+			\centering
+			\includegraphics[scale = 0.7]{images/aggregation-tree.png}\\
+			\caption{Aggregation tree for network graph in figure \ref{fig:ng}}
+			\label{fig:at}
+		\end{figure}		
+
+	\subsection{Aggregate commit} 
+	% (fold)
+		\label{sub:aggregate_commit}
+		The aggregation-commit phase constructs cryptographic commitments to the data values and to the intermediate in-network aggregation operations.
+		These commitments are then passed on to the base station by the root of an aggregation tree.
+		The base station then rebroadcasts the commitments to the sensor network using an authenticated broadcast so that the rest of the sensor nodes in the network can verify that their respective data values have been incorporated into the final aggregate value.
+
+
 	% subsection aggregate_commit (end)
 
 Then elaborate your approach.
