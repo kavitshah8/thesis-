@@ -29,11 +29,14 @@ We describe the Secure Hierarchical In-network data aggregation $\textit{(SHIA)}
 		$SHIA$\ uses \textbf{hash chain} to generate new nonce for each query. 
 		A hash chain is constructed by repeatedly evaluating a pre-image resistant hash function $h$\ on some initial random value, the final value (or ``anchor value'') is preloaded on the nodes in the network.
 		The base station uses the pre-image of the last used  value as the nonce for the next broadcast.
+		For example, if the last known value of the hash chain is $h^m(R)$, then the next broadcast uses $h^{m-1}(R)$ as the nonce; $R$ is the initial random value.  
 		A hash chain prevents an adversary from predicting the query nonce for future queries as it has to reverse the hash chain computation to get an acceptable pre-image.
 
 	\subsection{Aggregate commit} % (fold)
 	\label{sub:aggregate_commit}
-	
+	The goal of the aggregation-commit phase is to construct cryptographic commitments to data values and to intermediate in-network aggregation operations.
+	This commitment is then passed on to the base station by the root of an aggregation tree.
+	The base station then rebroadcasts the commitment to the sensor network using an authenticated broadcast so that the rest of the sensor network is able to verify that their respective data values have been incorporated into the final aggregate value.
 	% subsection aggregate_commit (end)
 
 Then elaborate your approach.
