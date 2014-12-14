@@ -135,5 +135,30 @@
 	\]
 
 	And concludes that node $4 $ is complaining.
-
+\newpage
 \section{Detect an adversary}
+\begin{algorithm}
+\caption{Pseudo algorithm to detect an adversary}
+
+	\begin{algorithmic}[1]
+
+			\STATE $BS$ \ identifies all the complainer and creates $c = \{c_{1}, c_{2}, \dotsc, c_{n}\}$
+			\FORALL {$N \in c$}
+
+				\STATE $BS$\ asks $N$ to send data-items with its signature, sent during commitment tree generation phase
+			
+			\ENDFOR
+
+			\STATE $BS$\ identifies possible adversary based on $c$ and creates $a = \{a_{1},a_{2},\dotsc,a_{n}\}$
+
+			\FORALL {$A \in a$}
+
+				\STATE $BS$\ asks $A$ to send data-items with its signature, received and sent by $A$ during commitment tree generation phase
+				\STATE If needed $BS$\  asks $A's$ parent to send data-items with its signature
+	
+			\ENDFOR
+
+			\STATE $BS$\ determines the adversary 
+
+	\end{algorithmic}
+\end{algorithm}
