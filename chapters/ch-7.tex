@@ -41,9 +41,7 @@
 	The base station needs to do $n$ comparison to find a complainer in the aggregation tree. 
 	Hence, the base station can find a single complainer in linear time.
 	For example, if there are four nodes ${s_{1},s_{2},s_{3},s_{4}}$ in the aggregation tree and their authentication codes with \ack, \nack\ messages in the binary format are defined below.
-	
-	\begin{exmp}
-
+	\begin{exmp} Identifying a single complainer in linear time with given authentication codes.\\
 		$\Delta_{root} = (0100)_{2}$\\
 		$\mac_{K_{1}}(N\ ||\ \ack)$ = $(1001)_{2}\ ;\ $
 		$\mac_{K_{1}}(N\ ||\ \nack)$ = $(1101)_{2}$\\
@@ -56,10 +54,10 @@
 		$\Delta_{ack} = (1101)_{2}$\\
 		$c_{1} = (0100)_{2}$, $c_{2} = (1001)_{2}$, $c_{3} = (0010)_{2}$, $c_{4} = (1101)_{2}$\ \\
 		$c = (1101)_{2}$
-	
+		$c$ is equal to $c_{4}$
+		So, the base station identifies that the $s_{4}$\ complained, during verification of inclusion phase.\\ 
 	\end{exmp}
 	
-	So, the base station identifies that the $s_{4}$\ complained, during verification of inclusion phase.\\ 
 	\textcolor{red}{for more than one complainer it becomes exponential.}\\
 	\textcolor{red}{How XOR is negating the contribution of NACK.}
 	\[ 

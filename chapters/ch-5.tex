@@ -36,7 +36,7 @@ We describe the Secure Hierarchical In-network data aggregation $\textit{(SHIA)}
 		$SHIA$\ uses \textbf{hash chain} to generate new nonce for each query. 
 		A hash chain is constructed by repeatedly evaluating a pre-image resistant hash function $h$\ on some initial random value, the final value (or ``anchor value'') is preloaded on the nodes in the network.
 		The base station uses the pre-image of the last used  value as the nonce for the next broadcast.
-		For example, if the last known value of the hash chain is $h^m(R)$, then the next broadcast uses $h^{m-1}(R)$ as the nonce; $R$ is the initial random value.  
+		For example, if the last known value of the hash chain is $h^i(R)$, then the next broadcast uses $h^{i-1}(R)$ as the nonce; $R$ is the initial random value.  
 		A hash chain prevents an adversary from predicting the query nonce for future queries as it has to reverse the hash chain computation to get an acceptable pre-image.
 
 		\begin{figure}[hp]
