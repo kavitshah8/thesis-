@@ -28,7 +28,7 @@
 	To detect an adversary, the base station needs to identify which nodes in the aggregation tree sent its authentication codes with \nack\ during the verification of inclusion phase.
 	The node who sent authentication code with \nack\ during the verification of inclusion phase is called a \complainer. 
 	We claim that if there is a single complainer in the aggregation tree during the verification of inclusion phase then the base station can find the complainer in linear time.
-	To find a complainer, the base station computes the complainer code $c$\ according to Equation \ref{eq:complainer}.
+	To find a complainer, the base station computes the complainer code $c$.
 	\begin{equation}\label{eq:complainer}
 		c := \Delta_{root} \oplus \Delta_{ack}
 	\end{equation}
@@ -41,34 +41,24 @@
 	The base station needs to do $n$ comparison to find a complainer in the aggregation tree. 
 	Hence, the base station can find a single complainer in linear time.
 	For example, if there are four nodes ${s_{1},s_{2},s_{3},s_{4}}$ in the aggregation tree and their authentication codes with \ack, \nack\ messages in the binary format are defined below.
-	The base station receives $\Delta_{root} = (0100)_{2}$.
-	\begin{equation}
-		\resizebox{.4\hsize}{!} 
-		{$\mac_{K_{1}}(N\ ||\ \ack)$ = $(1001)_{2}\ ;\ $}
-		\resizebox{.4\hsize}{!} 
-		{$\mac_{K_{1}}(N\ ||\ \nack)$ = $(1101)_{2}$}	
-	\end{equation}
-	\begin{equation}
-		\resizebox{.4\hsize}{!} 
-		{$\mac_{K_{2}}(N\ ||\ \ack)$ = $(0110)_{2}\ ;\ $}
-		\resizebox{.4\hsize}{!} 
-		{$\mac_{K_{2}}(N\ ||\ \nack)$ = $(1111)_{2}$}	
-	\end{equation}
-	\begin{equation}
-		\resizebox{.4\hsize}{!} 
-		{$\mac_{K_{3}}(N\ ||\ \ack)$ = $(0101)_{2}\ ;\ $}
-		\resizebox{.4\hsize}{!} 
-		{$\mac_{K_{3}}(N\ ||\ \nack)$ = $(0111)_{2}$}	
-	\end{equation}
-	\begin{equation}
-		\resizebox{.4\hsize}{!} 
-		{$\mac_{K_{4}}(N\ ||\ \ack)$ = $(0011)_{2}\ ;\ $}
-		\resizebox{.4\hsize}{!} 
-		{$\mac_{K_{4}}(N\ ||\ \nack)$ = $(1110)_{2}$}	
-	\end{equation}
-	Then according to Equation \ref{eq:root-ack}, $\Delta_{ack} = (1101)_{2}$\\
-	And according to Equation \ref{eq:caomplainer-node}, $c_{1} = (0100)_{2}$, $c_{2} = (1001)_{2}$, $c_{3} = (0010)_{2}$, $c_{4} = (1101)_{2}$\ \\
-	And according to Equation \ref{eq:complainer}, $c = (1101)_{2}$
+	
+	\begin{exmp}
+
+		$\Delta_{root} = (0100)_{2}$\\
+		$\mac_{K_{1}}(N\ ||\ \ack)$ = $(1001)_{2}\ ;\ $
+		$\mac_{K_{1}}(N\ ||\ \nack)$ = $(1101)_{2}$\\
+		$\mac_{K_{2}}(N\ ||\ \ack)$ = $(0110)_{2}\ ;\ $
+		$\mac_{K_{2}}(N\ ||\ \nack)$ = $(1111)_{2}$\\	
+		$\mac_{K_{3}}(N\ ||\ \ack)$ = $(0101)_{2}\ ;\ $
+		$\mac_{K_{3}}(N\ ||\ \nack)$ = $(0111)_{2}$\\
+		$\mac_{K_{4}}(N\ ||\ \ack)$ = $(0011)_{2}\ ;\ $
+		$\mac_{K_{4}}(N\ ||\ \nack)$ = $(1110)_{2}$\\
+		$\Delta_{ack} = (1101)_{2}$\\
+		$c_{1} = (0100)_{2}$, $c_{2} = (1001)_{2}$, $c_{3} = (0010)_{2}$, $c_{4} = (1101)_{2}$\ \\
+		$c = (1101)_{2}$
+	
+	\end{exmp}
+	
 	So, the base station identifies that the $s_{4}$\ complained, during verification of inclusion phase.\\ 
 	\textcolor{red}{for more than one complainer it becomes exponential.}\\
 	\textcolor{red}{How XOR is negating the contribution of NACK.}
