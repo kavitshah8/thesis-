@@ -30,12 +30,11 @@
 	We claim that if there is a single complainer in the aggregation tree during the verification of inclusion phase then the base station can find the complainer in linear time.
 	To find a complainer, the base station computes the complainer code $c$\ according to Equation \ref{eq:complainer}.
 	\begin{equation}\label{eq:complainer}
-		c = \Delta_{root} \oplus \Delta_{ack}
+		c := \Delta_{root} \oplus \Delta_{ack}
 	\end{equation}
-	Then it computes the complainer code $c_{i}$\ for node $i$\ according to Equation \ref{eq:caomplainer-node}.\\ 
-	$\forall i \in [1,n]$
+	Then it computes the complainer code $c_{i}$\ for all node $i = 1, 2, \dotsc, n$. 
 	\begin{equation}\label{eq:caomplainer-node}
-		c_{i} = MAC_{K_{i}}(N\ ||\ \textit{ACK}) \oplus MAC_{K_{i}}(N\ ||\ \textit{NACK})
+		c_{i} := MAC_{K_{i}}(N\ ||\ \textit{ACK}) \oplus MAC_{K_{i}}(N\ ||\ \textit{NACK})
 	\end{equation}
 	Then it compares $c$\ with all $c_{i}$\ one at a time. 
 	The matching code indicates the complainer node.
