@@ -8,7 +8,7 @@ We describe the Secure Hierarchical In-network data aggregation $\textit{(SHIA)}
 \section{Attacker Model}
 \section{Problem Definition}
 \section{The SUM Aggregate Algorithm}
-	In this algorithm, the aggregate function $f$\ is addition meaning that we want to compute $a_{1} + a_{2} + \dotsc + a_{n}$, where $a_{i}$\ is the sensed data value of the node $i$.
+	In this algorithm, the aggregate function $f$\ is summation meaning that we want to compute $a_{1} + a_{2} + \dotsc + a_{n}$, where $a_{i}$\ is the sensed data value of the node $i$.
 	This algorithm has three main phases:
 	\begin{itemize}
 		\item Query dissemination
@@ -25,7 +25,7 @@ We describe the Secure Hierarchical In-network data aggregation $\textit{(SHIA)}
 		One possible aggregation tree for given network graph in Figure \ref{fig:ng} is shown in Figure \ref{fig:at}. 
 		\begin{figure}[hp]
 			\centering
-			\includegraphics[scale = 0.7]{images/network-graph.png}\\
+			\includegraphics[scale = 1]{images/network-graph.png}\\
 			\caption{Network graph}
 			\label{fig:ng}
 		\end{figure}
@@ -41,7 +41,7 @@ We describe the Secure Hierarchical In-network data aggregation $\textit{(SHIA)}
 
 		\begin{figure}[hp]
 			\centering
-			\includegraphics[scale = 0.7]{images/aggregation-tree.png}\\
+			\includegraphics[scale = 1]{images/aggregation-tree.png}\\
 			\caption{Aggregation tree for network graph in Figure \ref{fig:ng}}
 			\label{fig:at}
 		\end{figure}		
@@ -63,7 +63,7 @@ We describe the Secure Hierarchical In-network data aggregation $\textit{(SHIA)}
 			Conceptually, a commitment tree is a hash tree defined in \cite{przydatek2003sia} with additional aggregate information attached to the nodes to help us in result checking phase.
 			\begin{figure}[hp]
 				\centering
-				\includegraphics[scale = 0.7]{images/naive-commitment-tree.png}\\
+				\includegraphics[scale = 1]{images/naive-commitment-tree.png}\\
 				\caption{Naive commitment tree}
 				\label{fig:naive-commitment-tree}
 			\end{figure}
