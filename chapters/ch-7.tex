@@ -17,12 +17,12 @@
 	The authentication code with $\textit{ACK}$ message is sent by the sensor node if it verifies its contribution correctly to the root commitment value during the 
 	\textit{verification of inclusion} phase and vice versa.
 	
-	To verify that every sensor node has sent its authentication code with \ack, the base station computes the $\Delta(ACK)$ as follows:
+	To verify that every sensor node has sent its authentication code with \ack, the base station computes the $\Delta_{ack}$ as follows:
 	\begin{equation}
-		\displaystyle{\Delta(MAC) = \bigoplus_{i = 1}^n MAC_{K_{i}}(N || ACK) }
+		\displaystyle{\Delta_{ack} = \bigoplus_{i = 1}^n MAC_{K_{i}}(N || ACK) }
 	\end{equation}
-	The base station can compute $\Delta(ACK)$ as it knows $K_{s}$\ for each sensor node $s$.
-	Then it compares the computed $\Delta(ACK)$\ with the received root authentication code $\Delta$\ from the root of the aggregation tree. 
+	The base station can compute $\Delta_{ack}$ as it knows $K_{s}$\ for each sensor node $s$.
+	Then it compares the computed $\Delta_{ack}$\ with the received root authentication code $\Delta_{root}$\ from the root of the aggregation tree. 
 	If those two codes match then it accepts the aggregated value or else it proceeds further to find an adversary. 
 
 	To detect an adversary, the base station needs to identify which nodes in the aggregation tree sent its authentication codes with \nack\ during the verification of inclusion phase.
@@ -30,7 +30,7 @@
 	We claim that if there is a single complainer in the aggregation tree during the verification of inclusion phase then the base station can find the complainer in linear time.
 	To find a complainer, the base station computes the complainer code $c$\ according to Equation \ref{eq:complainer}.
 	\begin{equation}\label{eq:complainer}
-		c = \textit{MAC}_{root} \oplus \textit{MAC}_{root}(ACK)
+		c = \Delta_{root} \oplus \Delta_{ack}
 	\end{equation}
 	Then it computes the complainer code $c_{i}$\ for node $i$\ according to Equation \ref{eq:caomplainer-node}.\\ 
 	$\forall i \in [1,n]$
@@ -42,7 +42,7 @@
 	The base station needs to do $n$ comparison to find a complainer in the aggregation tree. 
 	Hence, the base station can find a single complainer in linear time.
 	For example, if there are four nodes ${s_{1},s_{2},s_{3},s_{4}}$ in the aggregation tree and their authentication codes with \ack, \nack\ messages in the binary format are defined below.
-	The base station receives $MAC_{root} = (0100)_{2}$.
+	The base station receives $\Delta_{root} = (0100)_{2}$.
 	\begin{equation}
 		\resizebox{.4\hsize}{!} 
 		{$\mac_{K_{1}}(N\ ||\ \ack)$ = $(1001)_{2}\ ;\ $}
@@ -67,7 +67,7 @@
 		\resizebox{.4\hsize}{!} 
 		{$\mac_{K_{4}}(N\ ||\ \nack)$ = $(1110)_{2}$}	
 	\end{equation}
-	Then according to Equation \ref{eq:root-ack}, $\Delta(ACK) = (1101)_{2}$\\
+	Then according to Equation \ref{eq:root-ack}, $\Delta_{ack} = (1101)_{2}$\\
 	And according to Equation \ref{eq:caomplainer-node}, $c_{1} = (0100)_{2}$, $c_{2} = (1001)_{2}$, $c_{3} = (0010)_{2}$, $c_{4} = (1101)_{2}$\ \\
 	And according to Equation \ref{eq:complainer}, $c = (1101)_{2}$
 	So, the base station identifies that the $s_{4}$\ complained, during verification of inclusion phase.\\ 
