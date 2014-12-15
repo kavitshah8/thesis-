@@ -17,13 +17,12 @@
 	The authentication code with $\textit{ACK}$ message is sent by the sensor node if it verifies its contribution correctly to the root commitment value during the 
 	\textit{verification of inclusion} phase and vice versa.
 	
-	To verify that every sensor node has sent its authentication code with \ack, the base station computes the $\mac_{root}(ACK)$ as follows:
-	\begin{equation}\label{eq:root-ack}
-		\resizebox{.9\hsize}{!} 
-		{$\mac_{root}(ACK) = \mac_{K_{1}}(N\ ||\ \textit{ACK}) \oplus \mac_{K_{2}}(N\ ||\ \textit{ACK}) \oplus \dotsc \oplus \mac_{K_{n}}(N\ ||\ \textit{ACK})$}
+	To verify that every sensor node has sent its authentication code with \ack, the base station computes the $\Delta(ACK)$ as follows:
+	\begin{equation}
+		\displaystyle{\Delta(MAC) = \bigoplus_{i = 1}^n MAC_{K_{i}}(N || ACK) }
 	\end{equation}
-	The base station can compute $\mac_{root}(ACK)$ as it knows $K_{s}$\ for each sensor node $s$.
-	Then it compares the computed $\mac_{root}(ACK)$\ with the received root authentication code $\mac_{root}$\ from the root of the aggregation tree. 
+	The base station can compute $\Delta(ACK)$ as it knows $K_{s}$\ for each sensor node $s$.
+	Then it compares the computed $\Delta(ACK)$\ with the received root authentication code $\Delta$\ from the root of the aggregation tree. 
 	If those two codes match then it accepts the aggregated value or else it proceeds further to find an adversary. 
 
 	To detect an adversary, the base station needs to identify which nodes in the aggregation tree sent its authentication codes with \nack\ during the verification of inclusion phase.
@@ -68,7 +67,7 @@
 		\resizebox{.4\hsize}{!} 
 		{$\mac_{K_{4}}(N\ ||\ \nack)$ = $(1110)_{2}$}	
 	\end{equation}
-	Then according to Equation \ref{eq:root-ack}, $\mac_{root}(ACK) = (1101)_{2}$\\
+	Then according to Equation \ref{eq:root-ack}, $\Delta(ACK) = (1101)_{2}$\\
 	And according to Equation \ref{eq:caomplainer-node}, $c_{1} = (0100)_{2}$, $c_{2} = (1001)_{2}$, $c_{3} = (0010)_{2}$, $c_{4} = (1101)_{2}$\ \\
 	And according to Equation \ref{eq:complainer}, $c = (1101)_{2}$
 	So, the base station identifies that the $s_{4}$\ complained, during verification of inclusion phase.\\ 
