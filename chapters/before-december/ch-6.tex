@@ -1,32 +1,5 @@
 \chapter{Verification of confirmations}
 
-\section{Network Model}
-
-We assume a multihop network with a set $ S = \{s1,...,s_{n}\} $ of $n$
-sensor nodes. The network is organized in a tree topology, with the
-base station as the root of the tree. The trusted querier resides
-outside of the network \& has more computation, storage capacity 
-then the sensor nodes in the network. The querier knows total number of sensor nodes $n$ and that all $n$ nodes are alive and reachable. The querier also knows the network topology. 
-All the wireless comuunication is peer-to-peer and we do 
-not consider local wireless broadcast. We also assume that the
-querier has the capacity to do peer to peer communication with 
-every sensor node in the network. We also assume that all the sensor nodes 
-mapped to the vertices in the commitment tree who reported the authentication 
-codes with NACK messages during the collection of confirmations step are 
-honest. 
-
-\subsection{Sensor Nodes}
-
-	We assume that each sensor node has a unique identifier $s$ and
-	shares a unique secret symmetric key $K_{s}$ with the querier. 
-	We assume all the sensor nodes are capable of doing symmetric-
-	key encryption and symmetric key decryption. They are also
-	capable of computing collision-resistant cryptographic hash 
-	function $H$. We also assume that if the sensor node has to send 
-	multiple messages to its parent it can combine those messages 
-	into single packet in a way that parent node can distinguish both 
-	the messages.
-
 \subsection{Commitment trees} % (fold)
 \label{sub:Commitment trees}
 		

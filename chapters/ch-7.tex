@@ -2,6 +2,11 @@
 
 \section{dissemination final commitment}
 \section{dissemination of off-path values}
+	Two cases:
+	\begin{itemize}
+		\item {With signatures}
+		\item {Without signatures}
+	\end{itemize}
 \section{verification of inclusion}
 \section{collection of authentication codes}
 \section{verification of authentication codes}
@@ -38,11 +43,9 @@
 	\end{equation}
 	Then it compares $c$\ with all $c_{i}$\ one at a time. 
 	The matching code indicates the complainer node.
-	The base station needs to do $n$ comparison to find a complainer in the aggregation tree. 
+	The base station needs to do $n \choose 1$\ calculations according to Equation \ref{eq:caomplainer-node} and same number of comparisons to find a complainer in the aggregation tree. 
 	Hence, the base station can find a single complainer in linear time.
-	For example, if there are four nodes ${s_{1},s_{2},s_{3},s_{4}}$ in the aggregation tree and their authentication codes with \ack, \nack\ messages in the binary format are defined below.
-	\begin{exmp} Identifying a single complainer in linear time with given authentication codes.\\
-		$\Delta_{root} = (0100)_{2}$\\
+	\begin{exmp} If there are four nodes ${s_{1},s_{2},s_{3},s_{4}}$ in an aggregation tree and their authentication codes with \ack, \nack\ message in the binary format are defined below.\\
 		$\mac_{K_{1}}(N\ ||\ \ack)$ = $(1001)_{2}\ ;\ $
 		$\mac_{K_{1}}(N\ ||\ \nack)$ = $(1101)_{2}$\\
 		$\mac_{K_{2}}(N\ ||\ \ack)$ = $(0110)_{2}\ ;\ $
@@ -51,14 +54,15 @@
 		$\mac_{K_{3}}(N\ ||\ \nack)$ = $(0111)_{2}$\\
 		$\mac_{K_{4}}(N\ ||\ \ack)$ = $(0011)_{2}\ ;\ $
 		$\mac_{K_{4}}(N\ ||\ \nack)$ = $(1110)_{2}$\\
+		$\Delta_{root} = (0100)_{2}$\\
 		$\Delta_{ack} = (1101)_{2}$\\
 		$c_{1} = (0100)_{2}$, $c_{2} = (1001)_{2}$, $c_{3} = (0010)_{2}$, $c_{4} = (1101)_{2}$\ \\
 		$c = (1101)_{2}$
-		$c$ is equal to $c_{4}$
+		$c$ is equal to $c_{4}.$\\
 		So, the base station identifies that the $s_{4}$\ complained, during verification of inclusion phase.\\ 
 	\end{exmp}
+	In general, to find $k$\ complainers the base station needs to do $ n \choose k$\ calculations and the same number of comparisons to find $k$\ complainers.
 	
-	\textcolor{red}{for more than one complainer it becomes exponential.}\\
 	\textcolor{red}{How XOR is negating the contribution of NACK.}
 	\[ 
 		\left( 

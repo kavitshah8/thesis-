@@ -185,17 +185,11 @@
 		Let $T_{1}, T_{2}$ have the height $h$, where $h$ is the smallest height in $F$.
 		The sensor node $s$ merges $T_{1}, T_{2}$ into a tree of height $h + 1$ by creating a new vertex according to equation \ref{def:internal-vertice}.
 		It repeats this process until all the trees have unique height in the forest.
-		An example of the commitment forest generation process for the sensor node $A$ in Figure \ref{fig:at} is illustrated in the Figures \ref{fig:commitment-tree-example-1}, \ref{fig:commitment-tree-example-2}, \ref{fig:commitment-tree-example-3}, \ref{fig:commitment-tree-example-4}.
 
 		In aggregation-commit approach there are at most $\log(n+1)$ commitment trees in each forest transmitted by any sensor node to its parent, which is greater than $1$.
 		But all the trees have height less than or equal to $\log(n)$, which makes transmission of off-path values communication efficient which will be discussed in the verification phase.
 
-	\begin{figure}[hp]
-		\centering
-		\includegraphics[scale = 0.7]{images/commitment-tree-example-1.png}\\
-		\caption{$A$ receives $C_{2}$ from $C$, $(B_{1},B_{0})$ from $B$, $D_{0}$ from $D$ and generates $A_{0}$. The commitment forest received from a given sensor node is indicated by dashed-line box.}
-		\label{fig:commitment-tree-example-1}
-	\end{figure}
+
 	The sensor node $A$ receives the following \payloads:
 		\begin{equation}
 			A_{0} = \{\ A.id,\ 1,\ A.value,\ H  (\ N\ ||\ A.id\ ||\ 1\ ||\ A.value)\ \}\ (internal)
