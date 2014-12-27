@@ -2,22 +2,22 @@
 
 \section{Definition}
 	An adversary tampering with the data-items reported by its children to skew the final result is consider as cheating.
-	It can send tampered off-path data-items to its children which are under its control to hide its misbehavior while creating the commitment tree .
+	It can send tampered off-path data-items to its children which are under its control to hide its misbehavior while creating the commitment tree.
 % \section{Aim}
 % Aim of this section is to detect the cheater with given definition. 
 
 \section{Assumptions}
-	We also assume that the cheater can not send NACK message during verification phase.
 	We assume that an adversary does not tamper, in forwarding the off-path data-items received from its parent.
-	Without those two assumptions, there might be a lot of complainers in the network, creating a lot of traffic in the network.
+	We also assume that the cheater can not send NACK message during verification phase.
+	Without these two assumptions, there might be a lot of complainers in the network, creating a lot of traffic in the network.
 	It can cause denial-of-service attack in the network.
 	% Because it can create many complainers in the network and network becomes unreachable, creating a Denial of service (DoS) attack in the network. 
 	% % If it can tamper with the off-path data-items received from its parent than an adversary can mask someone else as a cheater.
 	% If a cheater is allowed to send NACK message then it can send NACK messages all the time, creating a lot of traffic in the network which might create Denial of service attack.
 
 \begin{exmp}
-	This example shows the significance of the commitment field in the data-item format.
-	Figure \ref{fig:cheating}  shows a commitment tree and the vertices have data-items defined as follows.\\
+	This example shows the different ways an adversary can cheat in the smallest possible commitment tree and how the commitment field can help us find the cheating.
+	The vertices in the commitment tree of Figure \ref{fig:cheating} have the data-items defined as follows.\\
 	\begin{figure}[t]
 		\centering
 		\includegraphics[width=0.2\textwidth]{images/commitment-tree-2.png}
@@ -53,11 +53,12 @@
 		$C'_{1}$ = $<C_{id},2,300, H(N||2||300||A''_{0}||B_{0})>$\\
 		$C''_{1}$ = $<C_{id},2,300, H(N||2||300||A_{0}||B''_{0})>$\\
 		\textit{offpath}\\
+		$A,B$ receives $C'_{1}$ or $C''_{1}$ from the base station.\\
 		$A$ receives $B''_{0}$ = $<B_{id},1,290,H(N||1||20)>$ from $C$\\
 		$B$ receives $A''_{0}$ = $<A_{id},1,280,H(N||1||10)>$ from $C$\\
 		\textit{verification}\\
-		$A_{0}+B''_{0}$ = $<2,300,H(N||2||300||A_{0}||B''_{0})> \neq C'_{1} \neq C''_{1}$(by A)\\
-		$A''_{0}+B_{0}$ = $<2,300,H(N||2||300||A''_{0}||B_{0})> \neq C'_{1} \neq C''_{1}$(by B)\\
+		$A_{0}+B''_{0}$ = $<2,300,H(N||2||300||A_{0}||B''_{0})> \neq C'_{1} = C''_{1}$(by A)\\
+		$A''_{0}+B_{0}$ = $<2,300,H(N||2||300||A''_{0}||B_{0})> = C'_{1} \neq C''_{1}$(by B)\\
 	\item \textbf{Cheating by tampering with a single data-items}\\
 		$C$ tampers $A_{0}$'s value field\\
 		$A'_{0}$ = $<A_{id},1,100, H(N||1||10)>$\\
