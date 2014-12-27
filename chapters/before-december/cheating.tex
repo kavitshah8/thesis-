@@ -15,8 +15,8 @@
 	% % If it can tamper with the off-path data-items received from its parent than an adversary can mask someone else as a cheater.
 	% If a cheater is allowed to send NACK message then it can send NACK messages all the time, creating a lot of traffic in the network which might create Denial of service attack.
 
+	Following example shows the different ways an adversary can cheat in the smallest possible commitment tree and how the commitment field can help us find the cheating.
 \begin{exmp}
-	This example shows the different ways an adversary can cheat in the smallest possible commitment tree and how the commitment field can help us find the cheating.
 	The vertices in the commitment tree of Figure \ref{fig:cheating} have the data-items defined as follows.\\
 	\begin{figure}[t]
 		\centering
@@ -65,6 +65,7 @@
 		$C'_{1}$ = $<C_{id},2,120, H(N||2||120||A_{0}||B'_{0})>$\\
 		$C$ creates $B'_{0}$ = $<B_{id},1,110, H(N||1||110)>$\\
 		\textit{offpath}\\
+		$A,B$ receives $C'_{1}$ from $C$\\
 		$A$ receives $B'_{0}$ = $<B_{id},1,110, H(N||1||110)>$ from $C$\\
 		$B$ receives $A_{0}$ = $<A_{id},1,10,H(N||1||10)>$ from $C$\\
 		\textit{verification}\\
@@ -73,9 +74,10 @@
 	\end{itemize}
 	\end{exmp}
 Above example shows the significance of the commitment field in the data-item.
-If an aggregator changes the value field in one of its children's data-item then it has to compensate that with relevant off-path value. 
-It means it has to use different data-item in the commitment.
-So, if an aggregator has two unique children and if it tries to change either one or both childrens' data-item then one of it's children will complain in its verification phase as they will not be able to calculate the same root commitment as they received from the base station.
+If an aggregator changes the value field in one of its children's data-item then to hide its misbehavior from its children, it has to compensate the difference with the relevant off-path data-item. 
+% It means it has to use different data-item in the commitment.
+If an aggregator has two unique children (not including itself) and if it tries to change either one or both childrens' data-item then it can not create a data-item which will be accepted by both of its children.
+One of it's children will complain in the verification phase as they will not be able to calculate the same root data-item received from the base station.
 
 % \section{What is not cheating ?}
 	
