@@ -1,51 +1,80 @@
 \chapter{Cheating}
 
 \section{Definition}
-If an aggregator changes the sensor readings reported by its children to skew the final aggregated result is consider as cheating.
-
-\section{Aim}
-Aim of this section is to detect the cheater with given definition. 
+	An adversary tampering with the data-items reported by its children to skew the final result is consider as cheating.
+	It can send tampered off-path data-items to its children which are under its control to hide its misbehavior while creating the commitment tree .
+% \section{Aim}
+% Aim of this section is to detect the cheater with given definition. 
 
 \section{Assumptions}
-We make an assumption that the cheater can not say NACK during verification phase. If a cheater is allowed to send NACK message then it can send NACK messages all the time and create a lot of traffic in the network which might create Denial of service attack. 
+	We also assume that the cheater can not send NACK message during verification phase.
+	We assume that an adversary does not tamper, in forwarding the off-path data-items received from its parent.
+	Without those two assumptions, there might be a lot of complainers in the network, creating a lot of traffic in the network.
+	It can cause denial-of-service attack in the network.
+	% Because it can create many complainers in the network and network becomes unreachable, creating a Denial of service (DoS) attack in the network. 
+	% % If it can tamper with the off-path data-items received from its parent than an adversary can mask someone else as a cheater.
+	% If a cheater is allowed to send NACK message then it can send NACK messages all the time, creating a lot of traffic in the network which might create Denial of service attack.
+
 \begin{exmp}
+	This example shows the significance of the commitment field in the data-item format.
+	Figure \ref{fig:cheating}  shows a commitment tree and the vertices have data-items defined as follows.\\
 	\begin{figure}[t]
-		\label{fig:cheating}
 		\centering
-			\includegraphics[width=0.2\textwidth]{images/commitment-tree-2.png}
-			\caption{cheating}
+		\includegraphics[width=0.2\textwidth]{images/commitment-tree-2.png}
+		\caption{cheating}
+		\label{fig:cheating}
 	\end{figure}	
-	Fig \ref{fig:cheating} shows a commitment tree and they have data-items defined as follows.\\
-	\textbf{No cheating}\\
-	$A_{0} = <A_{id},1,10, H(N||1||10)>$\\
-	$B_{0} = <B_{id},1,20, H(N||1||20)>$\\
-	$C_{1} = <C_{id},2,30, H(N||2||30||A_{0}||B_{0})>$\\
-	\textit{offpath}\\
-	$A,B$ receives $C_{1}$ from the base station.
-	$A$ receives $B_{0}$ from $C$ and vice versa.\\
-	$A_{0} + B_{0}$ = $<2,30,H(N||2||30||A_{0}||B_{0})> = C_{1}$ (by A)\\
-	$A_{0} + B_{0}$ = $<2,30,H(N||2||30||A_{0}||B_{0})> = C_{1}$ (by B)\\
-	\textbf{Cheating by replacing data-items}\\
-		$C$ replaces $A_{0},B_{0}$ with $A'_{0},B'_{0}$\\
-		$A'_{0} = <A_{id},1,100, H(N||1||100)>$\\
-		$B'_{0} = <B_{id},1,200, H(N||1||200)>$\\
-		$C'_{1} = <C_{id},2,300, H(N||2||300||A'_{0}||B'_{0})>$\\
-		\textit{verification}\\
-		$A_{0}+B'_{0} = <2,210,H(N||2||210||A_{0}||B'_{0})> \neq C'_{1}$(by A)\\
-		$A'_{0}+B_{0} = <2,120,H(N||2||120||A'_{0}||B_{0})> \neq C'_{1}$(by B)\\
-	\textbf{Cheating by tampering with data-items}\\
-		$C$ tampers $A_{0},B_{0}$'s value field\\
-		$A'_{0} = <A_{id},1,100, H(N||1||10)>$\\
-		$B'_{0} = <B_{id},1,200, H(N||1||20)>$\\
-		$C'_{1} = <C_{id},2,300, H(N||2||300||A''_{0}||B_{0})>$\\
-		$C''_{1} = <C_{id},2,300, H(N||2||300||A_{0}||B''_{0})>$\\
+	$A_{0}$ = $<A_{id},1,10, H(N||1||10)>$\\
+	$B_{0}$ = $<B_{id},1,20, H(N||1||20)>$\\
+	$C_{1}$ = $<C_{id},2,30, H(N||2||30||A_{0}||B_{0})>$\\
+	\begin{itemize}
+	\item \textbf{No cheating}\\
 		\textit{offpath}\\
-		$A$ receives $B''_{0} = <B_{id},1,290,H(N||1||20)>$ from $C$\\
-		$B$ receives $A''_{0} = <A_{id},1,280,H(N||1||10)>$ from $C$\\
+			$A,B$ receives $C_{1}$ from the base station.
+			$A$ receives $B_{0}$ from $C$ and vice versa.\\
 		\textit{verification}\\
-		$A_{0}+B''_{0} = <2,300,H(N||2||300||A_{0}||B''_{0})> \neq C'_{1} \neq C''_{1}$(by A)\\
-		$A''_{0}+B_{0} = <2,300,H(N||2||300||A''_{0}||B_{0})> \neq C'_{1} \neq C''_{1}$(by B)\\
+			$A_{0} + B_{0}$ = $<2,30,H(N||2||30||A_{0}||B_{0})>$ = $C_{1}$ (by A)\\
+			$A_{0} + B_{0}$ = $<2,30,H(N||2||30||A_{0}||B_{0})>$ = $C_{1}$ (by B)\\
+	\item \textbf{Cheating by replacing data-items}\\
+		$C$ replaces $A_{0},B_{0}$ with $A'_{0},B'_{0}$\\
+		$A'_{0}$ = $<A_{id},1,100, H(N||1||100)>$\\
+		$B'_{0}$ = $<B_{id},1,200, H(N||1||200)>$\\
+		$C'_{1}$ = $<C_{id},2,300, H(N||2||300||A'_{0}||B'_{0})>$\\
+		\textit{offpath}\\
+			$A,B$ receives $C'_{1}$ from the base station.
+			$A$ receives $B'_{0}$ from $C$ and vice versa.\\
+		\textit{verification}\\
+			$A_{0}+B'_{0}$ = $<2,210,H(N||2||210||A_{0}||B'_{0})>$ $\neq$ $C'_{1}$(by A)\\
+			$A'_{0}+B_{0}$ = $<2,120,H(N||2||120||A'_{0}||B_{0})>$ $\neq$ $C'_{1}$(by B)\\
+	\item \textbf{Cheating by tampering with data-items}\\
+		$C$ tampers only with the value field in $A_{0},B_{0}$'s data-item\\
+		$A'_{0}$ = $<A_{id},1,100, H(N||1||10)>$\\
+		$B'_{0}$ = $<B_{id},1,200, H(N||1||20)>$\\
+		$C'_{1}$ = $<C_{id},2,300, H(N||2||300||A''_{0}||B_{0})>$\\
+		$C''_{1}$ = $<C_{id},2,300, H(N||2||300||A_{0}||B''_{0})>$\\
+		\textit{offpath}\\
+		$A$ receives $B''_{0}$ = $<B_{id},1,290,H(N||1||20)>$ from $C$\\
+		$B$ receives $A''_{0}$ = $<A_{id},1,280,H(N||1||10)>$ from $C$\\
+		\textit{verification}\\
+		$A_{0}+B''_{0}$ = $<2,300,H(N||2||300||A_{0}||B''_{0})> \neq C'_{1} \neq C''_{1}$(by A)\\
+		$A''_{0}+B_{0}$ = $<2,300,H(N||2||300||A''_{0}||B_{0})> \neq C'_{1} \neq C''_{1}$(by B)\\
+	\item \textbf{Cheating by tampering with a single data-items}\\
+		$C$ tampers $A_{0}$'s value field\\
+		$A'_{0}$ = $<A_{id},1,100, H(N||1||10)>$\\
+		$C'_{1}$ = $<C_{id},2,120, H(N||2||120||A_{0}||B'_{0})>$\\
+		$C$ creates $B'_{0}$ = $<B_{id},1,110, H(N||1||110)>$\\
+		\textit{offpath}\\
+		$A$ receives $B'_{0}$ = $<B_{id},1,110, H(N||1||110)>$ from $C$\\
+		$B$ receives $A_{0}$ = $<A_{id},1,10,H(N||1||10)>$ from $C$\\
+		\textit{verification}\\
+		$A_{0}+B'_{0}$ = $<2,120,H(N||2||120||A_{0}||B'_{0})>$ = $C'_{1}$ (by A)\\
+		$A_{0}+B_{0}$ = $<2,30,H(N||2||30||A_{0}||B_{0})>$ $\neq$ $C'_{1} $ (by B)\\
+	\end{itemize}
 	\end{exmp}
+Above example shows the significance of the commitment field in the data-item.
+If an aggregator changes the value field in one of its children's data-item then it has to compensate that with relevant off-path value. 
+It means it has to use different data-item in the commitment.
+So, if an aggregator has two unique children and if it tries to change either one or both childrens' data-item then one of it's children will complain in its verification phase as they will not be able to calculate the same root commitment as they received from the base station.
 
 % \section{What is not cheating ?}
 	

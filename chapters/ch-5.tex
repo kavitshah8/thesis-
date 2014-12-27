@@ -29,7 +29,7 @@ The goal of $\textit{SHIA}$ is to compute aggregate functions (such as $\textit{
 	However, we do not want to limit ourselves to just a few specific selected adversarial models. 
 	Instead, we assume that the adversary can misbehave in any arbitrary way, and the only limitations we put on the adversary are its computational resources (polynomial in terms of the security parameter) and the fraction of nodes that it can have control over. 
 	We focus on \textbf{stealthy attacks} \cite{przydatek2003sia}, where the adversary's goal is to make the base station accept false aggregation results, which are significantly different from the true results determined by the measured values, while not being detected by the base station.
-	In this setting, denial-of-service (DoS) attacks such as not responding to the queries clearly indicates to the base station that something is wrong in the network and therefore is not a stealthy attack.
+	In this setting, denial-of-service (DoS) attacks such as not responding to the queries or always responding with negative acknowledgment at the end of verification phase clearly indicates to the base station that something is wrong in the network and therefore is not a stealthy attack.
 	One of the security goals of the SHIA is to prevent stealthy attacks.
 	
 \section{Aggregate definition and security goals}
