@@ -1,8 +1,84 @@
-\chapter{Security/Data Aggregation Background} 
-\label{cha:Security/Data Aggregation Background}
+\chapter{Sensor networks/Data Aggregation/Security Background} 
+\label{cha:Sensor networks/Data Aggregation/Security Background}
 
-Cite papers read and also summarize
+\section{In-network data aggregation}
+	Sensor networks are used in scientific data collection, emergency fire alarm systems, traffic monitoring, wildfire tracking, wildlife monitoring and many other applications.
+	In sensor networks, thousands of sensor nodes may interact with the physical environment and collectively monitor an area, generating a large amount of data to be transmitted and reasoned about.
+	The sensor nodes in the network often have limited resources, such as computation power, memory, storage, communication capacity and most significantly, battery power.
+	Furthermore, data communications between nodes consume a large portion of the total energy consumption. 
+	The in-network data aggregation reduces the energy consumption by aggregating the data before sending it to the parent node in the network which reduces the communications between nodes.
+	For example, in-network data aggregation of the $\textit{SUM}$ function can be performed as follows. 
+	Each intermediate sensor node in the network forwards a single sensor reading containing the sum of all the sensor readings from all of its descendants, rather than forwarding each descendants' sensor reading one at a time to the base station.
+	It is shown that the energy savings achieved by in-network data aggregation are significant \cite{madden2002tag}.
+	The in-network data aggregation approach requires the sensor nodes to do more computations.
+	But studies have shown that transmitting the data requires more energy than computing the data. 
+	Hence, in-network data aggregation is an efficient and a widely used approach for saving bandwidth by doing less communications between sensor nodes and ultimately giving longer battery life to sensor nodes in the network.
 
-\cite{wang2001energy}
-\cite{ettus1998system}
+	We define the following terms to help us define the goals of in-network data aggregation approach.
+	\begin{definition}\label{def:payload}\cite{PayloadWiKi}
+		\textbf{Payload} is the part of the transmitted data which is the fundamental purpose of the transmission, to the exclusion of information sent with it such as meta data solely to facilitate the delivery.
+	\end{definition}
+	\begin{definition}\label{def:information-rate}
+		\textbf{Information rate} for a given node is the ratio of the \payloads, number of \payloads\ sent divided by the number of \payloads\ received.
+	\end{definition}
+	The goal of the aggregation process is to achieve the lowest possible information-rate.
+	In the following sections, we show that lowering information-rate makes the intermediate sensor nodes (aggregator) more powerful.
+	Also, it makes aggregated \payload\ more fragile and vulnerable to various security attacks.
+	% Now, we describe bandwidth analysis of different in-network data aggregation approaches.
 
+\section{Energy consumption}
+	The sensor network's lifetime can be maximized by minimizing the power consumption of the sensor node's radio module.
+	To estimate the power consumption, we have to consider the communication and computation power consumption at each sensor node.
+	The radio module energy dissipation can be measured in two ways \cite{wang2002energy}.
+	The first is measured in $E_{elec} (J/b)$, the energy dissipated to run the transmit or receive electronics.
+	The second is measured in $\varepsilon_{amp} (J/b/m^2)$, the energy dissipated by the transmit power amplifier to achieve an acceptable $E_{b} / N_{o} $ at the receiver.
+	We assume the $d^2$ energy loss for transmission between sensor nodes since the distances between sensors are relatively short \cite{ettus1998system}. 
+	To transmit a $k$ - bit packet at distance $d$, the energy dissipated is:
+	\begin{equation}
+		E_{tx}(k, d) = E_{elec} \cdot k + \varepsilon_{amp} \cdot k \cdot d^{2}
+	\end{equation}
+	and to receive the k - bit packet, the radio expends
+	\begin{equation}
+		E_{rx}(k) = E_{elec} \cdot k
+	\end{equation}
+	For $\mu Amp$\ wireless sensor, $E_{elec} = 50nJ/b$\ and $\varepsilon_{amp} = 100pJ/b/m^2$ \cite{wang2002energy}.
+	To sustain the sensor network for longer time all aspects of the sensor network should be efficient.
+	For example, the networking algorithm for routing should be such that it minimizes the distance $d$\ between nodes.
+	The signal processing algorithm should be such that it process the networking packets with less computations.
+
+\section{Bandwidth analysis}
+	Congestion is widely used parameter while doing bandwidth analysdis of networking applications. 
+	The congestion for any given node is defined as follows:
+	\begin{equation}\label{def:congestion}
+		Congestion = Edge\ congestion \cdot Fanout
+	\end{equation}
+	Congestion is very useful factor while analyzing sensor network as it measures how quickly the sensor nodes will exhaust their batteries \cite{madden2003design}. 
+	Some nodes in the sensor network have more congestion than the others, the highly congested nodes are the most important to the the network connectivity.
+	For example, the nodes closer to the base station are essential for the network connectivity.
+	The failure of the highly congested nodes may cause the sensor network to fail even though most of the nodes in the network are alive.
+	Hence, it is desirable to have a lower congestion on the highly congested nodes even though it costs more congestion within the overall sensor network.
+	To distribute the congestion uniformly across the network, we can construct an aggregation protocol where each node transmits a single \textbf{data-item} defined in $X.X$ to its parent in the aggregation tree.
+	It implies there is $\Omega(1)$ congestion on each edge in the aggregation tree, thus resulting in $\Omega(\delta)$ congestion on the node  according to Definition \ref{def:congestion}, where $\delta$ is the fanout of the node.
+	In this approach, $\delta$ is dependent on the given aggregation tree.
+	For an aggregation tree with $n$\ nodes, organized in the star tree topology congestion is $O(n)$\ and the network organized in the palm tree topology the congestion is $O(1)$.
+	This approach can create some highly congested nodes in the aggregation tree which is undesirable.
+	In most of the real world applications we cannot control $\delta$ as the aggregation tree is random.
+	Hence, it is desirable to have uniform distribution of congestion across the aggregation tree.
+
+	% Talk about No aggregation approach.
+
+	% \textit{SHIA} tries to achieve uniform congestion in the network.	
+
+\section{Security in In-network data aggregation}
+	In-network data aggregation approach saves bandwidth by transmitting less \payloads\  between sensor nodes but it gives more power to the intermediate aggregator sensor nodes. 
+	For example, a malicious intermediate sensor node who does aggregation over all of its descendants \payloads, needs to tamper with only one aggregated \payload\ instead of tampering with all the \payloads\ received from all of its descendants. 
+	Thus, a malicious intermediate sensor node needs to do less work to skew the final aggregated \payload.
+	An adversary controlling few sensor nodes in the network can cause the network to return unpredictable \payloads, making an entire sensor network unreliable.
+	Notice that the more descendants an intermediate sensor node has the more powerful it becomes.
+	Despite the fact that in-network aggregation makes an intermediate sensor nodes more powerful, some aggregation approaches requires strong network topology assumptions or honest behaviors from the sensor nodes.
+	For example, in-network aggregation schemes in \cite{yao2002cougar, madden2003design} assumes that all the sensor nodes in the network are honest. Secure Information Aggregation (SIA) of \cite{przydatek2003sia}, provides security for the network topology with a single-aggregator model.  
+
+	Secure hierarchical in-network aggregation (\textit{SHIA}) in sensor networks \cite{chan2006secure} presents the first and provably secure sensor network data aggregation protocol for general networks and multiple adversaries. 
+	We discuss the details of the protocol in the next chapter. 
+	\textit{SHIA} limits the adversary's ability to tamper with the aggregation result with the tightest bound possible but it does not help detecting an adversary in the network.
+	Also, we claim that same upper bound can be achieved with compact label format defined in the next chapter.

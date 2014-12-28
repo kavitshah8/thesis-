@@ -1,9 +1,22 @@
 \chapter{Networking and Cryptography tools} % (fold)
 \label{cha:Networking and Cryptography tools}
 
+\section{Hash Function}
+	A hash function takes a message as its input and outputs a fixed length message called hash code.
+	The hash code represents a compact image of the message like a digital fingerprint.
+	Hash functions are used to achieve data integrity.
 
-Networking - Algorithms of generating tree from a given graph. Optimal tree structure.
+	A hash function $h$ should have the following properties:
+	\begin{itemize}
+		\item Compression - $h$ maps an input $x$ of arbitrary finite bitlength, to an output $h(x)$ of fixed bitlength $n$.
+		\item Ease of computation - given $h,x$ it is easy to compute $h(x)$.
+		\item Preimage resistance - for all pre-specified outputs, it is computationally infeasible to find any input which hashes to that output, i.e., to find any preimage $x'$ such that $h(x') = y$ when given $y$ for which a corresponding input is not known.
+		\item 2nd-preimage resistance - it is computationally infeasible to find any second input which has the same output as any specified input, i.e, given $x$, to find a 2nd-preimage $x' \neq x$ such that $h(x') = h(x)$.
+		\item Collision resistance - it is computationally to find any two distinct inputs $x,x'$ which hash to the same output, i.e., such that $h(x) = h(x')$.
+	\end{itemize} 
 
-Hash
+	We use SHA-$256$ hash algorithm as a hash algorithm.
+\section {Tree generation algorithms}
 
-Elliptic curve
+
+\section{Elliptic curve}
