@@ -19,15 +19,57 @@
 		Sign(s_{0}) = E_{K_{s}}(H(s_{0}))
 	\end{equation}
 	In addition to sending the data-item, each sensor node sends the signature of the data-item to its parent.
-	The parent node verifies the signature using the child node's public key which is included in child node's certificate.
+	The parent node verifies its child's signature using it's certificate.
 	After verification of signature it proceeds with the aggregation.
+	\textbf{Because of the signature, the sensor node has the proof for the sent data-item.
+	It also prevents the parent or ancestor node from claiming the different received data-item.}
 	\begin{definition}
 		A \textbf{commitment payload} is a set of data-items of the root of the commitment trees in the outgoing commitment forest.
 	\end{definition}
+	% We use the term payload for commitment payload and the term forest for the commitment forest.
 
-	\textbf{Because of the signature, the sensor node has the proof for the sent data-item.
-			It also prevents the parent or ancestor node from claiming the different received data-item.}
+	\newpage
+	\section{Signatures on the commitment payload}
+		In addition to the sending all the data-items with their respective signatures, an intermediate node sends an additional signature to its parent, which is a signature of all the data-items in its commitment forest.
+		This additional signature signifies that an intermediate sensor node has verified all the data-items in its commitment forest.
+		From the parent node perspective, it signifies that it has received all the verified data-items from its children and it has not over hear all these data-items.
+		% Each sensor node signs all the data-items in its commitment payload before sending it to its parent.
+		% to prove the fact that it has verified all the data-items in its commitment forests.
+		
+		\begin{exmp}
+		Signing the the payload.\\	
+		% 	\begin{figure}[hp]
+		% 		\centering
+		% 		\includegraphics[scale = 0.5]{images/palm-aggregation-tree.png}\\
+		% 		\caption{Palm aggregation tree}
+		% 		\label{fig:Palm aggregation tree}
+		% 	\end{figure}\\
+		% $C$ receives $B_{1}$, $Sign(B_{1})$ from $B$.
+		% And $C$'s commitment forest is show in Figure \ref{fig:Commitment forest of C}.
+		% $B_{1} = <B_{id}, 2, B_{value}, H(N||2||B_{value}||A_{0}||B_{0})>$; $Sign(B_{1}) = E_{K_{B}}(H(B_{1}))$\\
+		% 	\begin{figure}[hp]
+		% 		\centering
+		% 		\includegraphics[scale = 0.5]{images/commitment-forest-of-C.png}\\
+		% 		\caption{$C$'s commitment forest }
+		% 		\label{fig:Commitment forest of C}
+		% 	\end{figure}\\
+		The sensor node $C$'s commitment payload is shown in Figure \ref{fig:Commitment payload of C}.
+		$C$ sends the following data-item with their signatures to its parent.\\
+		$B_{1} = <B_{id}, 2, B_{value}, H(N||2||B_{value}||A_{0}||B_{0})>$; $Sign(B_{1}) = E_{K_{B}}(H(B_{1}))$\\
+		$C_{0} = <C_{id}, 1, C_{value}, H(N||1||C_{value})>$; $Sign(C_{0}) = E_{K_{C}}(H(C_{0}))$\\
+		In addition to that $C$ sends the signature of its payload $Sign(C_{p})$ to its parent.\\
+		\textcolor{red}{$Sign(C_{p}) = E_{K_{C}}(H(C_{0} || B_{1}))$}
 
+			\begin{figure}[hp]
+				\centering
+				\includegraphics[scale = 1]{images/commitment-payload-of-C.png}\\
+				\caption{$C$'s commitment commitment-payload}
+				\label{fig:Commitment payload of C}
+			\end{figure}
+		\end{exmp}
+
+	\newpage
+	\textcolor{red}{Mention signatures}
 	For the given aggregation tree the commitment forest is built as follows.
 	Leaf sensor nodes in the aggregation tree creates their leaf vertex according to Equation \ref{eq:leaf-vertex} which they send it to their parent in the aggregation tree.
 	Each internal sensor node $s$\ in the aggregation tree also creates their leaf vertex.
@@ -39,6 +81,7 @@
 	After verification $s$ starts merging the data-items.
 	Let $c$ be the smallest count value in the commitment forest.
 	The sensor node $s$ finds the two data-items $D_{1},D_{2}$ in the commitment forest with the same count value $c$ and merges them into a new data-item with the count of $c+1$.
+	\textcolor{red}{add figure}
 	It repeats the process until no two data-items in the forest have the same count value.
 	An example of generating the commitment payload by merging the data-items in the commitment forest for the sensor node $A$ in Figure \ref{fig:at} is illustrated in the following example.
 	% \ref{fig:commitment-tree-example-1}, \ref{fig:commitment-tree-example-2}, \ref{fig:commitment-tree-example-3}, \ref{fig:commitment-tree-example-4}.
@@ -53,7 +96,7 @@
 				$D_{0} = <D_{id}, 1, D_{value}, H(N||1||D_{value})>$; $Sign(D_{0}) = E_{K_{D}}(H(D_{0}))$\\
 				$B_{0} = <B_{id}, 1, B_{value}, H(N||1||B_{value})>$; $Sign(B_{0}) = E_{K_{B}}(H(B_{0}))$\\
 				$B_{1} = <B_{id}, 2, B_{value}, H(N||2||B_{value}||E_{0}||F_{0})>$; $Sign(B_{1}) = E_{K_{B}}(H(B_{1}))$\\
-				$Sign(B_{P}) = E_{K_{B}}(Sign(B_{0}) || Sign(B_{1}))$\\
+				\textcolor{red}{$Sign(B_{P}) = E_{K_{B}}(H(B_{0} || B_{1}))$}\\
 				$C_{2} = <C_{id}, 4, C_{value}, H(N||4||C_{value})||H_{1}||C_{1})>$; $Sign(C_{2}) = E_{K_{C}}(H(C_{2}))$\\
 				\begin{figure}[hp]
 					\centering
