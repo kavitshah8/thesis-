@@ -1,91 +1,156 @@
-\chapter{Commitment Tree Generation with internal verification} % (fold)
-\label{cha:A Protocol for Commitment Tree Generation}
-	
-	This chapter describes our approach of creating commitment tree which is built on top of commitment tree generation of SHIA mentioned in the previous chapter.
+\chapter{Verification}
 
-	\begin{definition}
-		\label{def:data-item}
-		A commitment tree is a binary tree where each vertex has an associated data-item representing the data that is passed on to its parent. The data-items have the following format:
-
-		$\hspace{100pt}$ $<$id, count, value, commitment$>$\\
-		Where id is the unique identity of the node; count is the number of leaf vertices in the subtree rooted at this vertex; value is the SUM aggregate computed over all the leaves in the subtree and commitment is a cryptographic commitment.
-	\end{definition}
-	There is one vertex $s_{0}$ for each sensor node $s$, which we call the leaf vertex of $s$. 
+\section{dissemination final commitment}
+\section{dissemination of off-path values}
+	Two cases:
+	\begin{itemize}
+		\item {With signatures}
+		\item {Without signatures}
+	\end{itemize}
+\section{verification of inclusion}
+\section{collection of authentication codes}
+\section{verification of authentication codes}
+	The authentication codes for sensor node $s$, with either positive or negative acknowledgment message, are defined as follows:
 	\begin{equation}
-		\label{eq:leaf-vertex}
-		s_{0} = <s_{id}, 1, s_{value}, H(N||1||s_{value})>
+		MAC_{K_{s}}(N\ ||\ \textit{ACK})
 	\end{equation}
 	\begin{equation}
-		Sign(s_{0}) = E_{K_{s}}(H(s_{0}))
+		MAC_{K_{s}}(N\ ||\ \textit{NACK})
 	\end{equation}
-	In addition to sending the data-item, each sensor node sends the signature of the data-item to its parent.
-	The parent node verifies the signature using the child node's public key which is included in child node's certificate.
-	After verification of signature it proceeds with the aggregation.
-	\begin{definition}
-		A \textbf{commitment payload} is a set of data-items of the root of the commitment trees in the outgoing commitment forest.
-	\end{definition}
-
-	\textbf{Because of the signature, the sensor node has the proof for the sent data-item.
-			It also prevents the parent or ancestor node from claiming the different received data-item.}
-
-	For the given aggregation tree the commitment forest is built as follows.
-	Leaf sensor nodes in the aggregation tree creates their leaf vertex according to Equation \ref{eq:leaf-vertex} which they send it to their parent in the aggregation tree.
-	Each internal sensor node $s$\ in the aggregation tree also creates their leaf vertex.
-	In addition, $s$\ also receives the commitment payload from each of its children which creates the commitment forest for $s$.
-	It then merges all the data-items in its commitment forest with same count value to form a new commitment payload.
-
-	Suppose $s$ have to create a commitment payload by merging $i$ data-items $D_{1}$, $D_{2}$, $\dotsc$, $D_{i}$ in its commitment forest.
-	First $s$ verifies the signatures $Sign(D_{1})$, $Sign(D_{2})$, $\dotsc$, $Sign(D_{i})$ of $D_{1}$,$D_{2}$,$\dotsc$,$D_{i}$.
-	After verification $s$ starts merging the data-items.
-	Let $c$ be the smallest count value in the commitment forest.
-	The sensor node $s$ finds the two data-items $D_{1},D_{2}$ in the commitment forest with the same count value $c$ and merges them into a new data-item with the count of $c+1$.
-	It repeats the process until no two data-items in the forest have the same count value.
-	An example of generating the commitment payload by merging the data-items in the commitment forest for the sensor node $A$ in Figure \ref{fig:at} is illustrated in the following example.
-	% \ref{fig:commitment-tree-example-1}, \ref{fig:commitment-tree-example-2}, \ref{fig:commitment-tree-example-3}, \ref{fig:commitment-tree-example-4}.
-			\begin{exmp} The commitment-payload generation process for node $A$ of Figure \ref{fig:at} is shown here.\\
-				\begin{figure}[hp]
-					\centering
-					\includegraphics[scale = 1]{images/commitment-tree-example-1.png}\\
-					\caption{$A$ receives $C_{2}$ from $C$, $(B_{1},B_{0})$ from $B$, $D_{0}$ from $D$ and generates $A_{0}$. The commitment payload received from a given sensor node is indicated by dashed-line box.}
-					\label{fig:commitment-tree-example-1}
-				\end{figure}\\
-				$A_{0} = <A_{id}, 1, A_{value}, H(N||1||A_{value})>$; $Sign(A_{0}) = E_{K_{A}}(H(A_{0}))$ \\
-				$D_{0} = <D_{id}, 1, D_{value}, H(N||1||D_{value})>$; $Sign(D_{0}) = E_{K_{D}}(H(D_{0}))$\\
-				$B_{0} = <B_{id}, 1, B_{value}, H(N||1||B_{value})>$; $Sign(B_{0}) = E_{K_{B}}(H(B_{0}))$\\
-				$B_{1} = <B_{id}, 2, B_{value}, H(N||2||B_{value}||E_{0}||F_{0})>$; $Sign(B_{1}) = E_{K_{B}}(H(B_{1}))$\\
-				$Sign(B_{P}) = E_{K_{B}}(Sign(B_{0}) || Sign(B_{1}))$\\
-				$C_{2} = <C_{id}, 4, C_{value}, H(N||4||C_{value})||H_{1}||C_{1})>$; $Sign(C_{2}) = E_{K_{C}}(H(C_{2}))$\\
-				\begin{figure}[hp]
-					\centering
-					\includegraphics[scale = 1]{images/commitment-tree-example-2.png}\\
-					\caption{First Merge: $A_{1}$ vertex created by A.}
-					\label{fig:commitment-tree-example-2}
-				\end{figure}\\
-				$A_{1} = <A_{id}, 2, A_{1value}, H(N||2||A_{1value}||A_{0}||D_{0})>$; $Sign(A_{1}) = E_{K_{A}}(H(A_{1}))$\\
-				where $A_{1value} = A_{value} + D_{value} $
-				\begin{figure}[hp]
-					\centering
-					\includegraphics[scale = 1]{images/commitment-tree-example-3.png}\\
-					\caption{Second Merge: $A_{2}$ vertex created by A.}
-					\label{fig:commitment-tree-example-3}
-				\end{figure}\\
-				$A_{2} = <A_{id}, 4, A_{2value}, H(N||4||A_{2value}||B_{1}||A_{1}) >$; $Sign(A_{2}) = E_{K_{A}}(H({A_{2}}))$\\
-				where $A_{2value} = B_{1value} + A_{1value} $
-				\begin{figure}[hp]
-					\centering
-					\includegraphics[scale = 1]{images/commitment-tree-example-4.png}\\
-					\caption{Third Merge: $A_{3}$ vertex created by A.}
-					\label{fig:commitment-tree-example-4}
-				\end{figure}\\
-				$A_{3} = <A_{id},8, A_{3value},H(N||8||A_{3value}||C_{2}||A_{2})>$; $Sign(A_{3}) = E_{K_{A}}(H(A_{3}))$\\
-				$A_{3value} = A_{2value} + C_{2value}$;
-			\end{exmp}
-% chapter A Protocol for Commitment Tree Generation (end)
-
-Talk about the certificates:
+	$K_{s}$ is the key that $s$ shares with the base station;
+	$\textit{ACK}$, $\textit{NACK}$ are special messages for positive and negative acknowledgment respectively.
+	The authentication code with $\textit{ACK}$ message is sent by the sensor node if it verifies its contribution correctly to the root commitment value during the 
+	\textit{verification of inclusion} phase and vice versa.
 	
-	How many certificates does $A$ need to know in this example ?
-	In the above example, $A$ need to know $D,B,C's$ certificate to verify their signatures.
-	But if we use SHIA'a approach of creating commitment tree then $A$ need to know $E's$ certificate as well.
-	Hence, being root in as many tree as possible is the more efficient.
+	To verify that every sensor node has sent its authentication code with \ack, the base station computes the $\Delta_{ack}$ as follows:
+	\begin{equation}
+		\displaystyle{\Delta_{ack} = \bigoplus_{i = 1}^n MAC_{K_{i}}(N || ACK) }
+	\end{equation}
+	The base station can compute $\Delta_{ack}$ as it knows $K_{s}$\ for each sensor node $s$.
+	Then it compares the computed $\Delta_{ack}$\ with the received root authentication code $\Delta_{root}$\ from the root of the aggregation tree. 
+	If those two codes match then it accepts the aggregated value or else it proceeds further to find an adversary. 
+
+	To detect an adversary, the base station needs to identify which nodes in the aggregation tree sent its authentication codes with \nack\ during the verification of inclusion phase.
+	The node who sent authentication code with \nack\ during the verification of inclusion phase is called a \complainer. 
+	We claim that if there is a single complainer in the aggregation tree during the verification of inclusion phase then the base station can find the complainer in linear time.
+	To find a complainer, the base station computes the complainer code $c$.
+	\begin{equation}\label{eq:complainer}
+		c := \Delta_{root} \oplus \Delta_{ack}
+	\end{equation}
+	Then it computes the complainer code $c_{i}$\ for all node $i = 1, 2, \dotsc, n$. 
+	\begin{equation}\label{eq:caomplainer-node}
+		c_{i} := MAC_{K_{i}}(N\ ||\ \textit{ACK}) \oplus MAC_{K_{i}}(N\ ||\ \textit{NACK})
+	\end{equation}
+	Then it compares $c$\ with all $c_{i}$\ one at a time. 
+	The matching code indicates the complainer node.
+	The base station needs to do $n \choose 1$\ calculations according to Equation \ref{eq:caomplainer-node} and same number of comparisons to find a complainer in the aggregation tree. 
+	Hence, the base station can find a single complainer in linear time.
+	\begin{exmp} If there are four nodes ${s_{1},s_{2},s_{3},s_{4}}$ in an aggregation tree and their authentication codes with \ack, \nack\ message in the binary format are defined below.\\
+		$\mac_{K_{1}}(N\ ||\ \ack)$ = $(1001)_{2}\ ;\ $
+		$\mac_{K_{1}}(N\ ||\ \nack)$ = $(1101)_{2}$\\
+		$\mac_{K_{2}}(N\ ||\ \ack)$ = $(0110)_{2}\ ;\ $
+		$\mac_{K_{2}}(N\ ||\ \nack)$ = $(1111)_{2}$\\	
+		$\mac_{K_{3}}(N\ ||\ \ack)$ = $(0101)_{2}\ ;\ $
+		$\mac_{K_{3}}(N\ ||\ \nack)$ = $(0111)_{2}$\\
+		$\mac_{K_{4}}(N\ ||\ \ack)$ = $(0011)_{2}\ ;\ $
+		$\mac_{K_{4}}(N\ ||\ \nack)$ = $(1110)_{2}$\\
+		$\Delta_{root} = (0100)_{2}$\\
+		$\Delta_{ack} = (1101)_{2}$\\
+		$c_{1} = (0100)_{2}$, $c_{2} = (1001)_{2}$, $c_{3} = (0010)_{2}$, $c_{4} = (1101)_{2}$\ \\
+		$c = (1101)_{2}$
+		$c$ is equal to $c_{4}.$\\
+		So, the base station identifies that the $s_{4}$\ complained, during verification of inclusion phase.\\ 
+	\end{exmp}
+	In general, to find $k$\ complainers the base station needs to do $ n \choose k$\ calculations and the same number of comparisons to find $k$\ complainers.
 	
+	\textcolor{red}{How XOR is negating the contribution of NACK.}
+	\[ 
+		\left( 
+			\begin{array}{cccc}
+				1 & 0 & 0 & 1 \\ 
+				0 & 1 & 1 & 0 \\
+				0 & 1 & 0 & 1 \\
+				0 & 0 & 1 & 1 \\
+				\hline
+				1 & 0 & 0 & 1 
+			\end{array}
+		\right)
+	%
+		\left( 
+			\begin{array}{cccc}
+				1 & 1 & 0 & 1 \\ 
+				1 & 1 & 1 & 1 \\
+				0 & 1 & 1 & 1 \\
+				1 & 1 & 1 & 0 \\
+				\hline
+				1 & 0 & 1 & 1 
+			\end{array}
+		\right)
+	\]
+
+	The base station receives the following:
+	\[ 
+		\left( 
+			\begin{array}{cccc}
+				1 & 0 & 0 & 1 \\ 
+				0 & 1 & 1 & 0 \\
+				0 & 1 & 0 & 1 \\
+				1 & 1 & 1 & 0 \\
+				\hline
+				0 & 1 & 0 & 0 
+			\end{array}
+		\right)
+	\]
+
+	The base station does the following:
+
+	\[
+		\left( 
+			\begin{array}{cccc cccc cccc cccc}
+				1 & 0 & 0 & 1\ \vline\  0 & 1 & 1 & 0\ \vline\  0 & 1 & 0 & 1\ \vline\  0 & 0 & 1 & 1 \\
+				1 & 1 & 0 & 1\ \vline\  1 & 1 & 1 & 1\ \vline\	0 & 1 & 1 & 1\ \vline\	1 & 1 & 1 & 0 \\ 
+				\hline
+				0 & 1 & 0 & 0\ \vline\ 1 & 0 & 0 & 1\ \vline\ 0 & 0 & 1 & 0\ \vline\ 1 & 1 & 0 & 1\\
+			\end{array}
+		\right)
+	\]
+
+	\[ 
+		\left( 
+			\begin{array}{cccc}
+				1 & 0 & 0 & 1 \\ 
+				0 & 1 & 0 & 0 \\
+				\hline
+				1 & 1 & 0 & 1 \\
+			\end{array}
+		\right)
+	\]
+
+	And concludes that node $4 $ is complaining.
+\newpage
+\section{Detect an adversary}
+\begin{algorithm}
+\caption{Pseudo algorithm to detect an adversary}
+
+	\begin{algorithmic}[1]
+
+			\STATE $BS$ \ identifies all the complainer and creates $c = \{c_{1}, c_{2}, \dotsc, c_{n}\}$
+			\FORALL {$N \in c$}
+
+				\STATE $BS$\ asks $N$ to send data-items with its signature, sent during commitment tree generation phase
+			
+			\ENDFOR
+
+			\STATE $BS$\ identifies possible adversary based on $c$ and creates $a = \{a_{1},a_{2},\dotsc,a_{n}\}$
+
+			\FORALL {$A \in a$}
+
+				\STATE $BS$\ asks $A$ to send data-items with its signature, received and sent by $A$ during commitment tree generation phase
+				\STATE If needed $BS$\  asks $A's$ parent to send data-items with its signature
+	
+			\ENDFOR
+
+			\STATE $BS$\ determines the adversary 
+
+	\end{algorithmic}
+\end{algorithm}
