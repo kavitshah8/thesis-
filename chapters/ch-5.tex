@@ -49,7 +49,7 @@
 		
 		\begin{exmp}
 		Signing the the payload.\\	
-		% 	\begin{figure}[hp]
+		% 	\begin{figure}[h!]
 		% 		\centering
 		% 		\includegraphics[scale = 0.5]{images/palm-aggregation-tree.png}\\
 		% 		\caption{Palm aggregation tree}
@@ -58,7 +58,7 @@
 		% $C$ receives $B_{1}$, $Sign(B_{1})$ from $B$.
 		% And $C$'s commitment forest is show in Figure \ref{fig:Commitment forest of C}.
 		% $B_{1} = <B_{id}, 2, B_{value}, H(N||2||B_{value}||A_{0}||B_{0})>$; $Sign(B_{1}) = E_{K_{B}}(H(B_{1}))$\\
-		% 	\begin{figure}[hp]
+		% 	\begin{figure}[h!]
 		% 		\centering
 		% 		\includegraphics[scale = 0.5]{images/commitment-forest-of-C.png}\\
 		% 		\caption{$C$'s commitment forest }
@@ -100,7 +100,7 @@
 	An example of generating the commitment payload by merging the data-items in the commitment forest for the sensor node $A$ in Figure \ref{fig:at} is illustrated in the following example.
 	% \ref{fig:commitment-tree-example-1}, \ref{fig:commitment-tree-example-2}, \ref{fig:commitment-tree-example-3}, \ref{fig:commitment-tree-example-4}.
 			\begin{exmp} The commitment-payload generation process for node $A$ of Figure \ref{fig:at} is shown here.\\
-				\begin{figure}[hp]
+				\begin{figure}[h!]
 					\centering
 					\includegraphics[scale = 1]{images/commitment-tree-example-1.png}\\
 					\caption{$A$ receives $C_{2}$ from $C$, $(B_{1},B_{0})$ from $B$, $D_{0}$ from $D$ and generates $A_{0}$. The commitment payload received from a given sensor node is indicated by dashed-line box.}
@@ -112,7 +112,7 @@
 				$B_{1} = <B_{id}, 2, B_{value}, H(N||2||B_{value}||E_{0}||F_{0})>$; $Sign(B_{1}) = E_{K_{B}}(H(B_{1}))$\\
 				\textcolor{red}{$Sign(B_{P}) = E_{K_{B}}(H(B_{0} || B_{1}))$}\\
 				$C_{2} = <C_{id}, 4, C_{value}, H(N||4||C_{value})||H_{1}||C_{1})>$; $Sign(C_{2}) = E_{K_{C}}(H(C_{2}))$\\
-				\begin{figure}[hp]
+				\begin{figure}[h!]
 					\centering
 					\includegraphics[scale = 1]{images/commitment-tree-example-2.png}\\
 					\caption{First Merge: $A_{1}$ vertex created by A.}
@@ -120,7 +120,7 @@
 				\end{figure}\\
 				$A_{1} = <A_{id}, 2, A_{1value}, H(N||2||A_{1value}||A_{0}||D_{0})>$; $Sign(A_{1}) = E_{K_{A}}(H(A_{1}))$\\
 				where $A_{1value} = A_{value} + D_{value} $
-				\begin{figure}[hp]
+				\begin{figure}[h!]
 					\centering
 					\includegraphics[scale = 1]{images/commitment-tree-example-3.png}\\
 					\caption{Second Merge: $A_{2}$ vertex created by A.}
@@ -128,7 +128,7 @@
 				\end{figure}\\
 				$A_{2} = <A_{id}, 4, A_{2value}, H(N||4||A_{2value}||B_{1}||A_{1}) >$; $Sign(A_{2}) = E_{K_{A}}(H({A_{2}}))$\\
 				where $A_{2value} = B_{1value} + A_{1value} $
-				\begin{figure}[hp]
+				\begin{figure}[h!]
 					\centering
 					\includegraphics[scale = 1]{images/commitment-tree-example-4.png}\\
 					\caption{Third Merge: $A_{3}$ vertex created by A.}
