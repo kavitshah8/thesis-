@@ -1,41 +1,51 @@
 \chapter{Aggregate commit with verification} % (fold)
 \label{cha:A Protocol for Commitment Tree Generation}
 	
-	This chapter describes our approach of creating commitment tree.
-	 % which is built on top of commitment tree generation of SHIA mentioned in the previous chapter.
+	\textcolor{red}{Talk about Motivation}
+	SHIA helps the sensor node verify that its original sensor reading was aggregated correctly or not by an aggregator.
+	If an aggregator has tampered with the original sensor reading reported by the sensor node then the sensor node can report the problem.
+	But SHIA does not help detecting and removing the malicious aggregator from the network.
+	We develop the protocol which helps identify the malicious aggregator in the network.
+	% which is built on top of commitment tree generation of SHIA mentioned in the previous chapter.
 
+\section{Signing the data-item}
 	\begin{definition}
 		\label{def:data-item}
 		A commitment tree is a binary tree where each vertex has an associated data-item representing the data that is passed on to its parent. The data-items have the following format:
 
-		$\hspace{100pt}$ $<$id, count, value, commitment$>$\\
-		Where id is the unique identity of the node; count is the number of leaf vertices in the subtree rooted at this vertex; value is the SUM aggregate computed over all the leaves in the subtree and commitment is a cryptographic commitment.
+		$\hspace{100pt}$ $<$id, count, value, commitment$>$
 	\end{definition}
-	There is one vertex $s_{0}$ for each sensor node $s$, which we call the leaf vertex of $s$. 
+	Where id is the unique ID of the node; count is the number of leaf vertices in the subtree rooted at this vertex; value is the SUM aggregate computed over all the leaves in the subtree and commitment is a cryptographic commitment.
+	There is one vertex $s_{0}$ for each sensor node $s$, which we call the leaf vertex of $s$ Equation \ref{eq:leaf-vertex} and associated signature to it Equation \ref{eq:signature-leaf-vertex}.
 	\begin{equation}
 		\label{eq:leaf-vertex}
-		s_{0} = <s_{id}, 1, s_{value}, H(N||1||s_{value})>
+		s_{0}\ =\ <s_{id}, 1, s_{value}, H(N||1||s_{value})>
 	\end{equation}
 	\begin{equation}
+		\label{eq:signature-leaf-vertex}
 		Sign(s_{0}) = E_{K_{s}}(H(s_{0}))
 	\end{equation}
 	In addition to sending the data-item, each sensor node sends the signature of the data-item to its parent.
 	The parent node verifies its child's signature using it's certificate.
 	After verification of signature it proceeds with the aggregation.
-
-	We define commitment payload based on the commitment forest Defined in \ref{def:commitment-forest}.
+	\section{Signing the commitment payload}
+		We define commitment payload based on the commitment forest Defined in \ref{def:commitment-forest}.
 	\begin{definition}
 		A \textbf{commitment payload} is a set of data-items of the root vertices of the trees in the outgoing commitment forest.
 	\end{definition}
 	% We use the term payload for commitment payload and the term forest for the commitment forest.
+	For brevity, we use the term forest, payload instead of commitment forest, commitment payload respectively.
 
-	\newpage
-	\section{Signing the commitment payload}
-		In addition to the sending all the data-items with their respective signatures, an intermediate node sends an additional signature to its parent, which is a signature of all the data-items in its commitment forest.
-		This additional signature signifies that an intermediate sensor node has verified all the data-items in its commitment forest.
-		From the parent node perspective, it signifies that it has received all the verified data-items from its children and it has not over hear all these data-items.
-		% Each sensor node signs all the data-items in its commitment payload before sending it to its parent.
-		% to prove the fact that it has verified all the data-items in its commitment forests.
+	In addition to the sending all the data-items with their respective signatures, an intermediate node sends an additional signature to its parent, which is a signature of all the data-items in its commitment forest.
+	This additional signature signifies the following:
+	\begin{itemize}
+		\item	An intermediate sensor node has verified all the data-items in its forest.
+		\item An intermediate sensor node can not claim sending different data-items to its parent in the future.
+		\item From the parent or ancestor node perspective, it has received all the verified data-items from its children and not from anywhere else.
+		\item The parent or ancestor node can not claim receiving different data-item form its children in the future.
+	\end{itemize}
+	% Each sensor node signs all the data-items in its commitment payload before sending it to its parent.
+	% to prove the fact that it has verified all the data-items in its commitment forests.
 		
 		\begin{exmp}
 		Signing the the payload.\\	
@@ -60,18 +70,17 @@
 		$C_{0} = <C_{id}, 1, C_{value}, H(N||1||C_{value})>$; $Sign(C_{0}) = E_{K_{C}}(H(C_{0}))$\\
 		In addition to that $C$ sends the signature of its payload $Sign(C_{p})$ to its parent.\\
 		\textcolor{red}{$Sign(C_{p}) = E_{K_{C}}(H(C_{0} || B_{1}))$}
-
-			\begin{figure}[hp]
+			\begin{figure}[h!]
 				\centering
-				\includegraphics[scale = 0.5]{images/commitment-payload-of-C.png}\\
+				\includegraphics[scale = 0.5]{images/commitment-payload-of-C.png}
 				\caption{$C$'s commitment commitment-payload}
 				\label{fig:Commitment payload of C}
 			\end{figure}
 		\end{exmp}
-	Sending an additional signature with all the data-items signifies that a sensor node has verified all the data-items.
-	The basic idea is that the sensor node signs all the data-items it sends to its parent.
-	\textbf{Because of the signature, the sensor node has the proof for the sent data-item.
-	It also prevents the parent or ancestor node from claiming the different received data-item.}
+	% Sending an additional signature with all the data-items signifies that a sensor node has verified all the data-items.
+	% The basic idea is that the sensor node signs all the data-items it sends to its parent.
+	% \textbf{Because of the signature, the sensor node has the proof for the sent data-item.
+	% It also prevents the parent or ancestor node from claiming the different received data-item.}
 
 	\section{Commitment tree generation}
 	\textcolor{red}{Mention signatures}
@@ -137,3 +146,4 @@ Talk about the certificates:
 	But if we use SHIA'a approach of creating commitment tree then $A$ need to know $E's$ certificate as well.
 	Hence, being root in as many tree as possible is the more efficient.
 	
+\section{Bandwidth Analysis}
