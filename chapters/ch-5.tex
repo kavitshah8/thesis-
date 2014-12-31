@@ -7,7 +7,7 @@
 	But SHIA does not help detecting and removing the malicious aggregator from the network.
 	We develop the protocol which helps identify the malicious aggregator in the network.
 	% which is built on top of commitment tree generation of SHIA mentioned in the previous chapter.
-
+	
 \section{Signing the Data-Item}
 	\begin{definition}
 		\label{def:data-item}
@@ -141,8 +141,17 @@
 % 	In the above example, $A$ need to know $D,B,C's$ certificate to verify their signatures.
 % 	But if we use SHIA'a approach of creating commitment tree then $A$ need to know $E's$ certificate as well.
 % 	Hence, being root in as many tree as possible is the more efficient.
-	
+
+\newpage
 \section{Bandwidth Analysis}
-	An intermediate sensor node $S$ with $n$ descendants has at most $\log(n)$ commitment trees in its forest and at most $(\log(n) + 1)$ data-items in its payload with at most $(\log(n) +2)$ signatures.
-	Computation cost: Needs to calculate that many signatures. Needs to verify that many signatures.
-	Need to know that many certificates.
+	For a given forest with $n$ leaf vertices has at most $\log(n)$ data-items in its payload.
+	It also has at most $\log(n)+1$ signatures in its payload.
+	The highest possible count value is $\log(n)$, as all the trees are binary. 
+
+	An intermediate sensor node $S$ with $n$ descendants has at most $\log(n+1)$ data-items with their respective $\log(n+1)$ signatures in its payload.
+	$S$ might need to send its payload signature $Sign(S_{p})$ to its parent.
+	So, $S$ has to send a payload with $log(n+1)$ data-items and $log(n+1) +1$ signatures to its parent in the aggregation tree. 
+
+	In addition to calculating the data-items, each sensor node need to do $O(log(n))$ amount of extra work. It needs to calculate and verify $O(log(n))$ signatures. 
+	% Computation cost: Needs to calculate that many signatures. Needs to verify that many signatures.
+	% Need to know that many certificates.
