@@ -143,6 +143,8 @@
 % 	Hence, being root in as many tree as possible is the more efficient.
 
 \newpage
+\section{Security Analysis}
+
 \section{Bandwidth Analysis}
 	For a given forest with $n$ leaf vertices has at most $\log(n)$ data-items in its payload.
 	It also has at most $\log(n)+1$ signatures in its payload.
@@ -150,8 +152,23 @@
 
 	An intermediate sensor node $S$ with $n$ descendants has at most $\log(n+1)$ data-items with their respective $\log(n+1)$ signatures in its payload.
 	$S$ might need to send its payload signature $Sign(S_{p})$ to its parent.
-	So, $S$ has to send a payload with $log(n+1)$ data-items and $log(n+1) +1$ signatures to its parent in the aggregation tree. 
+	So, $S$ has to send a payload with $log(n+1)$ data-items and $log(n+1) +1$ signatures to its parent in the aggregation tree, which causes $O(log(n))$ overhead in the network. 
 
+\section{Performance Analysis}
 	In addition to calculating the data-items, each sensor node need to do $O(log(n))$ amount of extra work. It needs to calculate and verify $O(log(n))$ signatures. 
+
 	% Computation cost: Needs to calculate that many signatures. Needs to verify that many signatures.
 	% Need to know that many certificates.
+
+\section{Applications}
+
+	\textbf{Voting}
+		The signature based aggregation scheme can be applied to do the voting in the network. 
+		For example, the base station need to know the overall vote in the network.
+		An intermediate or aggregate node receives votes from all of its children and after aggregating the votes, it forwards those votes to its parent.
+		But in the voting scheme it is important to know that the vote is coming from the 
+		
+		An aggregate node need to verify the received vote is coming from the signer of the vote.
+		The children need the proof that they send their vote to their parent in the network.
+
+	\textbf{Node power level}
