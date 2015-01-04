@@ -2,12 +2,15 @@
 \label{cha:A Protocol for Commitment Tree Generation}
 	
 	\textcolor{red}{Motivation:}
-	SHIA helps the sensor node verify that its original sensor reading was aggregated correctly or not by an aggregator.
-	If an aggregator has tampered with the original sensor reading reported by the sensor node then the sensor node can report the problem.
-	But SHIA does not help detecting and removing the malicious aggregator from the network.
-	We develop the protocol which helps identify the malicious aggregator in the network.
+	SHIA helps the sensor node verify, its original sensor reading was aggregated correctly or not, by an an aggregate node.
+	If an an aggregate node has tampered with the original sensor reading then the relevant sensor node can detect the tampering and raise an alarm.
+	But SHIA does not help detecting and revoking the malicious aggregate node from the network.
+	We develop the protocol which helps identify the malicious aggregate node in the network.
 	% which is built on top of commitment tree generation of SHIA mentioned in the previous chapter.
 	
+	The high level idea of the aggregate commit with verification scheme is, each leaf vertex sends the signature of its data-item signed by itself in addition to the data-item.
+	The aggregate node proceeds to the aggregation only after it verifies the data-item.
+
 \section{Signing the Data-Item}
 	\begin{definition}
 		\label{def:data-item}
@@ -16,7 +19,8 @@
 		$\hspace{100pt}$ $<$id, count, value, commitment$>$
 	\end{definition}
 	Where id is the unique ID of the node; count is the number of leaf vertices in the subtree rooted at this vertex; value is the SUM aggregate computed over all the leaves in the subtree and commitment is a cryptographic commitment.
-	There is one vertex $s_{0}$ for each sensor node $s$, which we call the leaf vertex of $s$ Equation \ref{eq:leaf-vertex} and associated signature to it Equation \ref{eq:signature-leaf-vertex}.
+	There is one vertex $s_{0}$ for each sensor node $s$, which we call the leaf vertex of $s$.
+	The data-item for leaf vertex $s_{0}$ is defined according to Equation \ref{eq:leaf-vertex} and associated signature to it is defined according to Equation \ref{eq:signature-leaf-vertex}.
 	\begin{equation}
 		\label{eq:leaf-vertex}
 		s_{0}\ =\ <s_{id}, 1, s_{value}, H(N||1||s_{value})>
@@ -25,10 +29,18 @@
 		\label{eq:signature-leaf-vertex}
 		Sign(s_{0}) = E_{K_{s}}(H(s_{0}))
 	\end{equation}
-	In addition to sending the data-item, each sensor node sends the signature of the data-item to its parent.
-	The parent node verifies its child's signature using it's certificate.
-	After verification of signature it proceeds with the aggregation.
+	where $H$ is a collision resistant hash function, $K_{s}$ is the private key of $s$, $N$ is the query nonce.
+
+	In aggregate commit with verification scheme, in addition to sending the data-item, each sensor node sends the signature of the data-item to its parent.
+	The parent node verifies its child's signature and then proceeds to the aggregation.
 	
+	\subsection{Security Analysis}
+		\begin{itemize}
+			\item A sensor node has the proof for the sent data-item and can not claim sending the different data-item to its parent in the future.
+			\item Each data-item has an associated signature to it, which helps an aggregate node verify the authenticity of the data-item.
+			\item The parent node has the proof for the received data-item, and can not claim receiving different data-items form its children in the future.
+		\end{itemize}
+
 \section{Signing the Commitment Payload}
 		We define commitment payload based on the commitment forest Defined in \ref{def:commitment-forest}.
 	\begin{definition}
@@ -37,14 +49,7 @@
 	% We use the term payload for commitment payload and the term forest for the commitment forest.
 	For brevity, we use the term forest, payload instead of commitment forest, commitment payload respectively.
 
-	In addition to the sending all the data-items with their respective signatures, an intermediate node sends an additional signature to its parent, which is a signature of all the data-items in its commitment forest.
-	This additional signature signifies the following:
-	\begin{itemize}
-		\item	An intermediate sensor node has verified all the data-items in its forest.
-		\item An intermediate sensor node can not claim sending different data-items to its parent in the future.
-		\item From the parent or ancestor node perspective, it has received all the verified data-items from its children and not from anywhere else.
-		\item The parent or ancestor node can not claim receiving different data-item form its children in the future.
-	\end{itemize}
+	In addition to sending all the data-items with their respective signatures, an aggregate node sends an additional signature to its parent, which is a signature of all the data-items in its payload.
 	% Each sensor node signs all the data-items in its commitment payload before sending it to its parent.
 	% to prove the fact that it has verified all the data-items in its commitment forests.
 	For example, for the aggregation tree shown in Figure \ref{fig:Palm aggregation tree}, the payload of sensor node $C$ is show in Figure \ref{fig:commitment-tree-example-1}.
@@ -78,20 +83,29 @@
 	% The basic idea is that the sensor node signs all the data-items it sends to its parent.
 	% \textbf{Because of the signature, the sensor node has the proof for the sent data-item.
 	% It also prevents the parent or ancestor node from claiming the different received data-item.}
+	\subsection{Security Analysis}
+
+	This additional signature signifies the following:
+	\begin{itemize}
+		\item	An intermediate sensor node has verified all the data-items in its forest before creating its payload.
+		\item From the parent node perspective, it has received all the verified data-items from the signer node and not from anywhere else.
+		% \item From the parent or ancestor node perspective, it has received all the verified data-items from its children and not from anywhere else.
+	\end{itemize}
 
 	\section{Commitment Tree Generation}
 	For the given aggregation tree the commitment forest is built as follows.
-	Leaf sensor nodes in the aggregation tree create their leaf vertex and their respective signatures according to Equation \ref{eq:leaf-vertex}, \ref{eq:signature-leaf-vertex} which they send it to their parent in the aggregation tree.
-	Each internal sensor node $I$\ in the aggregation tree also creates their leaf vertex and signature.
+	Leaf sensor nodes in the aggregation tree create their leaf vertex by creating data-items and their respective signatures according to Equation \ref{eq:leaf-vertex}, \ref{eq:signature-leaf-vertex} which they send it to their parent as a payload in the aggregation tree.
+	Each internal sensor node $I$\ in the aggregation tree also creates their leaf vertex and its signature.
 	In addition, $I$\ receives the payload from each of its children which creates the forest for $I$.
-	Once $I$ verifies all the received signatures, it merges all the data-items in its forest with same count value to form its payload.
+	Once $I$ verifies all the received signatures, it merges all the data-items in its forest with same count value to create its payload.
+	Note that we can determine the height of the commitment tree from the count value.
 
 	Suppose $I$ have to create its payload by merging $i$ data-items $D_{1}$, $D_{2}$, $\dotsc$, $D_{i}$ in its forest.
-	First $I$ verifies the received signatures $Sign(D_{1})$, $Sign(D_{2})$, $\dotsc$, $Sign(D_{i})$.
-	Once verified $I$ starts merging the data-items.
+	First, $I$ verifies the received signatures $Sign(D_{1})$, $Sign(D_{2})$, $\dotsc$, $Sign(D_{i})$.
+	Once verified, $I$ starts merging the data-items as follows.
 	Let $c$ be the smallest count value in $I$'s forest.
 	The sensor node $I$ finds two data-items $D_{1},D_{2}$ in its forest with the same count value $c$ and merges them into a new data-item with the count of $c+1$.
-	\textcolor{red}{add figure}
+	% \textcolor{red}{add figure}
 	It repeats the process until no two data-items in its forest have the same count value.
 	An example of generating the payload by merging the data-items in the forest for the sensor node $A$ in Figure \ref{fig:at} is illustrated in the following example.
 	% \ref{fig:commitment-tree-example-1}, \ref{fig:commitment-tree-example-2}, \ref{fig:commitment-tree-example-3}, \ref{fig:commitment-tree-example-4}.
@@ -141,34 +155,40 @@
 % 	In the above example, $A$ need to know $D,B,C's$ certificate to verify their signatures.
 % 	But if we use SHIA'a approach of creating commitment tree then $A$ need to know $E's$ certificate as well.
 % 	Hence, being root in as many tree as possible is the more efficient.
-
-\newpage
-\section{Security Analysis}
-
 \section{Bandwidth Analysis}
-	For a given forest with $n$ leaf vertices has at most $\log(n)$ data-items in its payload.
-	It also has at most $\log(n)+1$ signatures in its payload.
-	The highest possible count value is $\log(n)$, as all the trees are binary. 
+	For a given forest with $n$ leaf vertices, has at most $\log n$ data-items in its payload.
+	It has at most $(\log n) +1$ signatures in its payload.
+	The highest possible count value is $\log n$, as all the trees are binary. 
 
 	An intermediate sensor node $S$ with $n$ descendants has at most $\log(n+1)$ data-items with their respective $\log(n+1)$ signatures in its payload.
 	$S$ might need to send its payload signature $Sign(S_{p})$ to its parent.
-	So, $S$ has to send a payload with $log(n+1)$ data-items and $log(n+1) +1$ signatures to its parent in the aggregation tree, which causes $O(log(n))$ overhead in the network. 
+	$S$ has to send a payload with $\log(n+1)$ data-items and $\log(n+1) +1$ signatures to its parent in the aggregation tree.
+	Hence, sending  signatures of the data-items causes $O(\log n)$ overhead in the network. 
 
 \section{Performance Analysis}
-	In addition to calculating the data-items, each sensor node need to do $O(log(n))$ amount of extra work. It needs to calculate and verify $O(log(n))$ signatures. 
+	In addition to calculating the data-items, each sensor node need to do $O(\log n)$ amount of extra work as it needs to calculate and verify $O(\log n)$ signatures. 
 
 	% Computation cost: Needs to calculate that many signatures. Needs to verify that many signatures.
 	% Need to know that many certificates.
 
 \section{Applications}
-
-	\textbf{Voting}
-		The signature based aggregation scheme can be applied to do the voting in the network. 
-		For example, the base station need to know the overall vote in the network.
-		An intermediate or aggregate node receives votes from all of its children and after aggregating the votes, it forwards those votes to its parent.
-		But in the voting scheme it is important to know that the vote is coming from the 
-		
-		An aggregate node need to verify the received vote is coming from the signer of the vote.
-		The children need the proof that they send their vote to their parent in the network.
-
-	\textbf{Node power level}
+		The signature based aggregation scheme can be applied to do the \textbf{voting} in the network.
+		And voting scheme can be used to solve many sensor network problems.
+		For example, voting can be used to design the distributed algorithm for selecting a cluster head or node revocation system.
+		In the voting scheme, following are the major security concerns: 
+		\begin{itemize}
+			\item The aggregate node needs to know that the vote is coming from the legit voter, no other voter is impersonating the vote of the legit voter.
+			\item Only the intended aggregate node should be able to verify the vote.
+			\item The aggregate node should not be able to tamper with the votes. 
+			\item The aggregate node needs the proof that it aggregated the verified votes.
+			\item The voter need the proof for which vote it sent to its aggregator.
+		\end{itemize}
+		For example, the base station wants to know the overall vote-count in the network.
+		To do so, all the leaf nodes send their votes and the signature of their votes to their respective aggregate nodes in the network.
+		The aggregate nodes receive votes with their signatures from all of their children voters.
+		The aggregate nodes verify all the votes and count those votes.
+		Then they forward the count and the signature of that count signed by the aggregate node to their respective parent in the aggregation tree.
+		This process is repeated until the final count and its signature, is sent to the base station by the root of the aggregation tree.
+				
+	\textbf{Node power level},
+	\textbf{Surveillance Application}
