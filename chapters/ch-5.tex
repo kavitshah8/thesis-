@@ -1,17 +1,20 @@
 \chapter{Aggregate Commit with Verification} % (fold)
 \label{cha:A Protocol for Commitment Tree Generation}
-	
-	\textcolor{red}{Motivation:}
-	SHIA helps the sensor node verify, its original sensor reading was aggregated correctly or not, by an an aggregate node.
-	If an an aggregate node has tampered with the original sensor reading then the relevant sensor node can detect the tampering and raise an alarm.
+	In the previous chapter, we saw that SHIA limits the adversary's ability to manipulate the aggregation result with the tightest bound possible.
+	SHIA does not require prior knowledge of network topology and works on hierarchical sensor network which might include multiple malicious sensor nodes, with only suboptimal congestion overhead.
+	SHIA helps the sensor node verify, its reported sensor reading was aggregated correctly or not, by an an aggregate node.
+	If an an aggregate node has tampered with the reported sensor reading then the relevant sensor node can detect the tampering and raise an alarm.
 	But SHIA does not help detecting and revoking the malicious aggregate node from the network.
-	We develop the protocol which helps identify the malicious aggregate node in the network.
+	We develop the protocol which identifies the malicious aggregate node in the network.
 	% which is built on top of commitment tree generation of SHIA mentioned in the previous chapter.
 	
-	The high level idea of the aggregate commit with verification scheme is, each leaf vertex sends the signature of its data-item signed by itself in addition to the data-item.
-	The aggregate node proceeds to the aggregation only after it verifies the data-item.
+	The high level idea of the aggregate commit with verification scheme is, all the leaves in the aggregation tree sends the signature of its data-item signed by itself, in addition to the data-item.
+	The aggregate node proceeds to the aggregation only after verifying all the received the data-items.
+	The aggregate node signs its payload in addition to its data-item as described in the following sections.
 
 \section{Signing the Data-Item}
+	Here, we describe structure of the data-item, how it is different from the label structure of SHIA and rational behind it.
+
 	\begin{definition}
 		\label{def:data-item}
 		A commitment tree is a binary tree where each vertex has an associated data-item representing the data that is passed on to its parent. The data-items have the following format:
@@ -19,6 +22,13 @@
 		$\hspace{100pt}$ $<$id, count, value, commitment$>$
 	\end{definition}
 	Where id is the unique ID of the node; count is the number of leaf vertices in the subtree rooted at this vertex; value is the SUM aggregate computed over all the leaves in the subtree and commitment is a cryptographic commitment.
+	We remove the complement field from the label structure Defined \ref{def:label}. 
+	We think sending the complement filed is redundant. 
+	The complement field is used by the base station (the querier according to SHIA), before the result checking phase, to verify SUM + COMPLEMENT = $n \cdot r$; where $n$ is the number of nodes in the network, $r$ is the upper bound on the allowed sensor readings.
+	We can achieve the similar upper bound without sending the complement field.
+	As the querier knows $n, r$ and it gets SUM from the root of the aggregation tree.
+	If SUM $> n \cdot r$, then the base station knows some node or nodes in the network reported out of range readings. 
+
 	There is one vertex $s_{0}$ for each sensor node $s$, which we call the leaf vertex of $s$.
 	The data-item for leaf vertex $s_{0}$ is defined according to Equation \ref{eq:leaf-vertex} and associated signature to it is defined according to Equation \ref{eq:signature-leaf-vertex}.
 	\begin{equation}
@@ -30,9 +40,8 @@
 		Sign(s_{0}) = E_{K_{s}}(H(s_{0}))
 	\end{equation}
 	where $H$ is a collision resistant hash function, $K_{s}$ is the private key of $s$, $N$ is the query nonce.
-
 	In aggregate commit with verification scheme, in addition to sending the data-item, each sensor node sends the signature of the data-item to its parent.
-	The parent node verifies its child's signature and then proceeds to the aggregation.
+	The parent node verifies all the received signature and then proceeds to the aggregation.
 	
 	\subsection{Security Analysis}
 		\begin{itemize}
