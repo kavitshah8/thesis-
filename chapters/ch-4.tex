@@ -35,7 +35,7 @@ The goal of $\textit{SHIA}$ is to compute aggregate functions (such as $\textit{
 \section{Aggregate definition and security goals}
 	
 	\subsection{Aggregate definition}
-	\cite{chan2006secure}
+	According to \cite{chan2006secure} aggregate is defined as follows.
 	Each sensor node $s_{i}$ has a data value $a_{i}$\ assuming that all the data values are non-negative bounded by real value $a_{i} \in [0,r]$, where $r$\ is the maximum allowed data value.
 	The objective of the aggregation process is to compute some function $f$ over all the data values, i.e., $f (a_{1}, \dotsc ,a_{n})$.
 
@@ -118,7 +118,7 @@ The goal of $\textit{SHIA}$ is to compute aggregate functions (such as $\textit{
 		TaG uses broadcast message from the base station to initiate a tree generation.
 		Each node selects its parent from whichever node it first receives the tree formation message.
 		One possible aggregation tree for given network graph in Figure \ref{fig:ng} is shown in Figure \ref{fig:at}. 
-		\begin{figure}[hp]
+		\begin{figure}[h!]
 			\centering
 			\includegraphics[scale = 1]{images/network-graph.png}\\
 			\caption{Network graph}
@@ -134,7 +134,7 @@ The goal of $\textit{SHIA}$ is to compute aggregate functions (such as $\textit{
 		For example, if the last known value of the hash chain is $h^i(X)$, then the next broadcast uses $h^{i-1}(X)$ as the nonce; $X$ is the initial random value.
 		When a node receives a new nonce $N′$, it verifies that $N′$ is a precursor to the most recently received (and authenticated) nonce $N$ on the hash chain, i.e., $h_{i}(N′) = N$ for some $i$ bounded by a fixed $k$ of number of hash applications.  
 		A hash chain prevents an adversary from predicting the query nonce for future queries as it has to reverse the hash chain computation to get an acceptable pre-image.
-		\begin{figure}[hp]
+		\begin{figure}[h!]
 			\centering
 			\includegraphics[scale = 1]{images/aggregation-tree.png}\\
 			\caption{Aggregation tree for network graph in Figure \ref{fig:ng}}
@@ -155,7 +155,7 @@ The goal of $\textit{SHIA}$ is to compute aggregate functions (such as $\textit{
 			The label is format is described in Definition \ref{def:label}.
 			Figure \ref{fig:naive-commitment-tree} shows a commitment tree for the aggregation tree shown in Figure \ref{fig:at}.
 			Conceptually, a commitment tree is a logical tree built on top of an aggregation tree, with additional aggregate information attached to the nodes to help in the result checking phase.
-			\begin{figure}[hp]
+			\begin{figure}[h!]
 				\centering
 				\includegraphics[scale = 1]{images/naive-commitment-tree.png}\\
 				\caption{Naive commitment tree for Figure \ref{fig:at}.
@@ -235,7 +235,7 @@ The goal of $\textit{SHIA}$ is to compute aggregate functions (such as $\textit{
 			Find two commitment trees $T_{1}$ and $T_{2}$ of height $h$ in $F$, and merge them into a tree of height $h + 1$ by creating a new vertex that is the parent of both the roots of $T_{1}$ and $T_{2}$ according to the inductive rule in Definition \ref{def:label}.
 
 			\begin{exmp} The commitment-forest generation process for node $A$ of Figure \ref{fig:at} is shown here.\\
-				\begin{figure}[hp]
+				\begin{figure}[h!]
 					\centering
 					\includegraphics[scale = 0.9]{images/commitment-tree-example-1-shia.png}\\
 					\caption{$A$ receives $C_{2}$ from $C$, $(B_{1},B_{0})$ from $B$, $D_{0}$ from $D$ and generates $A_{0}$. The commitment forest received from a given sensor node is indicated by dashed-line box.}
@@ -246,7 +246,7 @@ The goal of $\textit{SHIA}$ is to compute aggregate functions (such as $\textit{
 				$E_{0} = <1, a_{E}, r - a_{E}, E>$\\
 				$B_{1} = <2, v_{B_{1}}, \bar{v_{B_{1}}}, H(N || 2 || v_{B_{1}}|| \bar{v_{B_{1}}} || B_{0} || F_{0})>$\\
 				$C_{2} = <4, v_{C_{2}}, \bar{v_{C_{2}}}, H(N || 4 || v_{C_{2}}|| \bar{v_{C_{2}}} || H_{1} || C_{1})>$\\
-				\begin{figure}[hp]
+				\begin{figure}[h!]
 					\centering
 					\includegraphics[scale = 1]{images/commitment-tree-example-2-shia.png}\\
 					\caption{First Merge: $A_{1}$ vertex created by A.}
@@ -255,7 +255,7 @@ The goal of $\textit{SHIA}$ is to compute aggregate functions (such as $\textit{
 				$A_{1} = <2, v_{A_{1}}, \bar{v_{A_{1}}}, H(N || 2 || v_{A_{1}}|| \bar{v_{A_{1}}} || A_{0} || D_{0})>$\\
 				$v_{A_{1}} = a_{A} + a_{D} $;
 				$\bar{v_{A_{1}}} = r - a_{A} + r - a_{D}$\\
-				\begin{figure}[hp]
+				\begin{figure}[h!]
 					\centering
 					\includegraphics[scale = 1]{images/commitment-tree-example-3-shia.png}\\
 					\caption{Second Merge: $A_{2}$ vertex created by A.}
@@ -264,7 +264,7 @@ The goal of $\textit{SHIA}$ is to compute aggregate functions (such as $\textit{
 				$A_{2} = <4, v_{A_{2}},\bar{v_{A_{2}}},H(N || 4 || v_{A_{2}} || \bar{v_{A_{2}}} || B_{1} ||A_{1}) >$\\
 				$v_{A_{2}} = v_{A_{1}} + v_{B_{1}}$;
 				$\bar{v_{A_{2}}} = r - v_{A_{1}} + r - v_{B_{1}}$
-				\begin{figure}[hp]
+				\begin{figure}[h!]
 					\centering
 					\includegraphics[scale = 1]{images/commitment-tree-example-4-shia.png}\\
 					\caption{Third Merge: $A_{3}$ vertex created by A.}
@@ -299,7 +299,7 @@ The goal of $\textit{SHIA}$ is to compute aggregate functions (such as $\textit{
 		\cite{chan2006secure}
 		The set of off-path vertices for a vertex $u$ in a tree is the set of all the siblings of each of the vertices on the path from $u$ to the root of the tree that $u$ is in (the path is inclusive of $u$).
 	\end{definition}
-	\begin{figure}[hp]
+	\begin{figure}[h!]
 		\centering
 		\includegraphics[scale = 1]{images/off-path.png}\\
 		\caption{Off-path vertices from $u$ are highlighted in bold.}
