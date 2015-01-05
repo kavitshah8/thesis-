@@ -93,6 +93,27 @@ If an aggregator changes the value field in one of its children's data-item then
 If an aggregator has two unique children (not including itself) and if it tries to change either one or both childrens' data-item then it can not create a data-item which will be accepted by both of its children.
 One of it's children will complain in the verification phase as they will not be able to calculate the same root data-item received from the base station.
 
+\section{Possible Cheater Analysis}
+	\begin{exmp}
+		\begin{figure}[t]
+			\centering
+			\includegraphics{images/possible-cheaters.png}
+			\caption{Smallest possible commitment tree}
+			\label{fig:cheating}
+		\end{figure}
+
+		\begin{itemize}
+			\item $A_{0}$ sends an authenticated code with NACK during verification of inclusion.
+			Then possible adversaries are the following:
+				\begin{itemize}
+					\item $I$
+					\item $(B, I)$
+					\item $(B, M)$
+					\item $(B, I, M)$
+				\end{itemize}
+		\end{itemize}
+	\end{exmp}
+
 % \section{What is not cheating ?}
 	
 % 	In figure 7.1, A is an aggregator if A is a cheater it can skew the final aggregation result irrespective of B's sensor reading. We do not consider this case as a cheating because A is adjusting its sensor reading, it's not changing the B's sensor reading. 
