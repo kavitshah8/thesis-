@@ -1,11 +1,11 @@
-\chapter{Secure hierarchical In-network data aggregation} % (fold)
+\chapter{Secure Hierarchical In-network Data Aggregation} % (fold)
 \label{cha:Secure hierarchical In-network data aggregation}
 
 Our work enhances Secure Hierarchical In-network data aggregation $\textit{(SHIA)}$ protocol of \cite{chan2006secure} by making it communication efficient, adding new capabilities to the protocol, achieving similar security goals with non-resilient aggregation functions and efficient way of analyzing the protocol.
 In this chapter, we summarize the important parts of $\textit{SHIA}$ protocol and relevant terms, to build the foundation to describe our protocol in the following chapters.\\
 The goal of $\textit{SHIA}$ is to compute aggregate functions (such as $\textit{truncated SUM}$, $\textit{AVERAGE}$, $\textit{COUNT}$, $\Phi-QUANTILE$) of the sensed values by the sensor nodes while assuming that partially a network is controlled by an adversary which is attempting to skew the final result.
 
-\section{Network assumptions}
+\section{Network Assumptions}
 
 	We assume a multi hop network with a set $ S = \{s1,...,s_{n}\} $ of $n$ sensor nodes where all $n$ nodes are alive and reachable. 
 	The network is organized in a rooted tree topology.
@@ -19,7 +19,7 @@ The goal of $\textit{SHIA}$ is to compute aggregate functions (such as $\textit{
 	All the sensor nodes are capable of doing symmetric key encryption and symmetric key decryption.
 	They are also capable of computing collision resistant cryptographic hash function $H$. 
 
-\section{Attacker model}
+\section{Attacker Model}
 	
 	We consider a model with a polynomially bounded adversary of \cite{przydatek2003sia}, which has a complete control over some of the sensor nodes in the network.
 	Most significantly, the adversary can change the measured values reported by sensor nodes under its control.
@@ -32,18 +32,17 @@ The goal of $\textit{SHIA}$ is to compute aggregate functions (such as $\textit{
 	In this setting, denial-of-service (DoS) attacks such as not responding to the queries or always responding with negative acknowledgment at the end of verification phase clearly indicates to the base station that something is wrong in the network and therefore is not a stealthy attack.
 	One of the security goals of the SHIA is to prevent stealthy attacks.
 	
-\section{Aggregate definition and security goals}
+\section{Aggregate Definition and Security Goals}
 	
-	\subsection{Aggregate definition}
-	According to \cite{chan2006secure} aggregate is defined as follows.
-	Each sensor node $s_{i}$ has a data value $a_{i}$\ assuming that all the data values are non-negative bounded by real value $a_{i} \in [0,r]$, where $r$\ is the maximum allowed data value.
-	The objective of the aggregation process is to compute some function $f$ over all the data values, i.e., $f (a_{1}, \dotsc ,a_{n})$.
+	\begin{definition}
+		According to \cite{chan2006secure}, each sensor node $s_{i}$ has a data value $a_{i}$\ assuming that all the data values are non-negative bounded by real value $a_{i} \in [0,r]$, where $r$\ is the maximum allowed data value.
+		The objective of the \textbf{aggregation process} is to compute some function $f$ over all the data values, i.e., $f (a_{1}, \dotsc ,a_{n})$.
+	\end{definition}
 
 	\subsection{Security goals}
 	\begin{definition}
 		\label{def:direct-data-injection}
-		\cite{chan2006secure}
-		A \textbf{direct data injection} attack occurs when an adversary modifies the data readings reported by the nodes under its direct control, under the constraint that only legal readings in $[0, r]$ are reported.
+		According to \cite{chan2006secure}, a \textbf{direct data injection} attack occurs when an adversary modifies the data readings reported by the nodes under its direct control, under the constraint that only legal readings in $[0, r]$ are reported.
 	\end{definition}
 
 	Wagner \cite{wagner2004resilient} uses statistical estimation theory to quantify the effects of direct data injection on various aggregates as follows.
@@ -73,36 +72,40 @@ The goal of $\textit{SHIA}$ is to compute aggregate functions (such as $\textit{
 	Note that $rms^* (f, 0) = rms(f)$.
 	We think of an aggregation function $f$ as an instance of the resilient aggregation paradigm if $rms^* (f, k)$ grows slowly as a function of $k$.
 	\begin{definition}
-		\cite{wagner2004resilient}
-		We say that an aggregation function $f$ is $(k, \alpha)$-resilient (with respect to a parameterized distribution $p(X_{i} | \theta))$ if $rms^*(f, k) \le \alpha \cdot rms(f)$ for the estimator $f$.
+		According to \cite{wagner2004resilient}, an aggregation function $f$ is $(k, \alpha)$-resilient (with respect to a parameterized distribution $p(X_{i} | \theta))$ if $rms^*(f, k) \le \alpha \cdot rms(f)$ for the estimator $f$.
 	\end{definition}
 	The intuition is that the $(k, \alpha)$-resilient functions, for small values of $\alpha$, are the ones that can be computed meaningfully and securely in the presence of up to $k$ compromised or malicious nodes.
-	The summary of the Wagner's work is summarized in the below table.\\
-	\begin{tabular}{ |l| l| }
-		\hline
-	    aggregate(f) & security level \\
-	    \hline
-	    minimum & insecure \\
-	    maximum & insecure \\
-	    sum & insecure \\
-		average & insecure \\
-		count & acceptable \\
-		$[l,u]$-truncated average & problematic \\
-		5\% -trimmed average & better \\
-		median & much better \\
-	    \hline
-	\end{tabular}\\
+	\begin{table}[!htb]	
+		\begin{center}
+			\begin{tabular}{ |l| l| }
+				\hline
+			    Aggregate(f) & Security Level \\
+			    \hline
+			    minimum & insecure \\
+			    maximum & insecure \\
+			    sum & insecure \\
+				average & insecure \\
+				count & acceptable \\
+				$[l,u]$-truncated average & problematic \\
+				5\% -trimmed average & better \\
+				median & much better \\
+			    \hline
+			\end{tabular}
+		\end{center}
+		 \caption{Summary of Wagner's work}
+		 \label{table:wagner}
+	\end{table}
+	The summary of the Wagner's work is summarized in the Table~\ref{table:wagner}.
 	According to this quantitative study measuring the effects of direct data injection on various aggregates, and concludes that the aggregates (truncated SUM and AVERAGE ) can be resilient under such attacks.
 
 	Without precise knowledge of application, the direct data injection attacks are indistinguishable from the malicious sensor readings. Hence, an optimal level of aggregation security is defined as follows.  
 	\begin{definition}
 		\label{def:optimally-secure}
-		\cite{chan2006secure}
-		An aggregation algorithm is \textbf{optimally secure} if, by tampering with the aggregation process, an adversary is unable to induce the base station to accept any aggregation result which is not already achievable by direct data injection.
+		According to \cite{chan2006secure}, an aggregation algorithm is \textbf{optimally secure} if, by tampering with the aggregation process, an adversary is unable to induce the base station to accept any aggregation result which is not already achievable by direct data injection.
 	\end{definition}
 	The goal of SHIA is to design an \textbf{optimally secure} aggregation algorithm with only \textbf{sublinear edge congestion}.
 
-	\section{The SUM aggregate algorithm}
+	\section{The SUM Aggregate Algorithm}
 		In this algorithm, the aggregate function $f$\ is summation meaning that we want to compute $a_{1} + a_{2} + \dotsc + a_{n}$, where $a_{i}$\ is the sensed data value of the node $i$.
 		This algorithm has three main phases:
 		\begin{itemize}
@@ -112,7 +115,7 @@ The goal of $\textit{SHIA}$ is to compute aggregate functions (such as $\textit{
 		\end{itemize}
 
 	\section{Query dissemination}
-		Prior to this phase an aggregation trees is created using a tree generation algorithm.
+		Prior to this phase, an aggregation trees is created using a tree generation algorithm.
 		We can use any tree generation algorithm as this protocol works on any aggregation tree structure.
 		For completeness of this protocol, one can use Tiny Aggregation Service (TaG)\cite{madden2002tag}.
 		TaG uses broadcast message from the base station to initiate a tree generation.

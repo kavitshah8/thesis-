@@ -28,12 +28,14 @@
 	$A_{0}$ = $<A_{id},1,10, H(N||1||10)>$\\
 	$B_{0}$ = $<B_{id},1,20, H(N||1||20)>$\\
 	$C_{1}$ = $<C_{id},2,30, H(N||2||30||A_{0}||B_{0})>$\\
+	\newpage
 	\begin{itemize}
 	\item \textbf{No cheating}\\
-		\textit{offpath}\\
-			$A,B$ receives $C_{1}$ from the base station.
+		$C$ aggregates $B_{0},C_{0}$ according to the aggregation commit algorithm.\\
+		\textit{dissemination of offpath values}\\
+			$A,B$ receives $C_{1}$ from the base station using authenticated broadcast.
 			$A$ receives $B_{0}$ from $C$ and vice versa.\\
-		\textit{verification}\\
+		\textit{verification of inclusion}\\
 			$A_{0} + B_{0}$ = $<2,30,H(N||2||30||A_{0}||B_{0})>$ = $C_{1}$ (by A)\\
 			$A_{0} + B_{0}$ = $<2,30,H(N||2||30||A_{0}||B_{0})>$ = $C_{1}$ (by B)\\
 	\item \textbf{Cheating by replacing data-items}\\
@@ -41,10 +43,10 @@
 		$A'_{0}$ = $<A_{id},1,100, H(N||1||100)>$\\
 		$B'_{0}$ = $<B_{id},1,200, H(N||1||200)>$\\
 		$C'_{1}$ = $<C_{id},2,300, H(N||2||300||A'_{0}||B'_{0})>$\\
-		\textit{offpath}\\
-			$A,B$ receives $C'_{1}$ from the base station.
+		\textit{dissemination of offpath values}\\
+			$A,B$ receives $C'_{1}$ from the base station using authenticated broadcast.
 			$A$ receives $B'_{0}$ from $C$ and vice versa.\\
-		\textit{verification}\\
+		\textit{verification of inclusion}\\
 			$A_{0}+B'_{0}$ = $<2,210,H(N||2||210||A_{0}||B'_{0})>$ $\neq$ $C'_{1}$(by A)\\
 			$A'_{0}+B_{0}$ = $<2,120,H(N||2||120||A'_{0}||B_{0})>$ $\neq$ $C'_{1}$(by B)\\
 	\item \textbf{Cheating by tampering with data-items}\\
@@ -53,11 +55,11 @@
 		$B'_{0}$ = $<B_{id},1,200, H(N||1||20)>$\\
 		$C'_{1}$ = $<C_{id},2,300, H(N||2||300||A''_{0}||B_{0})>$\\
 		$C''_{1}$ = $<C_{id},2,300, H(N||2||300||A_{0}||B''_{0})>$\\
-		\textit{offpath}\\
-		$A,B$ receives $C'_{1}$ or $C''_{1}$ from the base station.\\
+		\textit{dissemination of offpath values}\\
+		$A,B$ receives $C'_{1}$ or $C''_{1}$ from the base station using authenticated broadcast.\\
 		$A$ receives $B''_{0}$ = $<B_{id},1,290,H(N||1||20)>$ from $C$\\
 		$B$ receives $A''_{0}$ = $<A_{id},1,280,H(N||1||10)>$ from $C$\\
-		\textit{verification}\\
+		\textit{verification of inclusion}\\
 		$A_{0}+B''_{0}$ = $<2,300,H(N||2||300||A_{0}||B''_{0})> \neq C'_{1} = C''_{1}$(by A)\\
 		$A''_{0}+B_{0}$ = $<2,300,H(N||2||300||A''_{0}||B_{0})> = C'_{1} \neq C''_{1}$(by B)\\
 	\item \textbf{Cheating by tampering with a single data-items}\\
@@ -65,11 +67,11 @@
 		$A'_{0}$ = $<A_{id},1,100, H(N||1||10)>$\\
 		$C'_{1}$ = $<C_{id},2,120, H(N||2||120||A_{0}||B'_{0})>$\\
 		$C$ creates $B'_{0}$ = $<B_{id},1,110, H(N||1||110)>$\\
-		\textit{offpath}\\
+		\textit{dissemination of offpath values}\\
 		$A,B$ receives $C'_{1}$ from $C$\\
 		$A$ receives $B'_{0}$ = $<B_{id},1,110, H(N||1||110)>$ from $C$\\
 		$B$ receives $A_{0}$ = $<A_{id},1,10,H(N||1||10)>$ from $C$\\
-		\textit{verification}\\
+		\textit{verification of inclusion}\\
 		$A_{0}+B'_{0}$ = $<2,120,H(N||2||120||A_{0}||B'_{0})>$ = $C'_{1}$ (by A)\\
 		$A_{0}+B_{0}$ = $<2,30,H(N||2||30||A_{0}||B_{0})>$ $\neq$ $C'_{1} $ (by B)\\
 	\end{itemize}
