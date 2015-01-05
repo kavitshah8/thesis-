@@ -122,7 +122,6 @@
 	Once verified, $I$ starts merging the data-items as follows.
 	Let $c$ be the smallest count value in $I$'s forest.
 	The sensor node $I$ finds two data-items $D_{1},D_{2}$ in its forest with the same count value $c$ and merges them into a new data-item with the count of $c+1$ as shown in Figure \ref{fig:increase-height}.
-	% \textcolor{red}{add figure}
 	\begin{figure}[h!]
 		% \centering
 		\includegraphics[scale = 1]{images/increase-height.png}\\
@@ -189,7 +188,12 @@
 	Hence, sending  signatures of the data-items causes $O(\log n)$ overhead in the network. 
 
 \section{Performance Analysis}
-	In addition to calculating the data-items, each sensor node need to do $O(\log n)$ amount of extra work as it needs to calculate and verify $O(\log n)$ signatures. 
+	In addition to calculating its own data-items, all intermediate sensor nodes with $\beta$ descendants and $\zeta$ direct children need to do the following:
+	\begin{itemize}
+		\item To calculate and verify $O(\log \beta)$ signatures, creating $O(\log \beta)$ calculation overhead. 
+		\item Needs sufficient memory to store $O(\log \beta)$ certificates. 
+		\item Needs enough memory to store $\Omega(\zeta)$ certificates.
+	\end{itemize}
 
 	% Computation cost: Needs to calculate that many signatures. Needs to verify that many signatures.
 	% Need to know that many certificates.
