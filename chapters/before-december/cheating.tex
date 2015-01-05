@@ -1,26 +1,27 @@
 \chapter{Cheating}
+	
+	\begin{definition}
+		A sensor node tampering with, the data-item to skew the final aggregate result or  off-path values to hide its tampering activity is consider as a \textbf{cheating}.	
+	\end{definition}
+	The aggregate node has the highest power to do the cheating. 
+	The higher an aggregate node is in the network more power it has to cheat.
+	If an aggregate node cheats it has to cheat at two phases in the protocol.
+	Once while creating a commitment tree it can change the final aggregate result.
+	And then while distributing the off path values to hide its cheating from its children.
 
-\section{Definition}
-	An adversary tampering with the data-items reported by its children to skew the final result is consider as cheating.
-	It can send tampered off-path data-items to its children which are under its control to hide its misbehavior while creating the commitment tree.
-% \section{Aim}
-% Aim of this section is to detect the cheater with given definition. 
-
-\section{Assumptions}
 	We assume that an adversary does not tamper, in forwarding the off-path data-items received from its parent.
-	We also assume that the cheater can not send NACK message during verification phase.
-	Without these two assumptions, there might be a lot of complainers in the network, creating a lot of traffic in the network.
-	It can cause denial-of-service attack in the network.
+	We also assume that an adversary can not send NACK message during verification phase.
+	Without these two assumptions, there will be a lot of complainers in the network, creating a lot of traffic in the network, causing the denial-of-service attack in the network.
 	% Because it can create many complainers in the network and network becomes unreachable, creating a Denial of service (DoS) attack in the network. 
 	% % If it can tamper with the off-path data-items received from its parent than an adversary can mask someone else as a cheater.
 	% If a cheater is allowed to send NACK message then it can send NACK messages all the time, creating a lot of traffic in the network which might create Denial of service attack.
 
-	Following example shows the different ways an adversary can cheat in the smallest possible commitment tree and how the commitment field can help us find the cheating.
+	Following example shows the different ways an adversary can cheat in the smallest possible commitment tree and how the commitment field in the data-item can help us detect the cheating.
 \begin{exmp}
-	The vertices in the commitment tree of Figure \ref{fig:cheating} have the data-items defined as follows.\\
+	Let's say the vertices in the commitment tree of Figure \ref{fig:cheating} have the data-items defined as follows.\\
 	\begin{figure}[t]
 		\centering
-		\includegraphics[width=0.2\textwidth]{images/commitment-tree-2.png}
+		\includegraphics{images/commitment-tree-2.png}
 		\caption{cheating}
 		\label{fig:cheating}
 	\end{figure}	

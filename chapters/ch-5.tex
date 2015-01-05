@@ -8,13 +8,13 @@
 	We develop the protocol which identifies the malicious aggregate node in the network.
 	% which is built on top of commitment tree generation of SHIA mentioned in the previous chapter.
 	
-	The high level idea of the aggregate commit with verification scheme is, all the leaves in the aggregation tree sends the signature of its data-item signed by itself, in addition to the data-item.
+	The high level idea of the aggregate commit with verification scheme is that all the leaves in the aggregation tree sends the signature of its data-item signed by itself, in addition to the data-item.
 	The aggregate node proceeds to the aggregation only after verifying all the received the data-items.
-	The aggregate node signs its payload in addition to its data-item as described in the following sections.
+	The aggregate node also signs its payload in addition to its data-item which is discussed in detail in the following sections.
 
 \section{Signing the Data-Item}
-	Here, we describe structure of the data-item, how it is different from the label structure of SHIA and rational behind it.
-
+	
+	Here, we describe structure of the data-item, how it is different from the label structure of SHIA and rational behind it.	
 	\begin{definition}
 		\label{def:data-item}
 		A commitment tree is a binary tree where each vertex has an associated data-item representing the data that is passed on to its parent. The data-items have the following format:
@@ -22,12 +22,13 @@
 		$\hspace{100pt}$ $<$id, count, value, commitment$>$
 	\end{definition}
 	Where id is the unique ID of the node; count is the number of leaf vertices in the subtree rooted at this vertex; value is the SUM aggregate computed over all the leaves in the subtree and commitment is a cryptographic commitment.
+	
 	We remove the complement field from the label structure Defined \ref{def:label}. 
 	We think sending the complement filed is redundant. 
-	The complement field is used by the base station (the querier according to SHIA), before the result checking phase, to verify SUM + COMPLEMENT = $n \cdot r$; where $n$ is the number of nodes in the network, $r$ is the upper bound on the allowed sensor readings.
+	The complement field is used by the base station (the querier according to SHIA), before the result checking phase, to verify SUM + COMPLEMENT = $n \cdot r$ ; where $n$ is the number of nodes in the network, $r$ is the upper bound on the allowed sensor readings.
 	We can achieve the similar upper bound without sending the complement field.
 	As the querier knows $n, r$ and it gets SUM from the root of the aggregation tree.
-	If SUM $> n \cdot r$, then the base station knows some node or nodes in the network reported out of range readings. 
+	If SUM $> n \cdot r$ , then the base station knows some node or nodes in the network reported out of range readings. 
 
 	There is one vertex $s_{0}$ for each sensor node $s$, which we call the leaf vertex of $s$.
 	The data-item for leaf vertex $s_{0}$ is defined according to Equation \ref{eq:leaf-vertex} and associated signature to it is defined according to Equation \ref{eq:signature-leaf-vertex}.
@@ -57,7 +58,6 @@
 	\end{definition}
 	% We use the term payload for commitment payload and the term forest for the commitment forest.
 	For brevity, we use the term forest, payload instead of commitment forest, commitment payload respectively.
-
 	In addition to sending all the data-items with their respective signatures, an aggregate node sends an additional signature to its parent, which is a signature of all the data-items in its payload.
 	% Each sensor node signs all the data-items in its commitment payload before sending it to its parent.
 	% to prove the fact that it has verified all the data-items in its commitment forests.
@@ -152,7 +152,7 @@
 					\label{fig:commitment-tree-example-2}
 				\end{figure}\\
 				$A_{1} = <A_{id}, 2, A_{1value}, H(N||2||A_{1value}||A_{0}||D_{0})>$; $Sign(A_{1}) = E_{K_{A}}(H(A_{1}))$\\
-				where $A_{1value} = A_{value} + D_{value} $
+				where $A_{1value} = A_{value} + D_{value} $\\
 				\begin{figure}[h!]
 					\centering
 					\includegraphics[scale = 1]{images/commitment-tree-example-3.png}\\
@@ -160,7 +160,7 @@
 					\label{fig:commitment-tree-example-3}
 				\end{figure}\\
 				$A_{2} = <A_{id}, 4, A_{2value}, H(N||4||A_{2value}||B_{1}||A_{1}) >$; $Sign(A_{2}) = E_{K_{A}}(H({A_{2}}))$\\
-				where $A_{2value} = B_{1value} + A_{1value} $
+				where $A_{2value} = B_{1value} + A_{1value} $\\
 				\begin{figure}[h!]
 					\centering
 					\includegraphics[scale = 1]{images/commitment-tree-example-4.png}\\
@@ -168,7 +168,7 @@
 					\label{fig:commitment-tree-example-4}
 				\end{figure}\\
 				$A_{3} = <A_{id},8, A_{3value},H(N||8||A_{3value}||C_{2}||A_{2})>$; $Sign(A_{3}) = E_{K_{A}}(H(A_{3}))$\\
-				$A_{3value} = A_{2value} + C_{2value}$;
+				$A_{3value} = A_{2value} + C_{2value}$
 			\end{exmp}
 % chapter A Protocol for Commitment Tree Generation (end)
 
