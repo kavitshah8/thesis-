@@ -3,28 +3,34 @@
 	\begin{definition}
 		A sensor node tampering with, the data-item to skew the final aggregate data-item or  off-path values to conceal its tampering activity is consider as a \textbf{cheating}.	
 	\end{definition}
-	Because of the way aggregate commit algorithm works, an aggregate node has the highest power to do the cheating. 
-	The higher an aggregate node is in the aggregation tree the more power it has to cheat.
+	Because of the way aggregate commit algorithm works, an aggregate node has the highest power to do the cheating as described in Section \ref{sec:aggregate-adversary}. 
+	The aggregate node gains more power to cheat as it climbs up in the aggregation tree.
 	
 	If an aggregate node cheats, it has to cheat at two phases in the protocol to conceal its cheating.
-	Firstly, it has to cheat while creating a commitment tree by changing one or more fields in the final aggregate data-item at the end of its aggregation.
+	First, it has to cheat while creating a commitment tree by changing one or more fields in the final aggregate data-item at the end of its aggregation.
 	Secondly, it has to cheat while distributing the off-path values to conceal its cheating activity from its children.
 	We show that because of the commitment field in the data-item it is impossible for an aggregate node to cheat without being detected.
-
-	We assume that an adversary does not tamper while forwarding the off-path data-items received from its parent.
-	We also assume that an adversary can not send an authentication code with NACK message during verification of inclusion phase.
-	Without these two assumptions, there will be a lot of complainers in the network, creating a lot of traffic in the network and potentially causing the denial-of-service attack in the network.
+	\section{Assumptions}
+	We make following assumptions for the adversary.
+		\begin{itemize}
+			\item It does not tamper with the off-path data-items received from its parent.
+			\item It can not send an authentication code with NACK message during verification of inclusion phase.
+			\item It does not have the capability to masquerade by reproduce the signatures of any other sensor node.
+		\end{itemize}
+	Without these assumptions, there will be a lot of complainers in the network, creating a lot of traffic in the network.
+	Ultimately, draining the battery levels of the sensor nodes until they die, making some sensor nodes in the network unreachable and potentially causing the denial-of-service attack in the network.
 	% Because it can create many complainers in the network and network becomes unreachable, creating a Denial of service (DoS) attack in the network. 
 	% % If it can tamper with the off-path data-items received from its parent than an adversary can mask someone else as a cheater.
 	% If a cheater is allowed to send NACK message then it can send NACK messages all the time, creating a lot of traffic in the network which might create Denial of service attack.
 
 	Following example shows the different ways an adversary can cheat in the smallest possible commitment tree and how the commitment field in the data-item can help us detect the cheating.
 \begin{exmp}
-	Let's say the vertices in the commitment tree of Figure \ref{fig:cheating} have the data-items defined as follows.\\
+	Let's say the vertices in the commitment tree of Figure \ref{fig:cheating} have the data-items defined as follows.
+	We did not include the signatures of these data-items as we assume that an aggregate node does not have the capability to reproduce the signatures of its childrens' data-items.\\
 	\begin{figure}[t]
 		\centering
 		\includegraphics{images/commitment-tree-2.png}
-		\caption{cheating}
+		\caption{Smallest possible commitment tree}
 		\label{fig:cheating}
 	\end{figure}	
 	$A_{0}$ = $<A_{id},1,10, H(N||1||10)>$\\
@@ -32,7 +38,7 @@
 	$C_{1}$ = $<C_{id},2,30, H(N||2||30||A_{0}||B_{0})>$
 	\begin{itemize}
 	\item \textbf{No cheating}\\
-		$C$ aggregates $B_{0},C_{0}$ according to the aggregation commit algorithm.\\
+		$C$ aggregates $B_{0},C_{0}$ according to the aggregate commit algorithm.\\
 		\textbf{dissemination of root data-item}\\
 			$A,B$ receives $C_{1}$ from the base station using authenticated broadcast.\\
 		\textbf{dissemination of offpath values}\\
@@ -41,7 +47,7 @@
 			$A_{0} + B_{0}$ = $<2,30,H(N||2||30||A_{0}||B_{0})>$ = $C_{1}$ (by A)\\
 			$A_{0} + B_{0}$ = $<2,30,H(N||2||30||A_{0}||B_{0})>$ = $C_{1}$ (by B)
 	\item \textbf{Cheating by replacing data-items}\\
-		$C$ replaces $A_{0},B_{0}$ with $A'_{0},B'_{0}$\\
+		$C$ replaces $A_{0},B_{0}$ with $A'_{0},B'_{0}$ and then applies aggregate commit algorithm.\\
 		$A'_{0}$ = $<A_{id},1,100, H(N||1||100)>$\\
 		$B'_{0}$ = $<B_{id},1,200, H(N||1||200)>$\\
 		$C'_{1}$ = $<C_{id},2,300, H(N||2||300||A'_{0}||B'_{0})>$\\
@@ -53,7 +59,7 @@
 			$A_{0}+B'_{0}$ = $<2,210,H(N||2||210||A_{0}||B'_{0})>$ $\neq$ $C'_{1}$(by A)\\
 			$A'_{0}+B_{0}$ = $<2,120,H(N||2||120||A'_{0}||B_{0})>$ $\neq$ $C'_{1}$(by B)
 	\item \textbf{Cheating by tampering with data-items}\\
-		$C$ tampers only with the value field in $A_{0},B_{0}$'s data-item\\
+		$C$ tampers only with the value field in $A_{0},B_{0}$'s data-item and then applies aggregate commit algorithm.\\
 		$A'_{0}$ = $<A_{id},1,100, H(N||1||10)>$\\
 		$B'_{0}$ = $<B_{id},1,200, H(N||1||20)>$\\
 		$C'_{1}$ = $<C_{id},2,300, H(N||2||300||A''_{0}||B_{0})>$\\
@@ -67,7 +73,7 @@
 		$A_{0}+B''_{0}$ = $<2,300,H(N||2||300||A_{0}||B''_{0})>\  \neq C'_{1} = C''_{1}$(by A)\\
 		$A''_{0}+B_{0}$ = $<2,300,H(N||2||300||A''_{0}||B_{0})>\  = C'_{1} \neq C''_{1}$(by B)
 	\item \textbf{Cheating by tampering with a single data-item}\\
-		$C$ tampers $A_{0}$'s value field\\
+		$C$ tampers $A_{0}$'s value field and then applies aggregate commit algorithm.\\
 		$A'_{0}$ = $<A_{id},1,100, H(N||1||10)>$\\
 		$C'_{1}$ = $<C_{id},2,120, H(N||2||120||A_{0}||B'_{0})>$\\
 		$C$ creates $B'_{0}$ = $<B_{id},1,110, H(N||1||110)>$\\

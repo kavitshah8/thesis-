@@ -178,21 +178,22 @@
 % 	But if we use SHIA'a approach of creating commitment tree then $A$ need to know $E's$ certificate as well.
 % 	Hence, being root in as many tree as possible is the more efficient.
 \section{Bandwidth Analysis}
-	For a given forest with $n$ leaf vertices, has at most $\log n$ data-items in its payload.
+	For any given sensor node's forest with $n$ leaf vertices, has at most $\log n$ data-items in its payload.
 	It has at most $(\log n) +1$ signatures in its payload.
 	The highest possible count value is $\log n$, as all the trees are binary. 
 
-	An intermediate sensor node $S$ with $n$ descendants has at most $\log(n+1)$ data-items with their respective $\log(n+1)$ signatures in its payload.
-	$S$ might need to send its payload signature $Sign(S_{p})$ to its parent.
-	$S$ has to send a payload with $\log(n+1)$ data-items and $\log(n+1) +1$ signatures to its parent in the aggregation tree.
-	Hence, sending  signatures of the data-items causes $O(\log n)$ overhead in the network. 
+	An intermediate sensor node $S$ with $\beta$ descendants in the aggregation tree, has at most $\log(\beta+1)$ data-items with their respective $\log(\beta+1)$ signatures in its payload.
+	$S$ might need to send its payload signature $Sign(S_{p})$.
+	At max, $S$ has to send a payload with $\log(\beta+1)$ data-items and $\log(\beta+1) +1$ signatures to its parent in the aggregation tree.
+	
+	Hence, sending signatures of the data-items causes $O(\log \beta)$ bandwidth overhead for each node in the network, where $\beta$ is the number of descendants of the sensor node. 
 
 \section{Performance Analysis}
 	In addition to calculating its own data-items, all intermediate sensor nodes with $\beta$ descendants and $\zeta$ direct children need to do the following:
 	\begin{itemize}
 		\item To calculate and verify $O(\log \beta)$ signatures, creating $O(\log \beta)$ calculation overhead. 
-		\item Needs sufficient memory to store $O(\log \beta)$ certificates. 
-		\item Needs enough memory to store $\Omega(\zeta)$ certificates.
+		\item Needs sufficient memory to cache $O(\log \beta)$ certificates. 
+		\item Needs enough memory to cache $\Omega(\zeta)$ certificates.
 	\end{itemize}
 
 	% Computation cost: Needs to calculate that many signatures. Needs to verify that many signatures.
