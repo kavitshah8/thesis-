@@ -87,13 +87,11 @@
 				\label{fig:Commitment payload of C}
 			\end{figure}
 		\begin{equation}	
-			B_{1} =\ <B_{id}, 2, B_{1value}, H(N||2||B_{1value}||A_{0}||B_{0})>; Sign(B_{1}) = E_{K_{B}}(H(B_{1}))
-		\end{equation}
-		\begin{equation}
-			C_{0} =\ <C_{id}, 1, C_{value}, H(N||1||C_{value})>; Sign(C_{0}) = E_{K_{C}}(H(C_{0}))
-		\end{equation}
-		\begin{equation}
-			\textcolor{red}{Sign(C_{p}) =\	E_{K_{C}}(H(C_{0} || B_{1}))}
+			\begin{array}{l}
+				B_{1} =\ <B_{id}, 2, B_{1value}, H(N||2||B_{1value}||A_{0}||B_{0})>; Sign(B_{1}) = E_{K_{B}}(H(B_{1}))\\
+				C_{0} =\ <C_{id}, 1, C_{value}, H(N||1||C_{value})>; Sign(C_{0}) = E_{K_{C}}(H(C_{0}))\\
+				\textcolor{red}{Sign(C_{p}) =\	E_{K_{C}}(H(C_{0} || B_{1}))}
+			\end{array}
 		\end{equation}
 	% Sending an additional signature with all the data-items signifies that a sensor node has verified all the data-items.
 	% The basic idea is that the sensor node signs all the data-items it sends to its parent.
@@ -137,37 +135,56 @@
 					\includegraphics[scale = 1]{images/commitment-tree-example-1.png}\\
 					\caption{$A$ receives $C_{2}$ from $C$, $(B_{1},B_{0})$ from $B$, $D_{0}$ from $D$ and generates $A_{0}$. The commitment payload received from a given sensor node is indicated by dashed-line box.}
 					\label{fig:commitment-tree-example-1}
-				\end{figure}\\
-				$A_{0} = <A_{id}, 1, A_{value}, H(N||1||A_{value})>$; $Sign(A_{0}) = E_{K_{A}}(H(A_{0}))$ \\
-				$D_{0} = <D_{id}, 1, D_{value}, H(N||1||D_{value})>$; $Sign(D_{0}) = E_{K_{D}}(H(D_{0}))$\\
-				$B_{0} = <B_{id}, 1, B_{value}, H(N||1||B_{value})>$; $Sign(B_{0}) = E_{K_{B}}(H(B_{0}))$\\
-				$B_{1} = <B_{id}, 2, B_{value}, H(N||2||B_{value}||E_{0}||F_{0})>$; $Sign(B_{1}) = E_{K_{B}}(H(B_{1}))$\\
-				\textcolor{red}{$Sign(B_{P}) = E_{K_{B}}(H(B_{0} || B_{1}))$}\\
-				$C_{2} = <C_{id}, 4, C_{value}, H(N||4||C_{value})||H_{1}||C_{1})>$; $Sign(C_{2}) = E_{K_{C}}(H(C_{2}))$\\
+				\end{figure}
+				\begin{equation}
+					\begin{array}{l}
+						A_{0} = <A_{id}, 1, A_{value}, H(N||1||A_{value})>; Sign(A_{0}) = E_{K_{A}}(H(A_{0})) \\
+						D_{0} = <D_{id}, 1, D_{value}, H(N||1||D_{value})>; Sign(D_{0}) = E_{K_{D}}(H(D_{0}))\\
+						B_{0} = <B_{id}, 1, B_{value}, H(N||1||B_{value})>; Sign(B_{0}) = E_{K_{B}}(H(B_{0}))\\
+						B_{1} = <B_{id}, 2, B_{value}, H(N||2||B_{value}||E_{0}||F_{0})>; Sign(B_{1}) = E_{K_{B}}(H(B_{1}))\\
+						\textcolor{red}{Sign(B_{P}) = E_{K_{B}}(H(B_{0} || B_{1}))}\\
+						C_{2} = <C_{id}, 4, C_{value}, H(N||4||C_{value})||H_{1}||C_{1})>; Sign(C_{2}) = E_{K_{C}}(H(C_{2}))\\
+						\end{array}
+				\end{equation}
+
 				\begin{figure}[h!]
 					\centering
 					\includegraphics[scale = 1]{images/commitment-tree-example-2.png}\\
 					\caption{First Merge: $A_{1}$ vertex created by A.}
 					\label{fig:commitment-tree-example-2}
-				\end{figure}\\
-				$A_{1} = <A_{id}, 2, A_{1value}, H(N||2||A_{1value}||A_{0}||D_{0})>$; $Sign(A_{1}) = E_{K_{A}}(H(A_{1}))$\\
-				where $A_{1value} = A_{value} + D_{value} $\\
+				\end{figure}
+
+				\begin{equation}
+					\begin{array}{l}
+				A_{1} = <A_{id}, 2, A_{1value}, H(N||2||A_{1value}||A_{0}||D_{0})>; Sign(A_{1}) = E_{K_{A}}(H(A_{1}))\\
+				where A_{1value} = A_{value} + D_{value} \\
+					\end{array}	
+				\end{equation}
 				\begin{figure}[h!]
 					\centering
 					\includegraphics[scale = 1]{images/commitment-tree-example-3.png}\\
 					\caption{Second Merge: $A_{2}$ vertex created by A.}
 					\label{fig:commitment-tree-example-3}
-				\end{figure}\\
-				$A_{2} = <A_{id}, 4, A_{2value}, H(N||4||A_{2value}||B_{1}||A_{1}) >$; $Sign(A_{2}) = E_{K_{A}}(H({A_{2}}))$\\
-				where $A_{2value} = B_{1value} + A_{1value} $\\
+				\end{figure}
+				\begin{equation}
+					\begin{array}{l}
+						A_{2} = <A_{id}, 4, A_{2value}, H(N||4||A_{2value}||B_{1}||A_{1}) >; Sign(A_{2}) = E_{K_{A}}(H({A_{2}}))\\
+						where A_{2value} = B_{1value} + A_{1value} \\
+					\end{array}
+				\end{equation}
 				\begin{figure}[h!]
 					\centering
 					\includegraphics[scale = 1]{images/commitment-tree-example-4.png}\\
 					\caption{Third Merge: $A_{3}$ vertex created by A.}
 					\label{fig:commitment-tree-example-4}
-				\end{figure}\\
-				$A_{3} = <A_{id},8, A_{3value},H(N||8||A_{3value}||C_{2}||A_{2})>$; $Sign(A_{3}) = E_{K_{A}}(H(A_{3}))$\\
-				$A_{3value} = A_{2value} + C_{2value}$
+				\end{figure}
+
+				\begin{equation}
+					\begin{array}{l}
+						A_{3} = <A_{id},8, A_{3value},H(N||8||A_{3value}||C_{2}||A_{2})>; Sign(A_{3}) = E_{K_{A}}(H(A_{3}))\\
+						A_{3value} = A_{2value} + C_{2value}
+					\end{array}
+				\end{equation}
 			\end{exmp}
 % chapter A Protocol for Commitment Tree Generation (end)
 

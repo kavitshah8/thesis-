@@ -14,6 +14,26 @@
 	As far as we know, there is no general architecture for sensor networks.
 	Therefore, developing a protocol for sensor networks can certainly be challenging. 
 
+\section{Energy Consumption}
+	The sensor network's lifetime can be maximized by minimizing the power consumption of the sensor node's radio module.
+	To estimate the power consumption, we have to consider the communication and computation power consumption at each sensor node.
+	The radio module energy dissipation can be measured in two ways \cite{wang2002energy}.
+	The first is measured in $E_{elec} (J/b)$, the energy dissipated to run the transmit or receive electronics.
+	The second is measured in $\varepsilon_{amp} (J/b/m^2)$, the energy dissipated by the transmit power amplifier to achieve an acceptable $E_{b} / N_{o} $ at the receiver.
+	We assume the $d^2$ energy loss for transmission between sensor nodes since the distances between sensors are relatively short \cite{ettus1998system}. 
+	To transmit a $k$ - bit packet at distance $d$, the energy dissipated is:
+	\begin{equation}
+		E_{tx}(k, d) = E_{elec} \cdot k + \varepsilon_{amp} \cdot k \cdot d^{2}
+	\end{equation}
+	and to receive the k - bit packet, the radio expends
+	\begin{equation}
+		E_{rx}(k) = E_{elec} \cdot k
+	\end{equation}
+	For $\mu Amp$\ wireless sensor, $E_{elec} = 50nJ/b$\ and $\varepsilon_{amp} = 100pJ/b/m^2$ \cite{wang2002energy}.
+	To sustain the sensor network for longer time all aspects of the sensor network should be efficient.
+	For example, the networking algorithm for routing should be such that it minimizes the distance $d$\ between nodes.
+	The signal processing algorithm should be such that it process the networking packets with less computations.
+
 \section{Data Aggregation}
 	The sensor nodes in the network often have limited resources, such as computation power, memory, storage, communication capacity and most significantly, battery power.
 	Furthermore, data communications between nodes consume a large portion of the total energy consumption. 
@@ -37,25 +57,6 @@
 	Also, it makes aggregated \payload\ more fragile and vulnerable to various security attacks.
 	% Now, we describe bandwidth analysis of different in-network data aggregation approaches.
 
-\section{Energy Consumption}
-	The sensor network's lifetime can be maximized by minimizing the power consumption of the sensor node's radio module.
-	To estimate the power consumption, we have to consider the communication and computation power consumption at each sensor node.
-	The radio module energy dissipation can be measured in two ways \cite{wang2002energy}.
-	The first is measured in $E_{elec} (J/b)$, the energy dissipated to run the transmit or receive electronics.
-	The second is measured in $\varepsilon_{amp} (J/b/m^2)$, the energy dissipated by the transmit power amplifier to achieve an acceptable $E_{b} / N_{o} $ at the receiver.
-	We assume the $d^2$ energy loss for transmission between sensor nodes since the distances between sensors are relatively short \cite{ettus1998system}. 
-	To transmit a $k$ - bit packet at distance $d$, the energy dissipated is:
-	\begin{equation}
-		E_{tx}(k, d) = E_{elec} \cdot k + \varepsilon_{amp} \cdot k \cdot d^{2}
-	\end{equation}
-	and to receive the k - bit packet, the radio expends
-	\begin{equation}
-		E_{rx}(k) = E_{elec} \cdot k
-	\end{equation}
-	For $\mu Amp$\ wireless sensor, $E_{elec} = 50nJ/b$\ and $\varepsilon_{amp} = 100pJ/b/m^2$ \cite{wang2002energy}.
-	To sustain the sensor network for longer time all aspects of the sensor network should be efficient.
-	For example, the networking algorithm for routing should be such that it minimizes the distance $d$\ between nodes.
-	The signal processing algorithm should be such that it process the networking packets with less computations.
 
 \section{Bandwidth Analysis}
 	Congestion is widely used parameter while doing bandwidth analysis of networking applications. 

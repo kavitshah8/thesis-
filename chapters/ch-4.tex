@@ -1,16 +1,16 @@
 \chapter{Secure Hierarchical In-network Data Aggregation} % (fold)
 \label{cha:Secure hierarchical In-network data aggregation}
 
-Our work enhances Secure Hierarchical In-network data aggregation $\textit{(SHIA)}$ protocol of \cite{chan2006secure} by making it communication efficient, adding new capabilities to the protocol, achieving similar security goals with non-resilient aggregation functions and efficient way of analyzing the protocol.
-In this chapter, we summarize the important parts of $\textit{SHIA}$ protocol and relevant terms, to build the foundation to describe our protocol in the following chapters.\\
-The goal of $\textit{SHIA}$ is to compute aggregate functions (such as $\textit{truncated SUM}$, $\textit{AVERAGE}$, $\textit{COUNT}$, $\Phi-QUANTILE$) of the sensed values by the sensor nodes while assuming that partially a network is controlled by an adversary which is attempting to skew the final result.
+Our work enhances Secure Hierarchical In-network data aggregation SHIA protocol of \cite{chan2006secure} by making it communication efficient, adding new capabilities to the protocol, achieving similar security goals with non-resilient aggregation functions and efficient way of analyzing the protocol.
+In this chapter, we summarize the important parts of SHIA protocol and relevant terms, to build the foundation to describe our protocol in the following chapters.\\
+The goal of SHIA is to compute aggregate functions (such as $\textit{truncated SUM}$, $\textit{AVERAGE}$, $\textit{COUNT}$, $\Phi-QUANTILE$) of the sensed values by the sensor nodes while assuming that partially a network is controlled by an adversary which is attempting to skew the final result.
 
 \section{Network Assumptions}
 
 	We assume a multi hop network with a set $ S = \{s1,...,s_{n}\} $ of $n$ sensor nodes where all $n$ nodes are alive and reachable. 
 	The network is organized in a rooted tree topology.
 	The trusted base station resides outside of the network and has more computation, storage capacity then the sensor nodes in the network. 
-	Note that $\textit{SHIA}$\ names the base station as the querier and the root of the tree as the base station. 
+	Note that SHIA names the base station as the querier and the root of the tree as the base station. 
 	The base station knows total number of sensor nodes $n$ in the network and the network topology. 
 	It also has the capacity to directly communicate with every sensor node in the network.
 	All the wireless communications between the nodes is peer-to-peer and we do not consider the local wireless broadcast.\\
@@ -135,7 +135,7 @@ The goal of $\textit{SHIA}$ is to compute aggregate functions (such as $\textit{
 		A hash chain is constructed by repeatedly evaluating a pre-image resistant hash function $h$\ on some initial random value, the final value (or ``anchor value'') is preloaded on the nodes in the network.
 		The base station uses the pre-image of the last used  value as the nonce for the next broadcast.
 		For example, if the last known value of the hash chain is $h^i(X)$, then the next broadcast uses $h^{i-1}(X)$ as the nonce; $X$ is the initial random value.
-		When a node receives a new nonce $N′$, it verifies that $N′$ is a precursor to the most recently received (and authenticated) nonce $N$ on the hash chain, i.e., $h_{i}(N′) = N$ for some $i$ bounded by a fixed $k$ of number of hash applications.  
+		When a node receives a new nonce $N^{'}$, it verifies that $N^{'}$ is a precursor to the most recently received (and authenticated) nonce $N$ on the hash chain, i.e., $h^{i}(N^{'}) = N$ for some $i$ bounded by a fixed $k$ of number of hash applications.  
 		A hash chain prevents an adversary from predicting the query nonce for future queries as it has to reverse the hash chain computation to get an acceptable pre-image.
 		\begin{figure}[h!]
 			\centering
@@ -244,38 +244,52 @@ The goal of $\textit{SHIA}$ is to compute aggregate functions (such as $\textit{
 					\caption{$A$ receives $C_{2}$ from $C$, $(B_{1},B_{0})$ from $B$, $D_{0}$ from $D$ and generates $A_{0}$. The commitment forest received from a given sensor node is indicated by dashed-line box.}
 					\label{fig:commitment-tree-example-1-shia}
 				\end{figure}\\
-				$A_{0} = <1, a_{A}, r - a_{A}, A>$\\
-				$D_{0} = <1, a_{D}, r - a_{D}, D>$\\
-				$E_{0} = <1, a_{E}, r - a_{E}, E>$\\
-				$B_{1} = <2, v_{B_{1}}, \bar{v_{B_{1}}}, H(N || 2 || v_{B_{1}}|| \bar{v_{B_{1}}} || B_{0} || F_{0})>$\\
-				$C_{2} = <4, v_{C_{2}}, \bar{v_{C_{2}}}, H(N || 4 || v_{C_{2}}|| \bar{v_{C_{2}}} || H_{1} || C_{1})>$\\
+
+				\begin{equation}
+					\begin{array}{l}
+						A_{0} = <1, a_{A}, r - a_{A}, A>\\
+						D_{0} = <1, a_{D}, r - a_{D}, D>\\
+						E_{0} = <1, a_{E}, r - a_{E}, E>\\
+						B_{1} = <2, v_{B_{1}}, \bar{v_{B_{1}}}, H(N || 2 || v_{B_{1}}|| \bar{v_{B_{1}}} || B_{0} || F_{0})>\\
+						C_{2} = <4, v_{C_{2}}, \bar{v_{C_{2}}}, H(N || 4 || v_{C_{2}}|| \bar{v_{C_{2}}} || H_{1} || C_{1})>\\
+					\end{array}
+				\end{equation}
 				\begin{figure}[h!]
 					\centering
 					\includegraphics[scale = 1]{images/commitment-tree-example-2-shia.png}\\
 					\caption{First Merge: $A_{1}$ vertex created by A.}
 					\label{fig:commitment-tree-example-2-shia}
-				\end{figure}\\
-				$A_{1} = <2, v_{A_{1}}, \bar{v_{A_{1}}}, H(N || 2 || v_{A_{1}}|| \bar{v_{A_{1}}} || A_{0} || D_{0})>$\\
-				$v_{A_{1}} = a_{A} + a_{D} $;
-				$\bar{v_{A_{1}}} = r - a_{A} + r - a_{D}$\\
+				\end{figure}
+				\begin{equation}
+					\begin{array}{l}
+						A_{1} = <2, v_{A_{1}}, \bar{v_{A_{1}}}, H(N || 2 || v_{A_{1}}|| \bar{v_{A_{1}}} || A_{0} || D_{0})>\\
+						v_{A_{1}} = a_{A} + a_{D}; \bar{v_{A_{1}}} = r - a_{A} + r - a_{D}\\
+					\end{array}
+				\end{equation}
 				\begin{figure}[h!]
 					\centering
 					\includegraphics[scale = 1]{images/commitment-tree-example-3-shia.png}\\
 					\caption{Second Merge: $A_{2}$ vertex created by A.}
 					\label{fig:commitment-tree-example-3-shia}
-				\end{figure}\\
-				$A_{2} = <4, v_{A_{2}},\bar{v_{A_{2}}},H(N || 4 || v_{A_{2}} || \bar{v_{A_{2}}} || B_{1} ||A_{1}) >$\\
-				$v_{A_{2}} = v_{A_{1}} + v_{B_{1}}$;
-				$\bar{v_{A_{2}}} = r - v_{A_{1}} + r - v_{B_{1}}$
+				\end{figure}
+				\begin{equation}
+					\begin{array}{l}
+						A_{2} = <4, v_{A_{2}},\bar{v_{A_{2}}},H(N || 4 || v_{A_{2}} || \bar{v_{A_{2}}} || B_{1} ||A_{1}) >\\
+						v_{A_{2}} = v_{A_{1}} + v_{B_{1}}; \bar{v_{A_{2}}} = r - v_{A_{1}} + r - v_{B_{1}}
+					\end{array}
+				\end{equation}
 				\begin{figure}[h!]
 					\centering
 					\includegraphics[scale = 1]{images/commitment-tree-example-4-shia.png}\\
 					\caption{Third Merge: $A_{3}$ vertex created by A.}
 					\label{fig:commitment-tree-example-4-shia}
-				\end{figure}\\
-				$A_{3} = <8, v_{A_{3}},\bar{v_{A_{3}}},H(N || 8 || v_{A_{3}} || \bar{v_{A_{3}}} || C_{2} ||A_{2}) >$\\
-				$v_{A_{3}} = v_{A_{2}} + v_{C_{2}}$;
-				$\bar{v_{A_{3}}} = r - v_{A_{2}} + r - v_{C_{2}}$
+				\end{figure}
+				\begin{equation}
+					\begin{array}{l}
+						A_{3} = <8, v_{A_{3}},\bar{v_{A_{3}}},H(N || 8 || v_{A_{3}} || \bar{v_{A_{3}}} || C_{2} ||A_{2}) >\\
+						v_{A_{3}} = v_{A_{2}} + v_{C_{2}}; \bar{v_{A_{3}}} = r - v_{A_{2}} + r - v_{C_{2}}
+					\end{array}
+				\end{equation}
 			\end{exmp}
 		% subsection aggregate_commit_improved_approach (end)
 	% section aggregate_commit (end)
