@@ -16,6 +16,34 @@
 	\end{itemize} 
 
 	We use SHA-$256$ hash algorithm as a hash algorithm.
+
+\section{Digital Signatures}
+	A digital signature is a mathematical scheme for demonstrating the authenticity of a digital message. 
+	A valid digital signature gives a recipient reason to believe that the message was created by a known sender, such that the sender cannot deny having sent the message (authentication and non-repudiation) and that the message was not altered in transit (integrity). 
+	It is a tool such that anyone can verify and only the holder of the private key can generate a valid signature.
+	A Digital Signature scheme consists of the following:
+	\begin{enumerate}
+		\item a plain text message space $\mathcal{M}$ (set of strings over alphabets)
+		\item a signature space $\mathcal{S}$ (set of possible signatures)
+		\item a signing key space $\mathcal{K}$ (set of possible keys for signature generation) and a verification space $\mathcal{K^{'}}$ (a set of possible verification keys)
+		\item an efficient key generation algorithm \textsf{Gen} : N $\rightarrow$ $\mathcal{K} \times \mathcal{K^{'}} $ 
+		\item an efficient signing algorithm \textsf{Sign} : $ \mathcal{M} \times \mathcal{K} \rightarrow \mathcal{S}$
+		\item an efficient verification algorithm \textsf{Verify} : $\mathcal{S} \times \mathcal{M} \rightarrow$ \{true, false\} 
+	\end{enumerate}
+	For any secret key $s_{k} \in \mathcal{K}$ and any $m \in \mathcal{M}$\\
+				$s =$ \textsf{Sign}$_{s_{k}}(m)$\
+	the signature of $m$ signed using key $s_{k}$\\
+	For any $s_{k}$ let $p_{k}$ denote public key\\
+	And for all $m \in \mathcal{M}$ and $s \in \mathcal{S}$\\
+	\begin{equation}
+		\textsf{Verify}_{p_{k}}(m,s) = 
+		\begin{cases}
+		 \textbf{true}\ \mbox{with probability of 1} & if\ s = \textsf{Sign}_{s_{k}}(m)\\
+		 \textbf{false}\ \mbox{with overwhelming probability} & if\ s \neq \textsf{Sign}_{s_{k}}(m)
+		\end{cases}
+	\end{equation}
+	where the probability space is determine by the $\mathcal {M, S, K, K^{'}}$ and perhaps the signing and verification algorithms.
+	The ``overwhelming probability'' for the signature scheme determines the probability that the scheme allows for a forgery
 \section {Tree generation algorithms}
 
 
