@@ -84,11 +84,50 @@
 \section{Security in In-network Data Aggregation}
 	\label{sec:aggregate-adversary}
 
+	\subsection{Physical Limitations}
 	Sensor nodes are often deployed in open, hostile and unattended environments, so they are vulnerable to physical tampering due to the lower physical security and manufacturing cost.
 	An adversary can obtain the confidential information from a compromised sensor and reprogram it with malicious software.
 	The compromised node may then report an arbitrary false sensor readings to its parent node in the tree hierarchy, causing the final aggregation result to far deviate from the true aggregate result.
-	This attack becomes more damaging when multiple adversaries succeeds in injecting false data into the network which may cause catastrophic consequences.	
+	This attack becomes more damaging when multiple adversaries succeeds in injecting false data into the network which may cause catastrophic consequences \cite{wagner2007algorithms}.	
 
+	\subsection{Hardware Limitations}
+		Due to lower manufacturing cost of sensor nodes have low speed processor, limited storage, a short range trans receiver.
+		For example, the latest specifications for a ZigBee chip supporting IEEE 802.15.4 standard, CC2538 from TexasInstruments are shown in Table \ref{table:soc}.
+	\begin{table}[!htb]	
+		\begin{center}
+			\begin{tabular}{ |l| l| }
+				\hline
+			     & CC2538 \\
+			    \hline
+			    Device Type & Wireless MCU \\
+			    Frequency & 2.4GHz \\
+			    Processor Integration & ARM Cortex-M3 \\
+					Flash & Up to 512 KB \\
+					RAM & Up to 32 KB \\
+					Security & AES-128/256;ECC-128/256; SHA2; RSA \\
+					RX Current & 20 (mA) \\
+					Output Power & 7 (dBm) \\
+					Data Rate(Max) & 250 kbps \\
+					Type of Battery & AAA; AA; Rechargable(Li-ION) \\
+			    \hline
+			\end{tabular}
+		\end{center}
+		 \caption{System-on-Chip specifications for IEEE 802.15.4 from TexasInstruments}
+		 \label{table:soc}
+	\end{table}
+
+	\subsection{Mobility}
+		Needs multi hop routing protocol,
+		works on battery,
+	\subsection{Transmission Medium}
+		Wireless;
+		collision or packet loss or cheating
+
+	Because of the transmission between two out of range nodes has to rely on relay nodes, many routing protocols have been proposed for sensor networks. 
+	
+	Most of them assume that the other nodes are trustable and thus do not consider the security and attack issues.
+
+	Most of the 
 	In-network data aggregation approach saves bandwidth by transmitting less \payloads\  between sensor nodes but it gives more power to the intermediate aggregate sensor nodes. 
 	For example, a malicious intermediate sensor node who does aggregation over all of its descendants \payloads, needs to tamper with only one aggregated \payload\ instead of tampering with all the \payloads\ received from all of its descendants. 
 	Thus, a malicious intermediate sensor node needs to do less work to skew the final aggregated \payload.
