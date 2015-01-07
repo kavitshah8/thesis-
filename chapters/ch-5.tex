@@ -1,11 +1,17 @@
 \chapter{Aggregate Commit with Verification} % (fold)
 \label{cha:A Protocol for Commitment Tree Generation}
+\section{Motivation}	
 	In the previous chapter, we saw that SHIA limits the adversary's ability to manipulate the aggregation result with the tightest bound possible.
-	SHIA does not require prior knowledge of network topology and works on hierarchical sensor network which might include multiple malicious sensor nodes, with only suboptimal congestion overhead.
-	SHIA helps the sensor node verify, its reported sensor reading was aggregated correctly or not, by an an aggregate node.
-	If an an aggregate node has tampered with the reported sensor reading then the relevant sensor node can detect the tampering and raise an alarm.
-	But SHIA does not help detecting and revoking the malicious aggregate node from the network.
-	We develop the protocol which identifies the malicious aggregate node in the network.
+	But, SHIA uses truncated sum as an aggregate function which is resilient according to the Wagner \cite{wagner2004resilient}.
+	In addition to that, SHIA does not help detecting and revoking the malicious aggregate node from the network.
+	% SHIA does not require prior knowledge of network topology and works on hierarchical sensor network which might include multiple malicious sensor nodes, with only suboptimal congestion overhead.
+	% SHIA helps the sensor node verify, its reported sensor reading was aggregated correctly or not, by an an aggregate node.
+	% If an an aggregate node has tampered with the reported sensor reading then the relevant sensor node can detect the tampering and raise an alarm.
+	We develop the aggregation protocol which works for any random hierarchical sensor networks with a single or multiple adversaries.
+	The algorithm works on the resilient as well as non-resilient aggregation functions Defined in \ref{def:resilient}, without compromising any desired security properties.
+	In addition to detecting a malicious activity in the network, our protocol helps identify the malicious aggregate node or nodes in the network who are responsible for it.
+	We want to prevent masquerade attacks in the network.
+	We want to achieve all these desired security properties by inducing only $O(\Delta \log^{3} n)$ node congestion in the aggregation tree; where $n$ is the number of nodes in the network, and $\delta$ is the fanout of any node in the aggregation tree.
 	% which is built on top of commitment tree generation of SHIA mentioned in the previous chapter.
 	
 	The high level idea of the aggregate commit with verification scheme is that all the leaves in the aggregation tree sends the signature of its data-item signed by itself, in addition to the data-item.

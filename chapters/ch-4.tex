@@ -73,6 +73,7 @@ The goal of SHIA is to compute aggregate functions (such as $\textit{truncated S
 	We think of an aggregation function $f$ as an instance of the resilient aggregation paradigm if $rms^* (f, k)$ grows slowly as a function of $k$.
 	\begin{definition}
 		According to \cite{wagner2004resilient}, an aggregation function $f$ is $(k, \alpha)$-resilient (with respect to a parameterized distribution $p(X_{i} | \theta))$ if $rms^*(f, k) \le \alpha \cdot rms(f)$ for the estimator $f$.
+		\label{def:resilient}
 	\end{definition}
 	The intuition is that the $(k, \alpha)$-resilient functions, for small values of $\alpha$, are the ones that can be computed meaningfully and securely in the presence of up to $k$ compromised or malicious nodes.
 	\begin{table}[!htb]	

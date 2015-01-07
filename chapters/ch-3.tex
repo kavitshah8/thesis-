@@ -45,15 +45,23 @@
 	\end{equation}
 	where the probability space is determine by the $\mathcal {M, S, K, K^{'}}$ and perhaps the signing and verification algorithms.
 	The ``overwhelming probability'' for the signature scheme determines the probability that the scheme allows for a forgery.
-	
-	Note that the above mentioned Digital Signature scheme satisfies the following requirements:
+	Note that the Digital Signature scheme satisfies the following requirements:
 		\begin{itemize}
-			\item Digital signatures cannot be separated from the message and attached to another.
-			\item The digital signature is not only tied to the signer but also to the message that is being signed.
-			\item Only the owner of the private key can generate a valid signature.
+			\item Only the owner of the secret key can generate a valid signature.
 			\item The digital signature is easily verified by other parties.
+			\item The digital signature is not only tied to the signer but also to the message that is being signed.
+			\item Digital signatures cannot be separated from the message and attached to another message.
 			\item Digital signatures do not encrypt the message. However, if necessary, a signed message can be encrypted after it is signed.
 		\end{itemize}
+	The Figure \ref{fig:digita-signature} from shows the steps for signing and verifying the hashed message. 
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[scale = 0.4]{images/Digital_Signature_diagram.png}
+		\caption{ Signing and verification of digital signatures}
+		\label{fig:digita-signature}
+	\end{figure}
+	The message is hashed before before its being signed to reduce the message size. 
+	If the message is not hashed before signing then the signature can be longer than the message which is problematic for the longer messages.
 
 \section {Tree generation algorithms}
 
