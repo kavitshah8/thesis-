@@ -1,11 +1,18 @@
 \chapter{Cheating Analysis}
 	
 	\begin{definition}
-		A sensor node tampering with, the data-item to skew the final aggregate data-item or  off-path values to conceal its tampering activity is consider as a \textbf{cheating}.	
+		A sensor node tampering with, the data-item to skew the final aggregate data-item or  off-path values to conceal its tampering activity and masquerading someone else as a cheater is consider as a \textbf{cheating}.	
 	\end{definition}
 	Because of the way aggregate commit algorithm works, an aggregate node has the highest power to do the cheating as described in Section \ref{sec:aggregate-adversary}. 
 	The aggregate node gains more power to cheat as it climbs up in the aggregation tree.
-	
+	There are two potential phases where an aggregate node can cheat:
+	\begin{itemize}
+		\item While creating a commitment tree
+		\item While distributing off-path values
+	\end{itemize}
+	We can detect a cheating activity with the help of the commitment field in the data-item as shown in Example \ref{ex1:cheating}.
+	We want to identify the cheater and for 
+
 	If an aggregate node cheats, it has to cheat at two phases in the protocol to conceal its cheating.
 	First, it has to cheat while creating a commitment tree by changing one or more fields in the final aggregate data-item at the end of its aggregation.
 	Secondly, it has to cheat while distributing the off-path values to conceal its cheating activity from its children.
@@ -25,6 +32,7 @@
 
 	Following example shows the different ways an adversary can cheat in the smallest possible commitment tree and how the commitment field in the data-item can help us detect the cheating.
 \begin{exmp}
+	\label{ex1:cheating}
 	Let's say the vertices in the commitment tree of Figure \ref{fig:cheating} have the data-items defined as follows.
 	We did not include the signatures of these data-items as we assume that an aggregate node does not have the capability to reproduce the signatures of its childrens' data-items.\\
 	\begin{figure}[t]
@@ -90,8 +98,8 @@
 Above example shows the significance of the commitment field in the data-item.
 If an aggregator changes the value field in one of its children's data-item then to hide its misbehavior from its children, it has to compensate the difference with the relevant off-path data-item. 
 % It means it has to use different data-item in the commitment.
-If an aggregator has two unique children (not including itself) and if it tries to change either one or both childrens' data-item then it can not create a data-item which will be accepted by both of its children.
-One of it's children will complain in the verification phase as they will not be able to calculate the same root data-item received from the base station.
+\textbf{If an aggregation node has two unique children (not including itself) and if it tries to tamper with either one or both children's data-item then it can not create a fake data-item which will be accepted by both of its children.
+One of it's children will complain in the verification phase as they will not be able to calculate the same root data-item received from the base station.}
 
 \section{Possible Cheater Analysis}
 	\begin{exmp}
@@ -228,3 +236,12 @@ One of it's children will complain in the verification phase as they will not be
 % 		\item M can not verify that it received ($I_{1}^{'}, Sig I_{1}$) instead of ($I_{1}, Sig I_{1}$) from I.
 % 	\end{itemize}
 % 	Because of this we can not not detect cheater between I, M. The fundamental problem is that signatures can be verified only by the base station and not by any of the intermediate nodes. We want the ability in which an intermediate node can verify the signatures from its children. And that is why we need public key infrastructure.
+
+\section{Random thoughts on cheating}
+ We know that there are two potential phases where an aggregate node can cheat.
+ But if an aggregate node cheats during the dissemeination of off-path values that is cheating but an adversary is not gaining anything except the fact that it is creating unnecessary traffic in the network.
+ The goal of an adversary to brake a secure aggregation algorithm is to make the base station believe the out of range aggregation result without being detected.
+ By tampering with the off-path values it can neither hide it self from its tampering of data-items nor it can make base station believe the out of range aggregation result. 
+ Hence, we assume that an aggregate node does not tamper while distributing off-path values.
+ 
+ For an aggregation algorithm to be secure

@@ -29,14 +29,14 @@
 	\end{definition}
 	Where $id$ is the unique ID of the node; $count$ is the number of leaf vertices in the subtree rooted at this vertex; $value$ is the SUM aggregate computed over all the leaves in the subtree and $commitment$ is a cryptographic commitment.
 	
-	We remove the complement field from the label structure Defined \ref{def:label}. 
+	We remove the $complement$ field from the label structure Defined \ref{def:label}. 
 	We think including the complement filed in the label is redundant information. 
 	The complement field is used by the base station (the querier according to SHIA), before the result checking phase, to verify \textbf{SUM + COMPLEMENT =} $\textbf{n} \cdot \textbf{r}$ ; where $\textbf{n}$ is the number of nodes in the network, $\textbf{r}$ is the upper bound on the allowed sensor readings.
 	We can achieve the same upper bound without the complement field.
-	As the querier knows $n, r$ and it gets SUM from the root of the aggregation tree.
+	As the querier knows $n, r$ and it gets SUM from the root of the aggregation tree.\\
 	If \textbf{SUM} $> \textbf{n} \cdot \textbf{r}$ , then the base station knows some node or nodes in the network reported out of range readings.
 
-	We include ID of the node in its data-item.
+	We include $id$ of the node in its data-item.
 	SHIA does not have the ID field in their label structure as they do not do internal verification while creating a commitment tree.
 	In the label format ID of the node is hashed after the first aggregation and virtually gets lost.
 	We do internal verification so it is necessary for any aggregate node to know the ID of all the received data-items in its forest, for the verification of the received signatures.
@@ -101,7 +101,7 @@
 		\begin{equation}	
 			\begin{array}{l}
 				B_{1} =\ <B_{id}, 2, B_{1value}, H(N||2||B_{1value}||A_{0}||B_{0})>; \textsf{Sign}_{S_{B}}(B_{1})\\
-				C_{0} =\ <C_{id}, 1, C_{value}, H(N||1||C_{value})>; \textsf{Sign}_{\Sigma_{C}}(C_{0})\\
+				C_{0} =\ <C_{id}, 1, C_{value}, H(N||1||C_{value})>; \textsf{Sign}_{S_{C}}(C_{0})\\
 				\textcolor{red}{\textsf{Sign}_{S_{C}}(C_{0}||B_{1})}
 			\end{array}
 		\end{equation}
@@ -154,7 +154,7 @@
 						D_{0} = <D_{id}, 1, D_{value}, H(N||1||D_{value})>; \textsf{Sign}_{S_{D}}(D_{0})\\
 						B_{0} = <B_{id}, 1, B_{value}, H(N||1||B_{value})>; \textsf{Sign}_{S_{B}}(B_{0})\\
 						B_{1} = <B_{id}, 2, B_{value}, H(N||2||B_{value}||E_{0}||F_{0})>; \textsf{Sign}_{S_{B}}(B_{1})\\
-						\textcolor{red}{\textsf{Sign}_{S_{B}}(B_{0} || B_{1})}\\
+						\textcolor{red}{\textsf{Sign}_{S_{B}}(B_{0} || B_{1}), benefits}\\
 						C_{2} = <C_{id}, 4, C_{value}, H(N||4||C_{value})||H_{1}||C_{1})>; \textsf{Sign}_{S_{C}}(C_{2})\\
 						\end{array}
 				\end{equation}
@@ -169,7 +169,7 @@
 				\begin{equation}
 					\begin{array}{l}
 				A_{1} = <A_{id}, 2, A_{1value}, H(N||2||A_{1value}||A_{0}||D_{0})>; \textsf{Sign}_{S_{A}}(A_{1})\\
-				where A_{1value} = A_{value} + D_{value} \\
+				where\  A_{1value} = A_{value} + D_{value} \\
 					\end{array}	
 				\end{equation}
 				\begin{figure}[h!]
@@ -181,7 +181,7 @@
 				\begin{equation}
 					\begin{array}{l}
 						A_{2} = <A_{id}, 4, A_{2value}, H(N||4||A_{2value}||B_{1}||A_{1}) >; \textsf{Sign}_{S_{A}}(A_{2})\\
-						where A_{2value} = B_{1value} + A_{1value} \\
+						where\  A_{2value} = B_{1value} + A_{1value} \\
 					\end{array}
 				\end{equation}
 				\begin{figure}[h!]
@@ -193,7 +193,7 @@
 				\begin{equation}
 					\begin{array}{l}
 						A_{3} = <A_{id},8, A_{3value},H(N||8||A_{3value}||C_{2}||A_{2})>; \textsf{Sign}_{S_{A}}(A_{3})\\
-						A_{3value} = A_{2value} + C_{2value}
+						where\ A_{3value} = A_{2value} + C_{2value}
 					\end{array}
 				\end{equation}
 			\end{exmp}
