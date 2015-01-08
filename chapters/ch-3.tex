@@ -25,7 +25,7 @@
 		\item a plain text message space $\mathcal{M}$ (set of strings over alphabets)
 		\item a signature space $\mathcal{S}$ (set of possible signatures)
 		\item a signing key space $\mathcal{K}$ (set of possible keys for signature generation) and a verification space $\mathcal{K^{'}}$ (a set of possible verification keys)
-		\item an efficient key generation algorithm \textsf{Gen} : N $\rightarrow$ $\mathcal{K} \times \mathcal{K^{'}} $ 
+		\item an efficient key generation algorithm \textsf{Gen} : $N \rightarrow$ $\mathcal{K} \times \mathcal{K^{'}} $ 
 		\item an efficient signing algorithm \textsf{Sign} : $ \mathcal{M} \times \mathcal{K} \rightarrow \mathcal{S}$
 		\item an efficient verification algorithm \textsf{Verify} : $\mathcal{S} \times \mathcal{M} \rightarrow$ \{true, false\} 
 	\end{enumerate}
@@ -60,7 +60,7 @@
 		\caption{ Signing and verification of digital signatures}
 		\label{fig:digita-signature}
 	\end{figure}
-	The message is hashed before before its being signed to reduce the message size. 
+	The message is hashed before its being signed to reduce the message size. 
 	If the message is not hashed before signing then the signature can be longer than the message which is problematic for the longer messages.
 
 \section {Tree generation algorithms}

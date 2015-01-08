@@ -3,50 +3,56 @@
 \section{Motivation}	
 	In the previous chapter, we saw that SHIA limits the adversary's ability to manipulate the aggregation result with the tightest bound possible.
 	But, SHIA uses truncated sum as an aggregate function which is resilient according to the Wagner \cite{wagner2004resilient}.
-	In addition to that, SHIA does not help detecting and revoking the malicious aggregate node from the network.
+	Furthermore, SHIA does not help detecting and revoking the malicious aggregate node from the network.
 	% SHIA does not require prior knowledge of network topology and works on hierarchical sensor network which might include multiple malicious sensor nodes, with only suboptimal congestion overhead.
 	% SHIA helps the sensor node verify, its reported sensor reading was aggregated correctly or not, by an an aggregate node.
 	% If an an aggregate node has tampered with the reported sensor reading then the relevant sensor node can detect the tampering and raise an alarm.
 	We develop the aggregation protocol which works for any random hierarchical sensor networks with a single or multiple adversaries.
 	The algorithm works on the resilient as well as non-resilient aggregation functions Defined in \ref{def:resilient}, without compromising any desired security properties.
-	In addition to detecting a malicious activity in the network, our protocol helps identify the malicious aggregate node or nodes in the network who are responsible for it.
+	Our protocol helps identify the malicious aggregate node or nodes in the network who are responsible for it.
 	We want to prevent masquerade attacks in the network to apply this protocol in the voting applications.
-	We want to achieve all these desired security properties by inducing only $O(\Delta \log^{3} n)$ node congestion in the aggregation tree; where $n$ is the number of nodes in the network, and $\delta$ is the fanout of any node in the aggregation tree.
+	We want to achieve all these desired security properties by inducing only $O(\delta \log^{4} n)$ node congestion in the aggregation tree; where $n$ is the number of nodes in the network, and $\delta$ is the fanout of any node in the aggregation tree.
 	% which is built on top of commitment tree generation of SHIA mentioned in the previous chapter.
 	
-	The high level idea of the aggregate commit with verification scheme is that all the leaves in the aggregation tree sends the signature of its data-item signed by itself, in addition to the data-item.
+	The high level idea of the aggregate commit with verification scheme is that all the leaf nodes in the aggregation tree sends the signature of their data-item signed by themselves, in addition to the data-item.
 	The aggregate node proceeds to the aggregation only after verifying all the received the data-items.
 	The aggregate node also signs its payload in addition to its data-item which is discussed in great detail in the following sections.
 
-\section{Signing the Data-Item}
+\section{Data-Item}
 	
 	Here, we describe structure of the data-item, how it is different from the label structure of SHIA and rational behind it.	
 	\begin{definition}
 		\label{def:data-item}
 		A commitment tree is a binary tree where each vertex has an associated data-item representing the data that is passed on to its parent. The data-items have the following format:
 
-		$\hspace{100pt}$ $<$id, count, value, commitment$>$
+		$\hspace{100pt}$ \textbf{$<\ $id, count, value, commitment$\ >$}
 	\end{definition}
-	Where id is the unique ID of the node; count is the number of leaf vertices in the subtree rooted at this vertex; value is the SUM aggregate computed over all the leaves in the subtree and commitment is a cryptographic commitment.
+	Where $id$ is the unique ID of the node; $count$ is the number of leaf vertices in the subtree rooted at this vertex; $value$ is the SUM aggregate computed over all the leaves in the subtree and $commitment$ is a cryptographic commitment.
 	
 	We remove the complement field from the label structure Defined \ref{def:label}. 
-	We think sending the complement filed is redundant. 
-	The complement field is used by the base station (the querier according to SHIA), before the result checking phase, to verify SUM + COMPLEMENT = $n \cdot r$ ; where $n$ is the number of nodes in the network, $r$ is the upper bound on the allowed sensor readings.
-	We can achieve the similar upper bound without sending the complement field.
+	We think including the complement filed in the label is redundant information. 
+	The complement field is used by the base station (the querier according to SHIA), before the result checking phase, to verify \textbf{SUM + COMPLEMENT =} $\textbf{n} \cdot \textbf{r}$ ; where $\textbf{n}$ is the number of nodes in the network, $\textbf{r}$ is the upper bound on the allowed sensor readings.
+	We can achieve the same upper bound without the complement field.
 	As the querier knows $n, r$ and it gets SUM from the root of the aggregation tree.
-	If SUM $> n \cdot r$ , then the base station knows some node or nodes in the network reported out of range readings. 
+	If \textbf{SUM} $> \textbf{n} \cdot \textbf{r}$ , then the base station knows some node or nodes in the network reported out of range readings.
 
-	There is one vertex $s_{0}$ for each sensor node $s$, which we call the leaf vertex of $s$.
-	The data-item for leaf vertex $s_{0}$ is defined according to Equation \ref{eq:leaf-vertex} and associated signature to it is defined according to Equation \ref{eq:signature-leaf-vertex}.
+	We include ID of the node in its data-item.
+	SHIA does not have the ID field in their label structure as they do not do internal verification while creating a commitment tree.
+	In the label format ID of the node is hashed after the first aggregation and virtually gets lost.
+	We do internal verification so it is necessary for any aggregate node to know the ID of all the received data-items in its forest, for the verification of the received signatures.
+
+\section{Signing the Data-Item}
+	There is one vertex $S_{0}$ for each sensor node $S$, which we call the leaf vertex of $S$.
+	The data-item for leaf vertex $S_{0}$ is defined according to Equation \ref{eq:leaf-vertex} and associated signature to it is defined according to Equation \ref{eq:signature-leaf-vertex}.
 	\begin{equation}
 		\label{eq:leaf-vertex}
-		s_{0}\ =\ <s_{id}, 1, s_{value}, H(N||1||s_{value})>
+		S_{0}\ =\ <S_{id}, 1, S_{value}, H(N||1||S_{value})>
 	\end{equation}
 	\begin{equation}
 		\label{eq:signature-leaf-vertex}
-		Sign(s_{0}) = E_{K_{s}}(H(s_{0}))
+		\textsf{Sign}_{S_{S}}(S_{0})
 	\end{equation}
-	where $H$ is a collision resistant hash function, $K_{s}$ is the private key of $s$, $N$ is the query nonce.
+	where $H$ is a collision resistant hash function, $S_{S}$ is the secret key of $S$, $N$ is the query nonce.
 	In aggregate commit with verification scheme, in addition to sending the data-item, each sensor node sends the signature of the data-item to its parent.
 	The parent node verifies all the received signature and then proceeds to the aggregation.
 	
@@ -85,7 +91,7 @@
 		% 		\label{fig:Commitment forest of C}
 		% 	\end{figure}\\
 		The sensor node $C$ sends all the data-items in its payload with their signatures to its parent sensor node $D$.
-		Furthermore, $C$ sends the signature of its payload $Sign(C_{p})$ to $D$.\\
+		Furthermore, $C$ sends the signature of its payload $\textsf{Sign}_{S_{C}}(C_{0}||B_{1})$ to $D$.\\
 			\begin{figure}[h!]
 				\centering
 				\includegraphics[scale = 0.5]{images/commitment-payload-of-C.png}
@@ -94,9 +100,9 @@
 			\end{figure}
 		\begin{equation}	
 			\begin{array}{l}
-				B_{1} =\ <B_{id}, 2, B_{1value}, H(N||2||B_{1value}||A_{0}||B_{0})>; Sign(B_{1}) = E_{K_{B}}(H(B_{1}))\\
-				C_{0} =\ <C_{id}, 1, C_{value}, H(N||1||C_{value})>; Sign(C_{0}) = E_{K_{C}}(H(C_{0}))\\
-				\textcolor{red}{Sign(C_{p}) =\	E_{K_{C}}(H(C_{0} || B_{1}))}
+				B_{1} =\ <B_{id}, 2, B_{1value}, H(N||2||B_{1value}||A_{0}||B_{0})>; \textsf{Sign}_{S_{B}}(B_{1})\\
+				C_{0} =\ <C_{id}, 1, C_{value}, H(N||1||C_{value})>; \textsf{Sign}_{\Sigma_{C}}(C_{0})\\
+				\textcolor{red}{\textsf{Sign}_{S_{C}}(C_{0}||B_{1})}
 			\end{array}
 		\end{equation}
 	% Sending an additional signature with all the data-items signifies that a sensor node has verified all the data-items.
@@ -144,12 +150,12 @@
 				\end{figure}
 				\begin{equation}
 					\begin{array}{l}
-						A_{0} = <A_{id}, 1, A_{value}, H(N||1||A_{value})>; Sign(A_{0}) = E_{K_{A}}(H(A_{0})) \\
-						D_{0} = <D_{id}, 1, D_{value}, H(N||1||D_{value})>; Sign(D_{0}) = E_{K_{D}}(H(D_{0}))\\
-						B_{0} = <B_{id}, 1, B_{value}, H(N||1||B_{value})>; Sign(B_{0}) = E_{K_{B}}(H(B_{0}))\\
-						B_{1} = <B_{id}, 2, B_{value}, H(N||2||B_{value}||E_{0}||F_{0})>; Sign(B_{1}) = E_{K_{B}}(H(B_{1}))\\
-						\textcolor{red}{Sign(B_{P}) = E_{K_{B}}(H(B_{0} || B_{1}))}\\
-						C_{2} = <C_{id}, 4, C_{value}, H(N||4||C_{value})||H_{1}||C_{1})>; Sign(C_{2}) = E_{K_{C}}(H(C_{2}))\\
+						A_{0} = <A_{id}, 1, A_{value}, H(N||1||A_{value})>; \textsf{Sign}_{S_{A}}(A_{0}) \\
+						D_{0} = <D_{id}, 1, D_{value}, H(N||1||D_{value})>; \textsf{Sign}_{S_{D}}(D_{0})\\
+						B_{0} = <B_{id}, 1, B_{value}, H(N||1||B_{value})>; \textsf{Sign}_{S_{B}}(B_{0})\\
+						B_{1} = <B_{id}, 2, B_{value}, H(N||2||B_{value}||E_{0}||F_{0})>; \textsf{Sign}_{S_{B}}(B_{1})\\
+						\textcolor{red}{\textsf{Sign}_{S_{B}}(B_{0} || B_{1})}\\
+						C_{2} = <C_{id}, 4, C_{value}, H(N||4||C_{value})||H_{1}||C_{1})>; \textsf{Sign}_{S_{C}}(C_{2})\\
 						\end{array}
 				\end{equation}
 
@@ -162,7 +168,7 @@
 
 				\begin{equation}
 					\begin{array}{l}
-				A_{1} = <A_{id}, 2, A_{1value}, H(N||2||A_{1value}||A_{0}||D_{0})>; Sign(A_{1}) = E_{K_{A}}(H(A_{1}))\\
+				A_{1} = <A_{id}, 2, A_{1value}, H(N||2||A_{1value}||A_{0}||D_{0})>; \textsf{Sign}_{S_{A}}(A_{1})\\
 				where A_{1value} = A_{value} + D_{value} \\
 					\end{array}	
 				\end{equation}
@@ -174,7 +180,7 @@
 				\end{figure}
 				\begin{equation}
 					\begin{array}{l}
-						A_{2} = <A_{id}, 4, A_{2value}, H(N||4||A_{2value}||B_{1}||A_{1}) >; Sign(A_{2}) = E_{K_{A}}(H({A_{2}}))\\
+						A_{2} = <A_{id}, 4, A_{2value}, H(N||4||A_{2value}||B_{1}||A_{1}) >; \textsf{Sign}_{S_{A}}(A_{2})\\
 						where A_{2value} = B_{1value} + A_{1value} \\
 					\end{array}
 				\end{equation}
@@ -184,10 +190,9 @@
 					\caption{Third Merge: $A_{3}$ vertex created by A.}
 					\label{fig:commitment-tree-example-4}
 				\end{figure}
-
 				\begin{equation}
 					\begin{array}{l}
-						A_{3} = <A_{id},8, A_{3value},H(N||8||A_{3value}||C_{2}||A_{2})>; Sign(A_{3}) = E_{K_{A}}(H(A_{3}))\\
+						A_{3} = <A_{id},8, A_{3value},H(N||8||A_{3value}||C_{2}||A_{2})>; \textsf{Sign}_{S_{A}}(A_{3})\\
 						A_{3value} = A_{2value} + C_{2value}
 					\end{array}
 				\end{equation}

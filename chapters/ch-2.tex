@@ -1,4 +1,4 @@
-\chapter{Sensor Networks/Data Aggregation/Security Background} 
+\chapter{Sensor Networks Background} 
 \label{cha:Sensor Networks/Data Aggregation/Security Background}
 
 \section{Sensor Networks and Applications}
@@ -6,10 +6,23 @@
 	With the recent advances in sensor network research, we can use tiny and cheap sensor nodes to obtain a lot of useful information about physical environment.
 	For example, we can use them to discover temperature, humidity, water quality, lightning condition, pressure, noise level, carbon dioxide level, oxygen level, soil moisture, magnetic field, characteristics of objects such as speed, direction, and size, the presence or absence of certain kinds of objects, and all kinds of values about machinery like mechanical stress level or movement \cite{hof2007applications}.
 	These versatile types of sensors, allow us to use sensor network in a wide variety of scenarios.
-	For example, sensor networks are used in habitat and environment monitoring, health care, military surveillance, industrial machinery surveillance, home automation, scientific data collection, emergency fire alarm systems, traffic monitoring, wildfire tracking, wildlife monitoring and many other applications.
-	\textbf{Meteorology and Hydrology in Yosemite National Park} \cite{lundquist2003meteorology}, a sensor network was deployed to monitor the water system across and within the Sierra Nevada, especially regarding natural climate fluctuation, global warming, and the growing needs of water consumers.
-	Research of the water system in the Sierra Nevada is difficult, because of its geographical structure. 
-	Therefore, the sensor network was designed to operate with little or no human interaction.
+	For example, sensor networks are used in habitat and environment monitoring, health care, military surveillance, industrial machinery surveillance, home automation, scientific data collection, emergency fire alarm systems, traffic monitoring, wildfire tracking, wildlife monitoring and many other applications.\\
+	\textbf{Military Application}
+	Sensor networks can be used for enemy tracking, battlefield surveillance or target classification \cite{li2002detection}.
+	For example, \textit{Palo Alto Research Center} tries to spot ``interesting'' vehicles (the vehicles marked specially) using motes equipped with microphones or steerable cameras \cite{chu2004distributed}.
+	The objective is to coordinate a number of this kind of sensors in order to keep sensing the track of a chosen moving object minimizing any information gaps about the track that may occur.\\
+	\textbf{Environmental Monitoring} 
+	For example, \textit{Meteorology and Hydrology in Yosemite National Park} \cite{lundquist2003meteorology}, a sensor network was deployed to monitor the water system across and within the Sierra Nevada, especially regarding natural climate fluctuation, global warming, and the growing needs of water consumers.
+	Research of the water system in the Sierra Nevada is difficult, because of its geographical structure.
+	And sensor networks can be real blessing in such situation as they can operate with little or no human intervention.\\
+	\textbf{Health Care} 
+	Sensors can be used to monitor the patients round the clock. The most important criteria for the such networks are security and reliability.
+	\textit{CodeBlue} \cite{lorincz2004sensor} is a system to enhance emergency medical care with the goal to have a seamless patient transfer between a disaster area and a hospital.\\
+	\textbf{Sustainable Mobility} 
+	With the driver less cars from companies like Google, connected and coordinated vehicles seems the future of transportation.
+	Autonomous vehicle systems \cite{benenson2008towards} describes how various various technologies in addition to the sensor networks is used in making sustainable mobility. 
+
+	% Therefore, the sensor network was designed to operate with little or no human interaction.
 	The application of a sensor network usually determines the design of the sensor nodes and the design of the network itself.
 	As far as we know, there is no general architecture for sensor networks.
 	Therefore, developing a protocol for sensor networks can certainly be challenging. 
@@ -59,12 +72,12 @@
 
 
 \section{Bandwidth Analysis}
-	Congestion is widely used parameter while doing bandwidth analysis of networking applications. 
+	Congestion is a widely used parameter while doing bandwidth analysis of networking applications. 
 	The congestion for any given node is defined as follows:
 	\begin{equation}\label{def:congestion}
 		Node\ congestion = Edge\ congestion \cdot Fanout
 	\end{equation}
-	Congestion is very useful factor while analyzing sensor network as it measures how quickly the sensor nodes will exhaust their batteries \cite{madden2003design}. 
+	Congestion is a useful factor while analyzing sensor network as it measures how quickly the sensor nodes will exhaust their batteries \cite{madden2003design}. 
 	Some nodes in the sensor network have more congestion than the others, the highly congested nodes are the most important to the the network connectivity.
 	For example, the nodes closer to the base station are essential for the network connectivity.
 	The failure of the highly congested nodes may cause the sensor network to fail even though most of the nodes in the network are alive.
@@ -125,32 +138,31 @@
 		Traditionally, wireless medium has the issues of in synchronization, hidden station and expose station terminal problems, distributed arbitration, directional antennas, bandwidth limitations, higher error rate, security, scalability etcetera.
 		For example, wireless network has approximately $10^6$ times higher bit error rate (BER) than wired network which causes frequent link loss and then path loss. 
 		Hence, making unstable routing in the network.
-		Higher BER creates higher collision rate in the network, which creates higher overhead of retransmission and lowers the channel utilization, lowering the throughput of the network.
+		Higher BER creates higher collision rate in the network, generating higher overhead of retransmission and lowering the channel utilization and the throughput of the network.
 		This kind of transmission medium with constrained resources makes it challenging to design the secure data-aggregation protocol for sensor networks.
 
 	\subsection{Mobility}
 		As we know, sensor nodes communicate via radio and the availability of the transmission medium changes over time due to link failure, bandwidth limitations or change in network topology.
 		Nodes may be able to move, which further contributes to the instability of the communication link.
-		This mobility issue makes difficult to do the routing in the network with the directional antennas in place.
-		It requires network to be agile enough to do the reconfiguration for the newer network topology.
-		It also makes difficult to do the quality of service in the network. 
+		The mobility issue makes difficult to do the routing in the network with the directional antennas in place.
+		It also requires network to be agile enough to do the reconfiguration for the newer network topology.
+		It impedes whiled doing the quality of service in the network. 
 		All these parameters combined contributes to making strong assumptions on the network topology while designing the secure data aggregation protocol for sensor networks.
 
 		\subsection{In-network Data Aggregation}
-	% Most of them assume that the other nodes are trustable and thus do not consider the security and attack issues.
-	The wireless sensor network poses a numerous challenges due to resource limitations and inherent characteristics. 
-	One widely used approach to overcome the bandwidth limitation is to use in-network data aggregation.
-	In-network data aggregation approach saves bandwidth by transmitting less \payloads\  between sensor nodes.
-	But that empowers an intermediate aggregate sensor nodes in the network by allowing it to control certain part of the network.
-	For example, a malicious intermediate sensor node who does aggregation over all of its descendants \payloads, needs to tamper with only one aggregated \payload\ instead of tampering with all the \payloads\ received from all of its descendants. 
-	Thus, a malicious intermediate sensor node needs to do less work to skew the final aggregated \payload.
-	An adversary controlling few sensor nodes in the network can cause the network to return unpredictable \payloads, making an entire sensor network unreliable.
-	Notice that the more descendants an intermediate sensor node has the more powerful it becomes.
-	
-	Despite the fact that in-network aggregation makes an intermediate sensor nodes more powerful, some aggregation approaches requires strong network topology assumptions or honest behaviors from the sensor nodes.
-	For example, in-network aggregation schemes in \cite{yao2002cougar, madden2003design} assumes that all the sensor nodes in the network are honest. Secure Information Aggregation (SIA) of \cite{przydatek2003sia}, provides security for the network topology with a single-aggregator model.  
-
-	Secure hierarchical in-network aggregation (\textit{SHIA}) in sensor networks \cite{chan2006secure} presents the first and provably secure sensor network data aggregation protocol for general networks and multiple adversaries. 
-	We discuss the details of the protocol in the next chapter. 
-	\textit{SHIA} limits the adversary's ability to tamper with the aggregation result with the tightest bound possible but it does not help detecting an adversary in the network.
-	Also, we claim that same upper bound can be achieved with compact label format defined in the next chapter.
+		% Most of them assume that the other nodes are trustable and thus do not consider the security and attack issues.
+		Designing secure data aggregation protocol for the wireless sensor network poses a numerous challenges due to resource limitations and inherent characteristics discussed in the previous subsections. 
+		One widely used approach to overcome the bandwidth limitation is to use in-network data aggregation.
+		In-network data aggregation approach saves bandwidth by transmitting less \payloads\  between sensor nodes.
+		But that empowers an intermediate aggregate sensor nodes in the network by allowing it to control certain part of the network.
+		For example, a malicious intermediate sensor node who does aggregation over all of its descendants \payloads, needs to tamper with only one aggregated \payload\ instead of tampering with all the \payloads\ received from its descendants. 
+		Thus, a malicious intermediate sensor node needs to do less work to skew the final aggregated \payload.
+		An adversary controlling few sensor nodes in the network can cause the network to return unpredictable \payloads, making an entire sensor network unreliable.
+		Notice that the more descendants an intermediate sensor node has the more powerful it becomes.
+		
+		Despite the fact that in-network aggregation makes an intermediate sensor nodes more powerful, some aggregation approaches requires strong network topology assumptions or honest behaviors from the sensor nodes.
+		For example, in-network aggregation schemes in \cite{yao2002cougar, madden2003design} assumes that all the sensor nodes in the network are honest. Secure Information Aggregation (SIA) of \cite{przydatek2003sia}, provides security for the network topology with a single-aggregator model.  
+		Secure hierarchical in-network aggregation (SHIA) in sensor networks \cite{chan2006secure} presents the first and provably secure sensor network data aggregation protocol for general networks and multiple adversaries. 
+		We discuss the details of the protocol in the next chapter. 
+		SHIA limits the adversary's ability to tamper with the aggregation result with the tightest bound possible but it does not help detecting an adversary in the network.
+		Also, we claim that same upper bound can be achieved with compact label format defined in the next chapter.
