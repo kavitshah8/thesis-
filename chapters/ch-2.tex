@@ -72,7 +72,9 @@
 
 
 \section{Bandwidth Analysis}
-	Congestion is a widely used parameter while doing bandwidth analysis of networking applications. 
+	Congestion is a widely used parameter while doing bandwidth analysis of networking applications.
+	% Picture
+	% Definitions vs Equations errors 
 	The congestion for any given node is defined as follows:
 	\begin{equation}\label{def:congestion}
 		Node\ congestion = Edge\ congestion \cdot Fanout
@@ -83,7 +85,9 @@
 	The failure of the highly congested nodes may cause the sensor network to fail even though most of the nodes in the network are alive.
 	Hence, it is desirable to have a lower congestion on the highly congested nodes even though it costs more congestion within the overall sensor network.\\
 	To distribute the congestion uniformly across the network, we can construct an aggregation protocol where each node transmits a single payload Defined in \ref{def:payload} to its parent in the aggregation tree.
-	It implies there is $\Omega(1)$ congestion on each edge in the aggregation tree, thus resulting in $\Omega(\delta)$ congestion on the node  according to Definition \ref{def:congestion}, where $\delta$ is the fanout of the node.
+	It implies there 
+	% Picture
+	% Definitions vs Equations errorsis $\Omega(1)$ congestion on each edge in the aggregation tree, thus resulting in $\Omega(\delta)$ congestion on the node  according to Definition \ref{def:congestion}, where $\delta$ is the fanout of the node.
 	In this approach, $\delta$ is dependent on the given aggregation tree.
 	For an aggregation tree with $n$\ nodes, organized in the star tree topology congestion is $O(n)$\ and the network organized in the palm tree topology the congestion is $O(1)$.
 	This approach can create some highly congested nodes in the aggregation tree which is undesirable.

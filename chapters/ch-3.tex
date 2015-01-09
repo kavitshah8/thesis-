@@ -1,6 +1,8 @@
 \chapter{Networking and Cryptography tools} % (fold)
 \label{cha:Networking and Cryptography tools}
 
+Some details.
+
 \section{Hash Function}
 	A hash function takes a message as its input and outputs a fixed length message called hash code.
 	The hash code represents a compact image of the message like a digital fingerprint.
@@ -16,6 +18,7 @@
 	\end{itemize} 
 
 	We use SHA-$256$ hash algorithm as a hash algorithm.
+	% cite NIST for SHA-256
 
 \section{Digital Signatures}
 	A digital signature is a mathematical scheme for demonstrating the authenticity of a digital message. 
@@ -29,12 +32,13 @@
 		\item an efficient signing algorithm \textsf{Sign} : $ \mathcal{M} \times \mathcal{K} \rightarrow \mathcal{S}$
 		\item an efficient verification algorithm \textsf{Verify} : $\mathcal{S} \times \mathcal{M} \rightarrow$ \{true, false\} 
 	\end{enumerate}
-	For any secret key $s_{k} \in \mathcal{K}$ and any $m \in \mathcal{M}$,	the message $m$ is signed using key $s_{k}$ according to the Equation \ref{eq:signature}.
+	\textcolor{red}{cite Book for slides}\\
+	For any secret key $s_{k} \in \mathcal{K}$ and any $m \in \mathcal{M}$,	the message $m$ is signed using key $s_{k}$ as follows:
 		\begin{equation}
 			s = \textsf{Sign}_{s_{k}}(m)
 			\label{eq:signature}
 		\end{equation}
-	For any $s_{k}$ let $p_{k}$ denote public key and for all $m \in \mathcal{M}$ and $s \in \mathcal{S}$, $s$ is verified according to the Equation \ref{eq:verification}.
+	For any $s_{k}$ let $p_{k}$ denote public key and for all $m \in \mathcal{M}$ and $s \in \mathcal{S}$, $s$ as follows:
 	\begin{equation}
 		\textsf{Verify}_{p_{k}}(m,s) = 
 		\begin{cases}
@@ -53,7 +57,7 @@
 			\item Digital signatures cannot be separated from the message and attached to another message.
 			\item Digital signatures do not encrypt the message. However, if necessary, a signed message can be encrypted after it is signed.
 		\end{itemize}
-	The Figure \ref{fig:digita-signature} from shows the steps for signing and verifying the hashed message. 
+	The Figure \ref{fig:digita-signature} from \cite{DigitalSignature}, shows the steps for signing and verifying the hashed message. 
 	\begin{figure}[h!]
 		\centering
 		\includegraphics[scale = 0.4]{images/Digital_Signature_diagram.png}

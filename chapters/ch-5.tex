@@ -12,6 +12,7 @@
 	Our protocol helps identify the malicious aggregate node or nodes in the network who are responsible for it.
 	We want to prevent masquerade attacks in the network to apply this protocol in the voting applications.
 	We want to achieve all these desired security properties by inducing only $O(\delta \log^{4} n)$ node congestion in the aggregation tree; where $n$ is the number of nodes in the network, and $\delta$ is the fanout of any node in the aggregation tree.
+	use $k$ in the power of log.
 	% which is built on top of commitment tree generation of SHIA mentioned in the previous chapter.
 	
 	The high level idea of the aggregate commit with verification scheme is that all the leaf nodes in the aggregation tree sends the signature of their data-item signed by themselves, in addition to the data-item.
