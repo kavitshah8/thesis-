@@ -3,7 +3,10 @@
 
 Our work enhances Secure Hierarchical In-network data aggregation SHIA protocol of \cite{chan2006secure} by making it communication efficient, adding new capabilities to the protocol, achieving similar security goals with non-resilient aggregation functions and efficient way of analyzing the protocol.
 In this chapter, we summarize the important parts of SHIA protocol and relevant terms, to build the foundation to describe our protocol in the following chapters.\\
-The goal of SHIA is to compute aggregate functions (such as $\textit{truncated SUM}$, $\textit{AVERAGE}$, $\textit{COUNT}$, $\Phi-QUANTILE$) of the sensed values by the sensor nodes while assuming that partially a network is controlled by an adversary which is attempting to skew the final result.
+The goal of SHIA is to compute aggregate functions (such as $\textit{truncated SUM}$, $\textit{AVERAGE}$, $\textit{COUNT}$, $\Phi-QUANTILE$) of the sensed values by the sensor nodes.
+For example, a network with $5$ nodes has the following sensor readings $10,11,8,15,12$. 
+For all readings the sum is $56$, the average is $11.2$ and the median ($\Phi = 0.5$) is $11$.
+The goal of the SHIA is to compute the aggregate functions while assuming that partially a network is controlled by an adversary which is attempting to skew the final aggregated result.
 
 \section{Network Assumptions}
 
@@ -240,8 +243,8 @@ The goal of SHIA is to compute aggregate functions (such as $\textit{truncated S
 
 			\begin{exmp} The commitment-forest generation process for node $A$ of Figure \ref{fig:at} is shown here.\\
 				\begin{figure}[h!]
-					\centering
-					\includegraphics[scale = 0.9]{images/commitment-tree-example-1-shia.png}\\
+					% \centering
+					\includegraphics[scale = 0.8]{images/commitment-tree-example-1-shia.png}\\
 					\caption{$A$ receives $C_{2}$ from $C$, $(B_{1},B_{0})$ from $B$, $D_{0}$ from $D$ and generates $A_{0}$. The commitment forest received from a given sensor node is indicated by dashed-line box.}
 					\label{fig:commitment-tree-example-1-shia}
 				\end{figure}\\

@@ -2,8 +2,8 @@
 \label{cha:Sensor Networks/Data Aggregation/Security Background}
 	Sensor networks are becoming ubiquitous in our day to day life. 
 	They are known also known as Internet of Things.
-	In the following sections we show the applications and rise of sensor networks.
-	Then we describe why doing security in the sensor network presents the number of unique challenges and a solution to tackle those challenges.
+	In the following sections we show the applications and the rise of sensor networks.
+	Then we describe why doing security in the sensor network presents the number of unique challenges and solutions to tackle those challenges.
 
 \section{Sensor Networks and Applications}
 	In sensor networks, thousands of sensor nodes may interact with the physical environment and collectively monitor an area, generating a large amount of data to be transmitted and reasoned about.
@@ -92,11 +92,25 @@
 	The failure of the highly congested nodes may cause the sensor network to fail even though most of the nodes in the network are alive.
 	Hence, it is desirable to have a lower congestion on the highly congested nodes even though it costs more congestion within the overall sensor network.\\
 	To distribute the congestion uniformly across the network, we can construct an aggregation protocol where each node transmits a single payload Defined in \ref{def:payload} to its parent in the aggregation tree.
-	It implies there 
 	% Picture
 	% Definitions vs Equations errorsis $\Omega(1)$ congestion on each edge in the aggregation tree, thus resulting in $\Omega(\delta)$ congestion on the node  according to Definition \ref{def:congestion}, where $\delta$ is the fanout of the node.
 	In this approach, $\delta$ is dependent on the given aggregation tree.
-	For an aggregation tree with $n$\ nodes, organized in the star tree topology congestion is $O(n)$\ and the network organized in the palm tree topology the congestion is $O(1)$.
+	For example, an aggregation tree shown in Figure \ref{fig:star-network}, 
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[scale = 1]{images/star-tree.png}\\
+		\caption{Star Network}
+		\label{fig:star-network}
+	\end{figure}
+	with $n$\ nodes, organized in the star tree topology congestion is $O(n)$.
+	And the network organized in the palm tree topology as shown in Figure \ref{fig:palm-tree-network}
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[scale = 1]{images/palm-tree.png}\\
+		\caption{Palm Tree Network}
+		\label{fig:palm-tree-network}
+	\end{figure}
+	the congestion is $O(1)$.
 	This approach can create some highly congested nodes in the aggregation tree which is undesirable.
 	In most of the real world applications we cannot control $\delta$ as the aggregation tree is random.
 	Hence, it is desirable to have uniform distribution of congestion across the aggregation tree.
