@@ -1,5 +1,9 @@
 \chapter{Sensor Networks Background} 
 \label{cha:Sensor Networks/Data Aggregation/Security Background}
+	Sensor networks are becoming ubiquitous in our day to day life. 
+	They are known also known as Internet of Things.
+	In the following sections we show the applications and rise of sensor networks.
+	Then we describe why doing security in the sensor network presents the number of unique challenges and a solution to tackle those challenges.
 
 \section{Sensor Networks and Applications}
 	In sensor networks, thousands of sensor nodes may interact with the physical environment and collectively monitor an area, generating a large amount of data to be transmitted and reasoned about.
@@ -30,9 +34,9 @@
 \section{Energy Consumption}
 	The sensor network's lifetime can be maximized by minimizing the power consumption of the sensor node's radio module.
 	To estimate the power consumption, we have to consider the communication and computation power consumption at each sensor node.
-	The radio module energy dissipation can be measured in two ways \cite{wang2002energy}.
-	The first is measured in $E_{elec} (J/b)$, the energy dissipated to run the transmit or receive electronics.
-	The second is measured in $\varepsilon_{amp} (J/b/m^2)$, the energy dissipated by the transmit power amplifier to achieve an acceptable $E_{b} / N_{o} $ at the receiver.
+	The radio module energy dissipation depends on two main parameters \cite{wang2002energy}.
+	The first is $E_{elec} (J/b)$, the energy dissipated to run the transmit or receive electronics.
+	The second is $\varepsilon_{amp} (J/b \cdot m^2)$, the energy dissipated by the transmit power amplifier to achieve an acceptable noise ratio $E_{b} / N_{o} $ at the receiver.
 	We assume the $d^2$ energy loss for transmission between sensor nodes since the distances between sensors are relatively short \cite{ettus1998system}. 
 	To transmit a $k$ - bit packet at distance $d$, the energy dissipated is:
 	\begin{equation}
@@ -42,10 +46,13 @@
 	\begin{equation}
 		E_{rx}(k) = E_{elec} \cdot k
 	\end{equation}
-	For $\mu Amp$\ wireless sensor, $E_{elec} = 50nJ/b$\ and $\varepsilon_{amp} = 100pJ/b/m^2$ \cite{wang2002energy}.
-	To sustain the sensor network for longer time all aspects of the sensor network should be efficient.
-	For example, the networking algorithm for routing should be such that it minimizes the distance $d$\ between nodes.
+	For $\mu Amp$\ wireless sensor, $E_{elec} = 50nJ/b$\ and $\varepsilon_{amp} = 100pJ/b \cdot m^2$.
+
+ 	To sustain the sensor network for longer time all aspects of the sensor network should be efficient.
+	For example, the networking algorithm for routing should be such that it minimizes the distance $d$\ between the nodes.
 	The signal processing algorithm should be such that it process the networking packets with less computations.
+	It is shown in \cite{wang2002energy} that by distributing the Fast Fourier Transform (FFT) algorithm in the network requires less communication between the sensor nodes.
+	Also, for minimal energy dissipation, a processor should operate at the lowest voltage for a given clock frequency.
 
 \section{Data Aggregation}
 	The sensor nodes in the network often have limited resources, such as computation power, memory, storage, communication capacity and most significantly, battery power.
@@ -100,6 +107,9 @@
 
 \section{Security in Sensor Networks}
 	\label{sec:aggregate-adversary}
+	Here, we depict, what parameters should be taken into account while designing secure protocol for sensor networks.  
+	And how those parameters constrains protocol designer's choices of the protocol.
+	Then we depict how data-aggregation can help overcome some of those limitation and some examples where security is ignored by making some strong network assumptions.
 
 	\subsection{Physical Limitations}
 	Sensor nodes are often deployed in open, hostile and unattended environments, so they are vulnerable to physical tampering due to the lower physical security.
