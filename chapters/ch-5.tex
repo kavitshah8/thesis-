@@ -120,6 +120,14 @@
 		% \item From the parent or ancestor node perspective, it has received all the verified data-items from its children and not from anywhere else.
 	\end{itemize}
 
+	\section{Re-signing the data-item}
+		If we throw away the old signatures and resign the data-item with current aggregate node then following is true:
+			\begin{itemize}
+				\item Each parent need the certificates of only its direct children
+				\item we do not need the signature of the payload
+				\item Number of certificates needed in the network is equal to the number of nodes in the network.
+			\end{itemize}
+
 	\section{Commitment Tree Generation}
 	For the given aggregation tree the commitment forest is built as follows.
 	Leaf sensor nodes in the aggregation tree create their leaf vertex by creating data-items and their respective signatures according to Equation \ref{eq:leaf-vertex}, \ref{eq:signature-leaf-vertex} which they send it to their parent as a payload in the aggregation tree.
