@@ -1,7 +1,7 @@
 \chapter{Networking and Cryptography tools} % (fold)
 \label{cha:Networking and Cryptography tools}
-
-Some details.
+	Here we describe the networking and cryptographic tools used in this protocol.
+	For example, we describe the Hash function, its properties and how it helps us achieve data integrity.
 
 \section{Hash Function}
 	A hash function takes a message as its input and outputs a fixed length message called hash code.
@@ -17,7 +17,7 @@ Some details.
 		\item Collision resistance - it is computationally to find any two distinct inputs $x,x'$ which hash to the same output, i.e., such that $h(x) = h(x')$.
 	\end{itemize} 
 
-	We use SHA-$256$ hash algorithm as a hash algorithm.
+	We use SHA-$256$\cite{SHA256} hash algorithm as a hash algorithm.
 	% cite NIST for SHA-256
 
 \section{Digital Signatures}
