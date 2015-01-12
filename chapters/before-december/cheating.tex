@@ -171,26 +171,31 @@
 % \textbf{Insite: C can create fake data-items. It can not use those fake data-items in the hash. It can use only one fake item the hash.
 % 	It has to use at least one original item in the hash. Hence, the other node will complain.
 % }
-% \section{Possible Cheater Analysis}
-% 	\begin{exmp}
-% 		\begin{figure}[t]
-% 			\centering
-% 			\includegraphics{images/possible-cheaters.png}
-% 			\caption{Smallest possible commitment tree}
-% 			\label{fig:cheating}
-% 		\end{figure}
+\section{Possible Cheater Analysis}
+	The following example demonstrates that if the base station knows the commitment tree topology and the complainers in the network then it can guess possible adversaries.
+	Then applies interactive protocol described in Algorithm \ref{algo:detect-an-adversary} in the next chapter to identify the adversary.
+	The details on how the base station finds complainers in the network are described in the next chapter.
+	For simplicity, we selected the commitment tree where all the vertices are unique. But this analysis holds true for any commitment tree topology. 
+	\begin{exmp}
+	The base station creates a set $c=\{c_{1},c_{2} , \dotsc, c_{n}\}$ for the complainers based on the protocol described in the Section \ref{sec:verficiation-of-authentication-codes}.
+	And based on the set $c$ it creates a set $a = \{a_{1},a_{2},\dotsc,a_{n}\}$ of the possible adversaries. 
+		\begin{figure}[t]
+			\centering
+			\includegraphics[width=6in]{images/possible-cheaters.png}
+			\caption{Smallest possible commitment tree}
+			\label{fig:cheating}
+		\end{figure}
 
-% 		\begin{itemize}
-% 			\item $A_{0}$ sends an authenticated code with NACK during verification of inclusion.
-% 			Then possible adversaries are the following:
-% 				\begin{itemize}
-% 					\item $I$
-% 					\item $(B, I)$
-% 					\item $(B, M)$
-% 					\item $(B, I, M)$
-% 				\end{itemize}
-% 		\end{itemize}
-% 	\end{exmp}
+		\begin{itemize}
+			\item If $c=\{A_{0}\}$ then $a=\{I,(B,I),(B,M),(B,I,M)\}$
+			\item If $c=\{A_{0},B_{0}\}$ then $a=\{I,M,(I,M),(C,D,O)\}$
+			\item If $c=\{A_{0},B_{0},C_{0}\}$ then $a=\{(D,O),(I,J),(M,J),(M,J,I)\}$				
+			\item If $c=\{A_{0},B_{0},C_{0},D_{0}\}$ then $a=\{M, O,(I,J),(E,F,G,H,O)\}$				
+			\item If $c=\{A_{0},B_{0},C_{0},D_{0},E_{0}\}$ then $a=\{(O,K),(M,K),(J,I,K),(F,G,H,O)\}$				
+			\item If $c=\{A_{0},B_{0},C_{0},D_{0},E_{0},F_{0}\}$ then $a=\{(O,K),(M,N),(N,O),(J,I,K)\}$
+			\item If $c=\{A_{0},C_{0}\}$ then $a=\{(J,I)\}$
+		\end{itemize}
+	\end{exmp}
 
 % \section{What is not cheating ?}
 	
