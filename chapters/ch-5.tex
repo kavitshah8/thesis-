@@ -120,13 +120,20 @@
 		% \item From the parent or ancestor node perspective, it has received all the verified data-items from its children and not from anywhere else.
 	\end{itemize}
 
-	\section{Re-signing the data-item}
+	\section{\textcolor{red}{Re-signing the data-item}}
 		If we throw away the old signatures and resign the data-item with current aggregate node then following is true:
 			\begin{itemize}
-				\item Each parent need the certificates of only its direct children
-				\item we do not need the signature of the payload
-				\item Number of certificates needed in the network is equal to the number of nodes in the network.
+				\item Each parent needs the certificates of only its direct children.
+				\item Each child needs to know the certificate of its parent only.
+				\item Number of signatures remain the same as previous approach.
+				\item Number of certificates needed in the network is $O(n)$; n is the number of nodes in the network.
+				\item We do not need the signature of the payload.
 			\end{itemize}
+
+		% Analysis model:	
+		% 	While creating CT;While distributing off-path; Both places together\\
+		% Initial analysis says, if a single aggregate node cheats while CT generation or distributing off-path values it gets caught. 
+		Note that we send signatures while distributing off-path values.
 
 	\section{Commitment Tree Generation}
 	For the given aggregation tree the commitment forest is built as follows.
@@ -143,7 +150,7 @@
 	The sensor node $I$ finds two data-items $D_{1},D_{2}$ in its forest with the same count value $c$ and merges them into a new data-item with the count of $c+1$ as shown in Figure \ref{fig:increase-height}.
 	\begin{figure}[h!]
 		% \centering
-		\includegraphics[scale = 1]{images/increase-height.png}\\
+		\includegraphics[width=6in]{images/increase-height.png}\\
 		\caption{$A$ has $B_{1}, C_{1}$ in his forest and aggregates those two trees and creates $A_{2}$.}
 		\label{fig:increase-height}
 	\end{figure}\\
@@ -153,7 +160,7 @@
 			\begin{exmp} The commitment-payload generation process for node $A$ of Figure \ref{fig:at} is shown here.\\
 				\begin{figure}[h!]
 					\centering
-					\includegraphics[scale = 1]{images/commitment-tree-example-1.png}\\
+					\includegraphics[width=6in]{images/commitment-tree-example-1.png}\\
 					\caption{$A$ receives $C_{2}$ from $C$, $(B_{1},B_{0})$ from $B$, $D_{0}$ from $D$ and generates $A_{0}$. The commitment payload received from a given sensor node is indicated by dashed-line box.}
 					\label{fig:commitment-tree-example-1}
 				\end{figure}
@@ -170,7 +177,7 @@
 
 				\begin{figure}[h!]
 					\centering
-					\includegraphics[scale = 1]{images/commitment-tree-example-2.png}\\
+					\includegraphics[width=6in]{images/commitment-tree-example-2.png}\\
 					\caption{First Merge: $A_{1}$ vertex created by A.}
 					\label{fig:commitment-tree-example-2}
 				\end{figure}
@@ -183,7 +190,7 @@
 				\end{equation}
 				\begin{figure}[h!]
 					\centering
-					\includegraphics[scale = 1]{images/commitment-tree-example-3.png}\\
+					\includegraphics[width=\textwidth]{images/commitment-tree-example-3.png}\\
 					\caption{Second Merge: $A_{2}$ vertex created by A.}
 					\label{fig:commitment-tree-example-3}
 				\end{figure}
@@ -195,7 +202,7 @@
 				\end{equation}
 				\begin{figure}[h!]
 					\centering
-					\includegraphics[scale = 1]{images/commitment-tree-example-4.png}\\
+					\includegraphics[width=6in]{images/commitment-tree-example-4.png}\\
 					\caption{Third Merge: $A_{3}$ vertex created by A.}
 					\label{fig:commitment-tree-example-4}
 				\end{figure}

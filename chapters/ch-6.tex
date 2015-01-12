@@ -147,11 +147,11 @@
 			\FORALL {$A \in a$}
 
 				\STATE $BS$\ asks $A$ to send data-items with its signature, received and sent by $A$ during commitment tree generation phase
-				\STATE If needed $BS$\  asks $A's$ parent to send data-items with its signature
+				\STATE If needed $BS$\  asks the parent of $A$ to send data-items with its signature
 	
 			\ENDFOR
 
-			\STATE $BS$\ determines the adversary 
+			\STATE $BS$\ determines the adversary based on the verification of signatures
 
 	\end{algorithmic}
 \end{algorithm}
