@@ -1,26 +1,23 @@
 \chapter{Secure Hierarchical In-network Data Aggregation} % (fold)
 \label{cha:Secure hierarchical In-network data aggregation}
-
-Our work enhances Secure Hierarchical In-network data aggregation SHIA protocol of \cite{chan2006secure} by making it communication efficient, adding new capabilities to the protocol, achieving similar security goals with non-resilient aggregation functions and efficient way of analyzing the protocol.
+Our work enhances Secure Hierarchical In-Network Data Aggregation (SHIA) protocol of \cite{chan2006secure} by making it communication efficient, adding new capabilities to the protocol, achieving similar security goals with non-resilient aggregation functions and efficient way of analyzing the protocol.
 In this chapter, we summarize the important parts of SHIA protocol and relevant terms, to build the foundation to describe our protocol in the following chapters.\\
-The goal of SHIA is to compute aggregate functions (such as $\textit{truncated SUM}$, $\textit{AVERAGE}$, $\textit{COUNT}$, $\Phi-QUANTILE$) of the sensed values by the sensor nodes.
-For example, a network with $5$ nodes has the following sensor readings $10,11,8,15,12$. 
-For all readings the sum is $56$, the average is $11.2$ and the median ($\Phi = 0.5$) is $11$.
+SHIA computes aggregate functions (such as $\textit{truncated SUM}$, $\textit{AVERAGE}$, $\textit{COUNT}$, $\Phi-QUANTILE$) of the sensed values by the sensor nodes.
+For example, a network with $5$ nodes having the following sensor readings $10,11,8,15,12$ has the overall all sum of $56$, the average of $11.2$ and the median ($\Phi = 0.5$) of $11$.
 The goal of the SHIA is to compute the aggregate functions while assuming that partially a network is controlled by an adversary which is attempting to skew the final aggregated result.
 
 \section{Network Assumptions}
-
 	We assume a multi hop network with a set $ S = \{s1,...,s_{n}\} $ of $n$ sensor nodes where all $n$ nodes are alive and reachable. 
 	The network is organized in a rooted tree topology.
 	The trusted base station resides outside of the network and has more computation, storage capacity then the sensor nodes in the network. 
-	Note that SHIA names the base station as the querier and the root of the tree as the base station. 
+	\textbf{Note}: SHIA names the base station as the querier and the root of the tree as the base station. 
 	The base station knows total number of sensor nodes $n$ in the network and the network topology. 
-	It also has the capacity to directly communicate with every sensor node in the network.
+	It also has the capacity to directly communicate with every sensor node in the network using authenticated broadcast.
 	All the wireless communications between the nodes is peer-to-peer and we do not consider the local wireless broadcast.\\
 	Each sensor node has a unique identifier $s$ and shares a unique secret symmetric key $K_{s}$ with the base station.
 	The keys enable message authentication, and encryption if the data confidentiality is required.
 	All the sensor nodes are capable of doing symmetric key encryption and symmetric key decryption.
-	They are also capable of computing collision resistant cryptographic hash function $H$. 
+	They are also capable of computing collision resistant cryptographic hash function $H$ (SHA-$256$)\cite{SHA256}. 
 
 \section{Attacker Model}
 	
@@ -31,24 +28,23 @@ The goal of the SHIA is to compute the aggregate functions while assuming that p
 	Since in many applications the information received by the base station provides a basis for critical decisions, false information could have ruinous consequences.
 	However, we do not want to limit ourselves to just a few specific selected adversarial models. 
 	Instead, we assume that the adversary can misbehave in any arbitrary way, and the only limitations we put on the adversary are its computational resources (polynomial in terms of the security parameter) and the fraction of nodes that it can have control over. 
-	We focus on \textbf{stealthy attacks} \cite{przydatek2003sia}, where the adversary's goal is to make the base station accept false aggregation results, which are significantly different from the true results determined by the measured values, while not being detected by the base station.
+	We focus on \textbf{stealthy attacks} \cite{przydatek2003sia}, where the goal of an adversary is to make the base station accept false aggregation results, which are significantly different from the true results determined by the measured values, while not being detected by the base station.
 	In this setting, denial-of-service (DoS) attacks such as not responding to the queries or always responding with negative acknowledgment at the end of verification phase clearly indicates to the base station that something is wrong in the network and therefore is not a stealthy attack.
-	One of the security goals of the SHIA is to prevent stealthy attacks.
+	One of the security goals of SHIA is to detect the stealthy attacks.
+	And one of the security goals of our work is to detect an adversary who caused the stealthy attacks and remove it from the network to prevent these attacks in the future.
 	
-\section{Aggregate Definition and Security Goals}
+\section{Resilient and Non-Resilient Aggregate Functions}
 	
+	Wagner \cite{wagner2004resilient} uses statistical estimation theory to quantify the effects of direct data injection on various aggregates functions.
+	To understand Wagner's work we define following terms. 
 	\begin{definition}
 		According to \cite{chan2006secure}, each sensor node $s_{i}$ has a data value $a_{i}$\ assuming that all the data values are non-negative bounded by real value $a_{i} \in [0,r]$, where $r$\ is the maximum allowed data value.
 		The objective of the \textbf{aggregation process} is to compute some function $f$ over all the data values, i.e., $f (a_{1}, \dotsc ,a_{n})$.
 	\end{definition}
-
-	\subsection{Security goals}
 	\begin{definition}
 		\label{def:direct-data-injection}
 		According to \cite{chan2006secure}, a \textbf{direct data injection} attack occurs when an adversary modifies the data readings reported by the nodes under its direct control, under the constraint that only legal readings in $[0, r]$ are reported.
 	\end{definition}
-
-	Wagner \cite{wagner2004resilient} uses statistical estimation theory to quantify the effects of direct data injection on various aggregates as follows.
 	An \textbf{estimator} is an algorithm $ f :\ \R^n \rightarrow \rm I\!R$\ where $f(x_{1},\dotsc, x_{n})$\ is intended as an estimate of some real valued function of $\theta$.
 	We assume that $\theta$ is real valued and that we wish to estimate $\theta$ itself.
 	Next, we define $\widehat{\Theta} := f(X_{1},\dotsc,X_{n})$, where $X_{1},\dotsc,X_{n}$\ are $n$ random variables. We can define the root-mean-square(r.m.s)  error (at $\theta$):
@@ -75,7 +71,7 @@ The goal of the SHIA is to compute the aggregate functions while assuming that p
 	Note that $rms^* (f, 0) = rms(f)$.
 	We think of an aggregation function $f$ as an instance of the resilient aggregation paradigm if $rms^* (f, k)$ grows slowly as a function of $k$.
 	\begin{definition}
-		According to \cite{wagner2004resilient}, an aggregation function $f$ is $(k, \alpha)$-resilient (with respect to a parameterized distribution $p(X_{i} | \theta))$ if $rms^*(f, k) \le \alpha \cdot rms(f)$ for the estimator $f$.
+		According to \cite{wagner2004resilient}, an aggregation function $f$ is \textbf{$(k, \alpha)$-resilient} (with respect to a parameterized distribution $p(X_{i} | \theta))$ if $rms^*(f, k) \le \alpha \cdot rms(f)$ for the estimator $f$.
 		\label{def:resilient}
 	\end{definition}
 	The intuition is that the $(k, \alpha)$-resilient functions, for small values of $\alpha$, are the ones that can be computed meaningfully and securely in the presence of up to $k$ compromised or malicious nodes.
@@ -99,15 +95,15 @@ The goal of the SHIA is to compute the aggregate functions while assuming that p
 		 \caption{Summary of Wagner's work}
 		 \label{table:wagner}
 	\end{table}
-	The summary of the Wagner's work is summarized in the Table~\ref{table:wagner}.
-	According to this quantitative study measuring the effects of direct data injection on various aggregates, and concludes that the aggregates (truncated SUM and AVERAGE ) can be resilient under such attacks.
-
-	Without precise knowledge of application, the direct data injection attacks are indistinguishable from the malicious sensor readings. Hence, an optimal level of aggregation security is defined as follows.  
+	His work is summarized in the Table~\ref{table:wagner}.
+	According to this quantitative study measuring the effects of direct data injection on various aggregates, concludes that the \textbf{aggregates (truncated SUM and AVERAGE ) can be resilient} under such attacks.
+	\section{Security Goal}
+	Without precise knowledge of application, the direct data injection attacks are indistinguishable from the malicious sensor readings.
+	The goal of SHIA is to design an \textbf{optimally secure} aggregation algorithm with only \textbf{sublinear edge congestion}.
 	\begin{definition}
 		\label{def:optimally-secure}
 		According to \cite{chan2006secure}, an aggregation algorithm is \textbf{optimally secure} if, by tampering with the aggregation process, an adversary is unable to induce the base station to accept any aggregation result which is not already achievable by direct data injection.
 	\end{definition}
-	The goal of SHIA is to design an \textbf{optimally secure} aggregation algorithm with only \textbf{sublinear edge congestion}.
 
 	\section{The SUM Aggregate Algorithm}
 		In this algorithm, the aggregate function $f$\ is summation meaning that we want to compute $a_{1} + a_{2} + \dotsc + a_{n}$, where $a_{i}$\ is the sensed data value of the node $i$.

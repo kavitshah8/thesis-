@@ -160,9 +160,12 @@
 		\textbf{collection of authentication codes}\\
 			$A,B$ send their authentication codes with NACK message.\\
 	\end{itemize}
-	\textbf{	This example shows how the commitment provides data-integrity to the data-items.
-						It makes it nearly impossible for an adversary to tamper with the data-items.}
 	\end{exmp}
+	This example shows how the commitment provides \textbf{data-integrity} to the data-items.
+	It makes it nearly impossible for an adversary to tamper with the data-items while creating commitment tree and/or while distributing off-path values.
+	This cheating activity can be detected by the commitment filed in the data-item.
+	Later we will show that the adversary can be detected with the provided signature infrastructure.
+	
 % If an aggregator changes the value field in one of its children's data-item then to hide its misbehavior from its children, it has to compensate the difference with the relevant off-path data-item. 
 % % It means it has to use different data-item in the commitment.
 % \textbf{If an aggregation node has two unique children (not including itself) and if it tries to tamper with either one or both children's data-item then it can not create a fake data-item which will be accepted by both of its children.
