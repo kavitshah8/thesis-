@@ -1,8 +1,13 @@
-\chapter{Secure Hierarchical In-network Data Aggregation} % (fold)
-\label{cha:Secure hierarchical In-network data aggregation}
+\chapter{Data Aggregation Background} % (fold)
+\label{cha:Data Aggregation Background}
+
+background on data aggregation
+
+then talk about SHIA
+
 Our work enhances Secure Hierarchical In-Network Data Aggregation (SHIA) protocol of \cite{chan2006secure} by making it communication efficient, adding new capabilities to the protocol, achieving similar security goals with non-resilient aggregation functions and efficient way of analyzing the protocol.
 In this chapter, we summarize the important parts of SHIA protocol and relevant terms, to build the foundation to describe our protocol in the following chapters.\\
-SHIA computes aggregate functions (such as $\textit{truncated SUM}$, $\textit{AVERAGE}$, $\textit{COUNT}$, $\Phi-QUANTILE$) of the sensed values by the sensor nodes.
+SHIA computes the aggregate functions (such as $\textit{truncated SUM}$, $\textit{AVERAGE}$, $\textit{COUNT}$, $\Phi-QUANTILE$) of the sensor readings.
 For example, a network with $5$ nodes having the following sensor readings $10,11,8,15,12$ has the overall all sum of $56$, the average of $11.2$ and the median ($\Phi = 0.5$) of $11$.
 The goal of the SHIA is to compute the aggregate functions while assuming that partially a network is controlled by an adversary which is attempting to skew the final aggregated result.
 

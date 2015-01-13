@@ -189,3 +189,34 @@
 
 	Hence, in totality the binary commitment tree requires the minimum number of off-path values.
 \end{proof}
+
+\begin{theorem}
+\cite{chan2006secure}
+The Aggregate Commit with verification induces $O(\log^3 n)$ edge congestion. And $O(\delta\log^3 n)$ node congestion in the aggregation tree.
+\end{theorem}
+\begin{proof}
+	While creating the commitment tree every sent message is at most $O(\log n)$ size.
+	And while the off-path value dissemination step is the
+% dominating factor.
+% Consider an arbitrary edge in the commitment-tree between parent
+% vertex x and child vertex y. In the label dissemination step,
+% messages are only sent from parent to child in the commitment tree.
+% Hence the edge xy carries exactly the labels that y receives. From
+% Theorem 14, y receives O(logn) labels, hence the total number of
+% labels passing through xy is O(logn). Hence, the edge congestion
+% in the commitment tree is O(logn). Now consider an arbitrary aggregation
+% tree edge with parent node u and child node v. The child
+% node v presents (i.e., sends) at most logn commitment-tree vertices
+% to its parent u, and hence the edge uv is responsible for carrying
+% traffic on behalf of at most logn commitment-tree edges — these
+% are the edges incident on the commitment tree vertices that v presented
+% to u. Note that v may not be responsible for creating all
+% the vertices that it presents to u, but v is nonetheless responsible
+% for forwarding the messages down to the sensor nodes which created
+% those vertices. Since each edge in the commitment tree has
+% O(logn) congestion, and each edge in the aggregation tree carries
+% traffic for at most logn commitment-tree edges, the edge congestion
+% in the aggregation tree is O(log2 n). The node-congestion bound
+% of O(Δlog2 n) follows from the O(log2 n) edge congestion and the
+% definition of Δ as the greatest degree in the aggregation tree.
+\end{proof}

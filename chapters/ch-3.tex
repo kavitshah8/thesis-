@@ -1,6 +1,6 @@
 \chapter{Networking and Cryptography tools} % (fold)
 \label{cha:Networking and Cryptography tools}
-	Here we describe the networking and cryptographic tools used in this protocol.
+	Here we describe the networking and cryptographic tools used in this protocol referred from \cite{menezes2010handbook,stinson2005cryptography}.
 	For example, we describe the Hash function, its properties and how it helps us achieve data integrity.
 
 \section{Hash Function}
@@ -17,7 +17,7 @@
 		\item Collision resistance - it is computationally to find any two distinct inputs $x,x'$ which hash to the same output, i.e., such that $h(x) = h(x')$.
 	\end{itemize} 
 
-	We use SHA-$256$\cite{SHA256} hash algorithm as a hash algorithm.
+	We use SHA-$256$\cite{SHA256} hash algorithm as a collision resistant hash function.
 	% cite NIST for SHA-256
 
 \section{Digital Signatures}
@@ -32,7 +32,6 @@
 		\item an efficient signing algorithm \textsf{Sign} : $ \mathcal{M} \times \mathcal{K} \rightarrow \mathcal{S}$
 		\item an efficient verification algorithm \textsf{Verify} : $\mathcal{S} \times \mathcal{M} \rightarrow$ \{true, false\} 
 	\end{enumerate}
-	\textcolor{red}{cite Book for slides}\\
 	For any secret key $s_{k} \in \mathcal{K}$ and any $m \in \mathcal{M}$,	the message $m$ is signed using key $s_{k}$ as follows:
 		\begin{equation}
 			s = \textsf{Sign}_{s_{k}}(m)
