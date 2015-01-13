@@ -1,46 +1,66 @@
 \chapter{Aggregate Commit with Verification} % (fold)
 \label{cha:A Protocol for Commitment Tree Generation}
-	Talk more about design.
-	
-	Like we wanted to detect an adversary in the network with least amount of overhead in terms of BW and computation.
-	We wanted to achieve that with as realistic as possible. 
+	We want to design a secure aggregation protocol which can be applied to any hierarchical sensor network which can \textbf{detect the malicious activity} (in terms of data aggregation) and can \textbf{detect the adversary} causing the malicious activity in the network.  
+	As we saw in the previous chapter SHIA can detect the malicious activity in the network with only sub-linear edge congestion.
+	So, we built our work on top of SHIA which can detect an adversary.
 
-	The high level idea of the aggregate commit with verification scheme is that all nodes in the aggregation tree send the signature of their data-item signed by themselves.
-	The aggregate node proceeds to the aggregation only after verifying all the received signatures.
-	The aggregate node also signs its payload in addition to its data-item which is discussed in great detail in the following sections.
-\section{Motivation}	
-	In the previous chapter, we saw that SHIA limits the adversary's ability to manipulate the aggregation result with the tightest bound possible.
-	But, SHIA uses truncated sum as an aggregate function which is resilient according to the Wagner \cite{wagner2004resilient}.
-	It does not help accurately calculating the sum aggregate. 
-	Furthermore, SHIA does not help detecting and revoking the malicious aggregate node from the network.
+	To detect an adversary (or prove someone guilty), we need proof that the adversary is responsible for the malicious activity.	 
+	To achieve our goal, we think the Digital signature is the perfect cryptographic tool.
+	Consider the following example showing the analogy with the signatures used in the postal services.
+	When a postman delivers the package, the receiving party has to sign the document informing that he verified and received the package.
+	As only the receiving party can create his signature, in the future he can not claim of not receiving the package or receiving the damaged or incorrect package. 
+	And if he claims such, the postal company has the
+	signed document as the proof mentioning that the package was received successfully, by the receiving party.
+	The signed document also ensures to the postal company that the postman did not misplace or steal the package.
+	The signature scheme used by the postal service provides authenticity (assures the origin of the message) and non repudiation (neither sender or receiver can deny the transmission).
+	With Digital signatures we can achieve \textbf{non-deniability  (non repudiation), authentication, integrity} (assures that only the authorized parties can modify the information) as described in Section \ref{sec:digital-signature}.
+	
+	We want to achieve this with the least amount of overhead in terms of bandwidth and computation power in the network.
+	So, the protocol can be easily implemented in the real world sensor networks.
+	
+	% Like we wanted to detect an adversary in the network with least amount of overhead in terms of BW and computation.
+	% We wanted to achieve that with as realistic as possible. 
+
+\section{Design Goals}	
+	% In the previous chapter, we saw that SHIA limits the adversary's ability to manipulate the aggregation result with the tightest bound possible.
+	% But, SHIA uses truncated sum as an aggregate function which is resilient according to the Wagner \cite{wagner2004resilient}.
+	% It does not help accurately calculating the sum aggregate. 
+	% Furthermore, SHIA does not help detecting and revoking the malicious aggregate node from the network.
 	% SHIA does not require prior knowledge of network topology and works on hierarchical sensor network which might include multiple malicious sensor nodes, with only suboptimal congestion overhead.
 	% SHIA helps the sensor node verify, its reported sensor reading was aggregated correctly or not, by an an aggregate node.
 	% If an an aggregate node has tampered with the reported sensor reading then the relevant sensor node can detect the tampering and raise an alarm.
 	We develop the aggregation protocol which works for any random hierarchical sensor networks with a single or multiple adversaries.
 	It works on the resilient as well as non-resilient aggregation functions Defined in \ref{def:resilient}, without compromising any desired security properties.
-	It identify the malicious aggregate node or nodes in the network who are responsible for malicious activity.
-	We also want to prevent masquerade attacks in the network to apply this protocol in the voting applications.
-	We want to achieve all these desired security properties by inducing only $O(\delta \log^{k} n)$ node congestion in the aggregation tree; where $n$ is the number of nodes in the network, $\delta$ is the fanout of any node in the aggregation tree, and $k$ is the variable.
+	It identifies all the adversaries in the network who are responsible for the malicious activity.
+	It prevents masquerade attacks in the network so this protocol can easily be applied to do the voting scheme.
+
+	We want to achieve all the mentioned goals by inducing only $O(\delta \log^{k} n)$ node congestion in the aggregation tree; where $n$ is the number of nodes in the network, $\delta$ is the fanout of any node in the aggregation tree, and $k$ is the variable.
 	Ideally, we want $k=0$, in the case of SHIA and our protocol $k=2$, which will be explained in the later chapter.
 	% which is built on top of commitment tree generation of SHIA mentioned in the previous chapter.
-	
+
+	The high level idea of the aggregate commit with verification scheme is that all nodes in the network send the signature of the message along with the message itself. 
+	It might send the its certificate if the parent does not have it already.
+	The parent node verifies all the received signatures from its children.
+	And proceeds with the aggregation process.
+	After aggregation, the parent node can throw away all the signatures from its children and signs the message of its children or it can pass its children's signatures to its parent. 
+	The pros and cons of each approach are discussed in the following sections. 
 
 \section{Data-Item}
 	
-	Here, we describe structure of the data-item, how it is different from the label structure of SHIA and rational behind it.	
+	We describe structure of the data-item used in creating the commitment tree for the aggregate commit with verification approach, how it is different from the label structure of SHIA and rational behind it.	
 	\begin{definition}
 		\label{def:data-item}
 		A commitment tree is a binary tree where each vertex has an associated data-item representing the data that is passed on to its parent. The data-items have the following format:
 
-		$\hspace{100pt}$ \textbf{$<\ $id, count, value, commitment$\ >$}
-	\end{definition}
+		$\hspace{100pt}$ \textbf{$<\ $id, count, value, commitment$\ >$}\\
 	Where $id$ is the unique ID of the node; $count$ is the number of leaf vertices in the subtree rooted at this vertex; $value$ is the SUM aggregate computed over all the leaves in the subtree and $commitment$ is a cryptographic commitment.
+	\end{definition}
 	
 	We remove the $complement$ field from the label structure Defined \ref{def:label}. 
-	We think including the complement filed in the label is redundant information. 
+	We think the complement filed is redundant information in the label. 
 	The complement field is used by the base station (the querier according to SHIA), before the result checking phase, to verify \textbf{SUM + COMPLEMENT =} $\textbf{n} \cdot \textbf{r}$ ; where $\textbf{n}$ is the number of nodes in the network, $\textbf{r}$ is the upper bound on the allowed sensor readings.
-	We can achieve the same upper bound without the complement field.
-	As the querier knows $n, r$ and it gets SUM from the root of the aggregation tree.\\
+	We can achieve the same upper bound without the complement field.\\
+	As the querier knows $n, r$ and it gets SUM from the root of the aggregation tree.
 	If \textbf{SUM} $> \textbf{n} \cdot \textbf{r}$ , then the base station knows some node or nodes in the network reported out of range readings.
 
 	We include $id$ of the node in its data-item.
@@ -237,6 +257,7 @@
 	At max, $S$ has to send a payload with $\log(\beta+1)$ data-items and $\log(\beta+1) +1$ signatures to its parent in the aggregation tree.
 	
 	Hence, sending signatures of the data-items causes $O(\log \beta)$ bandwidth overhead for each node in the network, where $\beta$ is the number of descendants of the sensor node. 
+\section{Result checking}
 
 \section{Performance Analysis}
 	In addition to calculating its own data-items, all intermediate sensor nodes with $\beta$ descendants and $\zeta$ direct children need to do the following:
