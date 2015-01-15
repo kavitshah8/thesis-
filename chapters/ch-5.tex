@@ -11,9 +11,48 @@
 	Hence, data-aggregation techniques are one of the key tool in our tool box while designing protocol for the sensor networks.
 
 	The second most significant factor in the design of the data aggregation protocol is \textbf{security}. 
-	In the perfect world one desire the following security properties from the 
-	networking protocol.
+	In the perfect world, one desires the following security properties from the secure networking protocol.\\*
+	\textbf{Confidentiality} - ensures that information is accessed only by authorized parties.
+	% That is, only those who should have access to something will actually get that access. By access, we mean not only reading but also viewing, printing, or simply knowing that a particular asset exists. 
+	It is also known as secrecy or privacy.
+	Ensuring confidentiality can be difficult.
+	For example, who determines which parties are authorized to access the information?
+	By ``accessing'' information, do we mean that an authorized party can access a single bit? the whole collection? pieces of information out of context?
+	Can someone who is authorized disclose that information to other parties?\cite{pfleeger2002security}
+	\\*
+	\textbf{Integrity} - assures that the only authorized entities can modify the information; where modification means writing, creating, deleting and changing the information. 
+	If one say one have preserved an integrity of the information one may mean different things depending on the context.
+	It can mean the following, one has preserved the information is precise, unmodified, modified only in acceptable ways by authorized parties or process.
+	Error detection and correction are two important aspects of information integrity \cite{pfleeger2002security}.
+	One important application of an integrity is when a user downloads any information from the web, the user wants to be assured that the information has not been altered in any way by the networking errors, by active attackers on the Internet or any other third party application.\\*
+	\textbf{Availability} - means that information is accessible to authorized parties at appropriate times.
+	In other words, if some person or system has legitimate access to a particular set of objects, that access should not be prevented.
+	Availability applies to the information and services.
+	For example, information or service is available can mean the following. 
+	It is present in the usable form.
+	It has the enough capacity to meet the service need.
+	It is making enough progress, and, if it is in wait mode, it has a bounded waiting time. There is timely response to our requests.
+	Resources are allocated fairly so that some requests are not favored over the others. The service can be used easily and in its intended way.
+	For this reason, availability is sometimes known by its opposite, denial of service \cite{pfleeger2002security}.
+	\\*
+	\textbf{Authentication} - assures the origin of the information.
+	There are two types of authentication that rises in cryptography: entity authentication and data-origin authentication \cite{trappe2006introduction}.
+	The entity authentication is also known as identification which is concerned with proving the identity of the parties involved in a communication.
+	Data-origin authentication focuses on tying the information about the origin of the data, such as the creator and time of creation, with the data.\\*
+	\textbf{Non repudiation} - requires neither the sender nor the receiver can deny the transmission.
+	This is very important in electronic commerce applications. where it is important that a consumer cannot deny the authorization of a purchase.
+	\\*
+	\textbf{Access Control} - restricts an access to the information.
+	Login credentials and Locks are two analogues mechanism of access control.
 
+	As you can see, expectations from secure networking protocol are far-reaching.
+
+	Write about how SIA solves some of these.
+
+	Write about how SHIA solves some of these.
+
+	Write about why detecting malicious activity and detecting an adversary is an important aspect.
+	
 	We want to design a secure aggregation protocol which can be applied to any hierarchical sensor network which can \textbf{detect the malicious activity} (in terms of data aggregation) and can \textbf{detect the adversary} causing the malicious activity in the network.  
 	As we saw in the previous chapter SHIA can detect the malicious activity in the network with only sub-linear edge congestion.
 	So, we built our work on top of SHIA which can detect an adversary.
