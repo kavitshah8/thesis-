@@ -1,19 +1,33 @@
 \chapter{Aggregate Commit with Verification} % (fold)
 \label{cha:A Protocol for Commitment Tree Generation}
+	The most significant design aspect of the sensor network is the \textbf{lifetime of the network}.
+	The sensor network tend to have limited life span as they are powered by the battery.
+	The lifetime of the sensor network is inversely proportional to the sensor nodes' power consumption.
+	One of the most dominating factor for the power consumption is transmitting and receiving the data between sensor nodes, making network bandwidth an expensive resource.
+	The bandwidth is more expensive resource than the local data computation, as data computation consumes less power than transmitting or receiving the data.
+	The obvious solution to increase the lifespan of the sensor network is to decrease the bandwidth usage in the network.  	
+	Data aggregation techniques can reduce the bandwidth usage in the network. 
+	It can greatly increase the lifespan of the network.
+	Hence, data-aggregation techniques are one of the key tool in our tool box while designing protocol for the sensor networks.
+
+	The second most significant factor in the design of the data aggregation protocol is \textbf{security}. 
+	In the perfect world one desire the following security properties from the 
+	networking protocol.
+
 	We want to design a secure aggregation protocol which can be applied to any hierarchical sensor network which can \textbf{detect the malicious activity} (in terms of data aggregation) and can \textbf{detect the adversary} causing the malicious activity in the network.  
 	As we saw in the previous chapter SHIA can detect the malicious activity in the network with only sub-linear edge congestion.
 	So, we built our work on top of SHIA which can detect an adversary.
 
 	To detect an adversary (or prove someone guilty), we need proof that the adversary is responsible for the malicious activity.	 
 	To achieve our goal, we think the Digital signature is the perfect cryptographic tool.
-	Consider the following example showing the analogy with the signatures used in the postal services.
+	Consider the following example showing the analogy with the signature scheme used in practice by the postal services.
 	When a postman delivers the package, the receiving party has to sign the document informing that he verified and received the package.
 	As only the receiving party can create his signature, in the future he can not claim of not receiving the package or receiving the damaged or incorrect package. 
 	And if he claims such, the postal company has the
 	signed document as the proof mentioning that the package was received successfully, by the receiving party.
 	The signed document also ensures to the postal company that the postman did not misplace or steal the package.
-	The signature scheme used by the postal service provides authenticity (assures the origin of the message) and non repudiation (neither sender or receiver can deny the transmission).
-	With Digital signatures we can achieve \textbf{non-deniability  (non repudiation), authentication, integrity} (assures that only the authorized parties can modify the information) as described in Section \ref{sec:digital-signature}.
+	The signature scheme used by the postal service promises authenticity (assures the origin of the message) and non repudiation (neither sender or receiver can deny the transmission).
+	With Digital signatures one can achieve \textbf{non-deniability  (non repudiation), authentication, integrity} (assures that only the authorized parties can modify the message) as described in Section \ref{sec:digital-signature}.
 	
 	We want to achieve this with the least amount of overhead in terms of bandwidth and computation power in the network.
 	So, the protocol can be easily implemented in the real world sensor networks.
@@ -38,8 +52,8 @@
 	Ideally, we want $k=0$, in the case of SHIA and our protocol $k=2$, which will be explained in the later chapter.
 	% which is built on top of commitment tree generation of SHIA mentioned in the previous chapter.
 
-	The high level idea of the aggregate commit with verification scheme is that all nodes in the network send the signature of the message along with the message itself. 
-	It might send the its certificate if the parent does not have it already.
+	The high level idea of the aggregate commit with verification scheme is that all the nodes in the network send the signature of the message along with the message itself. 
+	It sends its certificate if the parent node does not have it already.
 	The parent node verifies all the received signatures from its children.
 	And proceeds with the aggregation process.
 	After aggregation, the parent node can throw away all the signatures from its children and signs the message of its children or it can pass its children's signatures to its parent. 
@@ -47,7 +61,7 @@
 
 \section{Data-Item}
 	
-	We describe structure of the data-item, used in creating the commitment tree for the aggregate commit with verification approach. And differences between the data-item and the label structure of SHIA, rational behind it.	
+	We describe structure of the data-item, used in creating the commitment tree for the aggregate commit with verification approach. And differences between the data-item and the label structure of SHIA with rational behind it.
 	\begin{definition}
 		\label{def:data-item}
 		A commitment tree is a binary tree where each vertex has an associated data-item representing the data that is passed on to its parent. The data-items have the following format:
@@ -59,41 +73,37 @@
 	We remove the $complement$ field from the label structure Defined \ref{def:label}. 
 	We think the complement filed is redundant information in the label. 
 	The complement field is used by the base station (the querier according to SHIA), before the result checking phase, to verify \textbf{SUM + COMPLEMENT =} $\textbf{n} \cdot \textbf{r}$ ; where $\textbf{n}$ is the number of nodes in the network, $\textbf{r}$ is the upper bound on the allowed sensor readings.
-	We can achieve the same upper bound without the complement field.\\
+	We can achieve the same upper bound without the complement field.
 	As the querier knows $n, r$ and it gets SUM from the root of the aggregation tree.
 	If \textbf{SUM} $> \textbf{n} \cdot \textbf{r}$ , then the base station knows some node or nodes in the network reported out of range readings.
 
 	We include $id$ of the node in its data-item.
-	SHIA does not have the ID field in their label structure as they do not do internal verification while creating a commitment tree.
-	In the label format ID of the node is hashed after the first aggregation and virtually gets lost.
+	SHIA does not have the ID field in their label structure as they do not do internal verification while creating a commitment tree and while distributing off-path values.
+	Also, in the label format ID of the node is hashed in the commitment field after the first aggregation and virtually gets lost.
 	Hence, SHIA can not provide authenticity of the message and is vulnerable to masquerade attacks.
-	We do internal verification while creating the commitment tree.
+	We do internal verification while creating the commitment tree and distributing off-path values.
 	So, it is necessary for any aggregate node to know the ID of all the received data-items in its forest, for the verification of the received signatures as shown in the next section.
 
 \section{Signing the Data-Item}
-	While creating a commitment tree, there is one vertex $S_{0}$ for each sensor node $S$, which we call the leaf vertex of $S$.
+	During commitment tree generation phase, there is one vertex $S_{0}$ for each sensor node $S$, which we call the leaf vertex of $S$.
 	The data-item for leaf vertex $S_{0}$ and associated signature to it is defined as follows:
 	\begin{equation}
 		\label{eq:leaf-vertex}
-		S_{0}\ =\ <S_{id}, 1, S_{value}, H(N||1||S_{value})>
-	\end{equation}
-	\begin{equation}
-		\label{eq:signature-leaf-vertex}
-		\textsf{Sign}_{S_{S}}(S_{0})
+		S_{0}\ =\ <S_{id}, 1, S_{value}, H(N||1||S_{value})>;\ 	\textsf{Sign}_{S_{S}}(S_{0})
 	\end{equation}
 	where $H$ is a collision resistant hash function, $S_{S}$ is the secret key of $S$, $N$ is the query nonce.
 
 	The key difference between the SHIA's approach and our approach is that, in addition to sending the data-item, each sensor node sends the signature of the data-item to its parent.
-	It sends its certificate as well if the parent node doesn't have it already.
-	The parent node gets the public key of the child node from its certificate. 
-	The parent node verifies all the received signature using their children node's public key.
+	It sends its certificate as well if the parent node does not have it in its cache  already.
+	The parent node gets the public key of the child node from its certificate, which is used in decrypting the signature. 
+	The parent node verifies all the received signature using its children node's public key.
 	Details of the signing and verification process is shown in Figure \ref{fig:digita-signature}.
 	After doing the verification the parent node proceeds to the aggregation and creating the commitment tree.
 	
 	\subsection{Bandwidth Analysis}
 
-	Typical size of the data-item packet	 is $400$ bits.
-	If we use Elliptic curve cryptography then the size of signature is $500$ bits.
+	Typical size of the data-item packet is $400$ bits.
+	If one uses Elliptic curve cryptography then the size of signature is $500$ bits.
 	And the certificate size is $1500$ bits.
 	So, at max we have to send additional $2000$ bits with the data-item.
 	We think it is worthwhile to send these additional bits.
@@ -103,7 +113,7 @@
 	\subsection{Security Benefits}
 	This additional signature allows the parent node to verify that the authenticity of the sensor node and integrity of the received data-item.
 	It allows the sender to have the proof for the sent data-item.
-	And the receiver for the proof for the received data-item, eliminating the non-repudiation attacks.
+	And the receiver for the proof for the received data-item, eliminating the repudiation attacks.
 
 \section{Signing the Commitment Payload}
 		We define commitment payload based on the commitment forest Defined in \ref{def:commitment-forest}.
@@ -138,13 +148,13 @@
 				\textcolor{red}{\textsf{Sign}_{S_{C}}(C_{0}||B_{1})}
 			\end{array}
 		\end{equation}
-Signature on the $C$'s payload $\textsf{Sign}_{S_{C}}(C_{0}||B_{1})$ assures that the sensor node $C$ sent only two data-items $C_{0},B_{1}$ in its payload.
-This example showcases another important aspect of the protocol.
-It shows two different ways of creating a commitment tree.
-The sensor node $C$ has two data-items $C_{0},B_{1}$ in its payload. 
-It sends the $\textsf{Sign}_{S_{B}}(B_{1})$, $\textsf{Sign}_{S_{C}}(C_{0}) $and $\textsf{Sign}_{S_{C}}(C_{0}||B_{1})$ to its parent node $D$.
-It means $D$ need to know the public key, hence the certificates of the sensor nodes $C$ and $D$.
-Instead of that the sensor node $C$ can verify the $\textsf{Sign}_{S_{B}}(B_{1})$ then remove the old signature and create new signature $\textsf{Sign}_{S_{C}}(B_{1})$ signed by itself on the data-item $B_{1}$ as shown below:
+	Signature on the $C$'s payload $\textsf{Sign}_{S_{C}}(C_{0}||B_{1})$ assures that the sensor node $C$ sent only two data-items $C_{0},B_{1}$ in its payload.
+	This example showcases another important aspect of the protocol.
+	It shows two different ways of creating a commitment tree.
+	The sensor node $C$ has two data-items $C_{0},B_{1}$ in its payload. 
+	It sends the $\textsf{Sign}_{S_{B}}(B_{1})$, $\textsf{Sign}_{S_{C}}(C_{0}) $ and $\textsf{Sign}_{S_{C}}(C_{0}||B_{1})$ to its parent node $D$.
+	It requires the parent node $D$ to know the public key, hence the certificates of the sensor nodes $C$ and $D$.
+	Instead of that the sensor node $C$ can verify the $\textsf{Sign}_{S_{B}}(B_{1})$ then remove the old signature and create new signature $\textsf{Sign}_{S_{C}}(B_{1})$ signed by itself on the data-item $B_{1}$ as shown below:
 \begin{equation}	
 	\begin{array}{l}
 		B_{1} =\ <B_{id}, 2, B_{1value}, H(N||2||B_{1value}||A_{0}||B_{0})>;\  \textcolor{red}{\textsf{Sign}_{S_{C}}(B_{1})}\\
@@ -154,7 +164,43 @@ Instead of that the sensor node $C$ can verify the $\textsf{Sign}_{S_{B}}(B_{1})
 \end{equation}
 We call these two approaches \textbf{Forwarding signatures without resigning the data-items}, \textbf{Forwarding signatures with resigning the data-items} 
 respectively.
-The various aspects of both the approaches are discussed in the following sections.
+
+To give an analogy with the real world application consider the following example.
+One want to buy a diamond from the local diamond retailer.
+Diamond is an expensive commodity so the end customer wants to verify its authenticity and integrity before purchasing.
+Suppose, the diamond was created by the manufacturer in Africa, it was sold to a national wholesaler in the United States. 
+The national wholesaler sells it to the state level reseller and he sells it to the city or county level retailer from whom the customer purchases the commodity.
+
+One approach to verify the authenticity of the commodity is to make each entity in the supply chain to verify all the signatures on the received entity and sign on top of it.
+And then forward the commodity with all the signatures to the next entity in the supply chain.
+The next entity repeats the same procedure.
+Hence, any entity in the supply chain need to verify the signatures of all its descendants in the supply chain.
+In our example, it means to make the manufacturer from Africa signs the diamond and sells the signed diamond with his certificate.
+The national level wholesaler in United States verifies the signature from the manufacturer using manufacturer's certificate.
+Then he adds his signature and certificate, and sells to the state level reseller the diamond signed with two signatures and two certificates.
+The state level reseller verifies both the signatures on the diamond using the certificates.
+Then he adds his signature and certificate, and sells to the city level retailer the diamond singed with three signatures and three certificates. 
+The city level retailer does the same thing before selling the diamond to the end customer.
+In the end, the customer needs to verify all four signatures, using the received certificates.
+
+% Note: that the same diamond now has been signed by four different entities. And the end customer need to know the certificate of all four parties to verify all those signatures.
+
+An alternative approach to verify the authenticity of the commodity is to make each entity in the supply chain verify the signature, throw away the old signature, and then add its own signature on it. 
+It means the next entity in the supply chain need to verify only a single signature.
+The next entity repeats the same procedure.
+Hence, any entity in the supply chain need to verify the signature of only its direct peer in the supply chain. 
+In our example, it means to make the manufacturer from Africa signs the diamond and sells the signed diamond with his certificate.
+The national level wholesaler in United States verifies the signature from the manufacturer using the manufacturer's certificate.
+Then he removes the signature of the manufacturer, adds his own signature and certificate, and sells to the state level reseller the diamond signed with one signature and one certificate.
+The state level reseller verifies only the signature from the wholesaler using the wholesaler's certificate.
+Then he removes the signature of the wholesaler, adds his own signature and certificate, and sells to the city level retailer the diamond signed with one signature and one certificate.
+The city level retailer does the same thing before selling the diamond to the end customer.
+In the end, the customer needs to verify only one signature of the city level retailer using retailer's certificate.
+This approach requires very few number of certificates overall in the supply chain.
+
+Both theapproaches have their pros and cons and the perfect approach depends heavily on the application.
+The various aspects of both the approaches for sensor nodes are discussed in the following sections.
+
 	\section{\textcolor{red}{Forwarding signatures with resigning the data-items}}
 		If we throw away the old signatures and resign the data-item with current aggregate node then following is true:
 			\begin{itemize}
