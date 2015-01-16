@@ -1,5 +1,5 @@
-\chapter{Aggregate Commit with Verification} % (fold)
-\label{cha:A Protocol for Commitment Tree Generation}
+\chapter{Data Aggregation With Internal Verification} % (fold)
+\label{cha:Data Aggregation With Internal Verification}
 	The most significant design aspect of the sensor network is the \textbf{lifetime of the network}.
 	The sensor network tend to have limited life span as they are powered by the battery.
 	The lifetime of the sensor network is inversely proportional to the sensor nodes' power consumption.
@@ -46,7 +46,7 @@
 	Login credentials and Locks are two analogues mechanism of access control.
 
 	As you can see, expectations from secure networking protocol are far-reaching.
-	It is very ambitious for any system to have all the above mentioned security properties at the same time. 
+	It is very ambitious for any system to have all the above mentioned security properties at the same time.
 	For some applications, some of the security properties are not required as well.
 	
 	% For example, when a user downloads a song from the Apple store, privacy is not a big concern in the sense that
@@ -87,6 +87,11 @@
 	Hence, we think detecting a malicious node who is responsible for the malicious activity is equally important.
 	If we can track down the malicious node in the network then we can remove that node from the network for all future queries.
 	And make sure that all the future queries are not manipulated by any malicious node in the network.
+	
+	If we have to achieve all the security properties we can make each sensor node signs its sensor data and then send its data with its signature to its parent.
+	And the network forwards all the data with their signatures to the base station.
+	The base station verifies all the signatures and then calculates the aggregate function.
+	Clearly, this approach is not practical as it requires $n$ signatures to traverse through the link between the base station and the root of the node of the network; where $n$ is the number of nodes in the network.
 
 	We want to design a secure aggregation protocol which can be applied to any hierarchical sensor network which can \textbf{detect the malicious activity} (in terms of data aggregation) and can \textbf{detect the adversary} causing the malicious activity in the network.  
 	As we saw in the previous chapter SHIA can detect the malicious activity in the network with only sub-linear edge congestion.
