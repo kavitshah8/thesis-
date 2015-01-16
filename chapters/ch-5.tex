@@ -47,15 +47,17 @@
 
 	As you can see, expectations from secure networking protocol are far-reaching.
 	It is very ambitious for any system to have all the above mentioned security properties at the same time.
-	For some applications, some of the security properties are not required as well.
-	For instance, in a physical world when a person writes a letter in its own handwriting, he puts his own signature on the letter. 
-	When that letter reaches to the other end the receiving party can verify the integrity of the message.
-	In this example, integrity is important but confidentiality is not. Because a postal service can read the letter if its not enclosed inside the cover.
-	The similar is true in the world of Internet.
-	When a client downloads a file from the File Server using Internet.
-	A client can verify the integrity of the File using the checksum but client does not care about if somebody on the network sniffed his downloading activity. 
-	So, these are the two applications where integrity is important but confidentiality is not.
-	
+	In reality all the security properties are not always required.
+	For an instance, when a client downloads a file from the File server using Internet.
+	A client can verify the integrity of the File using the checksum.
+	But it is okay if somebody on the network sniffed the downloading activity as far as it did not change the content of the File.
+	In this application, a client requires the integrity of the File but the privacy of the client, the File server and the Internet service provider are not required.
+	To give an analogy with a physical world application, when a person writes a letter in its own handwriting, he puts his own signature on the letter. 
+	When that letter reaches to the other end the receiving party can verify the integrity of the message from the handwriting and the signature of the person.
+	The postal service knows the sender and the receiver of the letter.
+	It can even read the letter if its not in the closed envelop.
+	Again, here integrity is important not the confidentiality.
+
 	It is critical to find out which security properties are desired for the particular application.
 	In practice, protocol designer finds out the most important security properties for the applications before designing the protocol.
 
