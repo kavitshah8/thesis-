@@ -48,12 +48,13 @@
 	As you can see, expectations from secure networking protocol are far-reaching.
 	It is very ambitious for any system to have all the above mentioned security properties at the same time.
 	For some applications, some of the security properties are not required as well.
-	
-	% For example, when a user downloads a song from the Apple store, privacy is not a big concern in the sense that
-
-	% in the sensor networks privacy is not the primary security property one want to achieve. 
-	
-	Exmaple
+	For instance, in a physical world when a person writes a letter in its own handwriting, he puts his own signature on the letter. 
+	When that letter reaches to the other end the receiving party can verify the integrity of the message.
+	In this example, integrity is important but confidentiality is not. Because a postal service can read the letter if its not enclosed inside the cover.
+	The similar is true in the world of Internet.
+	When a client downloads a file from the File Server using Internet.
+	A client can verify the integrity of the File using the checksum but client does not care about if somebody on the network sniffed his downloading activity. 
+	So, these are the two applications where integrity is important but confidentiality is not.
 	
 	It is critical to find out which security properties are desired for the particular application.
 	In practice, protocol designer finds out the most important security properties for the applications before designing the protocol.
@@ -226,13 +227,15 @@
 				C_{0} =\ <C_{id}, 1, C_{value}, H(N||1||C_{value})>;\ \textsf{Sign}_{S_{C}}(C_{0})\\
 				\textcolor{red}{\textsf{Sign}_{S_{C}}(C_{0}||B_{1})}
 			\end{array}
+			\label{eq:forwarding-payload-without-resigning}
 		\end{equation}
 	Signature on the $C$'s payload $\textsf{Sign}_{S_{C}}(C_{0}||B_{1})$ assures that the sensor node $C$ sent only two data-items $C_{0},B_{1}$ in its payload.
-	This example showcases another important aspect of the protocol.
-	It shows two different ways of creating a commitment tree.
-	The sensor node $C$ has two data-items $C_{0},B_{1}$ in its payload. 
+\section{Forwarding the Commitment Payload}	
+	% This example showcases another important aspect of the protocol.
+	% It shows two different ways of creating a commitment tree.
+	The sensor node $C$ has two data-items $C_{0},B_{1}$ in its payload as shown in Equation \ref{eq:forwarding-payload-without-resigning}. 
 	It sends the $\textsf{Sign}_{S_{B}}(B_{1})$, $\textsf{Sign}_{S_{C}}(C_{0}) $ and $\textsf{Sign}_{S_{C}}(C_{0}||B_{1})$ to its parent node $D$.
-	It requires the parent node $D$ to know the public key, hence the certificates of the sensor nodes $C$ and $D$.
+	It requires the parent node $D$ to know the public key of the sensor nodes $C$ and $D$, hence their certificates.
 	Instead of that the sensor node $C$ can verify the $\textsf{Sign}_{S_{B}}(B_{1})$ then remove the old signature and create new signature $\textsf{Sign}_{S_{C}}(B_{1})$ signed by itself on the data-item $B_{1}$ as shown below:
 \begin{equation}	
 	\begin{array}{l}
@@ -240,9 +243,9 @@
 		C_{0} =\ <C_{id}, 1, C_{value}, H(N||1||C_{value})>;\ \textsf{Sign}_{S_{C}}(C_{0})\\
 		\textsf{Sign}_{S_{C}}(C_{0}||B_{1})
 	\end{array}
+	\label{eq:forwarding-payload-with-resigning}
 \end{equation}
-We call these two approaches \textbf{Forwarding signatures without resigning the data-items}, \textbf{Forwarding signatures with resigning the data-items} 
-respectively.
+We call these two approaches \textbf{Forwarding signatures without resigning the data-items}, \textbf{Forwarding signatures with resigning the data-items} as shown in Equations \ref{eq:forwarding-payload-without-resigning} and \ref{eq:forwarding-payload-with-resigning} respectively .
 
 To give an analogy with the real world application consider the following example.
 One want to buy a diamond from the local diamond retailer.
