@@ -46,20 +46,55 @@
 	Login credentials and Locks are two analogues mechanism of access control.
 
 	As you can see, expectations from secure networking protocol are far-reaching.
-
-	Write about how SIA solves some of these.
-
-	Write about how SHIA solves some of these.
-
-	Write about why detecting malicious activity and detecting an adversary is an important aspect.
+	It is very ambitious for any system to have all the above mentioned security properties at the same time. 
+	For some applications, some of the security properties are not required as well.
 	
+	% For example, when a user downloads a song from the Apple store, privacy is not a big concern in the sense that
+
+	% in the sensor networks privacy is not the primary security property one want to achieve. 
+	
+	Exmaple
+	
+	It is critical to find out which security properties are desired for the particular application.
+	In practice, protocol designer finds out the most important security properties for the applications before designing the protocol.
+
+	For example, Wagner's work \cite{wagner2004resilient} describes the attacks on standard schemes for data aggregation and introduces the problem of securing aggregation in the presence of malicious or spoofed data.
+	He proposes a mathematical theory of security for aggregation.
+	The theory quantifies, in a principled way, the robustness of an aggregation operator against malicious data.
+	It draws novel connections to statistical estimation theory and to the field of robust statistics.
+	He identifies techniques for aggregation that provide robustness against attack. 
+	It provides helpful guidance to sensor network implementors or designers in selecting appropriate aggregate functions.
+
+	Secure Information Aggregation (SIA) \cite{przydatek2003sia}  address the problem of how to enable secure information aggregation, such that the user accepts the data with high probability if the aggregated result is within a desired bound, but that the user detects cheating with high probability and rejects the result if it is outside of the bound.
+	SIA provides statistical security under the assumption of a single-aggregator model.
+	In the single-aggregator model, sensor nodes send their data to a single
+	aggregator node, which computes the aggregate and sends it to the
+	base station.
+	This form of aggregation reduces communications only on the link between the aggregator and the base station, and is not scalable to large multihop sensor deployments.
+	SIA provides the probabilistic data-integrity under strong network assumptions.
+
+	Secure Hierarchical In-network Aggregation (SHIA) \cite{chan2006secure}, in many ways enhances Secure Information Aggregation (SIA).
+	SHIA presents the provably secure sensor network data aggregation protocol for general networks and multiple adversarial nodes, in compare to SIA which provides probabilistic security for a single aggregate network topology.
+	SHIA limits the adversary’s ability to manipulate the aggregation result with the tightest bound possible, with no knowledge of the distribution of sensor data values.
+	SHIA provides data-integrity for any hierarchical sensor networks because of that it can detect malicious activity in the network.
+
+	Data-integrity is an essential security primitive for the data aggregation algorithm.
+	Failing to provide data-integrity to an aggregate algorithm can change the final results drastically as shown in section XXX.
+	We think detecting a malicious activity without tracing down the malicious node responsible for it of no value.
+	To give an analogy with the physical world, it is like you know there is a crime and you can not do anything about it.
+	Because that malicious node will continue doing malicious activity in the future, which first of all makes our integrated data garbage. 
+	And network has to redo the all the work to create response for the query from the base station, which consumes lot of bandwidth. 
+	Hence, we think detecting a malicious node who is responsible for the malicious activity is equally important.
+	If we can track down the malicious node in the network then we can remove that node from the network for all future queries.
+	And make sure that all the future queries are not manipulated by any malicious node in the network.
+
 	We want to design a secure aggregation protocol which can be applied to any hierarchical sensor network which can \textbf{detect the malicious activity} (in terms of data aggregation) and can \textbf{detect the adversary} causing the malicious activity in the network.  
 	As we saw in the previous chapter SHIA can detect the malicious activity in the network with only sub-linear edge congestion.
 	So, we built our work on top of SHIA which can detect an adversary.
 
 	To detect an adversary (or prove someone guilty), we need proof that the adversary is responsible for the malicious activity.	 
 	To achieve our goal, we think the Digital signature is the perfect cryptographic tool.
-	Consider the following example showing the analogy with the signature scheme used in practice by the postal services.
+	Consider the following example showing the analogy with the signature scheme in the physical world, used by the postal services.
 	When a postman delivers the package, the receiving party has to sign the document informing that he verified and received the package.
 	As only the receiving party can create his signature, in the future he can not claim of not receiving the package or receiving the damaged or incorrect package. 
 	And if he claims such, the postal company has the
