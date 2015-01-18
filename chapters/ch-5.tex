@@ -1,7 +1,7 @@
-\chapter{Data Aggregation With Internal Verification} % (fold)
+\chapter{Data Aggregatiit With Internal Verification} % (folit
 \label{cha:Data Aggregation With Internal Verification}
 	
-	This chapter describes the rational behind the design specifications for secure aggregation protocol for sensor networks, mechanism used to achieve it and implementation details.
+	This chapter describes the rational behind the design specifications of secure aggregation protocol for sensor networks, mechanism used to achieve it and implementation details.
 	Then we elaborate the nitty-gritty of the commitment tree generation process with internal verification.
 
 	\section{System Design}
@@ -10,51 +10,119 @@
 	The sensor network tend to have limited life span as they are powered by the battery.
 	The lifetime of the sensor network is inversely proportional to the sensor nodes' power consumption.
 	One of the most dominating factor for the power consumption is transmitting and receiving the data between sensor nodes, making network bandwidth an expensive resource.
-	The bandwidth is more expensive resource than the local data computation, as data computation consumes less power than transmitting or receiving the data.
-	The obvious solution to increase the lifespan of the sensor network is to decrease the bandwidth usage in the network.  	
-	Data aggregation techniques can reduce the bandwidth usage in the network. 
-	It can greatly increase the lifespan of the network.
+	The bandwidth is more expensive resource than the local data computation, as trans-receiving activity consumes more power than computation.
+	The obvious solution to increase the lifespan of the sensor network is to decrease the bandwidth usage in the network.
+	As we know, data aggregation techniques can greatly reduce the bandwidth usage in the network, increasing the lifespan of the network.
 	Hence, data-aggregation techniques are one of the key tool in our tool box while designing protocol for the sensor networks.
 
 	The second most significant factor in the design of the data aggregation protocol is \textit{Security Architecture }.
-	The International Telecommunications Union (ITU) Telecommunication Standardization Sector (ITU-T) Recommendation X.800, \textit{Security Architect for Open systems interconnection(OSI)} provides a systematic approach for it.
+	The International Telecommunications Union (ITU) Telecommunication Standardization Sector (ITU-T) Recommendation X.800, \textit{Security Architect for Open systems interconnection} (OSI) provides a systematic approach for it \cite{stallings2008computer}.
+	Tit OSI security architecture focuses on security attacks, mechanism and services defined as follows:\\
+	\textbf{Security attack} is any action that compromises the security of information owned by an organization or entity.\\
+	\textbf{Security mechanism} is a mechanism that is designed to detect, prevent, or recover from a security attack.\\
+	\textbf{Security service} is a service that enhances the security of the data processing systems and the information transfers of an organization.
+	The services are intended to counter security attacks, by using one or more security mechanisms.
 
-	In the perfect world, one desires the following security properties from the secure networking protocol.\\*
-	
-	Make sentences
+	\textbf{Security attacks} can be classified as \textit{passive attacks} and \textit{active attacks}.\\
+	\textit{Passive attacks} attempts to learn or make use of information from the system but does not affect the system resources.
+	They are in the nature of eavesdropping on, or monitoring of, transmissions.
+	Two types of passive attacks are \textit{release of message contents} and \textit{traffic analysis}.\\
+	The \textit{release of message contents} is well understood. 
+	A telephone conversation, an electronic mail, and a transferred file may contain sensitive or confidential information.
+	We would like to prevent an opponent from learning the contents of these transmissions.\\
+	The \textit{traffic analysis} is subtler. 
+	Suppose that we had a way of masking the message so that even if the  opponents captured the message, could not extract it.
+	The common mechanism for masking the message is encryption.
+	If we had encryption protection in place, an opponent might still be able to observe the pattern of these message communication.
+	The opponent could determine the location and identity of communicating hosts and could observe the frequency and length of message being exchanged.
+	These patterns might be useful in guessing the nature of the communication that was taking place.\\
+	\textit{Passive attacks} are difficult to detect as they do not involve any alteration of the message.
+	Typically, the message traffic is sent and received in an apparently normal way and neither the sender nor receiver is aware that a third party has sniffed the message or observed the traffic pattern.
+	However, it is feasible to prevent the success of these attacks, usually by means of encryption. 
+	Thus, the emphasis on dealing with passive attacks is on prevention rather that detection.\\
+	\textit{Active attacks} involve some modification of the data stream or the creating of a false stream and can be subdivided into four categories: \textit{replay, masquerade, modification of messages, and denial of service}.\\ 
+	\textit{Replay} involves the passive capture of a data unit and its subsequent retransmission to produce an unauthorized effect.\\
+	A \textit{masquerade} takes place when one entity pretends to be a different entity.
+	For example, authentication sequence can be captured and replayed after a valid authentication sequence has taken place, thus enabling an authorized entity with few privileges to obtain extra privileges by impersonating an entity that has those privileges.\\
+	\textit{Modification of message} means that some portion of a legitimate message is altered or that the messages are delayed or reordered, to produce an unauthorized effect.
+	For example, a message stating ``Allow Brian King to read confidential file accounts.'' is modified to say ``Allow Danny King to read confidential file accounts.''\\
+	The \textit{denial of service} inhibits the normal use of communication facilities.
+	For example, an entity may suppress all messages directed to a particular destination.
+	Another form of service denial is the disruption of an entire network, either by disabling the network or by overloading it with messages so as to degrade performances.\\
+	\textit{Active attacks} present the opposite characteristics of passive attacks.
+	Whereas passive attacks are difficult to detect, measures are available to prevent their success.
+	On the other hand, it is quite difficult to prevent active attacks absolutely, because to do so would require physical protection of all communication facilities and paths at all times.
+	Instead, the goal is to detect them and to recover from any disruption or delays caused by them.
+	Because the detection has a deterrent effect, it may also contribute to prevention.
 
-	\textbf{Confidentiality} - ensures that information is accessed only by authorized parties.
-	% That is, only those who should have access to something will actually get that access. By access, we mean not only reading but also viewing, printing, or simply knowing that a particular asset exists. 
+	\textbf{Security services} are divided into six categories:
+	\textit{Authentication, Access Control, Data Confidentiality, Data Integrity, Non-repudiation, Availability}.\\
+	\textit{Authentication} service assures that a communication is authenticate.
+	Two types of authentication services are described in the standard \textit{peer entity authentication} and \textit{data origin authentication}.
+	The \textit{peer entity authentication} provides for the corroboration of the identity of a peer entity in an association.
+	Two entities are considered as peer if they implement the same protocol in different systems (e.g., two TCP users in two communicating systems).
+	Peer entity authentication is used at the establishment of, or at times during the data transfer phase of, a connection.
+	It attempts to provide confidence that an entity is not performing either a masquerade or an unauthorized replay of a previous connection.
+	\textit{Data origin authentication} provides the corroboration of the source of a data unit. 
+	It does not provide protection against the duplication or modification of data units.
+	This type of service supports applications like electronic mail where there are no prior interactions between the communicating entities.\\
+	\textit{Data Confidentiality} ensures the protection of transmitted data from passive attacks.
 	It is also known as secrecy or privacy.
+	For example, student grade information is an asset whose confidentiality is considered to be highly important by students.
+	In the United States, the release of such information is regulated by the Family Educational Rights and Privacy Act (FERPA).
+	Grade information should only be available to students, their parents, and employees that require the information to do their job.
+	The other aspect of confidentiality is the protection of traffic flow from analysis.
+	This requires that an attacker not be able to observe the source and destination, frequency, length, or other characteristics of the traffic on a communications facility.
 	Ensuring confidentiality can be difficult.
 	For example, who determines which parties are authorized to access the information?
 	By ``accessing'' information, do we mean that an authorized party can access a single bit? the whole collection? pieces of information out of context?
-	Can someone who is authorized disclose that information to other parties?\cite{pfleeger2002security}
-	\\*
-	\textbf{Integrity} - assures that the only authorized entities can modify the information; where modification means writing, creating, deleting and changing the information. 
-	If one say one have preserved an integrity of the information one may mean different things depending on the context.
-	It can mean the following, one has preserved the information is precise, unmodified, modified only in acceptable ways by authorized parties or process.
-	Error detection and correction are two important aspects of information integrity \cite{pfleeger2002security}.
-	One important application of an integrity is when a user downloads any information from the web, the user wants to be assured that the information has not been altered in any way by the networking errors, by active attackers on the Internet or any other third party application.\\*
-	\textbf{Availability} - means that information is accessible to authorized parties at appropriate times.
+	Can someone who is authorized disclose that information to other parties?\cite{pfleeger2002security}\\
+	\textit{Data Integrity} assures that the only authorized entities can modify the information; where modification means writing, creating, deleting and changing the information.
+	A hospital patient's allergy information stored in a database illustrates the several aspects of the data integrity.
+	The doctor should be able to trust that the information is correct and current.
+	Now suppose a nurse who is authorized to update to view and update the information deliberately falsifies the data to cause harm to the hospital.
+	The database needs to be restored to a trusted basis quickly, and it should be possible to trace the error back to the person responsible.
+	Patient allergy information is an example of an asset with a high requirement for integrity. 
+	Inaccurate information could result in serious harm or death to a patient and expose the hospital to massive liability.
+	Because the integrity service relates to active attacks, we are concerned with detection rather than prevention.
+	If a violation of integrity is detected, then the service may simply report this violation, and some other portion of software or human intervention is required to recover from the violation.
+	Alternatively, there are mechanisms available to recover from the loss of integrity of data, as we will review subsequently. The incorporation of automated recovery mechanisms is, in general, the more attractive alternative.\\
+	\textit{Availability} means that the information of a system being accessible and usable by an an authorized parties according to performance specification at appropriate times.
 	In other words, if some person or system has legitimate access to a particular set of objects, that access should not be prevented.
 	Availability applies to the information and services.
 	For example, information or service is available can mean the following. 
-	It is present in the usable form.
-	It has the enough capacity to meet the service need.
+	It is present in the usable form, having the enough capacity to meet the service need.
 	If it is in wait mode, it is making enough progress, and it has a bounded waiting time, meaning there is timely response to our requests.
-	Resources are allocated fairly so that some requests are not favored over the others. The service can be used easily and in its intended way.
-	For this reason, availability is sometimes known by its opposite, denial of service \cite{pfleeger2002security}.
-	\\*
-	\textbf{Authentication} - assures the origin of the information.
-	There are two types of authentication that rises in cryptography: entity authentication and data-origin authentication \cite{trappe2006introduction}.
-	The entity authentication is also known as identification which is concerned with proving the identity of the parties involved in a communication.
-	Data-origin authentication focuses on tying the information about the origin of the data, such as the creator and time of creation, with the data.\\*
-	\textbf{Non repudiation} - requires neither the sender nor the receiver can deny the transmission.
-	This is very important in electronic commerce applications. where it is important that a consumer cannot deny the authorization of a purchase.
-	\\*
-	\textbf{Access Control} - restricts an access to the information.
+	Resources are allocated fairly so that some requests are not favored over the others.
+	The service can be used easily and in its intended way.
+	Availability addresses the concern raised by the denial of service attacks.
+	It depends on proper management and control of system resources and thus depends on access control service and other security services.\\
+	\textit{Non repudiation} service requires neither the sender nor the receiver can deny the transmission.
+	Thus, when a message is sent, the receiver can prove that the alleged sender in fact sent the message.
+	Similarly, when a message is received, the sender can prove that the alleged receiver in fact received the message.
+	This is very important in electronic commerce applications, where it is important that a consumer cannot deny the authorization of a purchase.\\
+	\textit{Access Control} is the ability to restrict and control the access to host systems and applications via communications links.
+	To achieve this, each entity trying to gain access must first be identified, or
+	authenticated, so that access rights can be tailored to the individual.
 	Login credentials and Locks are two analogues mechanism of access control.
+
+	\textit{Security Mechanisms}
+			Principle of Open Design \cite{bishop2004introduction}
+		\begin{definition}
+			The principle of open design states that the security of a mechanism should not depend on the secrecy of its design or implementation.
+			\label{def:open-design}
+		\end{definition}
+		Designers and implementers of a program must not depend on secrecy of the details of their design and implementation to ensure security.
+		Others can ferret out such details either through technical means, such as disassembly and analysis, or through nontechnical means, such as searching through garbage receptacles for source code listings (called ``dumpster-diving'').
+		If the strength of the program's security depends on the ignorance of the user, a knowledgeable user can defeat that security mechanism.
+		The term ``security through obscurity'' captures this concept exactly.
+		This is true of cryptographic software and systems.
+		Because cryptography is a highly mathematical subject, and companies who sell these softwares want to keep their algorithms secret. 
+		Issues of proprietary software and trade secrets complicate the application of this principle.
+		In some cases, companies may not want their designs made public, lest their competitors use them.
+		The principle then requires that the design and implementation be available to people barred from disclosing tit outside the company.
+		Keeping cryptographic keys and passwords does not violate this principle, because a key is not an algorithm.
+		However, keeping the enciphering and deciphering algorithms secret would violate it.
 
 	As you can see, expectations from secure networking protocol are far-reaching.
 	It is very ambitious for any system to have all the above mentioned security properties at the same time.
@@ -165,24 +233,7 @@
 
 	Digital signatures
 
-		Principle of Open Design \cite{bishop2004introduction}
-		\begin{definition}
-			The principle of open design states that the security of a mechanism should not depend on the secrecy of its design or implementation.
-			\label{def:open-design}
-		\end{definition}
-		Designers and implementers of a program must not depend on secrecy of the details of their design and implementation to ensure security.
-		Others can ferret out such details either through technical means, such as disassembly and analysis, or through nontechnical means, such as searching through garbage receptacles for source code listings (called ``dumpster-diving'').
-		If the strength of the program's security depends on the ignorance of the user, a knowledgeable user can defeat that security mechanism.
-		The term ``security through obscurity'' captures this concept exactly.
 
-		This is true of cryptographic software and systems.
-		Because cryptography is a highly mathematical subject, and companies who sell these softwares want to keep their algorithms secret. 
-		Issues of proprietary software and trade secrets complicate the application of this principle.
-		In some cases, companies may not want their designs made public, lest their competitors use them.
-		The principle then requires that the design and implementation be available to people barred from disclosing tit outside the company.
-
-		Keeping cryptographic keys and passwords does not violate this principle, because a key is not an algorithm.
-		However, keeping the enciphering and deciphering algorithms secret would violate it.
 
 \section{System Design Implementations}
 	The high level idea of the aggregate commit with verification scheme is that all the nodes in the network send the signature of the message along with the message itself. 
