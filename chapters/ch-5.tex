@@ -1,32 +1,12 @@
 \chapter{Data Aggregation With Internal Verification} % (fold)
 \label{cha:Data Aggregation With Internal Verification}
+	
+	This chapter describes the rational behind the design specifications for secure aggregation protocol for sensor networks, mechanism used to achieve it and implementation details.
+	Then we elaborate the nitty-gritty of the commitment tree generation process with internal verification.
+
 	\section{System Design}
-	\section{System Design Specifications}
-	\section{System Design Mechanisms}
-		Principle of Open Design \cite{bishop2004introduction}
-		\begin{definition}
-			The principle of open design states that the security of a mechanism should not depend on the secrecy of its design or implementation.
-			\label{def:open-design}
-		\end{definition}
-		Designers and implementers of a program must not depend on secrecy of the details of their design and implementation to ensure security.
-		Others can ferret out such details either through technical means, such as disassembly and analysis, or through nontechnical means, such as searching through garbage receptacles for source code listings (called ``dumpster-diving'').
-		If the strength of the program's security depends on the ignorance of the user, a knowledgeable user can defeat that security mechanism.
-		The term ``security through obscurity'' captures this concept exactly.
 
-		This is true of cryptographic software and systems.
-		Because cryptography is a highly mathematical subject, and companies who sell these softwares want to keep their algorithms secret. 
-		Issues of proprietary software and trade secrets complicate the application of this principle.
-		In some cases, companies may not want their designs made public, lest their competitors use them.
-		The principle then requires that the design and implementation be available to people barred from disclosing tit outside the company.
-
-		Keeping cryptographic keys and passwords does not violate this principle, because a key is not an algorithm.
-		However, keeping the enciphering and deciphering algorithms secret would violate it.
-
-
-
-	\section{System Design Implementations}
-
-	The most significant design aspect of the sensor network is the \textbf{lifetime of the network}.
+	The most significant design aspect of the sensor network is the \textit{Lifetime of the Network}.
 	The sensor network tend to have limited life span as they are powered by the battery.
 	The lifetime of the sensor network is inversely proportional to the sensor nodes' power consumption.
 	One of the most dominating factor for the power consumption is transmitting and receiving the data between sensor nodes, making network bandwidth an expensive resource.
@@ -36,7 +16,9 @@
 	It can greatly increase the lifespan of the network.
 	Hence, data-aggregation techniques are one of the key tool in our tool box while designing protocol for the sensor networks.
 
-	The second most significant factor in the design of the data aggregation protocol is \textbf{security}. 
+	The second most significant factor in the design of the data aggregation protocol is \textit{Security Architecture }.
+	The International Telecommunications Union (ITU) Telecommunication Standardization Sector (ITU-T) Recommendation X.800, \textit{Security Architect for Open systems interconnection(OSI)} provides a systematic approach for it.
+
 	In the perfect world, one desires the following security properties from the secure networking protocol.\\*
 	
 	Make sentences
@@ -146,6 +128,8 @@
 	% Like we wanted to detect an adversary in the network with least amount of overhead in terms of BW and computation.
 	% We wanted to achieve that with as realistic as possible. 
 
+\section{System Design Specifications}
+
 \section{Design Goals}
 	Lifetime of the network
 
@@ -176,6 +160,31 @@
 	Ideally, we want $k=0$, in the case of SHIA and our protocol $k=2$, which will be explained in the later chapter.
 	% which is built on top of commitment tree generation of SHIA mentioned in the previous chapter.
 
+\section{System Design Mechanisms}
+	Hash
+
+	Digital signatures
+
+		Principle of Open Design \cite{bishop2004introduction}
+		\begin{definition}
+			The principle of open design states that the security of a mechanism should not depend on the secrecy of its design or implementation.
+			\label{def:open-design}
+		\end{definition}
+		Designers and implementers of a program must not depend on secrecy of the details of their design and implementation to ensure security.
+		Others can ferret out such details either through technical means, such as disassembly and analysis, or through nontechnical means, such as searching through garbage receptacles for source code listings (called ``dumpster-diving'').
+		If the strength of the program's security depends on the ignorance of the user, a knowledgeable user can defeat that security mechanism.
+		The term ``security through obscurity'' captures this concept exactly.
+
+		This is true of cryptographic software and systems.
+		Because cryptography is a highly mathematical subject, and companies who sell these softwares want to keep their algorithms secret. 
+		Issues of proprietary software and trade secrets complicate the application of this principle.
+		In some cases, companies may not want their designs made public, lest their competitors use them.
+		The principle then requires that the design and implementation be available to people barred from disclosing tit outside the company.
+
+		Keeping cryptographic keys and passwords does not violate this principle, because a key is not an algorithm.
+		However, keeping the enciphering and deciphering algorithms secret would violate it.
+
+\section{System Design Implementations}
 	The high level idea of the aggregate commit with verification scheme is that all the nodes in the network send the signature of the message along with the message itself. 
 	It sends its certificate if the parent node does not have it already.
 	The parent node verifies all the received signatures from its children.
