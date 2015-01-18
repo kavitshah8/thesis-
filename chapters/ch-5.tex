@@ -1,5 +1,31 @@
 \chapter{Data Aggregation With Internal Verification} % (fold)
 \label{cha:Data Aggregation With Internal Verification}
+	\section{System Design}
+	\section{System Design Specifications}
+	\section{System Design Mechanisms}
+		Principle of Open Design \cite{bishop2004introduction}
+		\begin{definition}
+			The principle of open design states that the security of a mechanism should not depend on the secrecy of its design or implementation.
+			\label{def:open-design}
+		\end{definition}
+		Designers and implementers of a program must not depend on secrecy of the details of their design and implementation to ensure security.
+		Others can ferret out such details either through technical means, such as disassembly and analysis, or through nontechnical means, such as searching through garbage receptacles for source code listings (called ``dumpster-diving'').
+		If the strength of the program's security depends on the ignorance of the user, a knowledgeable user can defeat that security mechanism.
+		The term ``security through obscurity'' captures this concept exactly.
+
+		This is true of cryptographic software and systems.
+		Because cryptography is a highly mathematical subject, and companies who sell these softwares want to keep their algorithms secret. 
+		Issues of proprietary software and trade secrets complicate the application of this principle.
+		In some cases, companies may not want their designs made public, lest their competitors use them.
+		The principle then requires that the design and implementation be available to people barred from disclosing tit outside the company.
+
+		Keeping cryptographic keys and passwords does not violate this principle, because a key is not an algorithm.
+		However, keeping the enciphering and deciphering algorithms secret would violate it.
+
+
+
+	\section{System Design Implementations}
+
 	The most significant design aspect of the sensor network is the \textbf{lifetime of the network}.
 	The sensor network tend to have limited life span as they are powered by the battery.
 	The lifetime of the sensor network is inversely proportional to the sensor nodes' power consumption.
@@ -12,6 +38,9 @@
 
 	The second most significant factor in the design of the data aggregation protocol is \textbf{security}. 
 	In the perfect world, one desires the following security properties from the secure networking protocol.\\*
+	
+	Make sentences
+
 	\textbf{Confidentiality} - ensures that information is accessed only by authorized parties.
 	% That is, only those who should have access to something will actually get that access. By access, we mean not only reading but also viewing, printing, or simply knowing that a particular asset exists. 
 	It is also known as secrecy or privacy.
@@ -31,7 +60,7 @@
 	For example, information or service is available can mean the following. 
 	It is present in the usable form.
 	It has the enough capacity to meet the service need.
-	It is making enough progress, and, if it is in wait mode, it has a bounded waiting time. There is timely response to our requests.
+	If it is in wait mode, it is making enough progress, and it has a bounded waiting time, meaning there is timely response to our requests.
 	Resources are allocated fairly so that some requests are not favored over the others. The service can be used easily and in its intended way.
 	For this reason, availability is sometimes known by its opposite, denial of service \cite{pfleeger2002security}.
 	\\*
@@ -47,6 +76,11 @@
 
 	As you can see, expectations from secure networking protocol are far-reaching.
 	It is very ambitious for any system to have all the above mentioned security properties at the same time.
+	If we have to achieve all the security properties for sensor networks we can make each sensor node signs its reading data and then send data with its signature to its parent.
+	And the network forwards all the data with their respective signatures to the base station.
+	The base station verifies all the signatures and then calculates the aggregate function.
+	Clearly, this approach is not practical as it requires $n$ signatures to traverse through the link between the base station and the root node of the network; where $n$ is the number of nodes in the network.
+
 	In reality all the security properties are not always required.
 	For an instance, when a client downloads a file from the File server using Internet.
 	A client can verify the integrity of the File using the checksum.
@@ -57,8 +91,7 @@
 	The postal service knows the sender and the receiver of the letter.
 	It can even read the letter if its not in the closed envelop.
 	Again, here integrity is important not the confidentiality.
-
-	It is critical to find out which security properties are desired for the particular application.
+	It is crucial to find out which security properties are desired for the particular application.
 	In practice, protocol designer finds out the most important security properties for the applications before designing the protocol.
 
 	For example, Wagner's work \cite{wagner2004resilient} describes the attacks on standard schemes for data aggregation and introduces the problem of securing aggregation in the presence of malicious or spoofed data.
@@ -91,10 +124,6 @@
 	If we can track down the malicious node in the network then we can remove that node from the network for all future queries.
 	And make sure that all the future queries are not manipulated by any malicious node in the network.
 	
-	If we have to achieve all the security properties we can make each sensor node signs its sensor data and then send its data with its signature to its parent.
-	And the network forwards all the data with their signatures to the base station.
-	The base station verifies all the signatures and then calculates the aggregate function.
-	Clearly, this approach is not practical as it requires $n$ signatures to traverse through the link between the base station and the root of the node of the network; where $n$ is the number of nodes in the network.
 
 	We want to design a secure aggregation protocol which can be applied to any hierarchical sensor network which can \textbf{detect the malicious activity} (in terms of data aggregation) and can \textbf{detect the adversary} causing the malicious activity in the network.  
 	As we saw in the previous chapter SHIA can detect the malicious activity in the network with only sub-linear edge congestion.
@@ -117,7 +146,20 @@
 	% Like we wanted to detect an adversary in the network with least amount of overhead in terms of BW and computation.
 	% We wanted to achieve that with as realistic as possible. 
 
-\section{Design Goals}	
+\section{Design Goals}
+	Lifetime of the network
+
+	High confidence in the data accepted by the base station
+
+	For that we want integrity of the data
+
+	For that we want non-repudiation
+
+	If there is any malicious activity detect it
+
+	Locate an adversary
+
+
 	% In the previous chapter, we saw that SHIA limits the adversary's ability to manipulate the aggregation result with the tightest bound possible.
 	% But, SHIA uses truncated sum as an aggregate function which is resilient according to the Wagner \cite{wagner2004resilient}.
 	% It does not help accurately calculating the sum aggregate. 
@@ -232,6 +274,8 @@
 			\label{eq:forwarding-payload-without-resigning}
 		\end{equation}
 	Signature on the $C$'s payload $\textsf{Sign}_{S_{C}}(C_{0}||B_{1})$ assures that the sensor node $C$ sent only two data-items $C_{0},B_{1}$ in its payload.
+	And none of the data-items in its payload have been left stranded.
+
 \section{Forwarding the Commitment Payload}	
 	% This example showcases another important aspect of the protocol.
 	% It shows two different ways of creating a commitment tree.
