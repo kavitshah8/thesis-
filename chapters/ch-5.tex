@@ -106,8 +106,7 @@
 	authenticated, so that access rights can be tailored to the individual.
 	Login credentials and Locks are two analogues mechanism of access control.
 
-	\textit{Security Mechanisms}
-			Principle of Open Design \cite{bishop2004introduction}
+	\textit{Security Mechanisms} follows one of the most fundamental principle of Open Design \cite{bishop2004introduction} defined as follows:
 		\begin{definition}
 			The principle of open design states that the security of a mechanism should not depend on the secrecy of its design or implementation.
 			\label{def:open-design}
@@ -123,26 +122,36 @@
 		The principle then requires that the design and implementation be available to people barred from disclosing tit outside the company.
 		Keeping cryptographic keys and passwords does not violate this principle, because a key is not an algorithm.
 		However, keeping the enciphering and deciphering algorithms secret would violate it.
+		The following security mechanisms may be incorporated into the appropriate protocol layer in order to provide some of the OSI services.\\
+		\textit{Encryption} is the use of mathematical algorithms to transform data into a form that is not readily intelligible.
+		The transformation and subsequent recovery of the data depend on an algorithm and zero or more encryption.\\
+		\textit{Digital Signature} appends the data to a cryptographic transformation of data unit that allows a recipient of the data unit to prove the source and integrity of the data unit and protects against the forgery (e.g., by the recipient).\\
+		\textit{Traffic Padding} is the insertion of bits into gaps in a data stream to frustrate traffic analysis attempts.\\
+		\textit{Routing Control} enables selection of particular physically secure routes for certain data and allows routing changes, especially when a breach of security is suspected.\\
+		\textit{Notarization} is the use of a trusted third party to assure certain properties of a data exchange.\\
+		\textit{Authentication Exchange} is a mechanism intended to ensure the identity of an entity by means of information exchange.\\
+		\textit{Hash functions} provides one way functions to achieve irreversible encryption.
 
 	As you can see, expectations from secure networking protocol are far-reaching.
-	It is very ambitious for any system to have all the above mentioned security properties at the same time.
-	If we have to achieve all the security properties for sensor networks we can make each sensor node signs its reading data and then send data with its signature to its parent.
+	It is very ambitious for any system to have all the above mentioned security services at the same time.
+	If we have to achieve all the security services for sensor networks we can make each sensor node signs its reading data and then send data with its signature to its parent.
 	And the network forwards all the data with their respective signatures to the base station.
 	The base station verifies all the signatures and then calculates the aggregate function.
 	Clearly, this approach is not practical as it requires $n$ signatures to traverse through the link between the base station and the root node of the network; where $n$ is the number of nodes in the network.
+	Which makes that link the bottleneck link for the network. 
+	And if that link breaks we loose the entire network connectivity.
 
-	In reality all the security properties are not always required.
-	For an instance, when a client downloads a file from the File server using Internet.
-	A client can verify the integrity of the File using the checksum.
+	In reality all the security services are not always required.
+	For an instance, when a client downloads a file from the File server using Internet, he can verify the integrity of the File using the checksum.
 	But it is okay if somebody on the network sniffed the downloading activity as far as it did not change the content of the File.
 	In this application, a client requires the integrity of the File but the privacy of the client, the File server and the Internet service provider are not required.
-	To give an analogy with a physical world application, when a person writes a letter in its own handwriting, he puts his own signature on the letter. 
-	When that letter reaches to the other end the receiving party can verify the integrity of the message from the handwriting and the signature of the person.
-	The postal service knows the sender and the receiver of the letter.
-	It can even read the letter if its not in the closed envelop.
+	To give an analogy with a physical world application, when a person writes a postcard, he puts his own signature on the it. 
+	When that postcard delivers successfully by the postal service, the receiving party can verify the integrity of the message from the handwriting and the signature of the person.
+	The postal service knows the sender and the receiver of the postcard.
+	It can even read the postcard.
 	Again, here integrity is important not the confidentiality.
-	It is crucial to find out which security properties are desired for the particular application.
-	In practice, protocol designer finds out the most important security properties for the applications before designing the protocol.
+	It is crucial to find out which security services are desired for the particular application, so we can use the relevant security mechanisms to provide those services.
+	In practice, protocol designer finds out the most important security services for the applications before designing the protocol.
 
 	For example, Wagner's work \cite{wagner2004resilient} describes the attacks on standard schemes for data aggregation and introduces the problem of securing aggregation in the presence of malicious or spoofed data.
 	He proposes a mathematical theory of security for aggregation.
@@ -157,81 +166,98 @@
 	aggregator node, which computes the aggregate and sends it to the
 	base station.
 	This form of aggregation reduces communications only on the link between the aggregator and the base station, and is not scalable to large multihop sensor deployments.
-	SIA provides the probabilistic data-integrity under strong network assumptions.
+	SIA provides the probabilistic data-integrity service under strong network assumptions.
 
 	Secure Hierarchical In-network Aggregation (SHIA) \cite{chan2006secure}, in many ways enhances Secure Information Aggregation (SIA).
 	SHIA presents the provably secure sensor network data aggregation protocol for general networks and multiple adversarial nodes, in compare to SIA which provides probabilistic security for a single aggregate network topology.
 	SHIA limits the adversary’s ability to manipulate the aggregation result with the tightest bound possible, with no knowledge of the distribution of sensor data values.
-	SHIA provides data-integrity for any hierarchical sensor networks because of that it can detect malicious activity in the network.
+	SHIA provides data-integrity service for any hierarchical sensor networks because of that it can detect malicious activity in the network.
 
-	Data-integrity is an essential security primitive for the data aggregation algorithm.
-	Failing to provide data-integrity to an aggregate algorithm can change the final results drastically as shown in section XXX.
-	We think detecting a malicious activity without tracing down the malicious node responsible for it of no value.
-	To give an analogy with the physical world, it is like you know there is a crime and you can not do anything about it.
-	Because that malicious node will continue doing malicious activity in the future, which first of all makes our integrated data garbage. 
+	The third most significant aspect in the design of secure data aggregation protocol is \textit{Data Integrity}.
+	The protocol collects the data from the sensors and aggregates the reading on the way to the base station.
+	The base station takes an important decision based on the received value.
+	If the sensor network is deployed to measure the certain harmful chemical levels in the lab atmosphere and raise an alarm if the it increases above certain level.
+	And if the base station fails to raise an alarm because of the false aggregated data, can create catastrophic and lethal situation.
+	Hence, the data integrity is so important.
+
+	As we know, data integrity can be achieved with the error detection and error correction techniques.
+	The first step towards achieving the data integrity in the sensor network is to \textit{detect any malicious activity} in the network.
+	And the second step is the ability to \textit{locate the malicious node or an adversary} in the network.
+	We think detecting a malicious activity without tracing down the malicious node responsible for it, is of no value.
+	To give an analogy with the physical world, it is like you know there is a crime in the city and you do not do anything about it.
+	Locating the criminals responsible for the crime is mandatory to abolish the crime in the city.
+	In similar way, locating the malicious node and removing it from the network is an important security service. 
+	Failing to provide such a security service, allows an adversary to continue doing the malicious activity in the future, which makes aggregated sensor data garbage. 
 	And network has to redo the all the work to create response for the query from the base station, which consumes lot of bandwidth. 
+	An adversary can repeat this process until the network dies due to low battery power, creating a denial of service attack in the network.
 	Hence, we think detecting a malicious node who is responsible for the malicious activity is equally important.
 	If we can track down the malicious node in the network then we can remove that node from the network for all future queries.
 	And make sure that all the future queries are not manipulated by any malicious node in the network.
-	
-
-	We want to design a secure aggregation protocol which can be applied to any hierarchical sensor network which can \textbf{detect the malicious activity} (in terms of data aggregation) and can \textbf{detect the adversary} causing the malicious activity in the network.  
-	As we saw in the previous chapter SHIA can detect the malicious activity in the network with only sub-linear edge congestion.
-	So, we built our work on top of SHIA which can detect an adversary.
+	Hence, the fourth and fifth most significant design aspects of secure aggregation protocol are \textit{detect the malicious activity} (in terms of data aggregation) and can \textit{detect the adversary} in the network, respectively.
 
 	To detect an adversary (or prove someone guilty), we need proof that the adversary is responsible for the malicious activity.	 
-	To achieve our goal, we think the Digital signature is the perfect cryptographic tool.
+	% To achieve our goal, we think the Digital signature is the perfect cryptographic tool.
 	Consider the following example showing the analogy with the signature scheme in the physical world, used by the postal services.
 	When a postman delivers the package, the receiving party has to sign the document informing that he verified and received the package.
 	As only the receiving party can create his signature, in the future he can not claim of not receiving the package or receiving the damaged or incorrect package. 
-	And if he claims such, the postal company has the
-	signed document as the proof mentioning that the package was received successfully, by the receiving party.
+	And if he claims such, the postal company has the signed document as the proof mentioning that the package was received successfully, by the receiving party.
 	The signed document also ensures to the postal company that the postman did not misplace or steal the package.
-	The signature scheme used by the postal service promises authenticity (assures the origin of the message) and non repudiation (neither sender or receiver can deny the transmission).
-	With Digital signatures one can achieve \textbf{non-deniability  (non repudiation), authentication, integrity} (assures that only the authorized parties can modify the message) as described in Section \ref{sec:digital-signature}.
-	
+	The signature scheme used by the postal service promises 
+	% authenticity (assures the origin of the message) and 
+	non repudiation security service.
+	Hence, we require \textit{non-repudiation} security service in the sensor network.
+
+	% With Digital signatures one can achieve \textbf{non-deniability  (non repudiation), authentication, integrity} (assures that only the authorized parties can modify the message) as described in Section \ref{sec:digital-signature}.
+
+\section{System Design Specifications}
+	We want to design a secure aggregation protocol which maximizes the \textit{network lifetime}.
+	The protocol can be applied to \textit{any hierarchical sensor network}.
+	We want protocol to work on \textit{resilient} and \textit{non-resilient} aggregate functions without compromising any desired security properties.
+	We want protocol to be secure with \textit{a single} or \textit{multiple adversaries} in the network.
+	We want the protocol to protect against any \textit{active attacks}. 
+	If the aggregation result is accepted by the base station it should have very high confidence in the result, meaning that we want the highest level of \textit{data integrity} security service in the protocol.
+	We want the capabilities to \textit{detect any malicious activity}.
+	If there is any malicious activity in the network, we should be able to \textit{locate an adversary} responsible for it, in the network.
+	We want the \textit{non-repudiation} security service to be able to locate an adversary.
 	We want to achieve this with the least amount of overhead in terms of bandwidth and computation power in the network.
 	So, the protocol can be easily implemented in the real world sensor networks.
+
+	% As we saw in the previous chapter SHIA can detect the malicious activity in the network with only sub-linear edge congestion.
+	% So, we built our work on top of SHIA which can detect an adversary.
+
+
+	% For that we want non-repudiation
+
+	% If there is any malicious activity detect it
+
+	% Locate an adversary	
 	
 	% Like we wanted to detect an adversary in the network with least amount of overhead in terms of BW and computation.
 	% We wanted to achieve that with as realistic as possible. 
 
-\section{System Design Specifications}
 
-\section{Design Goals}
-	Lifetime of the network
-
-	High confidence in the data accepted by the base station
-
-	For that we want integrity of the data
-
-	For that we want non-repudiation
-
-	If there is any malicious activity detect it
-
-	Locate an adversary
+% \section{Design Goals}
 
 
-	% In the previous chapter, we saw that SHIA limits the adversary's ability to manipulate the aggregation result with the tightest bound possible.
-	% But, SHIA uses truncated sum as an aggregate function which is resilient according to the Wagner \cite{wagner2004resilient}.
-	% It does not help accurately calculating the sum aggregate. 
-	% Furthermore, SHIA does not help detecting and revoking the malicious aggregate node from the network.
-	% SHIA does not require prior knowledge of network topology and works on hierarchical sensor network which might include multiple malicious sensor nodes, with only suboptimal congestion overhead.
-	% SHIA helps the sensor node verify, its reported sensor reading was aggregated correctly or not, by an an aggregate node.
-	% If an an aggregate node has tampered with the reported sensor reading then the relevant sensor node can detect the tampering and raise an alarm.
-	We develop the aggregation protocol which works for any random hierarchical sensor networks with a single or multiple adversaries.
-	It works on the resilient as well as non-resilient aggregation functions Defined in \ref{def:resilient}, without compromising any desired security properties.
-	It identifies all the adversaries in the network who are responsible for the malicious activity.
-	It prevents masquerade attacks in the network so this protocol can easily be applied to do the voting scheme in the network.
+% 	% In the previous chapter, we saw that SHIA limits the adversary's ability to manipulate the aggregation result with the tightest bound possible.
+% 	% But, SHIA uses truncated sum as an aggregate function which is resilient according to the Wagner \cite{wagner2004resilient}.
+% 	% It does not help accurately calculating the sum aggregate. 
+% 	% Furthermore, SHIA does not help detecting and revoking the malicious aggregate node from the network.
+% 	% SHIA does not require prior knowledge of network topology and works on hierarchical sensor network which might include multiple malicious sensor nodes, with only suboptimal congestion overhead.
+% 	% SHIA helps the sensor node verify, its reported sensor reading was aggregated correctly or not, by an an aggregate node.
+% 	% If an an aggregate node has tampered with the reported sensor reading then the relevant sensor node can detect the tampering and raise an alarm.
+% 	We develop the aggregation protocol which works for any random hierarchical sensor networks with a single or multiple adversaries.
+% 	It works on the resilient as well as non-resilient aggregation functions Defined in \ref{def:resilient}, without compromising any desired security properties.
+% 	It identifies all the adversaries in the network who are responsible for the malicious activity.
+% 	It prevents masquerade attacks in the network so this protocol can easily be applied to do the voting scheme in the network.
 
-	We want to achieve all the mentioned goals by inducing only $O(\delta \log^{k} n)$ node congestion in the aggregation tree; where $n$ is the number of nodes in the network, $\delta$ is the fanout of any node in the aggregation tree, and $k$ is the variable.
-	Ideally, we want $k=0$, in the case of SHIA and our protocol $k=2$, which will be explained in the later chapter.
-	% which is built on top of commitment tree generation of SHIA mentioned in the previous chapter.
+	% We want to achieve all the mentioned goals by inducing only $O(\delta \log^{k} n)$ node congestion in the aggregation tree; where $n$ is the number of nodes in the network, $\delta$ is the fanout of any node in the aggregation tree, and $k$ is the variable.
+	% Ideally, we want $k=0$, in the case of SHIA and our protocol $k=2$, which will be explained in the later chapter.
+	% % which is built on top of commitment tree generation of SHIA mentioned in the previous chapter.
 
-\section{System Design Mechanisms}
-	Hash
-
-	Digital signatures
+\section{Security Mechanisms}
+	To detect any malicious activity in the network which is an important part of achieving data-integrity in the network we use \textit{Hash Functions} as security mechanism.
+	To protect against any active security attacks, provide authentication and non-repudiation security services we use \textit{Digital Signatures} as the security mechanisms.
 
 
 
