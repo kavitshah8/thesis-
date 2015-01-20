@@ -3,6 +3,16 @@
 	Here we describe the networking and cryptographic tools used in this protocol referred from \cite{menezes2010handbook,stinson2005cryptography}.
 	For example, we describe the Hash function, its properties and how it helps us achieve data integrity.
 
+\section{Cryptography}
+	The word cryptography means ``secret writing'' and is the art and science of concealing meaning.
+	Cryptoanalysis is the breaking of codes.
+	The basic component of cryptography is a cryptosystem \cite{bishop2004introduction}.
+	\begin{definition}
+		A cryptosystem is a $5$-tuple ($ \mathcal{E,D,M,K,C}$), where $\mathcal{M}$ is the set of \textit{plaintexts}, $\mathcal{K}$ is the set of \textit{keys}, $\mathcal{C}$ is the set of \textit{ciphertexts}, $\mathcal{E}:\mathcal{E} \times \mathcal{K} \rightarrow \mathcal{C}$ is the set of \textit{enciphering functions}, and $\mathcal{D}:\mathcal{C} \times \mathcal{K} \rightarrow \mathcal{M}$ is the set of \textit{deciphering functions}.
+	\end{definition}
+
+	Classical cryptosystem (also called symmetric cryptosystem or single-key cryptosystem) are cryptosystem that use the same key for encipherment and decipherement.
+	In these system, for all $E_{k} \in \mathcal{C}$ and $k \in \mathcal{K}$, there is a $D_{k} \in \mathcal{D}$ such that $D_{k} = E_{k}^{-1}$
 \section{Encryption}
 
 \section{Hash Function}
