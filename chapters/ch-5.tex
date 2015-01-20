@@ -1,615 +1,362 @@
-\chapter{Data Aggregatiit With Internal Verification} % (folit
-\label{cha:Data Aggregation With Internal Verification}
+\chapter{Data Aggregation Without Internal Verification} % (fold)
+\label{cha:Data Aggregation Without Internal Verification}
+
+Our work enhances Secure Hierarchical In-Network Data Aggregation (SHIA) protocol of \cite{chan2006secure} by making it communication efficient, adding new capabilities to the protocol, achieving similar security goals with non-resilient aggregation functions and efficient way of analyzing the protocol.
+In this chapter, we summarize the important parts of SHIA protocol and relevant terms, to build the foundation to describe our protocol in the following chapters.\\
+SHIA computes the aggregate functions (such as $\textit{truncated SUM}$, $\textit{AVERAGE}$, $\textit{COUNT}$, $\Phi-QUANTILE$) of the sensor readings.
+For example, a network with $5$ nodes having the following sensor readings $10,11,8,15,12$ has the overall all sum of $56$, the average of $11.2$ and the median ($\Phi = 0.5$) of $11$.
+The goal of the SHIA is to compute the aggregate functions while assuming that partially a network is controlled by an adversary which is attempting to skew the final aggregated result.
+
+\section{Network Assumptions}
+	We assume a multi hop network with a set $ S = \{s1,...,s_{n}\} $ of $n$ sensor nodes where all $n$ nodes are alive and reachable. 
+	The network is organized in a rooted tree topology.
+	The trusted base station resides outside of the network and has more computation, storage capacity then the sensor nodes in the network. 
+	\textbf{Note}: SHIA names the base station as the querier and the root of the tree as the base station. 
+	The base station knows total number of sensor nodes $n$ in the network and the network topology. 
+	It also has the capacity to directly communicate with every sensor node in the network using authenticated broadcast.
+	All the wireless communications between the nodes is peer-to-peer and we do not consider the local wireless broadcast.\\
+	Each sensor node has a unique identifier $s$ and shares a unique secret symmetric key $K_{s}$ with the base station.
+	The keys enable message authentication, and encryption if the data confidentiality is required.
+	All the sensor nodes are capable of doing symmetric key encryption and symmetric key decryption.
+	They are also capable of computing collision resistant cryptographic hash function $H$ (SHA-$256$)\cite{SHA256}. 
+
+\section{Attacker Model}
 	
-	This chapter describes the rational behind the design specifications of secure aggregation protocol for sensor networks, mechanism used to achieve it and implementation details.
-	Then we elaborate the nitty-gritty of the commitment tree generation process with internal verification.
-
-	\section{System Design}
-
-	The most significant design aspect of the sensor network is the \textit{Lifetime of the Network}.
-	The sensor network tend to have limited life span as they are powered by the battery.
-	The lifetime of the sensor network is inversely proportional to the sensor nodes' power consumption.
-	One of the most dominating factor for the power consumption is transmitting and receiving the data between sensor nodes, making network bandwidth an expensive resource.
-	The bandwidth is more expensive resource than the local data computation, as trans-receiving activity consumes more power than computation.
-	The obvious solution to increase the lifespan of the sensor network is to decrease the bandwidth usage in the network.
-	As we know, data aggregation techniques can greatly reduce the bandwidth usage in the network, increasing the lifespan of the network.
-	Hence, data-aggregation techniques are one of the key tool in our tool box while designing protocol for the sensor networks.
-
-	The second most significant factor in the design of the data aggregation protocol is \textit{Security Architecture }.
-	The International Telecommunications Union (ITU) Telecommunication Standardization Sector (ITU-T) Recommendation X.800, \textit{Security Architect for Open Systems Interconnection} (OSI) provides a systematic approach for it \cite{stallings2008computer}.
-	The OSI security architecture focuses on security attacks, mechanism and services defined as follows:\\
-	\textbf{Security attack} is any action that compromises the security of information owned by an organization or entity.\\
-	\textbf{Security mechanism} is a mechanism that is designed to detect, prevent, or recover from a security attack.\\
-	\textbf{Security service} is a service that enhances the security of the data processing systems and the information transfers of an organization.
-	The services are intended to counter security attacks, by using one or more security mechanisms.
-
-	\textbf{Security attacks} can be classified as \textit{passive attacks} and \textit{active attacks}.
-
-	\textit{Passive attacks} attempts to learn or make use of information from the system but does not affect the system resources.
-	They are in the nature of eavesdropping on, or monitoring of, transmissions.
-	Two types of passive attacks are \textit{release of message contents} and \textit{traffic analysis}.
-
-	The \textit{release of message contents} is well understood. 
-	A telephone conversation, an electronic mail, and a transferred file may contain sensitive or confidential information.
-	We would like to prevent an opponent from learning the contents of these transmissions.
-
-	The \textit{traffic analysis} is subtler. 
-	Suppose that we had a way of masking the message so that even if the  opponents captured the message, could not extract it.
-	The common mechanism for masking the message is encryption.
-	If we had encryption protection in place, an opponent might still be able to observe the pattern of these message communication.
-	The opponent could determine the location and identity of communicating hosts and could observe the frequency and length of message being exchanged.
-	These patterns might be useful in guessing the nature of the communication that was taking place.
-
-	\textit{Passive attacks} are difficult to detect as they do not involve any alteration of the message.
-	Typically, the message traffic is sent and received in an apparently normal way and neither the sender nor receiver is aware that a third party has sniffed the message or observed the traffic pattern.
-	However, it is feasible to prevent the success of these attacks, usually by means of encryption. 
-	Thus, the emphasis on dealing with passive attacks is on prevention rather that detection.
-
-	\textit{Active attacks} involve some modification of the data stream or the creating of a false stream and can be subdivided into four categories: \textit{replay, masquerade, modification of messages, and denial of service}.
-
-	\textit{Replay} involves the passive capture of a data unit and its subsequent retransmission to produce an unauthorized effect.
-
-	A \textit{masquerade} takes place when one entity pretends to be a different entity.
-	For example, authentication sequence can be captured and replayed after a valid authentication sequence has taken place, thus enabling an authorized entity with few privileges to obtain extra privileges by impersonating an entity that has those privileges.
-
-	\textit{Modification of message} means that some portion of a legitimate message is altered or that the messages are delayed or reordered, to produce an unauthorized effect.
-	For example, a message stating ``Allow Barack Obama to read confidential file accounts.'' is modified to say ``Allow Michelle Obama to read confidential file accounts.''
-
-	The \textit{denial of service} inhibits the normal use of communication facilities.
-	For example, an entity may suppress all messages directed to a particular destination.
-	Another form of service denial is the disruption of an entire network, either by disabling the network or by overloading it with messages so as to degrade performances.
-
-	\textit{Active attacks} present the opposite characteristics of passive attacks.
-	Whereas passive attacks are difficult to detect, measures are available to prevent their success.
-	On the other hand, it is quite difficult to prevent active attacks absolutely, because to do so would require physical protection of all communication facilities and paths at all times.
-	Instead, the goal is to detect them and to recover from any disruption or delays caused by them.
-	Because the detection has a deterrent effect, it may also contribute to prevention.
-
-	\textbf{Security services} are divided into six categories:
-	\textit{Authentication, Access Control, Data Confidentiality, Data Integrity, Non-repudiation, Availability}.
-
-	\textit{Authentication} service assures that a communication is authenticate.
-	Two types of authentication services are described in the standard: \textit{peer entity authentication} and \textit{data origin authentication}.
-
-	The \textit{peer entity authentication} provides for the corroboration of the identity of a peer entity in an association.
-	Two entities are considered as peer if they implement the same protocol in different systems (e.g., two TCP users in two communicating systems).
-	Peer entity authentication is used at the establishment of, or at times during the data transfer phase of, a connection.
-	It attempts to provide confidence that an entity is not performing either a masquerade or an unauthorized replay of a previous connection.
-
-	\textit{Data origin authentication} provides the corroboration of the source of a data unit. 
-	It does not provide protection against the duplication or modification of data units.
-	This type of service supports applications like electronic mail where there are no prior interactions between the communicating entities.
-
-	\textit{Data Confidentiality} ensures the protection of transmitted data from passive attacks.
-	It is also known as secrecy or privacy.
-	For example, student grade information is an asset whose confidentiality is considered to be highly important by students.
-	In the United States, the release of such information is regulated by the Family Educational Rights and Privacy Act (FERPA).
-	Grade information should only be available to students, their parents, and employees that require the information to do their job.
-	The other aspect of confidentiality is the protection of traffic flow from analysis.
-	This requires that an attacker not be able to observe the source and destination, frequency, length, or other characteristics of the traffic on a communications facility.
-	Ensuring confidentiality can be difficult.
-	For example, who determines which parties are authorized to access the information?
-	By ``accessing'' information, do we mean that an authorized party can access a single bit? the whole collection? pieces of information out of context?
-	Can someone who is authorized disclose that information to other parties?\cite{pfleeger2002security}
-
-	\textit{Data Integrity} assures that the only authorized entities can modify the information; where modification means writing, creating, deleting and changing the information.
-	A hospital patient's allergy information stored in a database illustrates the several aspects of the data integrity.
-	The doctor should be able to trust that the information is correct and current.
-	Now, suppose a nurse who is authorized to view and update the information deliberately falsifies the data to cause harm to the hospital.
-	The database needs to be restored to a trusted basis quickly, and it should be possible to trace the error back to the person responsible.
-	Patient allergy information is an example of an asset with a high requirement for integrity. 
-	Inaccurate information could result in serious harm or death to a patient and expose the hospital to massive liability.
-	Because the integrity service relates to active attacks, we are concerned with detection rather than prevention.
-	If a violation of integrity is detected, then the service may simply report this violation, and some other portion of software or human intervention is required to recover from the violation.
-	Alternatively, there are mechanisms available to recover from the loss of integrity of data, as we will review subsequently. The incorporation of automated recovery mechanisms is, in general, the more attractive alternative.
-
-	\textit{Availability} means that the information of a system being accessible and usable by an authorized parties according to performance specification at appropriate times.
-	In other words, if some person or system has legitimate access to a particular set of objects, that access should not be prevented.
-	Availability applies to the information and services.
-	For example, information or service is available can mean the following. 
-	It is present in the usable form, having the enough capacity to meet the service need.
-	If it is in wait mode, it is making enough progress, and it has a bounded waiting time, meaning there is timely response to our requests.
-	Resources are allocated fairly so that some requests are not favored over the others.
-	The service can be used easily and in its intended way.
-	Availability addresses the concern raised by the denial of service attacks.
-	It depends on proper management and control of system resources and thus depends on access control service and other security services.
-
-	\textit{Non repudiation} service requires neither the sender nor the receiver can deny the transmission.
-	Thus, when a message is sent, the receiver can prove that the alleged sender in fact sent the message.
-	Similarly, when a message is received, the sender can prove that the alleged receiver in fact received the message.
-	This is very important in electronic commerce applications, where it is important that a consumer cannot deny the authorization of a purchase.
-
-	\textit{Access Control} is the ability to restrict and control the access to host systems and applications via communications links.
-	To achieve this, each entity trying to gain access must first be identified, or
-	authenticated, so that access rights can be tailored to the individual.
-	Login credentials and Locks are two analogues mechanism of access control.
-
-	\textbf{Security mechanisms} follow one of the most fundamental principle of Open Design \cite{bishop2004introduction} defined as follows:
-		\begin{definition}
-			The principle of open design states that the security of a mechanism should not depend on the secrecy of its design or implementation.
-			\label{def:open-design}
-		\end{definition}
-		Designers and implementers of a program must not depend on secrecy of the details of their design and implementation to ensure security.
-		Others can ferret out such details either through technical means, such as disassembly and analysis, or through nontechnical means, such as searching through garbage receptacles for source code listings (called ``dumpster-diving'').
-		If the strength of the program's security depends on the ignorance of the user, a knowledgeable user can defeat that security mechanism.
-		The term ``security through obscurity'' captures this concept exactly.
-		This is true of cryptographic software and systems.
-		Because cryptography is a highly mathematical subject, and companies who sell these softwares want to keep their algorithms secret. 
-		Issues of proprietary software and trade secrets complicate the application of this principle.
-		In some cases, companies may not want their designs made public, lest their competitors use them.
-		The principle then requires that the design and implementation be available to people barred from disclosing tit outside the company.
-		Note that keeping cryptographic keys and passwords does not violate this principle, because a key is not an algorithm.
-		However, keeping the enciphering and deciphering algorithms secret would violate it.
-		The following security mechanisms may be incorporated into the appropriate protocol layer in order to provide some of the OSI services.
-
-		\textit{Encryption} is the use of mathematical algorithms to transform data into a form that is not readily intelligible.
-		The transformation and subsequent recovery of the data depend on an algorithm and zero or more encryption.
-
-		\textit{Digital Signature} appends the data to a cryptographic transformation of data unit that allows a recipient of the data unit to prove the source and integrity of the data unit and protects against the forgery (e.g., by the recipient).
-
-		\textit{Traffic Padding} is the insertion of bits into gaps in a data stream to frustrate traffic analysis attempts.
-
-		\textit{Routing Control} enables selection of particular physically secure routes for certain data and allows routing changes, especially when a breach of security is suspected.
-
-		\textit{Notarization} is the use of a trusted third party to assure certain properties of a data exchange.
-
-		\textit{Authentication Exchange} is a mechanism intended to ensure the identity of an entity by means of information exchange.
-
-		\textit{Hash functions} provides one way functions to achieve irreversible encryption.
-
-	As you can see, expectations from secure networking protocol are far-reaching.
-	It is very ambitious for any system to have all the above mentioned security services at the same time.
-	If we have to achieve all the security services for sensor networks we can make each sensor node signs its reading data and then send data with its signature to its parent.
-	And the network forwards all the data with their respective signatures to the base station.
-	The base station verifies all the signatures and then calculates the aggregate function.
-	Clearly, this approach is not practical as it requires $n$ signatures to traverse through the link between the base station and the root node of the network; where $n$ is the number of nodes in the network.
-	Which makes that link the bottleneck link of the network. 
-	And if that link breaks we loose the entire network connectivity.
-
-	In reality all the security services are not always required.
-	For an instance, when a client downloads a file from the File server using Internet, he can verify the integrity of the File using the checksum.
-	But it is okay if somebody on the network sniffed the downloading activity as far as it did not change the content of the File.
-	In this application, a client requires the integrity of the File but the privacy of the client, the File server and the Internet service provider are not required.
-	To give an analogy with a physical world application, when a person writes a postcard, he puts his own signature on the it. 
-	When that postcard delivers successfully by the postal service, the receiving party can verify the integrity of the message from the handwriting and the signature of the person.
-	The postal service knows the sender and the receiver of the postcard.
-	It can even read the postcard.
-	Again, here integrity is important not the confidentiality.
-	It is crucial to find out which security services are desired for the particular application, so we can use the relevant security mechanisms to provide those services.
-	In practice, protocol designer finds out the most important security services for the applications before designing the protocol.
-
-	For example, Wagner's work \cite{wagner2004resilient} describes the attacks on standard schemes for data aggregation and introduces the problem of securing aggregation in the presence of malicious or spoofed data.
-	He proposes a mathematical theory of security for aggregation.
-	The theory quantifies, in a principled way, the robustness of an aggregation operator against malicious data.
-	It draws novel connections to statistical estimation theory and to the field of robust statistics.
-	He identifies techniques for aggregation that provide robustness against attack. 
-	It provides helpful guidance to sensor network implementors or designers in selecting appropriate aggregate functions.
-
-	Secure Information Aggregation (SIA) \cite{przydatek2003sia}  address the problem of how to enable secure information aggregation, such that the user accepts the data with high probability if the aggregated result is within a desired bound, but that the user detects cheating with high probability and rejects the result if it is outside of the bound.
-	SIA provides statistical security under the assumption of a single-aggregator model.
-	In the single-aggregator model, sensor nodes send their data to a single
-	aggregator node, which computes the aggregate and sends it to the
-	base station.
-	This form of aggregation reduces communications only on the link between the aggregator and the base station, and is not scalable to large multihop sensor deployments.
-	SIA provides the probabilistic data-integrity service under strong network assumptions.
-
-	Secure Hierarchical In-network Aggregation (SHIA) \cite{chan2006secure}, in many ways enhances Secure Information Aggregation (SIA).
-	SHIA presents the provably secure sensor network data aggregation protocol for general networks and multiple adversarial nodes, in compare to SIA which provides probabilistic security for a single aggregate network topology.
-	SHIA limits the adversary’s ability to manipulate the aggregation result with the tightest bound possible, with no knowledge of the distribution of sensor data values.
-	SHIA provides data-integrity service for any hierarchical sensor networks because of that it can detect malicious activity in the network.
-
-	The third most significant aspect in the design of secure data aggregation protocol is \textit{Data Integrity}.
-	The protocol collects the data from the sensors and aggregates the reading on the way to the base station.
-	The base station takes an important decision based on the received value.
-	For example, if the sensor network is deployed to measure the certain harmful chemical levels in the lab atmosphere and raise an alarm if the it increases above certain level.
-	And if the base station fails to raise an alarm because of the false aggregated data, can create catastrophic and lethal situation.
-	Hence, the data integrity is so important.
-
-	As we know, data integrity can be achieved with the error detection and error correction techniques.
-	The first step towards achieving the data integrity in the sensor network is to \textit{detect any malicious activity} in the network.
-	And the second step is the ability to \textit{locate the malicious node or an adversary} in the network.
-	We think detecting a malicious activity without tracing down the malicious node responsible for it, is of no value.
-	To give an analogy with the physical world, it is like you know there is a crime in the city and you do not do anything about it.
-	Locating the criminals responsible for the crime is mandatory to abolish the crime in the city.
-	In similar way, locating the malicious node and removing it from the network is an important security service. 
-	Failing to provide such a security service, allows an adversary to continue doing the malicious activity in the future, which makes aggregated sensor data garbage. 
-	And network has to redo the all the work to create response for the query from the base station, which consumes lots of bandwidth. 
-	An adversary can repeat this process until the network dies due to low battery power, creating a denial of service attack in the network.
-	Hence, we think detecting a malicious node who is responsible for the malicious activity is equally important.
-	If we can track down the malicious node in the network then we can remove that node from the network for all future queries.
-	And make sure that all the future queries are not manipulated by any malicious node in the network.
-	Hence, the fourth and fifth most significant design aspects of secure aggregation protocol are \textit{detect the malicious activity} (in terms of data aggregation) and can \textit{detect the adversary} in the network, respectively.
-
-	To detect an adversary (or prove someone guilty), we need proof that the adversary is responsible for the malicious activity.	 
-	% To achieve our goal, we think the Digital signature is the perfect cryptographic tool.
-	Consider the following example showing the analogy with the signature scheme in the physical world, used by the postal services.
-	When a postman delivers the package, the receiving party has to sign the document informing that he verified and received the package.
-	As only the receiving party can create his signature, in the future he can not claim of not receiving the package or receiving the damaged or incorrect package. 
-	And if he claims such, the postal company has the signed document as the proof mentioning that the package was received successfully, by the receiving party.
-	The signed document also ensures to the postal company that the postman did not misplace or steal the package.
-	The signature scheme used by the postal service promises 
-	% authenticity (assures the origin of the message) and 
-	non repudiation security service.
-	Hence, we require \textit{non-repudiation} security service in the sensor network.
-
-	% With Digital signatures one can achieve \textbf{non-deniability  (non repudiation), authentication, integrity} (assures that only the authorized parties can modify the message) as described in Section \ref{sec:digital-signature}.
-
-\section{System Design Specifications}
-	We want to design a secure aggregation protocol which maximizes the \textit{network lifetime}.
-	The protocol can be applied to \textit{any hierarchical sensor network}.
-	We want protocol to work on \textit{resilient} and \textit{non-resilient} aggregate functions without compromising any desired security properties.
-	We want protocol to be secure with \textit{a single} or \textit{multiple adversaries} in the network.
-	\label{subsec:security benefits of signing the data-item}	We want the protocol to protect against any \textit{active attacks}. 
-	If the aggregation result is accepted by the base station it should have very high confidence in the result, meaning that we want the highest level of \textit{data integrity} security service in the protocol.
-	We want the capabilities to \textit{detect any malicious activity}.
-	If there is any malicious activity in the network, we should be able to \textit{locate an adversary} responsible for it, in the network.
-	We want the \textit{non-repudiation} security service so neither sender nor receiver can deny the transmission or receiving of the message, which is mandatory to locate an adversary.
-	We want to achieve this with the least amount of \textit{bandwidth and computation} overhead in the network.
-	So, the protocol can be easily implemented in the real world sensor networks.
-	It is not that difficult to provide mentioned security properties to protect against active attacks in the sensor network. 
-	We will show that it requires sub-linear edge congestion to provide these services. 
-	% As we saw in the previous chapter SHIA can detect the malicious activity in the network with only sub-linear edge congestion.
-	% So, we built our work on top of SHIA which can detect an adversary.
-
-
-	% For that we want non-repudiation
-
-	% If there is any malicious activity detect it
-
-	% Locate an adversary	
-	% fig:Commitment payload of C to detect an adversary in the network with least amount of overhead in terms of BW and computation.
-	% We wanted to achieve that with as realistic as possible. 
-
-
-% \section{Design Goals}
-
-
-% 	% In the previous chapter, we saw that SHIA limits the adversary's ability to manipulate the aggregation result with the tightest bound possible.
-% 	% But, SHIA uses truncated sum as an aggregate function which is resilient according to the Wagner \cite{wagner2004resilient}.
-% 	% It does not help accurately calculating the sum aggregate. 
-% 	% Furthermore, SHIA does not help detecting and revoking the from the of Sensor Node malicious aggregate no network.
-% 	% SHIA does not require prior knowledge of network topology and works on hierarchical sensor network which might include multiple malicious sensor nodes, with only suboptimal congestion overhead.
-% 	% SHIA helps the sensor node verify, its reported sensor reading was aggregated correctly or not, by an an aggregate node.
-% 	% If an an aggregate node has tampered with the reported sensor reading then the relevant sensor node can detect the tampering and raise an alarm.
-% 	We develop the aggregation protocol which works for any random hierarchical sensor networks with a single or multiple adversaries.
-% 	It works on the resilient as well as non-resilient aggregation functions Defined in \ref{def:resilient}, without compromising any desired security properties.
-% 	It
-% 	It prevents masquerade attacks in the network so this protocol can easily be applied to do the voting scheme in the network.
-
-	% We want to achieve all the mentioned goals by inducing only $O(\delta \log^{k} n)$ node congestion in the aggregation tree; where $n$ is the number of nodes in the network, $\delta$ is the fanout of any node in the aggregation tree, and $k$ is the variable.
-	% Ideally, we want $k=0$, in the case of SHIA and our protocol $k=2$, which will be explained in the later chapter.
-	% % which is built on top of commitment tree generation of SHIA mentioned in the previous chapter.
-
-\section{Security Mechanisms}
-	To detect any malicious activity in the network which is an important part of achieving data-integrity in the network we use \textit{Hash Functions} as security mechanism.
-	To protect against any active security attacks, provide authentication and non-repudiation security services we use \textit{Digital Signatures} as the security mechanisms.
-	Both of these mechanisms are described in details in Chapter \ref{cha:Networking and Cryptography tools}.	
-
-
-\section{System Design Implementations}
-	The high level idea of the aggregate commit with verification scheme is that all the nodes in the network send the signature of the message along with the message itself. 
-	It sends its certificate if the parent node does not have it already.
-	The parent node verifies all the received signatures from its children.
-	And proceeds with the aggregation process.
-	After aggregation, the parent node can throw away all the signatures from its children and signs the message of its children or it can pass its children's signatures to its parent. 
-	The pros and cons of each approach are discussed in the following sections. 
-
-\section{Data-Item}
+	We consider a model with a polynomially bounded adversary of \cite{przydatek2003sia}, which has a complete control over some of the sensor nodes in the network.
+	Most significantly, the adversary can change the measured values reported by sensor nodes under its control.
+	An adversary can perform a wide variety of attacks.
+	For example, an adversary could report fictitious values (probably completely independent of the measured reported values), instead of the real aggregate values and the base station receives the fictitious aggregated information. 
+	Since in many applications the information received by the base station provides a basis for critical decisions, false information could have ruinous consequences.
+	However, we do not want to limit ourselves to just a few specific selected adversarial models. 
+	Instead, we assume that the adversary can misbehave in any arbitrary way, and the only limitations we put on the adversary are its computational resources (polynomial in terms of the security parameter) and the fraction of nodes that it can have control over. 
+	We focus on \textbf{stealthy attacks} \cite{przydatek2003sia}, where the goal of an adversary is to make the base station accept false aggregation results, which are significantly different from the true results determined by the measured values, while not being detected by the base station.
+	In this setting, denial-of-service (DoS) attacks such as not responding to the queries or always responding with negative acknowledgment at the end of verification phase clearly indicates to the base station that something is wrong in the network and therefore is not a stealthy attack.
+	One of the security goals of SHIA is to detect the stealthy attacks.
+	And one of the security goals of our work is to detect an adversary who caused the stealthy attacks and remove it from the network to prevent these attacks in the future.
 	
-	We describe structure of the data-item, used in creating the commitment tree for the aggregate commit with verification approach. And differences between the data-item and the label structure of SHIA, with rational behind it.
+\section{Resilient and Non-Resilient Aggregate Functions}
+	
+	Wagner \cite{wagner2004resilient} uses statistical estimation theory to quantify the effects of direct data injection on various aggregates functions.
+	To understand Wagner's work we define following terms. 
 	\begin{definition}
-		\label{def:data-item}
-		A commitment tree is a binary tree where each vertex has an associated data-item representing the data that is passed on to its parent. The data-items have the following format:
-
-		$\hspace{100pt}$ \textbf{$<\ $id, count, value, commitment$\ >$}\\
-	Where $id$ is the unique ID of the node; $count$ is the number of leaf vertices in the subtree rooted at this vertex; $value$ is the SUM aggregate computed over all the leaves in the subtree and $commitment$ is a cryptographic commitment.
+		According to \cite{chan2006secure}, each sensor node $s_{i}$ has a data value $a_{i}$\ assuming that all the data values are non-negative bounded by real value $a_{i} \in [0,r]$, where $r$\ is the maximum allowed data value.
+		The objective of the \textbf{aggregation process} is to compute some function $f$ over all the data values, i.e., $f (a_{1}, \dotsc ,a_{n})$.
 	\end{definition}
-	
-	We remove the $complement$ field from the label structure Defined \ref{def:label}. 
-	We think the complement filed is redundant information in the label. 
-	The complement field is used by the base station (the querier, according to SHIA), before the result checking phase, to verify \textbf{SUM + COMPLEMENT =} $\textbf{n} \cdot \textbf{r}$ ; where $\textbf{n}$ is the number of nodes in the network, $\textbf{r}$ is the upper bound on the allowed sensor readings.
-	We can achieve the same upper bound without the complement field.
-	As the querier knows $n, r$ and it gets SUM from the root of the aggregation tree.
-	If \textbf{SUM} $> \textbf{n} \cdot \textbf{r}$ , then the base station knows some node or nodes in the network reported out of range readings.
-
-	We include $id$ of the node in its data-item.
-	SHIA does not have the ID field in their label structure as they do not do internal verification while creating a commitment tree and while distributing off-path values.
-	Also, in the label format ID of the node is hashed in the commitment field after the first aggregation and virtually gets lost.
-	Hence, SHIA can not provide security services such as authenticity, non-repudiation and is vulnerable to all sorts of active attacks.
-	We do internal verification while creating the commitment tree and distributing off-path values.
-	So, it is necessary for any aggregate node to know the ID of all the received data-items in its forest, for the verification of the received signatures as shown in the next section.
-
-\section{Signing the Data-Item}
-	During commitment tree generation phase, there is one vertex $S_{0}$ for each sensor node $S$, which we call the leaf vertex of $S$.
-	The data-item for leaf vertex $S_{0}$ and associated signature to it is defined as follows:
+	\begin{definition}
+		\label{def:direct-data-injection}
+		According to \cite{chan2006secure}, a \textbf{direct data injection} attack occurs when an adversary modifies the data readings reported by the nodes under its direct control, under the constraint that only legal readings in $[0, r]$ are reported.
+	\end{definition}
+	An \textbf{estimator} is an algorithm $ f :\ \R^n \rightarrow \rm I\!R$\ where $f(x_{1},\dotsc, x_{n})$\ is intended as an estimate of some real valued function of $\theta$.
+	We assume that $\theta$ is real valued and that we wish to estimate $\theta$ itself.
+	Next, we define $\widehat{\Theta} := f(X_{1},\dotsc,X_{n})$, where $X_{1},\dotsc,X_{n}$\ are $n$ random variables. We can define the root-mean-square(r.m.s)  error (at $\theta$):
 	\begin{equation}
-		\label{eq:leaf-vertex}
-		S_{0}\ =\ <S_{id}, 1, S_{value}, H(N||1||S_{value})>;\ 	\textsf{Sign}_{S_{S}}(S_{0})
+		rms(f) := \rm I\!E[(\widehat{\Theta} - \theta)^2 | \theta]^{1/2}
 	\end{equation}
-	where $H$ is a collision resistant hash function, $S_{S}$ is the secret key of sensor node $S$, $N$ is the query nonce.
-
-	The key difference between the SHIA's approach and our approach is that, in addition to sending the data-item, each sensor node sends the signature of the data-item to its parent.
-	It sends its certificate as well if the parent node does not have it in its memory  already.
-	The parent node gets the public key of the child node from its certificate, which is used in verifying the signature. 
-	The parent node verifies all the received signature using its children node's public key.
-	Details of the signing and verification processes are shown in Figure \ref{fig:digita-signature}.
-	After doing the verification the parent node proceeds to the aggregation and creating the commitment tree.
-	
-	\subsection{Bandwidth Analysis}
-
-	Cite resources for this.
-	
-	Typical size of the data-item packet is $400$ bits.
-	If one uses Elliptic curve cryptography then the size of signature is $500$ bits.
-	And the certificate size is $1500$ bits.
-	So, at max we have to send additional $2000$ bits with the data-item.
-	We think it is worthwhile to send these additional bits.
-	Because of all the security benefits we gain from it. 
-	\textbf{Note:} The packets size are close approximate to the actual packet size. 
-	The actual packet size may differ based on the implementation.
-
-	\subsection{Security Benefits}
-	\label{subsec:security benefits of signing the data-item}
-	The signature allows the parent node to verify the \textit{authenticity} of the sensor node.
-	It also allows to verify the \textit{integrity} of the received data-item.
-	It allows the sender to have the proof for the sent data-item.
-	And the receiver for the proof for the received data-item, providing the \textit{non-repudiation}.
-	Hence, it protects against the \textit{active attacks}.
-
-\section{Signing the Commitment Payload}
-		We define commitment payload based on the commitment forest Defined in \ref{def:commitment-forest}.
+	Wagner in \cite{wagner2004resilient} defines \textbf{resilient estimators and resilient aggregation } as follows.
+	A $k$-node attack $A$ is an algorithm that is allowed to change up to $k$ of the values $X_{1}, \dotsc, X_{n}$ before the estimator is applied.
+	In particular, the attack $A$ is specified by a function $\tau_{A} : \R^n \rightarrow  \R^n $ with the property that the vectors $x$ and $\tau_{A}(x)$ never differ at more than $k$ positions.
+	We can define the root mean square(r.m.s) error associated with $A$ by
+	\begin{equation}
+		rms^*(f,A) := \rm I\!E[(\widehat{\Theta}^* - \theta)^2 | \theta]^{1/2} 		  
+	\end{equation}
+	where $\widehat{\Theta}^* := f(\tau_{A}(X_{1},\dotsc,X_{n}))$.
+	To explain, $\widehat{\Theta}^*$\ is a random variable that represents the aggregate calculated at the base station in the presence of the $k$-node attack $A$, and $rms^*(f,A)$\ is a measure of inaccuracy of the aggregate after $A$'s intrusion.
+	If $rms^*(f,A) >> rms(f)$, then the attack has succeeded in noticeably affecting the operation of the sensor network.
+	If $rms^*(f,A) \approx rms(f)$, the attack had little or no effect.
+	We define
+	\begin{equation}
+		rms^*(f,k) := max\{rms^*(f,A): A\ is\ a\ k-node\ attack\}
+	\end{equation}
+	so that $rms^*(f,k)$\ denotes the r.m.s. error of the most powerful
+	$k$-node attack possible. 
+	Note that $rms^* (f, 0) = rms(f)$.
+	We think of an aggregation function $f$ as an instance of the resilient aggregation paradigm if $rms^* (f, k)$ grows slowly as a function of $k$.
 	\begin{definition}
-		A \textbf{commitment payload} is a set of data-items of the root vertices of the trees in the outgoing commitment forest.
+		According to \cite{wagner2004resilient}, an aggregation function $f$ is \textbf{$(k, \alpha)$-resilient} (with respect to a parameterized distribution $p(X_{i} | \theta))$ if $rms^*(f, k) \le \alpha \cdot rms(f)$ for the estimator $f$.
+		\label{def:resilient}
 	\end{definition}
-	% We use the term payload for commitment payload and the term forest for the commitment forest.
-	For brevity, we use the term forest, payload instead of commitment forest, commitment payload respectively.
-
-	An aggregate node sends an additional signature to its parent, which is a signature of all the data-items in its payload.
-	The signature on the payload assures that an aggregate node sent only the data-items included in the payload signature.
-	It assures the authenticity, non-repudiation, integrity of all the data-items included in the payload.
-	For example, the aggregation tree shown in Figure \ref{fig:Palm aggregation tree}, the payload of sensor node $C$ is show in Figure \ref{fig:Commitment payload of C}.
-			\begin{figure}[h!]
-				\centering
-				\includegraphics[scale = 1]{images/palm-aggregation-tree.png}\\
-				\caption{Palm Shaped Aggregation Tree}
-				\label{fig:Palm aggregation tree}
-			\end{figure}
-		The sensor node $C$ sends all the data-items in its payload with their signatures to its parent sensor node $D$.
-		Furthermore, $C$ sends the signature of its payload $\textsf{Sign}_{S_{C}}(C_{0}||B_{1})$ to $D$.\\
-			\begin{figure}[h!]
-				\centering
-				\includegraphics[scale = 1]{images/commitment-payload-of-C.png}
-				\caption{Commitment Payload of Sensor Node $C$}
-				\label{fig:Commitment payload of C}
-			\end{figure}
-		\begin{equation}	
-			\begin{array}{l}
-				B_{1} =\ <B_{id}, 2, B_{1value}, H(N||2||B_{1value}||A_{0}||B_{0})>;\ \textsf{Sign}_{S_{B}}(B_{1})\\
-				C_{0} =\ <C_{id}, 1, C_{value}, H(N||1||C_{value})>;\ \textsf{Sign}_{S_{C}}(C_{0})\\
-				\textcolor{red}{\textsf{Sign}_{S_{C}}(C_{0}||B_{1})}
-			\end{array}
-			\label{eq:forwarding-payload-without-resigning}
-		\end{equation}
-
-	\subsection{Security Benefits}
-	In addition to all the security benefits mentioned in Subsection \ref{subsec:security benefits of signing the data-item}, signature on the $C$'s payload $\textsf{Sign}_{S_{C}}(C_{0}||B_{1})$ assures that the sensor node $C$ sent only two data-items $C_{0},B_{1}$ in its payload.
-	And none of the data-items in its payload have been left stranded.
-
-\section{Forwarding the Commitment Payload}	
-	% This example showcases another important aspect of the protocol.
-	% It shows two different ways of creating a commitment tree.
-	The sensor node $C$ has two data-items $C_{0},B_{1}$ in its payload as shown in Equation \ref{eq:forwarding-payload-without-resigning}. 
-	It sends the $\textsf{Sign}_{S_{B}}(B_{1})$, $\textsf{Sign}_{S_{C}}(C_{0}) $ and $\textsf{Sign}_{S_{C}}(C_{0}||B_{1})$ to its parent node $D$.
-	It requires the parent node $D$ to know the public key of the sensor nodes $C$ and $D$, hence their certificates.
-	Instead of that the sensor node $C$ can verify the $\textsf{Sign}_{S_{B}}(B_{1})$ then remove the old signature and create new signature $\textsf{Sign}_{S_{C}}(B_{1})$ signed by itself on the data-item $B_{1}$ as shown below:
-\begin{equation}	
-	\begin{array}{l}
-		B_{1} =\ <B_{id}, 2, B_{1value}, H(N||2||B_{1value}||A_{0}||B_{0})>;\  \textcolor{red}{\textsf{Sign}_{S_{C}}(B_{1})}\\
-		C_{0} =\ <C_{id}, 1, C_{value}, H(N||1||C_{value})>;\ \textsf{Sign}_{S_{C}}(C_{0})\\
-		\textsf{Sign}_{S_{C}}(C_{0}||B_{1})
-	\end{array}
-	\label{eq:forwarding-payload-with-resigning}
-\end{equation}
-We call these two approaches \textbf{Forwarding signatures without resigning the data-items}, \textbf{Forwarding signatures with resigning the data-items} as shown in Equations \ref{eq:forwarding-payload-without-resigning} and \ref{eq:forwarding-payload-with-resigning} respectively .
-
-To give an analogy with the real world application consider the following example.
-One want to buy a diamond from the local diamond retailer.
-Diamond is an expensive commodity so the end customer wants to verify its authenticity and integrity before purchasing.
-Suppose, the diamond was created by the manufacturer in Africa, it was sold to a national wholesaler in the United States. 
-The national wholesaler sells it to the state level reseller and he sells it to the city or county level retailer from whom the customer purchases the diamond.
-
-One approach to verify the authenticity of the commodity is to make each entity in the supply chain to verify all the signatures on the received entity and sign on top of it.
-And then forward the commodity with all the signatures to the next entity in the supply chain.
-The next entity repeats the same procedure.
-Hence, any entity in the supply chain need to verify the signatures of all its descendants in the supply chain.
-In our example, it means to make the manufacturer from Africa signs the diamond and sells the signed diamond with his certificate to the national level wholesaler in United States.
-The national level wholesaler in United States verifies the signature from the manufacturer using manufacturer's certificate.
-Then he adds his signature and certificate, and sells the diamond signed with two signatures and two certificates to the state level reseller.
-The state level reseller verifies both the signatures on the diamond using the respective certificates.
-Then he adds his signature and certificate, and sells the diamond singed with three signatures and three certificates to the city level retailer. 
-The city level retailer does the same thing before selling the diamond to the end customer.
-In the end, the customer needs to verify all four signatures, using the respective certificates.
-
-% Note: that the same diamond now has been signed by four different entities. And the end customer need to know the certificate of all four parties to verify all those signatures.
-
-An alternative approach to verify the authenticity of the commodity is to make each entity in the supply chain verify the signature, throw away the old signature, and then add its own signature on it. 
-It means the next entity in the supply chain need to verify only a single signature.
-The next entity repeats the same procedure.
-Hence, any entity in the supply chain need to verify the signature of only its direct peer in the supply chain. 
-In our example, it means to make the manufacturer from Africa signs the diamond and sells the signed diamond with his certificate to the national level wholesaler in United States.
-The national level wholesaler in United States verifies the signature from the manufacturer using the manufacturer's certificate.
-Then he removes the signature of the manufacturer, adds his own signature and certificate, and sells the diamond signed with one signature and one certificate to the state level reseller.
-The state level reseller verifies only the signature from the wholesaler using the wholesaler's certificate.
-Then he removes the signature of the wholesaler, adds his own signature and certificate, and sells the diamond signed with one signature and one certificate to the city level retailer.
-The city level retailer does the same thing before selling the diamond to the end customer.
-In the end, the customer needs to verify only one signature of the city level retailer using retailer's certificate.
-This approach requires very few number of certificates overall in the supply chain.
-
-Both theapproaches have their pros and cons and the perfect approach depends heavily on the application.
-The various aspects of both the approaches for sensor nodes are discussed in the following sections.
-
-	\section{\textcolor{red}{Forwarding signatures with resigning the data-items}}
-		If we throw away the old signatures and resign the data-item with current aggregate node then following is true:
-			\begin{itemize}
-				\item Each parent needs the certificates of only its direct children.
-				\item Each child needs to know the certificate of its parent only.
-				\item Number of signatures remain the same as previous approach.
-				\item Number of certificates needed in the network is $O(n)$; n is the number of nodes in the network.
-				\item We do not need the signature of the payload.
-			\end{itemize}
-		As the commitment tree is binary we need $\Omega(2^h - 1)$ signatures; where $h$ is the height of the commitment tree in both approaches .
-		% Analysis model:	
-		% 	While creating CT;While distributing off-path; Both places together\\
-		% Initial analysis says, if a single aggregate node cheats while CT generation or distributing off-path values it gets caught.
-			\begin{table}[!htb]	
+	The intuition is that the $(k, \alpha)$-resilient functions, for small values of $\alpha$, are the ones that can be computed meaningfully and securely in the presence of up to $k$ compromised or malicious nodes.
+	\begin{table}[!htb]	
 		\begin{center}
-			\begin{tabular}{ |l| l| l| }
-		    \hline
-		    & With resigning & Without resigning \\
-		    \hline
-		    Number of signatures & Test & T \\	
-		    \hline
-		    Number of signing activity & Test & T \\
-		    \hline
-		    Number of verifying activity & Test & T \\
-		    \hline
-		    Number of certificates & Test & T \\
-		    \hline
+			\begin{tabular}{ |l| l| }
+				\hline
+			    Aggregate(f) & Security Level \\
+			    \hline
+			    minimum & insecure \\
+			    maximum & insecure \\
+			    sum & insecure \\
+				average & insecure \\
+				count & acceptable \\
+				$[l,u]$-truncated average & problematic \\
+				5\% -trimmed average & better \\
+				median & much better \\
+			    \hline
 			\end{tabular}
 		\end{center}
-		 \caption{System-on-Chip specifications for IEEE 802.15.4 from TexasInstruments}
-		 \label{table:soc}
-	\end{table} 
-		Note that we send signatures while distributing off-path values.
-	\section{\textcolor{red}{Forwarding signatures without resigning the data-items}}
+		 \caption{Summary of Wagner's work}
+		 \label{table:wagner}
+	\end{table}
+	His work is summarized in the Table~\ref{table:wagner}.
+	According to this quantitative study measuring the effects of direct data injection on various aggregates, concludes that the \textbf{aggregates (truncated SUM and AVERAGE ) can be resilient} under such attacks.
+	\section{Security Goal}
+	Without precise knowledge of application, the direct data injection attacks are indistinguishable from the malicious sensor readings.
+	The goal of SHIA is to design an \textbf{optimally secure} aggregation algorithm with only \textbf{sublinear edge congestion}.
+	\begin{definition}
+		\label{def:optimally-secure}
+		According to \cite{chan2006secure}, an aggregation algorithm is \textbf{optimally secure} if, by tampering with the aggregation process, an adversary is unable to induce the base station to accept any aggregation result which is not already achievable by direct data injection.
+	\end{definition}
 
-	\section{Commitment Tree Generation}
-	For the given aggregation tree the commitment forest is built as follows.
-	Leaf sensor nodes in the aggregation tree create their leaf vertex by creating data-items and their respective signatures according to Equation \ref{eq:leaf-vertex}, \ref{eq:signature-leaf-vertex} which they send it to their parent as a payload in the aggregation tree.
-	Each internal sensor node $I$\ in the aggregation tree also creates their leaf vertex and its signature.
-	In addition, $I$\ receives the payload from each of its children which creates the forest for $I$.
-	Once $I$ verifies all the received signatures, it merges all the data-items in its forest with same count value to create its payload.
-	Note that we can determine the height of the commitment tree from the count value.
+	\section{The SUM Aggregate Algorithm}
+		In this algorithm, the aggregate function $f$\ is summation meaning that we want to compute $a_{1} + a_{2} + \dotsc + a_{n}$, where $a_{i}$\ is the sensed data value of the node $i$.
+		This algorithm has three main phases:
+		\begin{itemize}
+			\item Query dissemination - initiates the aggregation process
+			\item Aggregate commit - initiates the commitment tree generation process
+			\item Result checking - initiates the distributed, interactive verification process
+		\end{itemize}
 
-	Suppose $I$ have to create its payload by merging $i$ data-items $D_{1}$, $D_{2}$, $\dotsc$, $D_{i}$ in its forest.
-	First, $I$ verifies the received signatures $Sign(D_{1})$, $Sign(D_{2})$, $\dotsc$, $Sign(D_{i})$.
-	Once verified, $I$ starts merging the data-items as follows.
-	Let $c$ be the smallest count value in $I$'s forest.
-	The sensor node $I$ finds two data-items $D_{1},D_{2}$ in its forest with the same count value $c$ and merges them into a new data-item with the count of $c+1$ as shown in Figure \ref{fig:increase-height}.
-	\begin{figure}[h!]
-		% \centering
-		\includegraphics[width=6in]{images/increase-height.png}\\
-		\caption{$A$ has $B_{1}, C_{1}$ in his forest and aggregates those two trees and creates $A_{2}$.}
-		\label{fig:increase-height}
-	\end{figure}\\
-	It repeats the process until no two data-items in its forest have the same count value.
-	An example of generating the payload by merging the data-items in the forest for the sensor node $A$ in Figure \ref{fig:at} is illustrated in the following example.
-	% \ref{fig:commitment-tree-example-1}, \ref{fig:commitment-tree-example-2}, \ref{fig:commitment-tree-example-3}, \ref{fig:commitment-tree-example-4}.
-			\begin{exmp} The commitment-payload generation process for node $A$ of Figure \ref{fig:at} is shown here.\\
+	\section{Query dissemination}
+		Prior to this phase, an aggregation trees is created using a tree generation algorithm.
+		We can use any tree generation algorithm as this protocol works on any aggregation tree structure.
+		For completeness of this protocol, one can use Tiny Aggregation Service (TaG)\cite{madden2002tag}.
+		TaG uses broadcast message from the base station to initiate a tree generation.
+		Each node selects its parent from whichever node it first receives the tree formation message.
+		One possible aggregation tree for given network graph in Figure \ref{fig:ng} is shown in Figure \ref{fig:at}. 
+		\begin{figure}[h!]
+			\centering
+			\includegraphics[scale = 1]{images/network-graph.png}\\
+			\caption{Network graph}
+			\label{fig:ng}
+		\end{figure}
+		
+		To initiate the query dissemination phase, the base station broadcasts the query request message with the query nonce $N$\ in the aggregation tree. 
+		The query request message contains new query nonce $N$\ for each query to prevent replay attacks in the network.
+		It is very important that the same nonce is never re-used by the base station.
+		$SHIA$\ uses \textbf{hash chain} to generate new nonce for each query. 
+		A hash chain is constructed by repeatedly evaluating a pre-image resistant hash function $h$\ on some initial random value, the final value (or ``anchor value'') is preloaded on the nodes in the network.
+		The base station uses the pre-image of the last used  value as the nonce for the next broadcast.
+		For example, if the last known value of the hash chain is $h^i(X)$, then the next broadcast uses $h^{i-1}(X)$ as the nonce; $X$ is the initial random value.
+		When a node receives a new nonce $N^{'}$, it verifies that $N^{'}$ is a precursor to the most recently received (and authenticated) nonce $N$ on the hash chain, i.e., $h^{i}(N^{'}) = N$ for some $i$ bounded by a fixed $k$ of number of hash applications.  
+		A hash chain prevents an adversary from predicting the query nonce for future queries as it has to reverse the hash chain computation to get an acceptable pre-image.
+		\begin{figure}[h!]
+			\centering
+			\includegraphics[scale = 1]{images/aggregation-tree.png}\\
+			\caption{Aggregation tree for network graph in Figure \ref{fig:ng}}
+			\label{fig:at}
+		\end{figure}		
+	\section{Aggregate commit} 
+	% (fold)
+		\label{sub:aggregate_commit}
+		The aggregate commit phase constructs cryptographic commitments to the data values and to the intermediate in-network aggregation operations.
+		These commitments are then passed on to the base station by the root of an aggregation tree.
+		The base station then rebroadcasts the commitments to the sensor network using an authenticated broadcast so that the rest of the sensor nodes in the network can verify that their respective data values have been incorporated into the final aggregate value.
+
+		\subsection{Aggregate commit: Naive Approach}
+		% (fold)
+			\label{sub:aggregate_commit_naive_approach}
+			In the naive approach, during aggregation process each sensor node computes a cryptographic hash of all its inputs (including its own data value).
+			The aggregation result along with the hash value called a label, is then passed on to the parent in the aggregation tree.
+			The label is format is described in Definition \ref{def:label}.
+			Figure \ref{fig:naive-commitment-tree} shows a commitment tree for the aggregation tree shown in Figure \ref{fig:at}.
+			Conceptually, a commitment tree is a logical tree built on top of an aggregation tree, with additional aggregate information attached to the nodes to help in the result checking phase.
+			\begin{figure}[h!]
+				\centering
+				\includegraphics[scale = 1]{images/naive-commitment-tree.png}\\
+				\caption{Naive commitment tree for Figure \ref{fig:at}.
+				For each sensor node $s$, $s_{0}$ is its leaf vertex, while $s_{1}$ is the internal vertex representing the aggregate computation at $s$ (if any).
+				The labels of the vertices on the path of node $I$ to the root are shown from Equation \ref{eq:label-1} to \ref{eq:label-5}.}
+				\label{fig:naive-commitment-tree}
+			\end{figure}
+
+			\begin{definition}
+				\cite{chan2006secure}
+				\label{def:label}
+				A commitment tree is a tree where each vertex has an associated label representing the data that is passed on to its parent. The labels have the following format:
+
+				$\hspace{100pt}$ $<$count, value, complement, commitment$>$\\
+				Where count is the number of leaf vertices in the subtree rooted at this vertex; value is the SUM aggregate computed over all the leaves in the subtree; complement is the aggregate over the COMPLEMENT of the data values; and commitment is a cryptographic commitment.
+			\end{definition}
+			There is one leaf vertex $u_{s}$ for each sensor node $s$, which we call the leaf vertex of $s$. The label of $u_{s}$ consists of count = 1, value = $a_{s}$ where $a_{s}$ is the data value of $s$, complement = $r - a_{s}$ where $r$ is the upper bound on allowable data values, and commitment is the node’s unique ID.\\
+			Internal vertices represent aggregation operations, and have labels that are defined based on their children. Suppose an internal vertex has child vertices with the following labels: $u_{1}$, $u_{2}$, $\dotsc$ , $u_{q}$, where $u_{i}$ = $<$ $c_{i}$, $v_{i}$, $\bar{v_{i}}$,$h_{i}$$>$. 
+			Then the vertex has label $<$$c$, $v$, $\bar{v}$, $h$$>$, with $c$ $=$ $\sum c_{i}$, $v$ $=$ $\sum v_{i}$, $\bar{v}$ $=$ $\sum \bar{v_{i}}$ and $h$ $=$ $H[N||c||v||\bar{v}||u_{1}||u_{2}|| \dotsc ||u_{q}]$.\\
+			The labels of the vertices of the commitment tree of Figure \ref{fig:naive-commitment-tree} are shown below.
+			\begin{equation}
+				I_{0} = <1, a_{I}, r - a_{I}, I>
+				\label{eq:label-1}
+			\end{equation}
+			\begin{equation}
+				H_{1} = <2, v_{H_{1}}, r - v_{H_{1}}, H[N||2||v_{H_{1}}||\bar{v_{H_{1}}}||H_{0}||I_{0}]>
+				\label{eq:label-2}
+			\end{equation}
+			\begin{equation}
+				B_{1} = <3, v_{B_{1}}, r - v_{B_{1}}, H[N||3||v_{B_{1}}||\bar{v_{B_{1}}}||B_{0}||E_{0}||F_{0}]>
+				\label{eq:label-3}
+			\end{equation}
+			\begin{equation}
+				C_{1} = <4, v_{C_{1}}, r - v_{C_{1}}, H[N||4||v_{C_{1}}||\bar{v_{C_{1}}}||C_{0}||G_{0}||H_{1}]>
+				\label{eq:label-4}
+			\end{equation}
+			\begin{equation}
+				A_{1} = <9, v_{A_{1}}, r - v_{A_{1}}, H[N||9||v_{A_{1}}||\bar{v_{A_{1}}}||A_{0}||D_{0}||B_{1}||C_{1}]>
+				\label{eq:label-5}
+			\end{equation}
+		% subsection aggregate_commit_naive_approach (end)
+		
+		The word vertices is used for the nodes in the commitment tree and the word node is used for the nodes in the aggregation tree.
+		There is a mapping between the nodes in the aggregation tree and the vertices in the commitment tree, a vertex is a logical element in the commitment tree where as the node is a physical sensor node which does all the communications.		
+		The collision resistant hash function makes it impossible for an adversary to change the commitment structure once it is sent to the base station.
+		Our payload format is compact than the label format which is discussed in the next chapter.
+		
+		\subsection{Aggregate commit: Improved approach} 
+		% (fold)
+			\label{sub:aggregate_commit_improved_approach}
+			The aggregation tree is a subgraph of the network graph so it may be randomly unbalanced.
+			This approach tries to separate the structure of the commitment tree from the structure of the aggregation tree.
+			So, the commitment tree can be perfectly balanced.
+
+			In the naive approach, each sensor node always computes the aggregate sum of all its inputs which is a greedy approach.
+			SHIA uses delayed aggregation approach, which performs an aggregation operation if and only if it results in a complete, binary commitment tree.
+
+			We now describe SHIA's delayed aggregation algorithm for producing balanced commitment trees.
+			In the naive commitment tree, each sensor node passes to its parent a single message containing the label of the root vertex of its commitment subtree $T_{s}$.
+			In the delayed aggregation algorithm, each sensor node passes on the labels of the root vertices of a set of commitment subtrees $F = \{ T_{1}, \dotsc, T_{q} \}$.
+			We call this set a commitment forest, and we enforce the condition that the trees in the forest must be complete binary trees, and no two trees have the same height. 
+			These constraints are enforced by continually combining equal-height trees into complete binary trees of greater height.
+			\begin{definition}
+				\cite{chan2006secure}
+				\label{def:commitment-forest}
+				A commitment forest is a set of complete binary commitment trees such that there is at most one commitment tree of any given height.
+			\end{definition}
+
+			The commitment forest is built as follows. Leaf sensor nodes in the aggregation tree originate a single-vertex commitment forest, which they then communicate to their parent sensor nodes. Each internal sensor node $s$ originates a similar single-vertex commitment forest.
+			In addition, $s$ also receives commitment forests from each of its children.
+			Sensor node $s$ keeps track of which root vertices were received from which of its children.
+			It then combines all the forests to form a new forest as follows.
+			Suppose $s$ wishes to combine $q$ commitment forests $F_{1}$,$\dotsc$,$F_{q}$.
+			Note that since all commitment trees are complete binary trees, tree heights can be determined by inspecting the count field of the	root vertex.
+			We let the intermediate result be $F$ $=$ $F_{1}$ $\cup$ $\dotsc$ $\cup$ $F_{q}$, and repeat the following until no two trees are the same height in $F$.
+			Let $h$ be the smallest height such that more than one tree in $F$ has height $h$.
+			Find two commitment trees $T_{1}$ and $T_{2}$ of height $h$ in $F$, and merge them into a tree of height $h + 1$ by creating a new vertex that is the parent of both the roots of $T_{1}$ and $T_{2}$ according to the inductive rule in Definition \ref{def:label}.
+
+			\begin{exmp} The commitment-forest generation process for node $A$ of Figure \ref{fig:at} is shown here.\\
 				\begin{figure}[h!]
-					\centering
-					\includegraphics[width=6in]{images/commitment-tree-example-1.png}\\
-					\caption{$A$ receives $C_{2}$ from $C$, $(B_{1},B_{0})$ from $B$, $D_{0}$ from $D$ and generates $A_{0}$. The commitment payload received from a given sensor node is indicated by dashed-line box.}
-					\label{fig:commitment-tree-example-1}
-				\end{figure}
+					% \centering
+					\includegraphics[width=6in]{images/commitment-tree-example-1-shia.png}\\
+					\caption{$A$ receives $C_{2}$ from $C$, $(B_{1},B_{0})$ from $B$, $D_{0}$ from $D$ and generates $A_{0}$. The commitment forest received from a given sensor node is indicated by dashed-line box.}
+					\label{fig:commitment-tree-example-1-shia}
+				\end{figure}\\
+
 				\begin{equation}
 					\begin{array}{l}
-						A_{0} = <A_{id}, 1, A_{value}, H(N||1||A_{value})>; \textsf{Sign}_{S_{A}}(A_{0}) \\
-						D_{0} = <D_{id}, 1, D_{value}, H(N||1||D_{value})>; \textsf{Sign}_{S_{D}}(D_{0})\\
-						B_{0} = <B_{id}, 1, B_{value}, H(N||1||B_{value})>; \textsf{Sign}_{S_{B}}(B_{0})\\
-						B_{1} = <B_{id}, 2, B_{value}, H(N||2||B_{value}||E_{0}||F_{0})>; \textsf{Sign}_{S_{B}}(B_{1})\\
-						\textcolor{red}{\textsf{Sign}_{S_{B}}(B_{0} || B_{1}), benefits}\\
-						C_{2} = <C_{id}, 4, C_{value}, H(N||4||C_{value})||H_{1}||C_{1})>; \textsf{Sign}_{S_{C}}(C_{2})\\
-						\end{array}
-				\end{equation}
-
-				\begin{figure}[h!]
-					\centering
-					\includegraphics[width=6in]{images/commitment-tree-example-2.png}\\
-					\caption{First Merge: $A_{1}$ vertex created by A.}
-					\label{fig:commitment-tree-example-2}
-				\end{figure}
-
-				\begin{equation}
-					\begin{array}{l}
-				A_{1} = <A_{id}, 2, A_{1value}, H(N||2||A_{1value}||A_{0}||D_{0})>; \textsf{Sign}_{S_{A}}(A_{1})\\
-				where\  A_{1value} = A_{value} + D_{value} \\
-					\end{array}	
-				\end{equation}
-				\begin{figure}[h!]
-					\centering
-					\includegraphics[width=\textwidth]{images/commitment-tree-example-3.png}\\
-					\caption{Second Merge: $A_{2}$ vertex created by A.}
-					\label{fig:commitment-tree-example-3}
-				\end{figure}
-				\begin{equation}
-					\begin{array}{l}
-						A_{2} = <A_{id}, 4, A_{2value}, H(N||4||A_{2value}||B_{1}||A_{1}) >; \textsf{Sign}_{S_{A}}(A_{2})\\
-						where\  A_{2value} = B_{1value} + A_{1value} \\
+						A_{0} = <1, a_{A}, r - a_{A}, A>\\
+						D_{0} = <1, a_{D}, r - a_{D}, D>\\
+						E_{0} = <1, a_{E}, r - a_{E}, E>\\
+						B_{1} = <2, v_{B_{1}}, \bar{v_{B_{1}}}, H(N || 2 || v_{B_{1}}|| \bar{v_{B_{1}}} || B_{0} || F_{0})>\\
+						C_{2} = <4, v_{C_{2}}, \bar{v_{C_{2}}}, H(N || 4 || v_{C_{2}}|| \bar{v_{C_{2}}} || H_{1} || C_{1})>\\
 					\end{array}
 				\end{equation}
 				\begin{figure}[h!]
 					\centering
-					\includegraphics[width=6in]{images/commitment-tree-example-4.png}\\
-					\caption{Third Merge: $A_{3}$ vertex created by A.}
-					\label{fig:commitment-tree-example-4}
+					\includegraphics[width=6in]{images/commitment-tree-example-2-shia.png}\\
+					\caption{First Merge: $A_{1}$ vertex created by A.}
+					\label{fig:commitment-tree-example-2-shia}
 				\end{figure}
 				\begin{equation}
 					\begin{array}{l}
-						A_{3} = <A_{id},8, A_{3value},H(N||8||A_{3value}||C_{2}||A_{2})>; \textsf{Sign}_{S_{A}}(A_{3})\\
-						where\ A_{3value} = A_{2value} + C_{2value}
+						A_{1} = <2, v_{A_{1}}, \bar{v_{A_{1}}}, H(N || 2 || v_{A_{1}}|| \bar{v_{A_{1}}} || A_{0} || D_{0})>\\
+						v_{A_{1}} = a_{A} + a_{D}; \bar{v_{A_{1}}} = r - a_{A} + r - a_{D}\\
+					\end{array}
+				\end{equation}
+				\begin{figure}[h!]
+					\centering
+					\includegraphics[width=6in]{images/commitment-tree-example-3-shia.png}\\
+					\caption{Second Merge: $A_{2}$ vertex created by A.}
+					\label{fig:commitment-tree-example-3-shia}
+				\end{figure}
+				\begin{equation}
+					\begin{array}{l}
+						A_{2} = <4, v_{A_{2}},\bar{v_{A_{2}}},H(N || 4 || v_{A_{2}} || \bar{v_{A_{2}}} || B_{1} ||A_{1}) >\\
+						v_{A_{2}} = v_{A_{1}} + v_{B_{1}}; \bar{v_{A_{2}}} = r - v_{A_{1}} + r - v_{B_{1}}
+					\end{array}
+				\end{equation}
+				\begin{figure}[h!]
+					\centering
+					\includegraphics[width=6in]{images/commitment-tree-example-4-shia.png}\\
+					\caption{Third Merge: $A_{3}$ vertex created by A.}
+					\label{fig:commitment-tree-example-4-shia}
+				\end{figure}
+				\begin{equation}
+					\begin{array}{l}
+						A_{3} = <8, v_{A_{3}},\bar{v_{A_{3}}},H(N || 8 || v_{A_{3}} || \bar{v_{A_{3}}} || C_{2} ||A_{2}) >\\
+						v_{A_{3}} = v_{A_{2}} + v_{C_{2}}; \bar{v_{A_{3}}} = r - v_{A_{2}} + r - v_{C_{2}}
 					\end{array}
 				\end{equation}
 			\end{exmp}
-% chapter A Protocol for Commitment Tree Generation (end)
+		% subsection aggregate_commit_improved_approach (end)
+	% section aggregate_commit (end)
 
-% Talk about the certificates:
-	
-% 	How many certificates does $A$ need to know in this example ?
-% 	In the above example, $A$ need to know $D,B,C's$ certificate to verify their signatures.
-% 	But if we use SHIA'a approach of creating commitment tree then $A$ need to know $E's$ certificate as well.
-% 	Hence, being root in as many tree as possible is the more efficient.
-\section{Bandwidth Analysis}
-	For any given sensor node's forest with $n$ leaf vertices, has at most $\log n$ data-items in its payload.
-	It has at most $(\log n) +1$ signatures in its payload.
-	The highest possible count value is $\log n$, as all the trees are binary. 
+\section{Result checking} % (fold)
+\label{sec:result_checking}
+	SHIA presents novel distributed verification algorithm achieving provably optimal security while maintaining sublinear edge congestion.
+	In our work, we take similar approach and add new capabilities to help find an adversary.
+	Here, we describe the SHIA's result checking phase to build the basis for our work.
+	The purpose of the result checking phase is to enable each sensor node $s$ to independently verify that its data value as was added into the SUM aggregate, and the complement $(r - a_{s})$ of its data value was added into the COMPLEMENT aggregate. 
+	First, the aggregation results from the aggregation-commit phase are sent by the base station using authenticated broadcast to every sensor node in the network.
+	Each sensor node then individually verifies that its contributions to the respective SUM and COMPLEMENT aggregates were indeed counted.
+	If so, it sends an authentication code to the base station.
+	The authentication code is also aggregated for communication efficiency. 
+	When the base station has received all the authentication codes, it is then able to verify that all sensor nodes have checked that their contribution to the aggregate has been correctly counted.
+	The result checking process has the following phases.\\
+	\textbf{Dissemination of final commitment values.}
+	Once the base station receives final commitment labels from the root of the commitment forest, it sends each of those commitment labels to the entire network using authenticated broadcast.
+	Authenticated broadcast means that the each sensor node can verify that the message was sent by the base station and no one else.\\
+	\textbf{Dissemination of off-path values.} 
+	Each vertex must receive all of its off-path values to do the verification.
+	The off-path values are defined as follows.
+	\begin{definition}
+		\cite{chan2006secure}
+		The set of off-path vertices for a vertex $u$ in a tree is the set of all the siblings of each of the vertices on the path from $u$ to the root of the tree that $u$ is in (the path is inclusive of $u$).
+	\end{definition}
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[scale = 1]{images/off-path.png}\\
+		\caption{Off-path vertices from $u$ are highlighted in bold.}
+		\label{fig:commitment-tree-example-2-shia}
+	\end{figure}
+	Vertex receives its off-path values from its parent.
+	Each internal vertex has two children.
+	For example, an internal vertex $k$\ has two children $k_{1},k_{2}$.
+	$k$\ sends the label of $k_{1}$\ to $k_{2}$\ and vice versa.
+	$k$\ tags the relevant information of its left and right child.
+	Once a vertex receives all of its off-path values it begins a verification phase.
+	\textbf{Verification of contribution.}
+	The leaf vertex calculates the root vertex's label using its own label and off-path vertex labels.
+	This allows the leaf to verify that its label was not modified on the path to the root during the aggregation-commit process. 
+	Then it compares the the calculated root vertex's label with the label received from the base station via authenticated broadcast.
+	If those two labels match then it proceeds to the next step with ACK message or with NACK message.\\
+	\textbf{Collection of authentication codes.} Once each sensor node $s$\ does verification of contribution for its leaf vertex $v_{s}$\ it sends the relevant authentication code to the base station.
+	The authentication code for sensor node $s$\ with ACK and NACK message has the following format.
+	\begin{equation}
+		MAC_{K_{s}}(N||ACK)	
+	\end{equation}
+	\begin{equation}
+		MAC_{K_{s}}(N||NACK)	
+	\end{equation}
+	Where ACK, NACK are unique message identifier for positive acknowledgment and negative acknowledgment respectively, $N$ is the query nonce and $K_{s}$\ is secret key that $s$\ shares with the base station.
+	Collection of authentication code starts with the leaf nodes in the aggregation tree.
+	Leaf nodes in the aggregation tree send their authentication codes to their parent.
+	Once the parent node has received the authentication from all of its children it does XOR operation on all the authentication codes including its own authentication code and sends it to its parent in the aggregation tree.
+	Each internal sensor node $s$\ in the aggregation tree repeats the process.
+	Finally, the root of an aggregation tree sends a single authentication code to the base station which is an XOR of all the authentication codes of the aggregation tree.\\  
+	\textbf{Verification of confirmations.}
+	Since the base station knows the key $K_{s}$ for each sensor node $s$, it verifies that every sensor node has released its authentication code by computing the XOR of the authentication codes for all the sensor nodes in the network, i.e., $\bigoplus_{i = 1}^n MAC_{K_{i}}(N || ACK)$.
+	The base station then compares the computed code with the received code. If the two codes match, then the base station accepts the aggregation result.
 
-	An intermediate sensor node $S$ with $\beta$ descendants in the aggregation tree, has at most $\log(\beta+1)$ data-items with their respective $\log(\beta+1)$ signatures in its payload.
-	$S$ might need to send its payload signature $Sign(S_{p})$.
-	At max, $S$ has to send a payload with $\log(\beta+1)$ data-items and $\log(\beta+1) +1$ signatures to its parent in the aggregation tree.
-	
-	Hence, sending signatures of the data-items causes $O(\log \beta)$ bandwidth overhead for each node in the network, where $\beta$ is the number of descendants of the sensor node. 
-\section{Result checking}
-
-\section{Performance Analysis}
-	In addition to calculating its own data-items, all intermediate sensor nodes with $\beta$ descendants and $\zeta$ direct children need to do the following:
-	\begin{itemize}
-		\item To calculate and verify $O(\log \beta)$ signatures, creating $O(\log \beta)$ calculation overhead. 
-		\item Needs sufficient memory to cache $O(\log \beta)$ certificates. 
-		\item Needs enough memory to cache $\Omega(\zeta)$ certificates.
-	\end{itemize}
-
-	% Computation cost: Needs to calculate that many signatures. Needs to verify that many signatures.
-	% Need to know that many certificates.
-
-\section{Applications}
-		The signature based aggregation scheme can be applied to do the \textbf{voting} in the network.
-		And voting scheme can be used to solve many sensor network problems.
-		For example, voting can be used to design the distributed algorithm for selecting a cluster head or node revocation system.
-		In the voting scheme, following are the major security concerns: 
-		\begin{itemize}
-			\item The aggregate node needs to know that the vote is coming from the legit voter, no other voter is impersonating the vote of the legit voter.
-			\item Only the intended aggregate node should be able to verify the vote.
-			\item The aggregate node should not be able to tamper with the votes. 
-			\item The aggregate node needs the proof that it aggregated the verified votes.
-			\item The voter need the proof for which vote it sent to its aggregator.
-		\end{itemize}
-		For example, the base station wants to know the overall vote-count in the network.
-		To do so, all the leaf nodes send their votes and the signature of their votes to their respective aggregate nodes in the network.
-		The aggregate nodes receive votes with their signatures from all of their children voters.
-		The aggregate nodes verify all the votes and count those votes.
-		Then they forward the count and the signature of that count signed by the aggregate node to their respective parent in the aggregation tree.
-		This process is repeated until the final count and its signature, is sent to the base station by the root of the aggregation tree.
-				
-	\textbf{Node power level},
-	\textbf{Surveillance Application}
+	\begin{theorem}
+		\cite{chan2006secure}
+		Let the final SUM aggregate received by the base station be $S$.
+		If the base station accepts $S$, then $S_{L} \leq S \leq (SL + \mu \cdot r)$ where $S_{L}$ is the sum of the data values of all the legitimate nodes, $\mu$ is the total number of malicious nodes, and $r$ is the upper bound on the range of allowable values on each node.
+	\end{theorem}
+	The above theorem is proven by SHIA. SHIA achieves security over the truncated SUM which is a resilient aggregator according to Wagner\cite{wagner2004resilient}.
+	Our protocol works on SUM which is non-resilient aggregate and achieves the similar security goals. 
+% section result_checking (end)
