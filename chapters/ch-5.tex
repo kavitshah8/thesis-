@@ -16,39 +16,49 @@
 	Hence, data-aggregation techniques are one of the key tool in our tool box while designing protocol for the sensor networks.
 
 	The second most significant factor in the design of the data aggregation protocol is \textit{Security Architecture }.
-	The International Telecommunications Union (ITU) Telecommunication Standardization Sector (ITU-T) Recommendation X.800, \textit{Security Architect for Open systems interconnection} (OSI) provides a systematic approach for it \cite{stallings2008computer}.
-	Tit OSI security architecture focuses on security attacks, mechanism and services defined as follows:\\
+	The International Telecommunications Union (ITU) Telecommunication Standardization Sector (ITU-T) Recommendation X.800, \textit{Security Architect for Open Systems Interconnection} (OSI) provides a systematic approach for it \cite{stallings2008computer}.
+	The OSI security architecture focuses on security attacks, mechanism and services defined as follows:\\
 	\textbf{Security attack} is any action that compromises the security of information owned by an organization or entity.\\
 	\textbf{Security mechanism} is a mechanism that is designed to detect, prevent, or recover from a security attack.\\
 	\textbf{Security service} is a service that enhances the security of the data processing systems and the information transfers of an organization.
 	The services are intended to counter security attacks, by using one or more security mechanisms.
 
-	\textbf{Security attacks} can be classified as \textit{passive attacks} and \textit{active attacks}.\\
+	\textbf{Security attacks} can be classified as \textit{passive attacks} and \textit{active attacks}.
+
 	\textit{Passive attacks} attempts to learn or make use of information from the system but does not affect the system resources.
 	They are in the nature of eavesdropping on, or monitoring of, transmissions.
-	Two types of passive attacks are \textit{release of message contents} and \textit{traffic analysis}.\\
+	Two types of passive attacks are \textit{release of message contents} and \textit{traffic analysis}.
+
 	The \textit{release of message contents} is well understood. 
 	A telephone conversation, an electronic mail, and a transferred file may contain sensitive or confidential information.
-	We would like to prevent an opponent from learning the contents of these transmissions.\\
+	We would like to prevent an opponent from learning the contents of these transmissions.
+
 	The \textit{traffic analysis} is subtler. 
 	Suppose that we had a way of masking the message so that even if the  opponents captured the message, could not extract it.
 	The common mechanism for masking the message is encryption.
 	If we had encryption protection in place, an opponent might still be able to observe the pattern of these message communication.
 	The opponent could determine the location and identity of communicating hosts and could observe the frequency and length of message being exchanged.
-	These patterns might be useful in guessing the nature of the communication that was taking place.\\
+	These patterns might be useful in guessing the nature of the communication that was taking place.
+
 	\textit{Passive attacks} are difficult to detect as they do not involve any alteration of the message.
 	Typically, the message traffic is sent and received in an apparently normal way and neither the sender nor receiver is aware that a third party has sniffed the message or observed the traffic pattern.
 	However, it is feasible to prevent the success of these attacks, usually by means of encryption. 
-	Thus, the emphasis on dealing with passive attacks is on prevention rather that detection.\\
-	\textit{Active attacks} involve some modification of the data stream or the creating of a false stream and can be subdivided into four categories: \textit{replay, masquerade, modification of messages, and denial of service}.\\ 
-	\textit{Replay} involves the passive capture of a data unit and its subsequent retransmission to produce an unauthorized effect.\\
+	Thus, the emphasis on dealing with passive attacks is on prevention rather that detection.
+
+	\textit{Active attacks} involve some modification of the data stream or the creating of a false stream and can be subdivided into four categories: \textit{replay, masquerade, modification of messages, and denial of service}.
+
+	\textit{Replay} involves the passive capture of a data unit and its subsequent retransmission to produce an unauthorized effect.
+
 	A \textit{masquerade} takes place when one entity pretends to be a different entity.
-	For example, authentication sequence can be captured and replayed after a valid authentication sequence has taken place, thus enabling an authorized entity with few privileges to obtain extra privileges by impersonating an entity that has those privileges.\\
+	For example, authentication sequence can be captured and replayed after a valid authentication sequence has taken place, thus enabling an authorized entity with few privileges to obtain extra privileges by impersonating an entity that has those privileges.
+
 	\textit{Modification of message} means that some portion of a legitimate message is altered or that the messages are delayed or reordered, to produce an unauthorized effect.
-	For example, a message stating ``Allow Brian King to read confidential file accounts.'' is modified to say ``Allow Danny King to read confidential file accounts.''\\
+	For example, a message stating ``Allow Barack Obama to read confidential file accounts.'' is modified to say ``Allow Michelle Obama to read confidential file accounts.''
+
 	The \textit{denial of service} inhibits the normal use of communication facilities.
 	For example, an entity may suppress all messages directed to a particular destination.
-	Another form of service denial is the disruption of an entire network, either by disabling the network or by overloading it with messages so as to degrade performances.\\
+	Another form of service denial is the disruption of an entire network, either by disabling the network or by overloading it with messages so as to degrade performances.
+
 	\textit{Active attacks} present the opposite characteristics of passive attacks.
 	Whereas passive attacks are difficult to detect, measures are available to prevent their success.
 	On the other hand, it is quite difficult to prevent active attacks absolutely, because to do so would require physical protection of all communication facilities and paths at all times.
@@ -56,16 +66,20 @@
 	Because the detection has a deterrent effect, it may also contribute to prevention.
 
 	\textbf{Security services} are divided into six categories:
-	\textit{Authentication, Access Control, Data Confidentiality, Data Integrity, Non-repudiation, Availability}.\\
+	\textit{Authentication, Access Control, Data Confidentiality, Data Integrity, Non-repudiation, Availability}.
+
 	\textit{Authentication} service assures that a communication is authenticate.
-	Two types of authentication services are described in the standard \textit{peer entity authentication} and \textit{data origin authentication}.
+	Two types of authentication services are described in the standard: \textit{peer entity authentication} and \textit{data origin authentication}.
+
 	The \textit{peer entity authentication} provides for the corroboration of the identity of a peer entity in an association.
 	Two entities are considered as peer if they implement the same protocol in different systems (e.g., two TCP users in two communicating systems).
 	Peer entity authentication is used at the establishment of, or at times during the data transfer phase of, a connection.
 	It attempts to provide confidence that an entity is not performing either a masquerade or an unauthorized replay of a previous connection.
+
 	\textit{Data origin authentication} provides the corroboration of the source of a data unit. 
 	It does not provide protection against the duplication or modification of data units.
-	This type of service supports applications like electronic mail where there are no prior interactions between the communicating entities.\\
+	This type of service supports applications like electronic mail where there are no prior interactions between the communicating entities.
+
 	\textit{Data Confidentiality} ensures the protection of transmitted data from passive attacks.
 	It is also known as secrecy or privacy.
 	For example, student grade information is an asset whose confidentiality is considered to be highly important by students.
@@ -76,18 +90,20 @@
 	Ensuring confidentiality can be difficult.
 	For example, who determines which parties are authorized to access the information?
 	By ``accessing'' information, do we mean that an authorized party can access a single bit? the whole collection? pieces of information out of context?
-	Can someone who is authorized disclose that information to other parties?\cite{pfleeger2002security}\\
+	Can someone who is authorized disclose that information to other parties?\cite{pfleeger2002security}
+
 	\textit{Data Integrity} assures that the only authorized entities can modify the information; where modification means writing, creating, deleting and changing the information.
 	A hospital patient's allergy information stored in a database illustrates the several aspects of the data integrity.
 	The doctor should be able to trust that the information is correct and current.
-	Now suppose a nurse who is authorized to update to view and update the information deliberately falsifies the data to cause harm to the hospital.
+	Now, suppose a nurse who is authorized to view and update the information deliberately falsifies the data to cause harm to the hospital.
 	The database needs to be restored to a trusted basis quickly, and it should be possible to trace the error back to the person responsible.
 	Patient allergy information is an example of an asset with a high requirement for integrity. 
 	Inaccurate information could result in serious harm or death to a patient and expose the hospital to massive liability.
 	Because the integrity service relates to active attacks, we are concerned with detection rather than prevention.
 	If a violation of integrity is detected, then the service may simply report this violation, and some other portion of software or human intervention is required to recover from the violation.
-	Alternatively, there are mechanisms available to recover from the loss of integrity of data, as we will review subsequently. The incorporation of automated recovery mechanisms is, in general, the more attractive alternative.\\
-	\textit{Availability} means that the information of a system being accessible and usable by an an authorized parties according to performance specification at appropriate times.
+	Alternatively, there are mechanisms available to recover from the loss of integrity of data, as we will review subsequently. The incorporation of automated recovery mechanisms is, in general, the more attractive alternative.
+
+	\textit{Availability} means that the information of a system being accessible and usable by an authorized parties according to performance specification at appropriate times.
 	In other words, if some person or system has legitimate access to a particular set of objects, that access should not be prevented.
 	Availability applies to the information and services.
 	For example, information or service is available can mean the following. 
@@ -96,17 +112,19 @@
 	Resources are allocated fairly so that some requests are not favored over the others.
 	The service can be used easily and in its intended way.
 	Availability addresses the concern raised by the denial of service attacks.
-	It depends on proper management and control of system resources and thus depends on access control service and other security services.\\
+	It depends on proper management and control of system resources and thus depends on access control service and other security services.
+
 	\textit{Non repudiation} service requires neither the sender nor the receiver can deny the transmission.
 	Thus, when a message is sent, the receiver can prove that the alleged sender in fact sent the message.
 	Similarly, when a message is received, the sender can prove that the alleged receiver in fact received the message.
-	This is very important in electronic commerce applications, where it is important that a consumer cannot deny the authorization of a purchase.\\
+	This is very important in electronic commerce applications, where it is important that a consumer cannot deny the authorization of a purchase.
+
 	\textit{Access Control} is the ability to restrict and control the access to host systems and applications via communications links.
 	To achieve this, each entity trying to gain access must first be identified, or
 	authenticated, so that access rights can be tailored to the individual.
 	Login credentials and Locks are two analogues mechanism of access control.
 
-	\textit{Security Mechanisms} follows one of the most fundamental principle of Open Design \cite{bishop2004introduction} defined as follows:
+	\textbf{Security mechanisms} follow one of the most fundamental principle of Open Design \cite{bishop2004introduction} defined as follows:
 		\begin{definition}
 			The principle of open design states that the security of a mechanism should not depend on the secrecy of its design or implementation.
 			\label{def:open-design}
@@ -120,16 +138,23 @@
 		Issues of proprietary software and trade secrets complicate the application of this principle.
 		In some cases, companies may not want their designs made public, lest their competitors use them.
 		The principle then requires that the design and implementation be available to people barred from disclosing tit outside the company.
-		Keeping cryptographic keys and passwords does not violate this principle, because a key is not an algorithm.
+		Note that keeping cryptographic keys and passwords does not violate this principle, because a key is not an algorithm.
 		However, keeping the enciphering and deciphering algorithms secret would violate it.
-		The following security mechanisms may be incorporated into the appropriate protocol layer in order to provide some of the OSI services.\\
+		The following security mechanisms may be incorporated into the appropriate protocol layer in order to provide some of the OSI services.
+
 		\textit{Encryption} is the use of mathematical algorithms to transform data into a form that is not readily intelligible.
-		The transformation and subsequent recovery of the data depend on an algorithm and zero or more encryption.\\
-		\textit{Digital Signature} appends the data to a cryptographic transformation of data unit that allows a recipient of the data unit to prove the source and integrity of the data unit and protects against the forgery (e.g., by the recipient).\\
-		\textit{Traffic Padding} is the insertion of bits into gaps in a data stream to frustrate traffic analysis attempts.\\
-		\textit{Routing Control} enables selection of particular physically secure routes for certain data and allows routing changes, especially when a breach of security is suspected.\\
-		\textit{Notarization} is the use of a trusted third party to assure certain properties of a data exchange.\\
-		\textit{Authentication Exchange} is a mechanism intended to ensure the identity of an entity by means of information exchange.\\
+		The transformation and subsequent recovery of the data depend on an algorithm and zero or more encryption.
+
+		\textit{Digital Signature} appends the data to a cryptographic transformation of data unit that allows a recipient of the data unit to prove the source and integrity of the data unit and protects against the forgery (e.g., by the recipient).
+
+		\textit{Traffic Padding} is the insertion of bits into gaps in a data stream to frustrate traffic analysis attempts.
+
+		\textit{Routing Control} enables selection of particular physically secure routes for certain data and allows routing changes, especially when a breach of security is suspected.
+
+		\textit{Notarization} is the use of a trusted third party to assure certain properties of a data exchange.
+
+		\textit{Authentication Exchange} is a mechanism intended to ensure the identity of an entity by means of information exchange.
+
 		\textit{Hash functions} provides one way functions to achieve irreversible encryption.
 
 	As you can see, expectations from secure networking protocol are far-reaching.
@@ -138,7 +163,7 @@
 	And the network forwards all the data with their respective signatures to the base station.
 	The base station verifies all the signatures and then calculates the aggregate function.
 	Clearly, this approach is not practical as it requires $n$ signatures to traverse through the link between the base station and the root node of the network; where $n$ is the number of nodes in the network.
-	Which makes that link the bottleneck link for the network. 
+	Which makes that link the bottleneck link of the network. 
 	And if that link breaks we loose the entire network connectivity.
 
 	In reality all the security services are not always required.
@@ -176,7 +201,7 @@
 	The third most significant aspect in the design of secure data aggregation protocol is \textit{Data Integrity}.
 	The protocol collects the data from the sensors and aggregates the reading on the way to the base station.
 	The base station takes an important decision based on the received value.
-	If the sensor network is deployed to measure the certain harmful chemical levels in the lab atmosphere and raise an alarm if the it increases above certain level.
+	For example, if the sensor network is deployed to measure the certain harmful chemical levels in the lab atmosphere and raise an alarm if the it increases above certain level.
 	And if the base station fails to raise an alarm because of the false aggregated data, can create catastrophic and lethal situation.
 	Hence, the data integrity is so important.
 
@@ -188,7 +213,7 @@
 	Locating the criminals responsible for the crime is mandatory to abolish the crime in the city.
 	In similar way, locating the malicious node and removing it from the network is an important security service. 
 	Failing to provide such a security service, allows an adversary to continue doing the malicious activity in the future, which makes aggregated sensor data garbage. 
-	And network has to redo the all the work to create response for the query from the base station, which consumes lot of bandwidth. 
+	And network has to redo the all the work to create response for the query from the base station, which consumes lots of bandwidth. 
 	An adversary can repeat this process until the network dies due to low battery power, creating a denial of service attack in the network.
 	Hence, we think detecting a malicious node who is responsible for the malicious activity is equally important.
 	If we can track down the malicious node in the network then we can remove that node from the network for all future queries.
@@ -214,14 +239,15 @@
 	The protocol can be applied to \textit{any hierarchical sensor network}.
 	We want protocol to work on \textit{resilient} and \textit{non-resilient} aggregate functions without compromising any desired security properties.
 	We want protocol to be secure with \textit{a single} or \textit{multiple adversaries} in the network.
-	We want the protocol to protect against any \textit{active attacks}. 
+	\label{subsec:security benefits of signing the data-item}	We want the protocol to protect against any \textit{active attacks}. 
 	If the aggregation result is accepted by the base station it should have very high confidence in the result, meaning that we want the highest level of \textit{data integrity} security service in the protocol.
 	We want the capabilities to \textit{detect any malicious activity}.
 	If there is any malicious activity in the network, we should be able to \textit{locate an adversary} responsible for it, in the network.
-	We want the \textit{non-repudiation} security service to be able to locate an adversary.
-	We want to achieve this with the least amount of overhead in terms of bandwidth and computation power in the network.
+	We want the \textit{non-repudiation} security service so neither sender nor receiver can deny the transmission or receiving of the message, which is mandatory to locate an adversary.
+	We want to achieve this with the least amount of \textit{bandwidth and computation} overhead in the network.
 	So, the protocol can be easily implemented in the real world sensor networks.
-
+	It is not that difficult to provide mentioned security properties to protect against active attacks in the sensor network. 
+	We will show that it requires sub-linear edge congestion to provide these services. 
 	% As we saw in the previous chapter SHIA can detect the malicious activity in the network with only sub-linear edge congestion.
 	% So, we built our work on top of SHIA which can detect an adversary.
 
@@ -231,8 +257,7 @@
 	% If there is any malicious activity detect it
 
 	% Locate an adversary	
-	
-	% Like we wanted to detect an adversary in the network with least amount of overhead in terms of BW and computation.
+	% fig:Commitment payload of C to detect an adversary in the network with least amount of overhead in terms of BW and computation.
 	% We wanted to achieve that with as realistic as possible. 
 
 
@@ -242,13 +267,13 @@
 % 	% In the previous chapter, we saw that SHIA limits the adversary's ability to manipulate the aggregation result with the tightest bound possible.
 % 	% But, SHIA uses truncated sum as an aggregate function which is resilient according to the Wagner \cite{wagner2004resilient}.
 % 	% It does not help accurately calculating the sum aggregate. 
-% 	% Furthermore, SHIA does not help detecting and revoking the malicious aggregate node from the network.
+% 	% Furthermore, SHIA does not help detecting and revoking the from the of Sensor Node malicious aggregate no network.
 % 	% SHIA does not require prior knowledge of network topology and works on hierarchical sensor network which might include multiple malicious sensor nodes, with only suboptimal congestion overhead.
 % 	% SHIA helps the sensor node verify, its reported sensor reading was aggregated correctly or not, by an an aggregate node.
 % 	% If an an aggregate node has tampered with the reported sensor reading then the relevant sensor node can detect the tampering and raise an alarm.
 % 	We develop the aggregation protocol which works for any random hierarchical sensor networks with a single or multiple adversaries.
 % 	It works on the resilient as well as non-resilient aggregation functions Defined in \ref{def:resilient}, without compromising any desired security properties.
-% 	It identifies all the adversaries in the network who are responsible for the malicious activity.
+% 	It
 % 	It prevents masquerade attacks in the network so this protocol can easily be applied to do the voting scheme in the network.
 
 	% We want to achieve all the mentioned goals by inducing only $O(\delta \log^{k} n)$ node congestion in the aggregation tree; where $n$ is the number of nodes in the network, $\delta$ is the fanout of any node in the aggregation tree, and $k$ is the variable.
@@ -258,7 +283,7 @@
 \section{Security Mechanisms}
 	To detect any malicious activity in the network which is an important part of achieving data-integrity in the network we use \textit{Hash Functions} as security mechanism.
 	To protect against any active security attacks, provide authentication and non-repudiation security services we use \textit{Digital Signatures} as the security mechanisms.
-
+	Both of these mechanisms are described in details in Chapter \ref{cha:Networking and Cryptography tools}.	
 
 
 \section{System Design Implementations}
@@ -271,7 +296,7 @@
 
 \section{Data-Item}
 	
-	We describe structure of the data-item, used in creating the commitment tree for the aggregate commit with verification approach. And differences between the data-item and the label structure of SHIA with rational behind it.
+	We describe structure of the data-item, used in creating the commitment tree for the aggregate commit with verification approach. And differences between the data-item and the label structure of SHIA, with rational behind it.
 	\begin{definition}
 		\label{def:data-item}
 		A commitment tree is a binary tree where each vertex has an associated data-item representing the data that is passed on to its parent. The data-items have the following format:
@@ -282,7 +307,7 @@
 	
 	We remove the $complement$ field from the label structure Defined \ref{def:label}. 
 	We think the complement filed is redundant information in the label. 
-	The complement field is used by the base station (the querier according to SHIA), before the result checking phase, to verify \textbf{SUM + COMPLEMENT =} $\textbf{n} \cdot \textbf{r}$ ; where $\textbf{n}$ is the number of nodes in the network, $\textbf{r}$ is the upper bound on the allowed sensor readings.
+	The complement field is used by the base station (the querier, according to SHIA), before the result checking phase, to verify \textbf{SUM + COMPLEMENT =} $\textbf{n} \cdot \textbf{r}$ ; where $\textbf{n}$ is the number of nodes in the network, $\textbf{r}$ is the upper bound on the allowed sensor readings.
 	We can achieve the same upper bound without the complement field.
 	As the querier knows $n, r$ and it gets SUM from the root of the aggregation tree.
 	If \textbf{SUM} $> \textbf{n} \cdot \textbf{r}$ , then the base station knows some node or nodes in the network reported out of range readings.
@@ -290,7 +315,7 @@
 	We include $id$ of the node in its data-item.
 	SHIA does not have the ID field in their label structure as they do not do internal verification while creating a commitment tree and while distributing off-path values.
 	Also, in the label format ID of the node is hashed in the commitment field after the first aggregation and virtually gets lost.
-	Hence, SHIA can not provide authenticity of the message and is vulnerable to masquerade attacks.
+	Hence, SHIA can not provide security services such as authenticity, non-repudiation and is vulnerable to all sorts of active attacks.
 	We do internal verification while creating the commitment tree and distributing off-path values.
 	So, it is necessary for any aggregate node to know the ID of all the received data-items in its forest, for the verification of the received signatures as shown in the next section.
 
@@ -301,17 +326,19 @@
 		\label{eq:leaf-vertex}
 		S_{0}\ =\ <S_{id}, 1, S_{value}, H(N||1||S_{value})>;\ 	\textsf{Sign}_{S_{S}}(S_{0})
 	\end{equation}
-	where $H$ is a collision resistant hash function, $S_{S}$ is the secret key of $S$, $N$ is the query nonce.
+	where $H$ is a collision resistant hash function, $S_{S}$ is the secret key of sensor node $S$, $N$ is the query nonce.
 
 	The key difference between the SHIA's approach and our approach is that, in addition to sending the data-item, each sensor node sends the signature of the data-item to its parent.
-	It sends its certificate as well if the parent node does not have it in its cache  already.
-	The parent node gets the public key of the child node from its certificate, which is used in decrypting the signature. 
+	It sends its certificate as well if the parent node does not have it in its memory  already.
+	The parent node gets the public key of the child node from its certificate, which is used in verifying the signature. 
 	The parent node verifies all the received signature using its children node's public key.
-	Details of the signing and verification process is shown in Figure \ref{fig:digita-signature}.
+	Details of the signing and verification processes are shown in Figure \ref{fig:digita-signature}.
 	After doing the verification the parent node proceeds to the aggregation and creating the commitment tree.
 	
 	\subsection{Bandwidth Analysis}
 
+	Cite resources for this.
+	
 	Typical size of the data-item packet is $400$ bits.
 	If one uses Elliptic curve cryptography then the size of signature is $500$ bits.
 	And the certificate size is $1500$ bits.
@@ -320,10 +347,14 @@
 	Because of all the security benefits we gain from it. 
 	\textbf{Note:} The packets size are close approximate to the actual packet size. 
 	The actual packet size may differ based on the implementation.
+
 	\subsection{Security Benefits}
-	This additional signature allows the parent node to verify that the authenticity of the sensor node and integrity of the received data-item.
+	\label{subsec:security benefits of signing the data-item}
+	The signature allows the parent node to verify the \textit{authenticity} of the sensor node.
+	It also allows to verify the \textit{integrity} of the received data-item.
 	It allows the sender to have the proof for the sent data-item.
-	And the receiver for the proof for the received data-item, eliminating the repudiation attacks.
+	And the receiver for the proof for the received data-item, providing the \textit{non-repudiation}.
+	Hence, it protects against the \textit{active attacks}.
 
 \section{Signing the Commitment Payload}
 		We define commitment payload based on the commitment forest Defined in \ref{def:commitment-forest}.
@@ -336,7 +367,7 @@
 	An aggregate node sends an additional signature to its parent, which is a signature of all the data-items in its payload.
 	The signature on the payload assures that an aggregate node sent only the data-items included in the payload signature.
 	It assures the authenticity, non-repudiation, integrity of all the data-items included in the payload.
-	For example, the aggregation tree shown in Figure \ref{fig:Palm aggregation tree}, the payload of sensor node $C$ is show in Figure \ref{fig:commitment-tree-example-1}.
+	For example, the aggregation tree shown in Figure \ref{fig:Palm aggregation tree}, the payload of sensor node $C$ is show in Figure \ref{fig:Commitment payload of C}.
 			\begin{figure}[h!]
 				\centering
 				\includegraphics[scale = 1]{images/palm-aggregation-tree.png}\\
@@ -348,7 +379,7 @@
 			\begin{figure}[h!]
 				\centering
 				\includegraphics[scale = 1]{images/commitment-payload-of-C.png}
-				\caption{$C$'s Commitment Payload}
+				\caption{Commitment Payload of Sensor Node $C$}
 				\label{fig:Commitment payload of C}
 			\end{figure}
 		\begin{equation}	
@@ -359,7 +390,9 @@
 			\end{array}
 			\label{eq:forwarding-payload-without-resigning}
 		\end{equation}
-	Signature on the $C$'s payload $\textsf{Sign}_{S_{C}}(C_{0}||B_{1})$ assures that the sensor node $C$ sent only two data-items $C_{0},B_{1}$ in its payload.
+
+	\subsection{Security Benefits}
+	In addition to all the security benefits mentioned in Subsection \ref{subsec:security benefits of signing the data-item}, signature on the $C$'s payload $\textsf{Sign}_{S_{C}}(C_{0}||B_{1})$ assures that the sensor node $C$ sent only two data-items $C_{0},B_{1}$ in its payload.
 	And none of the data-items in its payload have been left stranded.
 
 \section{Forwarding the Commitment Payload}	
@@ -383,19 +416,19 @@ To give an analogy with the real world application consider the following exampl
 One want to buy a diamond from the local diamond retailer.
 Diamond is an expensive commodity so the end customer wants to verify its authenticity and integrity before purchasing.
 Suppose, the diamond was created by the manufacturer in Africa, it was sold to a national wholesaler in the United States. 
-The national wholesaler sells it to the state level reseller and he sells it to the city or county level retailer from whom the customer purchases the commodity.
+The national wholesaler sells it to the state level reseller and he sells it to the city or county level retailer from whom the customer purchases the diamond.
 
 One approach to verify the authenticity of the commodity is to make each entity in the supply chain to verify all the signatures on the received entity and sign on top of it.
 And then forward the commodity with all the signatures to the next entity in the supply chain.
 The next entity repeats the same procedure.
 Hence, any entity in the supply chain need to verify the signatures of all its descendants in the supply chain.
-In our example, it means to make the manufacturer from Africa signs the diamond and sells the signed diamond with his certificate.
+In our example, it means to make the manufacturer from Africa signs the diamond and sells the signed diamond with his certificate to the national level wholesaler in United States.
 The national level wholesaler in United States verifies the signature from the manufacturer using manufacturer's certificate.
-Then he adds his signature and certificate, and sells to the state level reseller the diamond signed with two signatures and two certificates.
-The state level reseller verifies both the signatures on the diamond using the certificates.
-Then he adds his signature and certificate, and sells to the city level retailer the diamond singed with three signatures and three certificates. 
+Then he adds his signature and certificate, and sells the diamond signed with two signatures and two certificates to the state level reseller.
+The state level reseller verifies both the signatures on the diamond using the respective certificates.
+Then he adds his signature and certificate, and sells the diamond singed with three signatures and three certificates to the city level retailer. 
 The city level retailer does the same thing before selling the diamond to the end customer.
-In the end, the customer needs to verify all four signatures, using the received certificates.
+In the end, the customer needs to verify all four signatures, using the respective certificates.
 
 % Note: that the same diamond now has been signed by four different entities. And the end customer need to know the certificate of all four parties to verify all those signatures.
 
@@ -403,11 +436,11 @@ An alternative approach to verify the authenticity of the commodity is to make e
 It means the next entity in the supply chain need to verify only a single signature.
 The next entity repeats the same procedure.
 Hence, any entity in the supply chain need to verify the signature of only its direct peer in the supply chain. 
-In our example, it means to make the manufacturer from Africa signs the diamond and sells the signed diamond with his certificate.
+In our example, it means to make the manufacturer from Africa signs the diamond and sells the signed diamond with his certificate to the national level wholesaler in United States.
 The national level wholesaler in United States verifies the signature from the manufacturer using the manufacturer's certificate.
-Then he removes the signature of the manufacturer, adds his own signature and certificate, and sells to the state level reseller the diamond signed with one signature and one certificate.
+Then he removes the signature of the manufacturer, adds his own signature and certificate, and sells the diamond signed with one signature and one certificate to the state level reseller.
 The state level reseller verifies only the signature from the wholesaler using the wholesaler's certificate.
-Then he removes the signature of the wholesaler, adds his own signature and certificate, and sells to the city level retailer the diamond signed with one signature and one certificate.
+Then he removes the signature of the wholesaler, adds his own signature and certificate, and sells the diamond signed with one signature and one certificate to the city level retailer.
 The city level retailer does the same thing before selling the diamond to the end customer.
 In the end, the customer needs to verify only one signature of the city level retailer using retailer's certificate.
 This approach requires very few number of certificates overall in the supply chain.
@@ -424,10 +457,29 @@ The various aspects of both the approaches for sensor nodes are discussed in the
 				\item Number of certificates needed in the network is $O(n)$; n is the number of nodes in the network.
 				\item We do not need the signature of the payload.
 			\end{itemize}
-
+		As the commitment tree is binary we need $\Omega(2^h - 1)$ signatures; where $h$ is the height of the commitment tree in both approaches .
 		% Analysis model:	
 		% 	While creating CT;While distributing off-path; Both places together\\
-		% Initial analysis says, if a single aggregate node cheats while CT generation or distributing off-path values it gets caught. 
+		% Initial analysis says, if a single aggregate node cheats while CT generation or distributing off-path values it gets caught.
+			\begin{table}[!htb]	
+		\begin{center}
+			\begin{tabular}{ |l| l| l| }
+		    \hline
+		    & With resigning & Without resigning \\
+		    \hline
+		    Number of signatures & Test & T \\	
+		    \hline
+		    Number of signing activity & Test & T \\
+		    \hline
+		    Number of verifying activity & Test & T \\
+		    \hline
+		    Number of certificates & Test & T \\
+		    \hline
+			\end{tabular}
+		\end{center}
+		 \caption{System-on-Chip specifications for IEEE 802.15.4 from TexasInstruments}
+		 \label{table:soc}
+	\end{table} 
 		Note that we send signatures while distributing off-path values.
 	\section{\textcolor{red}{Forwarding signatures without resigning the data-items}}
 
