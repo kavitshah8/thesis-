@@ -1,17 +1,20 @@
-\chapter{Data Aggregatiit With Internal Verification} % (folit
+\chapter{Data Aggregation With Internal Verification} % (folit
 \label{cha:Data Aggregation With Internal Verification}
 
-\section{System Design Implementations}
-	The high level idea of the aggregate commit with verification scheme is that all the nodes in the network send the signature of the message along with the message itself. 
-	It sends its certificate if the parent node does not have it already.
+% \section{System Design importantplementations}
+	The high level idea of the aggregate commit with verification scheme is that all the sensor nodes in the network send the signature of the message along with the message.
+	They send their certificates if the parent node does not have it already.
 	The parent node verifies all the received signatures from its children.
 	And proceeds with the aggregation process.
 	After aggregation, the parent node can throw away all the signatures from its children and signs the message of its children or it can pass its children's signatures to its parent. 
 	The pros and cons of each approach are discussed in the following sections. 
+	And once the base station receives the aggregated value it starts the verification process. 
+	If there is no malicious activity in the network then  it accepts the result and takes an action.
+	If the malicious activity is detected during the verification phase then the base station starts interactive activity to detect an adversary. 
 
 \section{Data-Item}
 	
-	We describe structure of the data-item, used in creating the commitment tree for the aggregate commit with verification approach. And differences between the data-item and the label structure of SHIA, with rational behind it.
+	We describe structure of the data-item and its signature, used in creating the commitment tree for the aggregate commit with verification approach. And differences between the data-item and the label structure of SHIA, with rational behind it.
 	\begin{definition}
 		\label{def:data-item}
 		A commitment tree is a binary tree where each vertex has an associated data-item representing the data that is passed on to its parent. The data-items have the following format:
@@ -19,43 +22,143 @@
 		$\hspace{100pt}$ \textbf{$<\ $id, count, value, commitment$\ >$}\\
 	Where $id$ is the unique ID of the node; $count$ is the number of leaf vertices in the subtree rooted at this vertex; $value$ is the SUM aggregate computed over all the leaves in the subtree and $commitment$ is a cryptographic commitment.
 	\end{definition}
-	
-	We remove the $complement$ field from the label structure Defined \ref{def:label}. 
+	Each sensor node creates its own data-item during commitment tree generation process which is called the leaf vertex of the node.
+	For example, sensor node $S$ creates its data-item $S_{0}$ as follows:
+	\begin{equation}
+		\label{eq:data-item}
+	 	S_{0} =\ <S_{id}, 1, S_{value}, H(N||1||S_{value})>
+	 \end{equation}
+	where $S_{id}, S_{value}$ is the unique ID and sensor reading of the sensor node $S$. 
+	The count is $1$ as there is only vertex in the subtree rooted at $S$, $H$ is the collision resistant hash function, and $N$ is the query nonce.
+
+	The first difference between SHIA's label structure and our data-item structure is that we remove the $complement$ field from the label structure Defined \ref{def:label}. 
 	We think the complement filed is redundant information in the label. 
 	The complement field is used by the base station (the querier, according to SHIA), before the result checking phase, to verify \textbf{SUM + COMPLEMENT =} $\textbf{n} \cdot \textbf{r}$ ; where $\textbf{n}$ is the number of nodes in the network, $\textbf{r}$ is the upper bound on the allowed sensor readings.
 	We can achieve the same upper bound without the complement field.
 	As the querier knows $n, r$ and it gets SUM from the root of the aggregation tree.
 	If \textbf{SUM} $> \textbf{n} \cdot \textbf{r}$ , then the base station knows some node or nodes in the network reported out of range readings.
 
-	We include $id$ of the node in its data-item.
+	The second difference between SHIA's label structure and our data-item structure is that we include unique ID of the node in its data-item.
 	SHIA does not have the ID field in their label structure as they do not do internal verification while creating a commitment tree and while distributing off-path values.
 	Also, in the label format ID of the node is hashed in the commitment field after the first aggregation and virtually gets lost.
 	Hence, SHIA can not provide security services such as authenticity, non-repudiation and is vulnerable to all sorts of active attacks.
 	We do internal verification while creating the commitment tree and distributing off-path values.
-	So, it is necessary for any aggregate node to know the ID of all the received data-items in its forest, for the verification of the received signatures as shown in the next section.
+	So, it is necessary for any aggregate node to know the ID of all the received data-items in its forest, for the verification of the received signatures as shown in the following sections.
 
-\section{Signing the Data-Item}
-	During commitment tree generation phase, there is one vertex $S_{0}$ for each sensor node $S$, which we call the leaf vertex of $S$.
-	The data-item for leaf vertex $S_{0}$ and associated signature to it is defined as follows:
+	\subsection{Signing and Verification of the Data-Item}
+		\label{subsection:Signing and Verification of the Data-Item}
+		Each sensor node sends the signature of its data-item signed by itself using its own secret key. 
+		For example, the signature of $S_{0}$ of the Equation \ref{eq:data-item} is given as follows:
+		\begin{equation}
+			\textsf{S} = \textsf{Sign}_{S_{S}}(S_{0})
+		\end{equation}
+		where $S_{S}$ is the secret key of the sensor node $S$, $\textsf{Sign}$ is the signing algorithm.
+		The parent node receives the data-item and its signature from its child. 
+		It also receives the certificate from its child which is shown in Table \ref{table:digital-certificate}.
+		\begin{table}[!htb]	
+			\begin{center}
+				\begin{tabular}{ |l| }
+			    \hline
+			    Unique ID of the sensor node \\
+			    \hline
+			    Public key of the sensor node \\	
+			    \hline
+			    Certification Authority's name \\
+			    \hline
+			    Certification Authority's digital signature \\
+			    \hline
+				\end{tabular}
+			\end{center}
+	  	\caption{Digital Certificate}
+		  \label{table:digital-certificate}
+	  \end{table}
+	  From the digital certificate the parent node receives the public-key of its child, which is necessary to verify the signature.
+	  For example, the parent node of $S$ verifies $\textsf{Sign}_{S_{S}}(S_{0})$ as follows:
+	  \begin{equation}
+			\textsf{Verify}_{P_{S}}(S_{0},\textsf{S}) = 
+			\begin{cases}
+			 \textbf{true}\ \mbox{with probability of 1} & if\ \textsf{S} = \textsf{Sign}_{S_{S}}(S_{0})\\
+			 \textbf{false}\ \mbox{with overwhelming probability} & if\ \textsf{S} \neq \textsf{Sign}_{S_{S}}(S_{0})
+			\end{cases}
+			\label{eq:verification}
+		\end{equation}
+	  where $P_{S}$ is the public key of $S$, $\textsf{Verify}$ is the verification algorithm.
+	
+	\subsection{Security Benefits}
+		\label{subsec:security benefits of signing the data-item}
+		% \textcolor{red}{remove payload}
+		While creating the commitment tree, the sensor $S$ sends the data-item $S_{0}$, and its signature $\textsf{S}$ to its parent in the aggregation tree.
+		The signature allows the parent node to verify the \textit{authenticity} of the sensor node.
+		As only sensor node $S$ can create the signature using its secret key. 
+		The signature $\textsf{S}$ assures the \textit{integrity} of the data-item $S_{0}$.
+		Because either the data-item or the signature has been tampered in any way the verification algorithm return false.
+		Furthermore, it allows the sender to have the proof for the sent data-item.
+		And the receiver for the proof for the received data-item, providing the security service of \textit{non-repudiation}.
+		The digital signature depends on the message so the parent node can not reuse the signature for other data-items in the future.
+		Hence, protecting the network against the \textit{replay attacks}.
+		Hence, it protects against the \textit{active attacks}.
+
+\section{Commitment Payload}
+
+	We define commitment payload based on the commitment forest Defined in \ref{def:commitment-forest}.
+	\begin{definition}
+		A \textbf{commitment payload} is the concatenation of a set of data-items of the root vertices of the trees in the outgoing commitment forest.
+	\end{definition}
+	% We use the term payload for commitment payload and the term forest for the commitment forest.
+	For brevity, we use the term forest, payload instead of commitment forest, commitment payload respectively.
+	Consider, the aggregation tree shown in Figure \ref{fig:Palm aggregation tree}, where $B$ is the parent of $A$, $C$ is the parent of $B$ and $D$ is the parent of $C$. 
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[scale = 1]{images/palm-aggregation-tree.png}
+		\caption{Palm Shaped Aggregation Tree}
+		\label{fig:Palm aggregation tree}
+	\end{figure}
+	While creating the commitment tree $A$ creates its data-item $A_{0}$ according to Equation \ref{eq:data-item}.
+	$A$ sends only one data-item to $B$ therefore $A$'s payload with its signature is given as follows:
 	\begin{equation}
-		\label{eq:leaf-vertex}
-		S_{0}\ =\ <S_{id}, 1, S_{value}, H(N||1||S_{value})>;\ 	\textsf{Sign}_{S_{S}}(S_{0})
+		A_{p} =\ <A_{0}>\ ;\ \textsf{Sign}_{S_{A}}(A_{p})
 	\end{equation}
-	where $H$ is a collision resistant hash function, $S_{S}$ is the secret key of sensor node $S$, $N$ is the query nonce.
+	The sensor node $C$'s payload is shown in Figure \ref{fig:Commitment payload of C}.
+	The commitment tree generation process is described in the later sections. 
+	The sensor node $C$ sends two data-items to $D$ therefore $C$'s payload with its signature is given as follows:
+	\begin{equation}
+	 	C_{p} =\ <B_{1}\ ||\ C_{0}>\ ;\ \textsf{Sign}_{S_{C}}(C_{p})
+	\end{equation}
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[scale = 1]{images/commitment-payload-of-C.png}
+		\caption{Commitment Payload of Sensor Node $C$}
+		\label{fig:Commitment payload of C}
+	\end{figure}
+	The verification of the received signatures of the payload is done by the parent node in the same way described in Section \ref{subsection:Signing and Verification of the Data-Item}.
 
-	The key difference between the SHIA's approach and our approach is that, in addition to sending the data-item, each sensor node sends the signature of the data-item to its parent.
-	It sends its certificate as well if the parent node does not have it in its memory  already.
-	The parent node gets the public key of the child node from its certificate, which is used in verifying the signature. 
+	\subsection{Security Benefits}
+		In similar way, the signature $\textsf{Sign}_{S_{S}}(S_{p})$ assures the integrity and authentication of the payload $S_{p}$.
+		It is like the signature for the transmission.
+		To the sender, it assures that all the data-items in the payload were successfully transmitted.
+		To the receiver, it assures that all the data-items were received successfully.
+
+		In addition to all the security benefits mentioned in Subsection \ref{subsec:security benefits of signing the data-item}, signature on the $C$'s payload $\textsf{Sign}_{S_{C}}(C_{p})$ assures that the sensor node $C$ sent only two data-items $C_{0},B_{1}$ in its payload.
+		And none of the data-items in its payload have been left stranded.
+		It is true for the sensor node $A$.
+		It like the signature for the transmission.
+
+\section{Differences from SHIA}
+
+	The key difference between the SHIA's approach and our approach is that, in addition to sending the data-item, each sensor node sends the signature of the data-item and the signature of its payload to its parent.
+	It sends its certificate as well if the parent node does not have it in its memory already.
+	The parent node gets its child's public key from its certificate, which is used in verifying the signature. 
+	The certificate is issued by the base station which is a trusted third party in our design.
 	The parent node verifies all the received signature using its children node's public key.
 	Details of the signing and verification processes are shown in Figure \ref{fig:digita-signature}.
-	After doing the verification the parent node proceeds to the aggregation and creating the commitment tree.
+	Only, after doing the verification the parent node proceeds to the aggregation and creating the commitment tree.
 	
 	\subsection{Bandwidth Analysis}
 
 	Cite resources for this.
-	
+	\cite{ecdsa2009186}
 	Typical size of the data-item packet is $400$ bits.
-	If one uses Elliptic curve cryptography then the size of signature is $500$ bits.
+	If one uses Elliptic Curve Digital Signature Algorithm (ECDSA) then the size of signature is $500$ bits.
 	And the certificate size is $1500$ bits.
 	So, at max we have to send additional $2000$ bits with the data-item.
 	We think it is worthwhile to send these additional bits.
@@ -63,70 +166,43 @@
 	\textbf{Note:} The packets size are close approximate to the actual packet size. 
 	The actual packet size may differ based on the implementation.
 
-	\subsection{Security Benefits}
-	\label{subsec:security benefits of signing the data-item}
-	The signature allows the parent node to verify the \textit{authenticity} of the sensor node.
-	It also allows to verify the \textit{integrity} of the received data-item.
-	It allows the sender to have the proof for the sent data-item.
-	And the receiver for the proof for the received data-item, providing the \textit{non-repudiation}.
-	Hence, it protects against the \textit{active attacks}.
-
-\section{Signing the Commitment Payload}
-	We define commitment payload based on the commitment forest Defined in \ref{def:commitment-forest}.
-	\begin{definition}
-		A \textbf{commitment payload} is a set of data-items of the root vertices of the trees in the outgoing commitment forest.
-	\end{definition}
-	% We use the term payload for commitment payload and the term forest for the commitment forest.
-	For brevity, we use the term forest, payload instead of commitment forest, commitment payload respectively.
-
-	An aggregate node sends an additional signature to its parent, which is a signature of all the data-items in its payload.
-	The signature on the payload assures that an aggregate node sent only the data-items included in the payload signature.
-	It assures the authenticity, non-repudiation, integrity of all the data-items included in the payload.
+\section{Two ways of Forwarding the Commitment Payload}	
+	
+	In the previous section, we described the signing process where a sensor node has a single data-item in its payload.
+	Here, we describe the signing process where an aggregate node has more than one data-item in its payload.
+	% The signature on the payload assures that an aggregate node sent only the data-items included in the payload signature.
+	% It assures the authenticity, non-repudiation, integrity of all the data-items included in the payload.
 	For example, the aggregation tree shown in Figure \ref{fig:Palm aggregation tree}, the payload of sensor node $C$ is show in Figure \ref{fig:Commitment payload of C}.
-			\begin{figure}[h!]
-				\centering
-				\includegraphics[scale = 1]{images/palm-aggregation-tree.png}\\
-				\caption{Palm Shaped Aggregation Tree}
-				\label{fig:Palm aggregation tree}
-			\end{figure}
-		The sensor node $C$ sends all the data-items in its payload with their signatures to its parent sensor node $D$.
-		Furthermore, $C$ sends the signature of its payload $\textsf{Sign}_{S_{C}}(C_{0}||B_{1})$ to $D$.\\
-			\begin{figure}[h!]
-				\centering
-				\includegraphics[scale = 1]{images/commitment-payload-of-C.png}
-				\caption{Commitment Payload of Sensor Node $C$}
-				\label{fig:Commitment payload of C}
-			\end{figure}
-		\begin{equation}	
-			\begin{array}{l}
-				B_{1} =\ <B_{id}, 2, B_{1value}, H(N||2||B_{1value}||A_{0}||B_{0})>;\ \textsf{Sign}_{S_{B}}(B_{1})\\
-				C_{0} =\ <C_{id}, 1, C_{value}, H(N||1||C_{value})>;\ \textsf{Sign}_{S_{C}}(C_{0})\\
-				\textcolor{red}{\textsf{Sign}_{S_{C}}(C_{0}||B_{1})}
-			\end{array}
-			\label{eq:forwarding-payload-without-resigning}
-		\end{equation}
 
-	\subsection{Security Benefits}
-	In addition to all the security benefits mentioned in Subsection \ref{subsec:security benefits of signing the data-item}, signature on the $C$'s payload $\textsf{Sign}_{S_{C}}(C_{0}||B_{1})$ assures that the sensor node $C$ sent only two data-items $C_{0},B_{1}$ in its payload.
-	And none of the data-items in its payload have been left stranded.
+	The sensor node $C$ sends all the data-items in its payload with their respective signatures to its parent sensor node $D$.
+	Furthermore, $C$ sends the signature of its payload $\textsf{Sign}_{S_{C}}(C_{0}||B_{1})$ to $D$.
 
-\section{Forwarding the Commitment Payload}	
+	\begin{equation}	
+		\begin{array}{l}
+			C_{0} =\ <C_{id}, 1, C_{value}, H(N||1||C_{value})>;\ \textsf{Sign}_{S_{C}}(C_{0})\\
+			B_{1} =\ <B_{id}, 2, B_{1value}, H(N||2||B_{1value}||A_{0}||B_{0})>;\ \textsf{Sign}_{S_{B}}(B_{1})\\
+			C_{p} =\ <C_{0}||B_{1}>;\ \textsf{Sign}_{S_{C}}(C_{p})
+		\end{array}
+		\label{eq:forwarding-payload-without-resigning}
+	\end{equation}
+
 	% This example showcases another important aspect of the protocol.
 	% It shows two different ways of creating a commitment tree.
 	The sensor node $C$ has two data-items $C_{0},B_{1}$ in its payload as shown in Equation \ref{eq:forwarding-payload-without-resigning}. 
-	It sends the $\textsf{Sign}_{S_{B}}(B_{1})$, $\textsf{Sign}_{S_{C}}(C_{0}) $ and $\textsf{Sign}_{S_{C}}(C_{0}||B_{1})$ to its parent node $D$.
+	It sends the $\textsf{Sign}_{S_{B}}(B_{1})$, $\textsf{Sign}_{S_{C}}(C_{0}) $ and $\textsf{Sign}_{S_{C}}(C_{p})$ where $C_{p} = < C_{0}||B_{1} >$ to its parent node $D$.
 	It requires the parent node $D$ to know the public key of the sensor nodes $C$ and $D$, hence their certificates.
-	Instead of that the sensor node $C$ can verify the $\textsf{Sign}_{S_{B}}(B_{1})$ then remove the old signature and create new signature $\textsf{Sign}_{S_{C}}(B_{1})$ signed by itself on the data-item $B_{1}$ as shown below:
+	Instead of that the sensor node $C$ can verify the $\textsf{Sign}_{S_{B}}(B_{1})$ then remove the old signature and create new signature $\textsf{Sign}_{S_{C}}(B_{1})$ signed by itself on the data-item $B_{1}$ as follows:
 	\begin{equation}	
 		\begin{array}{l}
 			B_{1} =\ <B_{id}, 2, B_{1value}, H(N||2||B_{1value}||A_{0}||B_{0})>;\  \textcolor{red}{\textsf{Sign}_{S_{C}}(B_{1})}\\
 			C_{0} =\ <C_{id}, 1, C_{value}, H(N||1||C_{value})>;\ \textsf{Sign}_{S_{C}}(C_{0})\\
-			\textsf{Sign}_{S_{C}}(C_{0}||B_{1})
+			C_{p} =\ <C_{0}||B_{1}>;\ \textsf{Sign}_{S_{C}}(C_{p})
 		\end{array}
 		\label{eq:forwarding-payload-with-resigning}
 	\end{equation}
-	We call these two approaches \textbf{Forwarding signatures without resigning the data-items}, \textbf{Forwarding signatures with resigning the data-items} as shown in Equations \ref{eq:forwarding-payload-without-resigning} and \ref{eq:forwarding-payload-with-resigning} respectively .
-
+	In this case, the parent node $D$ needs to know the public key of only the sensor node $C$ as it receives all the signatures signed by the sensor node $C$. 
+	Therefore, $D$ need to know only the certificate of $C$.
+	The Equation \ref{eq:forwarding-payload-without-resigning}, \ref{eq:forwarding-payload-with-resigning} represents two different ways of designing the protocol.
 	To give an analogy with the real world application consider the following example.
 	One want to buy a diamond from the local diamond retailer.
 	Diamond is an expensive commodity so the end customer wants to verify its authenticity and integrity before purchasing.
@@ -160,7 +236,8 @@
 	In the end, the customer needs to verify only one signature of the city level retailer using retailer's certificate.
 	This approach requires very few number of certificates overall in the supply chain.
 
-	Both theapproaches have their pros and cons and the perfect approach depends heavily on the application.
+	We call these two approaches \textbf{Forwarding signatures without resigning the data-items}, \textbf{Forwarding signatures with resigning the data-items} as shown in Equations \ref{eq:forwarding-payload-without-resigning} and \ref{eq:forwarding-payload-with-resigning} respectively.
+	Both the approaches have their pros and cons and the perfect approach depends heavily on the application.
 	The various aspects of both the approaches for sensor nodes are discussed in the following sections.
 
 	\section{\textcolor{red}{Forwarding signatures with resigning the data-items}}
@@ -176,25 +253,25 @@
 		% Analysis model:	
 		% 	While creating CT;While distributing off-path; Both places together\\
 		% Initial analysis says, if a single aggregate node cheats while CT generation or distributing off-path values it gets caught.
-			\begin{table}[!htb]	
-		\begin{center}
-			\begin{tabular}{ |l| l| l| }
-		    \hline
-		    & With resigning & Without resigning \\
-		    \hline
-		    Number of signatures & Test & T \\	
-		    \hline
-		    Number of signing activity & Test & T \\
-		    \hline
-		    Number of verifying activity & Test & T \\
-		    \hline
-		    Number of certificates & Test & T \\
-		    \hline
-			\end{tabular}
-		\end{center}
-		 \caption{System-on-Chip specifications for IEEE 802.15.4 from TexasInstruments}
-		 \label{table:soc}
-	\end{table} 
+		\begin{table}[!htb]	
+			\begin{center}
+				\begin{tabular}{ |l| l| l| }
+			    \hline
+			    & With resigning & Without resigning \\
+			    \hline
+			    Number of signatures & Test & T \\	
+			    \hline
+			    Number of signing activity & Test & T \\
+			    \hline
+			    Number of verifying activity & Test & T \\
+			    \hline
+			    Number of certificates & Test & T \\
+			    \hline
+				\end{tabular}
+			\end{center}
+	  	\caption{XXX}
+		  \label{table:XXX}
+	  \end{table} 
 		Note that we send signatures while distributing off-path values.
 	\section{\textcolor{red}{Forwarding signatures without resigning the data-items}}
 
