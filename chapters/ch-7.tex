@@ -145,28 +145,33 @@
 		It is true for the sensor node $A$.
 		As we said, it like the signature for the transmission.
 
-\section{Differences from SHIA}
+\section{Key Differences from SHIA}
 
-	The key difference between the SHIA's approach and our approach is that, in addition to sending the data-item, each sensor node sends the signature of the data-item and the signature of its payload to its parent.
-	It sends its certificate as well if the parent node does not have it in its memory already.
-	The parent node gets its child's public key from its certificate, which is used in verifying the signature. 
-	The certificate is issued by the base station which is a trusted third party in our design.
-	The parent node verifies all the received signature using its children node's public key.
-	Details of the signing and verification processes are shown in Figure \ref{fig:digita-signature}.
-	Only, after doing the verification the parent node proceeds to the aggregation and creating the commitment tree.
+	In SHIA, all the leaf nodes in the aggregation tree send only their respective data-items to the parent in the aggregation tree.
+	In our approach, all the leaf nodes send the data-item, the signature of the data-item and the signature of the payload to their parent node in the aggregation tree. 
+	The child node sends its certificate as well if the parent node does not have it in its memory already.
+
+	In SHIA, the parent node proceeds with the aggregation process without verifying the received data-items.
+	In our protocol, the parent node verifies the received signature using the the verification algorithm.
+	And the parent node proceeds with the aggregation only if all the signatures were verified successfully.
+
+	In SHIA, the trusted base station verifies the final received data-items.
+	And upon detecting the malicious activity in the network, the base station raises an alarm. 
+	The base station does not do anything to detect malicious node responsible for the malicious activity.
+	In our approach, upon detecting the malicious activity the base station interacts with different nodes in the network to detect the malicious node.
+	Also, the  base station issues the certificate to the sensor nodes in the network.
 	
 	\subsection{Bandwidth Analysis}
-
-	Cite resources for this.
-	\cite{ecdsa2009186}
-	Typical size of the data-item packet is $400$ bits.
-	If one uses Elliptic Curve Digital Signature Algorithm (ECDSA) then the size of signature is $500$ bits.
-	And the certificate size is $1500$ bits.
-	So, at max we have to send additional $2000$ bits with the data-item.
-	We think it is worthwhile to send these additional bits.
-	Because of all the security benefits we gain from it. 
-	\textbf{Note:} The packets size are close approximate to the actual packet size. 
-	The actual packet size may differ based on the implementation.
+	
+		\textcolor{red}{Might need refactoring}
+		Typical size of the data-item packet is $400$ bits.
+		If one uses Elliptic Curve Digital Signature Algorithm (ECDSA) then the size of signature is $500$ bits \cite{ecdsa2009186}.
+		And the certificate size is $1500$ bits.
+		So, at max we have to send additional $2000$ bits with the data-item.
+		We think it is worthwhile to send these additional bits.
+		Because of all the security benefits we gain from it. 
+		\textbf{Note:} The packets size are close approximate to the actual packet size. 
+		The actual packet size may differ based on the implementation.
 
 \section{Two ways of Forwarding the Commitment Payload}	
 	
