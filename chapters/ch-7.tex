@@ -133,15 +133,17 @@
 	The verification of the received signatures of the payload is done by the parent node in the same way described in Section \ref{subsection:Signing and Verification of the Data-Item}.
 
 	\subsection{Security Benefits}
-		In similar way, the signature $\textsf{Sign}_{S_{S}}(S_{p})$ assures the integrity and authentication of the payload $S_{p}$.
-		It is like the signature for the transmission.
-		To the sender, it assures that all the data-items in the payload were successfully transmitted.
-		To the receiver, it assures that all the data-items were received successfully.
-
-		In addition to all the security benefits mentioned in Subsection \ref{subsec:security benefits of signing the data-item}, signature on the $C$'s payload $\textsf{Sign}_{S_{C}}(C_{p})$ assures that the sensor node $C$ sent only two data-items $C_{0},B_{1}$ in its payload.
+		\textcolor{red}{Might need refactoring}
+		As described in Subsection \ref{subsec:security benefits of signing the data-item}, the signature of the payload $\textsf{Sign}_{S_{S}}(S_{p})$ assures the integrity and authentication of the payload $S_{p}$.
+		In addition to that, the signature of the payload is like the signature for the transmission.
+		To the sender, it assures that it is sending only the data-items included in the signature of the payload.
+		And none of the data-items gets added or remove from the payload during the transmission. 
+		To the receiver, it assures that it receives all the data-items included in the signature of the payload. 
+		And none of the data-items were stranded or added additionally to the payload of its child.
+		For example, the signature on the $C$'s payload $\textsf{Sign}_{S_{C}}(C_{p})$ assures that the sensor node $C$ sent only two data-items $C_{0},B_{1}$ in its payload.
 		And none of the data-items in its payload have been left stranded.
 		It is true for the sensor node $A$.
-		It like the signature for the transmission.
+		As we said, it like the signature for the transmission.
 
 \section{Differences from SHIA}
 
