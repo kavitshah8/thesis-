@@ -36,7 +36,7 @@
 	To estimate the power consumption, we have to consider the communication and computation power consumption at each sensor node.
 	The radio module energy dissipation depends on two main parameters \cite{wang2002energy}.
 	The first is $E_{elec} (J/b)$, the energy dissipated to run the transmit or receive electronics.
-	The second is $\varepsilon_{amp} (J/b \cdot m^2)$, the energy dissipated by the transmit power amplifier to achieve an acceptable noise ratio $E_{b} / N_{o} $ at the receiver.
+	The second is $\varepsilon_{amp} (J/m^2 b)$, the energy dissipated by the transmit power amplifier to achieve an acceptable noise ratio $E_{b} / N_{o} $ at the receiver.
 	We assume the $d^2$ energy loss for transmission between sensor nodes since the distances between sensors are relatively short \cite{ettus1998system}. 
 	To transmit a $k$ - bit packet at distance $d$, the energy dissipated is:
 	\begin{equation}
@@ -46,7 +46,7 @@
 	\begin{equation}
 		E_{rx}(k) = E_{elec} \cdot k
 	\end{equation}
-	For $\mu Amp$\ wireless sensor, $E_{elec} = 50nJ/b$\ and $\varepsilon_{amp} = 100pJ/b \cdot m^2$.
+	For $\mu Amp$\ wireless sensor, $E_{elec} = 50nJ/b$\ and $\varepsilon_{amp} = 100pJ/m^2 b$.
 
  	To sustain the sensor network for longer time all aspects of the sensor network should be efficient.
 	For example, the networking algorithm for routing should be such that it minimizes the distance $d$\ between the nodes.

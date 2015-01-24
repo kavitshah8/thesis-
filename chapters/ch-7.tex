@@ -152,6 +152,7 @@
 	The child node sends its certificate as well if the parent node does not have it in its memory already.
 
 	In SHIA, the parent node proceeds with the aggregation process without verifying the received data-items.
+	\textbf{The parent node first verifies the payload signature.}
 	In our protocol, the parent node verifies the received signature using the the verification algorithm.
 	And the parent node proceeds with the aggregation only if all the signatures were verified successfully.
 
@@ -245,9 +246,9 @@
 	\section{Comparison of two approaches for forwarding the Commitment Payload}
 		To do the analysis we developed a performance matrix. 
 		We analysis different network topologies based on that matrix.
-		In both the approaches, the commitment tree is complete binary.
-		As we know, the complete binary tree has  $2^{h + 1} - 1$ vertices in the tree; where $h$ is the height of the tree with the root height is $0$. 
-		So, we need $\Omega(2^{h + 1} - 1)$ signatures in both the approaches. 
+		% In both the approaches, the commitment tree is complete binary.
+		% As we know, the complete binary tree has  $2^{h + 1} - 1$ vertices in the tree; where $h$ is the height of the tree with the root height is $0$. 
+		% So, we need $\Omega(2^{h + 1} - 1)$ signatures in both the approaches. 
 		% Analysis model:	
 		% 	While creating CT;While distributing off-path; Both places together\\
 		% Initial analysis says, if a single aggregate node cheats while CT generation or distributing off-path values it gets caught.
@@ -259,7 +260,9 @@
 			    \hline
 			    & With resigning & Without resigning \\
 			    \hline
-			    Number of signatures & $2n + 1$ & $2n + 1$ \\	
+			    Number of created signatures & $2n + 1$ & $2n + 1$ \\	
+			    \hline
+			    Number of transmitted signatures & T & T\\
 			    \hline
 			    Number of signing activity & $2n + 1$ & $2n + 1$ \\
 			    \hline
@@ -273,6 +276,31 @@
 			\end{center}
 	  	\caption{Analysis for Star Aggregation Tree}
 		  \label{table:Analysis table for Star Aggregation Tree}
+	  \end{table}
+
+	  Table \ref{table:Analysis table for Palm Aggregation Tree} shows the analysis for the star tree network with $n$ nodes while creating the commitment tree.
+		\begin{table}[!htb]	
+			\begin{center}
+				\begin{tabular}{ |l| l| l| }
+			    \hline
+			    & With resigning & Without resigning \\
+			    \hline
+			    Number of created signatures & T & $2n$ \\	
+			    \hline
+			    Number of transmitted signatures & T & T\\
+			    \hline
+			    Number of signing activity & T & T \\
+			    \hline
+			    Number of verifying activity & T & T \\
+			    \hline
+			    Number of certificates & T & T \\
+			    \hline
+			    Edge congestion & T & T\\
+			    \hline
+				\end{tabular}
+			\end{center}
+	  	\caption{Analysis for Palm Aggregation Tree}
+		  \label{table:Analysis table for Palm Aggregation Tree}
 	  \end{table} 
 		
 		Note that we send signatures while distributing off-path values as well.

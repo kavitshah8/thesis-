@@ -12,7 +12,15 @@
 	\end{definition}
 
 	Classical cryptosystem (also called symmetric cryptosystem or single-key cryptosystem) are cryptosystem that use the same key for encipherment and decipherement.
-	In these system, for all $E_{k} \in \mathcal{C}$ and $k \in \mathcal{K}$, there is a $D_{k} \in \mathcal{D}$ such that $D_{k} = E_{k}^{-1}$
+	In these system, for all $E_{k} \in \mathcal{C}$ and $k \in \mathcal{K}$, there is a $D_{k} \in \mathcal{D}$ such that $D_{k} = E_{k}^{-1}$.
+
+	In asymmetric or public-key cryptosystem, uses different keys for encipherment and decipherement .
+	In such systems, for all $E_{k_{1}} \in \mathcal{C}$ and $k_{1} \in \mathcal{K}$, there is a $D_{k_{2}} \in \mathcal{D}$ such that $k_{2} \in \mathcal{K}$ where $\mathcal{K} = k_{1} \times k_{2}$.
+	For all $k \in \mathcal{K},\  \exists (s_{k},p_{k})$ such that the following is true.
+	\begin{equation}
+		\mathcal{D}(\ \mathcal{E}(\ \mathcal{M},\ s_{k}\ ),\ p_{k}\ ) =\ \mathcal{M}
+	\end{equation}
+
 \section{Encryption}
 
 \section{Hash Function}
