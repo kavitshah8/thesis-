@@ -1,113 +1,213 @@
 \chapter{Our protocol with resigning approach }
+	In this chapter, we describe the entire protocol from the commitment tree generation to the result checking with resigning the data-item approach.
+
+\section{Query Dissemination}
+	Hello
 \section{Commitment Tree Generation}
 	For the given aggregation tree the commitment forest is built as follows.
-	Leaf sensor nodes in the aggregation tree create their leaf vertex by creating data-items and their respective signatures according to Equation \ref{eq:leaf-vertex}, \ref{eq:signature-leaf-vertex} which they send it to their parent as a payload in the aggregation tree.
-	Each internal sensor node $I$\ in the aggregation tree also creates their leaf vertex and its signature.
-	In addition, $I$\ receives the payload from each of its children which creates the forest for $I$.
-	Once $I$ verifies all the received signatures, it merges all the data-items in its forest with same count value to create its payload.
-	Note that we can determine the height of the commitment tree from the count value.
+	The commitment tree generation begins from the sensor nodes with the highest depth (Leaf nodes) in the aggregation tree.
 
-	Suppose $I$ have to create its payload by merging $i$ data-items $D_{1}$, $D_{2}$, $\dotsc$, $D_{i}$ in its forest.
-	First, $I$ verifies the received signatures $Sign(D_{1})$, $Sign(D_{2})$, $\dotsc$, $Sign(D_{i})$.
+	Leaf sensor nodes in the aggregation tree create their leaf vertex by creating data-items, signatures of those data-items and signature of the payload according to Equation \ref{eq:data-item}, \ref{eq:sign-data-item}, \ref{eq:signing-payload} respectively.
+	And then send it to their parents in the aggregation tree.	
+	Each internal sensor node in the aggregation tree also creates their leaf vertex.
+	In addition, internal sensor node receives the data-items with the signatures of those data-items and the signature of the payloads from each of its children which creates the forest for the internal sensor node.
+	For all of its children, internal node first verifies the payload signature and then data-item signatures for one children at a time.
+	Once internal node verifies all the received signatures, it merges all the data-items in its forest with same count value.
+	Note that we can determine the height of the commitment tree from the count value.
+	Suppose internal sensor node $I$ has to merge $i$ data-items $D_{1}$, $D_{2}$, $\dotsc$, $D_{i}$ in its forest.
+	First, $I$ verifies all the received payload signatures.
+	Then $I$ verifies the received signatures $Sign(D_{1})$, $Sign(D_{2})$, $\dotsc$, $Sign(D_{i})$.
 	Once verified, $I$ starts merging the data-items as follows.
 	Let $c$ be the smallest count value in $I$'s forest.
 	The sensor node $I$ finds two data-items $D_{1},D_{2}$ in its forest with the same count value $c$ and merges them into a new data-item with the count of $c+1$ as shown in Figure \ref{fig:increase-height}.
 	\begin{figure}[h!]
 		% \centering
-		\includegraphics[width=6in]{images/increase-height.png}\\
+		\includegraphics[width=6in]{images/increase-height.png}
 		\caption{$A$ has $B_{1}, C_{1}$ in his forest and aggregates those two trees and creates $A_{2}$.}
 		\label{fig:increase-height}
-	\end{figure}\\
+	\end{figure}
 	It repeats the process until no two data-items in its forest have the same count value.
 	An example of generating the payload by merging the data-items in the forest for the sensor node $A$ in Figure \ref{fig:at} is illustrated in the following example.
-	% \ref{fig:commitment-tree-example-1}, \ref{fig:commitment-tree-example-2}, \ref{fig:commitment-tree-example-3}, \ref{fig:commitment-tree-example-4}.
-			\begin{exmp} The commitment-payload generation process for node $A$ of Figure \ref{fig:at} is shown here.\\
-				\begin{figure}[h!]
-					\centering
-					\includegraphics[width=6in]{images/commitment-tree-example-1.png}\\
-					\caption{$A$ receives $C_{2}$ from $C$, $(B_{1},B_{0})$ from $B$, $D_{0}$ from $D$ and generates $A_{0}$. The commitment payload received from a given sensor node is indicated by dashed-line box.}
-					\label{fig:commitment-tree-example-1}
-				\end{figure}
-				\begin{equation}
-					\begin{array}{l}
-						A_{0} = <A_{id}, 1, A_{value}, H(N||1||A_{value})>; \textsf{Sign}_{S_{A}}(A_{0}) \\
-						D_{0} = <D_{id}, 1, D_{value}, H(N||1||D_{value})>; \textsf{Sign}_{S_{D}}(D_{0})\\
-						B_{0} = <B_{id}, 1, B_{value}, H(N||1||B_{value})>; \textsf{Sign}_{S_{B}}(B_{0})\\
-						B_{1} = <B_{id}, 2, B_{value}, H(N||2||B_{value}||E_{0}||F_{0})>; \textsf{Sign}_{S_{B}}(B_{1})\\
-						\textcolor{red}{\textsf{Sign}_{S_{B}}(B_{0} || B_{1}), benefits}\\
-						C_{2} = <C_{id}, 4, C_{value}, H(N||4||C_{value})||H_{1}||C_{1})>; \textsf{Sign}_{S_{C}}(C_{2})\\
-						\end{array}
-				\end{equation}
-
-				\begin{figure}[h!]
-					\centering
-					\includegraphics[width=6in]{images/commitment-tree-example-2.png}\\
-					\caption{First Merge: $A_{1}$ vertex created by A.}
-					\label{fig:commitment-tree-example-2}
-				\end{figure}
-
-				\begin{equation}
-					\begin{array}{l}
-				A_{1} = <A_{id}, 2, A_{1value}, H(N||2||A_{1value}||A_{0}||D_{0})>; \textsf{Sign}_{S_{A}}(A_{1})\\
-				where\  A_{1value} = A_{value} + D_{value} \\
-					\end{array}	
-				\end{equation}
-				\begin{figure}[h!]
-					\centering
-					\includegraphics[width=\textwidth]{images/commitment-tree-example-3.png}\\
-					\caption{Second Merge: $A_{2}$ vertex created by A.}
-					\label{fig:commitment-tree-example-3}
-				\end{figure}
-				\begin{equation}
-					\begin{array}{l}
-						A_{2} = <A_{id}, 4, A_{2value}, H(N||4||A_{2value}||B_{1}||A_{1}) >; \textsf{Sign}_{S_{A}}(A_{2})\\
-						where\  A_{2value} = B_{1value} + A_{1value} \\
-					\end{array}
-				\end{equation}
-				\begin{figure}[h!]
-					\centering
-					\includegraphics[width=6in]{images/commitment-tree-example-4.png}\\
-					\caption{Third Merge: $A_{3}$ vertex created by A.}
-					\label{fig:commitment-tree-example-4}
-				\end{figure}
-				\begin{equation}
-					\begin{array}{l}
-						A_{3} = <A_{id},8, A_{3value},H(N||8||A_{3value}||C_{2}||A_{2})>; \textsf{Sign}_{S_{A}}(A_{3})\\
-						where\ A_{3value} = A_{2value} + C_{2value}
-					\end{array}
-				\end{equation}
-			\end{exmp}
-% chapter A Protocol for Commitment Tree Generation (end)
-
-% Talk about the certificates:
 	
-% 	How many certificates does $A$ need to know in this example ?
-% 	In the above example, $A$ need to know $D,B,C's$ certificate to verify their signatures.
-% 	But if we use SHIA'a approach of creating commitment tree then $A$ need to know $E's$ certificate as well.
-% 	Hence, being root in as many tree as possible is the more efficient.
-\section{Bandwidth Analysis}
-	For any given sensor node's forest with $n$ leaf vertices, has at most $\log n$ data-items in its payload.
-	It has at most $(\log n) +1$ signatures in its payload.
-	The highest possible count value is $\log n$, as all the trees are binary. 
+	\begin{exmp} 
 
-	An intermediate sensor node $S$ with $\beta$ descendants in the aggregation tree, has at most $\log(\beta+1)$ data-items with their respective $\log(\beta+1)$ signatures in its payload.
-	$S$ might need to send its payload signature $Sign(S_{p})$.
-	At max, $S$ has to send a payload with $\log(\beta+1)$ data-items and $\log(\beta+1) +1$ signatures to its parent in the aggregation tree.
-	
-	Hence, sending signatures of the data-items causes $O(\log \beta)$ bandwidth overhead for each node in the network, where $\beta$ is the number of descendants of the sensor node. 
+		We demonstrate the commitment tree generation process for the aggregation tree shown in Figure \ref{fig:Aggregation-tree-1}.
+		\begin{figure}[h!]
+			\centering
+			\includegraphics[scale=1]{images/aggregation-tree-1.png}
+			\caption{Aggregation Tree.}
+			\label{fig:Aggregation-tree-1}
+		\end{figure}
 
-\section{Result checking}
+		As we can see $A$ has three children, $A$ will receive one payload from each of its children which will create $A$'s forest.
+		And $A$ will use the data-items in its forest to create its own payload, which will be sent to the base station.
+		First, we describe the payload generation process of $B,C,D$ and then for the sensor node $A$.
 
-	\section{dissemination final commitment}
-	\section{dissemination of off-path values}
+		Let's see how $B$ creates its payload.
+		$B$ creates its payload from its forest. 
+		It's forest consists of payloads received from $E,F$.
+		$E,F$ creates their payloads according to Equation \ref{eq:signing-payload} as follows:
+
+		% \begin{figure}[h!]
+		% 	\centering
+		% 	\includegraphics{images/e-payload.png}
+		% 	\caption{E's payload}
+		% 	\label{fig:e-payload}
+		% \end{figure}
+		\begin{equation}
+			\begin{array}{l}
+			E_{0} =\ <E_{id}, 1, E_{value}, H(N||1||E_{value})>;\ \textsf{Sign}_{S_{E}}(E_{0})\\
+			E_{p} =\ <E_{0}, \textsf{Sign}_{S_{E}}(E_{0}), \textsf{Sign}_{S_{E}}(E_{\tau}) >\ where\ E_{\tau} =\ <E_{0}>
+			\end{array}
+		\end{equation}
+		% \begin{figure}[h!]
+		% 	\centering
+		% 	\includegraphics{images/f-payload.png}
+		% 	\caption{F's payload}
+		% 	\label{fig:f-payload}
+		% \end{figure}
+		\begin{equation}
+			\begin{array}{l}
+				F_{0} =\ <F_{id}, 1, F_{value}, H(N||1||F_{value})>;\ \textsf{Sign}_{S_{F}}(F_{0})\\
+				F_{p} =\ <F_{0}, \textsf{Sign}_{S_{F}}(F_{0}), \textsf{Sign}_{S_{F}}(F{\tau}) >\ where\ F_{\tau} =\ <F_{0}> 
+			\end{array}
+		\end{equation}
+		$B$ receives $E_{p},F_{p}$ from $E,F$ respectively. 
+		It verifies all the signatures in the received payload.
+		Then it creates $B_{0}$.
+		Now, $B$ has $B_{0},E_{0},F_{0}$ in its forest. 
+		As all the data-items have the same count value, $B$ has an option which two to aggregate.
+		$B$ aggregates $E_{0},F_{0}$ and creates $B_{1}$ as shown in Figure \ref{fig:b-forest-payload}.
+		Note: we show the forest in dashed lines and payload in solid lines.
+		\begin{figure}[h!]
+			\centering
+			\includegraphics[scale=1]{images/b-forest-payload.png}
+			\caption{$B$'s forest aggregation to create $B$'s payload }
+			\label{fig:b-forest-payload}
+		\end{figure}
+		\begin{equation}
+			\begin{array}{l}
+				B_{0} =\ <B_{id}, 1, B_{value}, H(N||1||B_{value})>\\
+				B_{1} =\ < B_{id}, 2, B_{1value}, H(N||2||B_{1value}||E_{0}||F_{0})>;\ B_{1value} = E_{value} + F_{value} \\
+				B_{p} =\ < B_{0}, \textsf{Sign}_{S_{B}}(B_{0}), B_{1}, \textsf{Sign}_{S_{B}}(B_{1}), \textsf{Sign}_{S_{B}}(B_{\tau}) >\ where\ B_{\tau} =\ <B_{0} || B_{1}>
+			\end{array}
+		\end{equation}
+
+		In similar way $C$ receives $G_{p}$ from $G$ defined as follows:
+		\begin{equation}
+			G_{p} =\ <G_{1},\textsf{Sign}_{S_{G}}(G_{1}), \textsf{Sign}_{S_{G}}(G_{\tau})>
+		\end{equation}
+		\begin{figure}[h!]
+			\centering
+			\includegraphics[scale=1]{images/c-forest-payload.png}
+			\caption{$C$'s forest aggregation to create $C$'s payload }
+			\label{fig:c-forest-payload}
+		\end{figure}
+		\begin{equation}
+			\begin{array}{l}
+				C_{0} =\ <C_{id}, 1, C_{value}, H(N||1||C_{value})>\\
+				C_{\tau} =\ <C_{0} || G_{1}>\\
+				C_{p} =\ <C_{0},\textsf{Sign}_{S_{C}}(C_{0}),G_{1},\textsf{Sign}_{S_{C}}(G_{1}), \textsf{Sign}_{S_{C}}(C_{\tau})>
+			\end{array}		
+		\end{equation}
+
+		\begin{figure}[h!]
+			\centering
+			\includegraphics[scale=1]{images/a-forest.png}
+			\caption{$A$'s forest}
+			\label{fig:a-forest}
+		\end{figure}
+
+		\begin{figure}[h!]
+			\centering
+			\includegraphics[scale=1]{images/a-forest-first-merge.png}
+			\caption{$A$'s forest after first merge}
+			\label{fig:a-forest}
+		\end{figure}
+		
+		\begin{figure}[h!]
+			\centering
+			\includegraphics[scale=1]{images/a-forest-second-merge.png}
+			\caption{$A$'s forest after second merge}
+			\label{fig:a-forest}
+		\end{figure}
+
+		\begin{figure}[h!]
+			\centering
+			\includegraphics[scale=1]{images/a-payload.png}
+			\caption{$A$'s payload}
+			\label{fig:a-payload}
+		\end{figure}
+
+			% \begin{figure}[h!]
+			% 	\centering
+			% 	% \includegraphics[width=6in]{images/commitment-tree-example-1.png}\\
+			% 	\caption{$A$ receives $C_{2}$ from $C$, $(B_{1},B_{0})$ from $B$, $D_{0}$ from $D$ and generates $A_{0}$. The commitment payload received from a given sensor node is indicated by dashed-line box.}
+			% 	\label{fig:commitment-tree-example-1}
+			% \end{figure}
+			% \begin{equation}
+			% 	\begin{array}{l}
+			% 		A_{0} = <A_{id}, 1, A_{value}, H(N||1||A_{value})>; \textsf{Sign}_{S_{A}}(A_{0}) \\
+			% 		D_{0} = <D_{id}, 1, D_{value}, H(N||1||D_{value})>; \textsf{Sign}_{S_{D}}(D_{0})\\
+			% 		B_{0} = <B_{id}, 1, B_{value}, H(N||1||B_{value})>; \textsf{Sign}_{S_{B}}(B_{0})\\
+			% 		B_{1} = <B_{id}, 2, B_{value}, H(N||2||B_{value}||E_{0}||F_{0})>; \textsf{Sign}_{S_{B}}(B_{1})\\
+			% 		\textcolor{red}{\textsf{Sign}_{S_{B}}(B_{0} || B_{1}), benefits}\\
+			% 		C_{2} = <C_{id}, 4, C_{value}, H(N||4||C_{value})||H_{1}||C_{1})>; \textsf{Sign}_{S_{C}}(C_{2})\\
+			% 		\end{array}
+			% \end{equation}
+
+			% \begin{figure}[h!]
+			% 	\centering
+			% 	\includegraphics[width=6in]{images/commitment-tree-example-2.png}\\
+			% 	\caption{First Merge: $A_{1}$ vertex created by A.}
+			% 	\label{fig:commitment-tree-example-2}
+			% \end{figure}
+
+			% \begin{equation}
+			% 	\begin{array}{l}
+			% A_{1} = <A_{id}, 2, A_{1value}, H(N||2||A_{1value}||A_{0}||D_{0})>; \textsf{Sign}_{S_{A}}(A_{1})\\
+			% where\  A_{1value} = A_{value} + D_{value} \\
+			% 	\end{array}	
+			% \end{equation}
+			% \begin{figure}[h!]
+			% 	\centering
+			% 	\includegraphics[width=\textwidth]{images/commitment-tree-example-3.png}\\
+			% 	\caption{Second Merge: $A_{2}$ vertex created by A.}
+			% 	\label{fig:commitment-tree-example-3}
+			% \end{figure}
+			% \begin{equation}
+			% 	\begin{array}{l}
+			% 		A_{2} = <A_{id}, 4, A_{2value}, H(N||4||A_{2value}||B_{1}||A_{1}) >; \textsf{Sign}_{S_{A}}(A_{2})\\
+			% 		where\  A_{2value} = B_{1value} + A_{1value} \\
+			% 	\end{array}
+			% \end{equation}
+			% \begin{figure}[h!]
+			% 	\centering
+			% 	\includegraphics[width=6in]{images/commitment-tree-example-4.png}\\
+			% 	\caption{Third Merge: $A_{3}$ vertex created by A.}
+			% 	\label{fig:commitment-tree-example-4}
+			% \end{figure}
+			% \begin{equation}
+			% 	\begin{array}{l}
+			% 		A_{3} = <A_{id},8, A_{3value},H(N||8||A_{3value}||C_{2}||A_{2})>; \textsf{Sign}_{S_{A}}(A_{3})\\
+			% 		where\ A_{3value} = A_{2value} + C_{2value}
+			% 	\end{array}
+			% \end{equation}
+	\end{exmp}
+
+\section{Result checking by the sensor nodes}
+
+	\subsection{dissemination final commitment}
+	\subsection{dissemination of off-path values}
 		Two cases:
 		\begin{itemize}
 			\item {With signatures}
-			\item {Without signatures}
 		\end{itemize}
-	\section{verification of inclusion}
-	\section{collection of authentication codes}
-	\section{verification of authentication codes}
+	\subsection{verification of inclusion}
+	\subsection{collection of authentication codes}
+
+\section{Result checking by the base station}
+	\subsection{verification of authentication codes}
 		\label{sec:verficiation-of-authentication-codes}
 		The authentication codes for sensor node $s$, with either positive or negative acknowledgment message, are defined as follows:
 		\begin{equation}
@@ -227,33 +327,33 @@
 
 		And concludes that node $4 $ is complaining.
 	\newpage
-	\section{Detect an adversary}
-	\begin{algorithm}
-	\caption{Pseudo algorithm to detect an adversary}
-	\label{algo:detect-an-adversary}
+	\subsection{Detect an adversary}
+		\begin{algorithm}
+		\caption{Pseudo algorithm to detect an adversary}
+		\label{algo:detect-an-adversary}
 
-		\begin{algorithmic}[1]
+			\begin{algorithmic}[1]
 
-				\STATE $BS$ \ identifies all the complainer and creates $c = \{c_{1}, c_{2}, \dotsc, c_{n}\}$
-				\FORALL {$N \in c$}
+					\STATE $BS$ \ identifies all the complainer and creates $c = \{c_{1}, c_{2}, \dotsc, c_{n}\}$
+					\FORALL {$N \in c$}
 
-					\STATE $BS$\ asks $N$ to send data-items with its signature, sent during commitment tree generation phase
-				
-				\ENDFOR
+						\STATE $BS$\ asks $N$ to send data-items with its signature, sent during commitment tree generation phase
+					
+					\ENDFOR
 
-				\STATE $BS$\ identifies possible adversary based on $c$ and creates $a = \{a_{1},a_{2},\dotsc,a_{n}\}$
+					\STATE $BS$\ identifies possible adversary based on $c$ and creates $a = \{a_{1},a_{2},\dotsc,a_{n}\}$
 
-				\FORALL {$A \in a$}
+					\FORALL {$A \in a$}
 
-					\STATE $BS$\ asks $A$ to send data-items with its signature, received and sent by $A$ during commitment tree generation phase
-					\STATE If needed $BS$\  asks the parent of $A$ to send data-items with its signature
-		
-				\ENDFOR
+						\STATE $BS$\ asks $A$ to send data-items with its signature, received and sent by $A$ during commitment tree generation phase
+						\STATE If needed $BS$\  asks the parent of $A$ to send data-items with its signature
+			
+					\ENDFOR
 
-				\STATE $BS$\ determines the adversary based on the verification of signatures
+					\STATE $BS$\ determines the adversary based on the verification of signatures
 
-		\end{algorithmic}
-	\end{algorithm}
+			\end{algorithmic}
+		\end{algorithm}
 
 	\begin{theorem}
 		%\emph{(Lagrange's Theorem)}
@@ -317,6 +417,19 @@
 	% of O(Δlog2 n) follows from the O(log2 n) edge congestion and the
 	% definition of Δ as the greatest degree in the aggregation tree.
 	\end{proof}
+
+
+\section{Bandwidth Analysis}
+	For any given sensor node's forest with $n$ leaf vertices, has at most $\log n$ data-items in its payload.
+	It has at most $(\log n) +1$ signatures in its payload.
+	The highest possible count value is $\log n$, as all the trees are binary. 
+
+	An intermediate sensor node $S$ with $\beta$ descendants in the aggregation tree, has at most $\log(\beta+1)$ data-items with their respective $\log(\beta+1)$ signatures in its payload.
+	$S$ might need to send its payload signature $Sign(S_{p})$.
+	At max, $S$ has to send a payload with $\log(\beta+1)$ data-items and $\log(\beta+1) +1$ signatures to its parent in the aggregation tree.
+	
+	Hence, sending signatures of the data-items causes $O(\log \beta)$ bandwidth overhead for each node in the network, where $\beta$ is the number of descendants of the sensor node. 
+
 
 \section{Performance Analysis}
 	In addition to calculating its own data-items, all intermediate sensor nodes with $\beta$ descendants and $\zeta$ direct children need to do the following:

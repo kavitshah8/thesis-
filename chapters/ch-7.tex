@@ -50,6 +50,7 @@
 		Each sensor node sends the signature of its data-item signed by itself using its own secret key. 
 		For example, the signature of $S_{0}$ of the Equation \ref{eq:data-item} is given as follows:
 		\begin{equation}
+			\label{eq:sign-data-item}
 			\textsf{S} = \textsf{Sign}_{S_{S}}(S_{0})
 		\end{equation}
 		where $S_{S}$ is the secret key of the sensor node $S$, $\textsf{Sign}$ is the signing algorithm.
@@ -102,7 +103,7 @@
 
 	We define commitment payload based on the commitment forest Defined in \ref{def:commitment-forest}.
 	\begin{definition}
-		A \textbf{commitment payload} is the concatenation of a set of data-items of the root vertices of the trees in the outgoing commitment forest.
+		A \textbf{commitment payload} is a set of data-items of the root vertices of the trees with their respective signatures in the outgoing commitment forest and an additional signature for the transmission.
 	\end{definition}
 	% We use the term payload for commitment payload and the term forest for the commitment forest.
 	For brevity, we use the term forest, payload instead of commitment forest, commitment payload respectively.
@@ -116,13 +117,20 @@
 	While creating the commitment tree $A$ creates its data-item $A_{0}$ according to Equation \ref{eq:data-item}.
 	$A$ sends only one data-item to $B$ therefore $A$'s payload with its signature is given as follows:
 	\begin{equation}
-		A_{p} =\ <A_{0}>\ ;\ \textsf{Sign}_{S_{A}}(A_{p})
+		\label{eq:signing-payload}
+		\begin{array}{l}
+			A_{\tau} =\ < A_{0} >\ ;\ \textsf{Sign}_{S_{A}}(A_{\tau})\\
+			A_{p} =\ <A_{0}, \textsf{Sign}_{S_{A}}(A_{0}), \textsf{Sign}_{S_{A}}(A_{\tau}) >\ ;
+		\end{array}
 	\end{equation}
 	The sensor node $C$'s payload is shown in Figure \ref{fig:Commitment payload of C}.
 	The commitment tree generation process is described in the later sections. 
 	The sensor node $C$ sends two data-items to $D$ therefore $C$'s payload with its signature is given as follows:
 	\begin{equation}
-	 	C_{p} =\ <B_{1}\ ||\ C_{0}>\ ;\ \textsf{Sign}_{S_{C}}(C_{p})
+		\begin{array}{l}
+		 	C_{\tau} =\ <B_{1}\ ||\ C_{0}>\ ;\ \textsf{Sign}_{S_{C}}(C_{\tau})\\
+		 	C_{p} =\ <C_{0}, \textsf{Sign}_{S_{C}}(C_{0}), B_{1}, \textsf{Sign}_{S_{C}}(B_{1}), \textsf{Sign}_{S_{C}}(C_{\tau}) >
+		\end{array}
 	\end{equation}
 	\begin{figure}[h!]
 		\centering
