@@ -2,15 +2,16 @@
 	In this chapter, we describe the entire protocol from the commitment tree generation to the result checking with resigning the data-item approach.
 
 \section{Query Dissemination}
-	Hello
+	The commitment tree generation process begins with the query dissemination.
+	It is similar to the process described in section \ref{sec:query-dissemination}.
+
 \section{Commitment Tree Generation}
 	For the given aggregation tree the commitment forest is built as follows.
-	The commitment tree generation begins from the sensor nodes with the highest depth (Leaf nodes) in the aggregation tree.
-
-	Leaf sensor nodes in the aggregation tree create their leaf vertex by creating data-items, signatures of those data-items and signature of the payload according to Equation \ref{eq:data-item}, \ref{eq:sign-data-item}, \ref{eq:signing-payload} respectively.
-	And then send it to their parents in the aggregation tree.	
+	The commitment tree generation begins from the sensor nodes with the highest depth (leaf nodes) in the aggregation tree.
+	Leaf sensor nodes in the aggregation tree create their leaf vertex by creating data-items, signatures of those data-items and signature of the \textcolor{red}{transmit-payload} according to Equation \ref{eq:data-item}, \ref{eq:sign-data-item}, \ref{eq:signing-payload} respectively.
+	And then send the payload to their parents in the aggregation tree.	
 	Each internal sensor node in the aggregation tree also creates their leaf vertex.
-	In addition, internal sensor node receives the data-items with the signatures of those data-items and the signature of the payloads from each of its children which creates the forest for the internal sensor node.
+	In addition, internal sensor node receives the data-items with the signatures of those data-items and the signature of the \textcolor{red}{transmit-payload} from each of its children which creates the forest for the internal sensor node.
 	For all of its children, internal node first verifies the payload signature and then data-item signatures for one children at a time.
 	Once internal node verifies all the received signatures, it merges all the data-items in its forest with same count value.
 	Note that we can determine the height of the commitment tree from the count value.
@@ -85,8 +86,8 @@
 		\begin{figure}[h!]
 			\centering
 			\includegraphics[scale=1]{images/b-forest-payload.png}
-			\caption{$B$'s forest aggregation to create $B$'s payload.
-			 				The forest is shown in dashed lines and payload in solid lines.}
+			\caption{$B$'s forest aggregation creating its payload.
+			 				Each dashed-line box shows forest and solid-line box shows payload of the respective sensor node.}
 			\label{fig:b-forest-payload}
 		\end{figure}
 
@@ -107,7 +108,7 @@
 		\begin{figure}[h!]
 			\centering
 			\includegraphics[scale=1]{images/c-forest-payload.png}
-			\caption{$C$'s forest aggregation to create $C$'s payload }
+			\caption{$C$'s forest aggregation creating its payload.}
 			\label{fig:c-forest-payload}
 		\end{figure}
 		\begin{equation}
@@ -131,7 +132,25 @@
 		% Equations \ref{eq:b-payload},\ref{eq:c-payload},\ref{eq:d-payload} 
 		from $B,C,D$ respectively.
 		$A$ verifies all the signatures in the received payloads and creates $A_{0}$.
-		$A$ has $G_{1},C_{0},B_{1},B_{0},D_{0},A_{0}$ in its forest as shown in Figure \ref{fig:a-forest}. 
+		$A$ has $G_{1},C_{0},B_{1},B_{0},D_{0},A_{0}$ in its forest as shown in Figure \ref{fig:a-forest}.
+		\begin{figure}[h!]
+			\centering
+			\includegraphics[scale=1]{images/a-forest.png}
+			\caption{$A$'s forest: $A$ receives three payloads from $C,B,D$ and creates $A_{0}$}
+			\label{fig:a-forest}
+		\end{figure}
+		\begin{figure}[h!]
+			\centering
+			\includegraphics[scale=1]{images/a-forest-first-merge.png}
+			\caption{$A$'s forest after first merge}
+			\label{fig:a-forest-first-merge}
+		\end{figure}
+		\begin{figure}[h!]
+			\centering
+			\includegraphics[scale=1]{images/a-forest-second-merge.png}
+			\caption{$A$'s forest after second merge}
+			\label{fig:a-forest-second-merge}
+		\end{figure}
 		$A$ has four data-items with count value of $1$.
 		In the first merge, $A$ aggregates those data-items and creates $A_{10},A_{11}$ as shown in Figure \ref{fig:a-forest-first-merge}.
 		Now, $A$ has four data-items with count value of $2$.
@@ -152,26 +171,8 @@
 		\end{equation}
 		\begin{figure}[h!]
 			\centering
-			\includegraphics[scale=1]{images/a-forest.png}
-			\caption{$A$'s forest}
-			\label{fig:a-forest}
-		\end{figure}
-		\begin{figure}[h!]
-			\centering
-			\includegraphics[scale=1]{images/a-forest-first-merge.png}
-			\caption{$A$'s forest after first merge}
-			\label{fig:a-forest-first-merge}
-		\end{figure}
-		\begin{figure}[h!]
-			\centering
-			\includegraphics[scale=1]{images/a-forest-second-merge.png}
-			\caption{$A$'s forest after second merge}
-			\label{fig:a-forest-second-merge}
-		\end{figure}
-		\begin{figure}[h!]
-			\centering
 			\includegraphics[scale=1]{images/a-payload.png}
-			\caption{$A$'s payload}
+			\caption{$A$'s payload : $A$ sends this to the base station.}
 			\label{fig:a-payload}
 		\end{figure}
 
