@@ -249,20 +249,33 @@
 			\textsf{B}_{p} =\ <A_{3}, \textsf{Sign}_{S_{\textsf{B}}}(A_{3}), \textsf{Sign}_{S_{\textsf{B}}}(\textsf{B}_{\tau})>\ where\ \textsf{B}_{\tau} =\ <A_{3}>
 		\end{equation}
 
-	\subsection{dissemination of off-path values}
+	\subsection{Dissemination of Off-Path Values}
 		To enable verification each sensor node must receive all of its off-path values.
 		The off-path values of the sensor nodes can be determined according to the Definition \ref{def:off-path}.
 		
 		Each internal vertex $t$ in the commitment tree has two children $u1$ and $u2$. 
 		To disseminate off-path values, $t$ sends the data-item of $u1$ to $u2$, and vice-versa ($t$ also attaches relevant information tagging $u1$ as the right child and $u2$ as the left child) along with the signatures of the data-item and the signature of the transmit-payload.
 		In our previous example, internal vertex $A_{10}$ as shown in Figure \ref{fig:a-payload} has two children $C_{0},B_{0}$.
-		$A_{10}$ sends the following off-path values to $B,C$ respectively.
+		$A_{10}$ sends the following off-path values as follows to $C, B$ respectively.
 		\begin{equation}
 			\begin{array}{l}
 			<B_{0}, \textsf{Sign}_{S_{A}}(B_{0}),\textsf{Sign}_{S_{A}}(A_{10\tau})>\ where\ A_{10\tau} =\ <B_{0}>\\
 			<C_{0}, \textsf{Sign}_{S_{A}}(C_{0}),\textsf{Sign}_{S_{A}}(A_{10\tau})>\ where\ A_{10\tau} =\ <C_{0}>
 			\end{array}
 		\end{equation}
+		An internal vertex $t$ receives data-items with their respective signatures from its parent. 
+		It verifies the signatures of the data-items and then sends data-items (and left/right tags) to both of its children.
+		Continuing the previous example, internal vertex $A_{10}$ receives $A_{11}, A_{20}$ form its parent $A_{21}$.
+		$A_{10}$ sends the following off-path values as follows to $C, B$ respectively.
+		\begin{equation}
+			\begin{array}{l}
+			<B_{0}, \textsf{Sign}_{S_{A}}(B_{0}),A_{11},\textsf{Sign}_{S_{A}}(A_{11}),A_{20},\textsf{Sign}_{S_{A}}(A_{20}),\textsf{Sign}_{S_{A}}(A_{10\tau})>\\ 
+				where\  A_{10\tau} =\ <B_{0}||A_{11}||A_{20}>\\
+			<C_{0}, \textsf{Sign}_{S_{A}}(C_{0}),A_{11},\textsf{Sign}_{S_{A}}(A_{11}),A_{20},\textsf{Sign}_{S_{A}}(A_{20}),\textsf{Sign}_{S_{A}}(A_{10\tau})>\\ 
+				where\  A_{10\tau} =\ <C_{0}||A_{11}||A_{20}>
+			\end{array}
+		\end{equation}
+
 	\subsection{verification of inclusion}
 	\subsection{collection of authentication codes}
 
