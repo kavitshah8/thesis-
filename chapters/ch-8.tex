@@ -26,28 +26,22 @@
 		\caption{$A$ has $B_{1}, C_{1}$ in his forest and aggregates those two trees and creates $A_{2}$.}
 		\label{fig:increase-height}
 	\end{figure}
-	It repeats the process until no two data-items in its forest have the same count value.
-	An example of generating the payload by merging the data-items in the forest for the sensor node $A$ in Figure \ref{fig:at} is illustrated in the following example.
+	It repeats the process until no two data-items in its forest have the same count value.	
 	
-	\begin{exmp} 
-
-		We demonstrate the commitment tree generation process for the aggregation tree shown in Figure \ref{fig:Aggregation-tree-1}.
+	We demonstrate the commitment tree generation process for the aggregation tree shown in Figure \ref{fig:Aggregation-tree-1}.
 		\begin{figure}[h!]
 			\centering
 			\includegraphics[scale=1]{images/aggregation-tree-1.png}
 			\caption{Aggregation Tree.}
 			\label{fig:Aggregation-tree-1}
 		\end{figure}
+		In this example, $A$ has three children. $A$ receives one payload from each of its children which creates $A$'s forest.
+		After verifying all the signatures from its forest, $A$ uses the data-items in its forest to create its payload, which is sent to the base station.
+		First, we describe the payload generation process of $B,C,D$ and then for $A$.
 
-		As we can see $A$ has three children, $A$ will receive one payload from each of its children which will create $A$'s forest.
-		And $A$ will use the data-items in its forest to create its own payload, which will be sent to the base station.
-		First, we describe the payload generation process of $B,C,D$ and then for the sensor node $A$.
-
-		Let's see how $B$ creates its payload.
-		$B$ creates its payload from its forest. 
+		The sensor node $B$ creates its payload from its forest. 
 		It's forest consists of payloads received from $E,F$.
-		$E,F$ creates their payloads according to Equation \ref{eq:signing-payload} as follows:
-
+		The leaf sensor nodes $E,F$ creates their payloads according to Equation \ref{eq:signing-payload} as follows:
 		% \begin{figure}[h!]
 		% 	\centering
 		% 	\includegraphics{images/e-payload.png}
@@ -56,8 +50,8 @@
 		% \end{figure}
 		\begin{equation}
 			\begin{array}{l}
-			E_{0} =\ <E_{id}, 1, E_{value}, H(N||1||E_{value})>;\ \textsf{Sign}_{S_{E}}(E_{0})\\
-			E_{p} =\ <E_{0}, \textsf{Sign}_{S_{E}}(E_{0}), \textsf{Sign}_{S_{E}}(E_{\tau}) >\ where\ E_{\tau} =\ <E_{0}>
+			E_{p} =\ <E_{0}, \textsf{Sign}_{S_{E}}(E_{0}), \textsf{Sign}_{S_{E}}(E_{\tau}) >\ where\ E_{\tau} =\ <E_{0}>\\
+			E_{0} =\ <E_{id}, 1, E_{value}, H(N||1||E_{value})>
 			\end{array}
 		\end{equation}
 		% \begin{figure}[h!]
@@ -68,35 +62,48 @@
 		% \end{figure}
 		\begin{equation}
 			\begin{array}{l}
-				F_{0} =\ <F_{id}, 1, F_{value}, H(N||1||F_{value})>;\ \textsf{Sign}_{S_{F}}(F_{0})\\
-				F_{p} =\ <F_{0}, \textsf{Sign}_{S_{F}}(F_{0}), \textsf{Sign}_{S_{F}}(F{\tau}) >\ where\ F_{\tau} =\ <F_{0}> 
+				F_{p} =\ <F_{0}, \textsf{Sign}_{S_{F}}(F_{0}), \textsf{Sign}_{S_{F}}(F{\tau}) >\ where\ F_{\tau} =\ <F_{0}>\\
+				F_{0} =\ <F_{id}, 1, F_{value}, H(N||1||F_{value})>
 			\end{array}
 		\end{equation}
 		$B$ receives $E_{p},F_{p}$ from $E,F$ respectively. 
-		It verifies all the signatures in the received payload.
+		$B$ verifies all the signatures in the received payloads.
 		Then it creates $B_{0}$.
-		Now, $B$ has $B_{0},E_{0},F_{0}$ in its forest. 
+		Now, $B$ has $B_{0},E_{0},F_{0}$ in its forest as shown in Figure \ref{fig:b-forest-payload}. 
 		As all the data-items have the same count value, $B$ has an option which two to aggregate.
-		$B$ aggregates $E_{0},F_{0}$ and creates $B_{1}$ as shown in Figure \ref{fig:b-forest-payload}.
-		Note: we show the forest in dashed lines and payload in solid lines.
+		$B$ aggregates $E_{0},F_{0}$ and creates $B_{1}$.
+		After creating $B_{1}$ none of the data-items have the same count value. 
+		So, $B$ creates its payload $B_{p}$ and sends it to $A$ as follows:
+		\begin{equation}
+			\begin{array}{l}
+				B_{p} =\ < B_{0}, \textsf{Sign}_{S_{B}}(B_{0}), B_{1}, \textsf{Sign}_{S_{B}}(B_{1}), \textsf{Sign}_{S_{B}}(B_{\tau}) >\ where\ B_{\tau} =\ <B_{0} || B_{1}>\\
+				B_{1} =\ < B_{id}, 2, B_{1value}, H(N||2||B_{1value}||E_{0}||F_{0})>;\ B_{1value} = E_{value} + F_{value} \\
+				B_{0} =\ <B_{id}, 1, B_{value}, H(N||1||B_{value})>
+			\end{array}
+			\label{eq:b-payload}
+		\end{equation}
 		\begin{figure}[h!]
 			\centering
 			\includegraphics[scale=1]{images/b-forest-payload.png}
-			\caption{$B$'s forest aggregation to create $B$'s payload }
+			\caption{$B$'s forest aggregation to create $B$'s payload.
+			 				The forest is shown in dashed lines and payload in solid lines.}
 			\label{fig:b-forest-payload}
 		\end{figure}
-		\begin{equation}
-			\begin{array}{l}
-				B_{0} =\ <B_{id}, 1, B_{value}, H(N||1||B_{value})>\\
-				B_{1} =\ < B_{id}, 2, B_{1value}, H(N||2||B_{1value}||E_{0}||F_{0})>;\ B_{1value} = E_{value} + F_{value} \\
-				B_{p} =\ < B_{0}, \textsf{Sign}_{S_{B}}(B_{0}), B_{1}, \textsf{Sign}_{S_{B}}(B_{1}), \textsf{Sign}_{S_{B}}(B_{\tau}) >\ where\ B_{\tau} =\ <B_{0} || B_{1}>
-			\end{array}
-		\end{equation}
 
 		In similar way $C$ receives $G_{p}$ from $G$ defined as follows:
 		\begin{equation}
-			G_{p} =\ <G_{1},\textsf{Sign}_{S_{G}}(G_{1}), \textsf{Sign}_{S_{G}}(G_{\tau})>
+			\begin{array}{l}
+				G_{p} =\ <G_{1},\textcolor{red}{\textsf{Sign}_{S_{G}}(G_{1})}, \textsf{Sign}_{S_{G}}(G_{\tau})>\ where\ G_{\tau} =\ <G_{0} || H_{0}>\\
+				G_{1} =\ < G_{id}, 2, G_{1value}, H(N||2||G_{1value}||G_{0}||H_{0})>;\ G_{1value} = G_{value} + H_{value} \\
+				G_{0} =\ <G_{id}, 1, G_{value}, H(N||1||G_{value})>\\
+				H_{0} =\ <H_{id}, 1, H_{value}, H(N||1||H_{value})>
+			\end{array}
 		\end{equation}
+		$C$ verifies all the signatures in the received payload $G_{p}$ and creates $C_{0}$.
+		Now, $C$ has $C_{0},G_{1}$ in its forest as shown in Figure \ref{fig:c-forest-payload}. 
+		As none of the data-items have the same count value, $C$ does not aggregate.
+		But $C$ removes the old signature $G_{1}$ and put its own signature on $G_{1}$.
+		So, $C$ creates its payload $C_{p}$ and sends it to $A$ as follows:
 		\begin{figure}[h!]
 			\centering
 			\includegraphics[scale=1]{images/c-forest-payload.png}
@@ -105,33 +112,62 @@
 		\end{figure}
 		\begin{equation}
 			\begin{array}{l}
-				C_{0} =\ <C_{id}, 1, C_{value}, H(N||1||C_{value})>\\
-				C_{\tau} =\ <C_{0} || G_{1}>\\
-				C_{p} =\ <C_{0},\textsf{Sign}_{S_{C}}(C_{0}),G_{1},\textsf{Sign}_{S_{C}}(G_{1}), \textsf{Sign}_{S_{C}}(C_{\tau})>
-			\end{array}		
+				C_{p} =\ <C_{0},\textsf{Sign}_{S_{C}}(C_{0}),G_{1},\textcolor{red}{\textsf{Sign}_{S_{C}}(G_{1})}, \textsf{Sign}_{S_{C}}(C_{\tau})>\ where\ C_{\tau} =\ <C_{0} || G_{1}>\\
+				C_{0} =\ <C_{id}, 1, C_{value}, H(N||1||C_{value})>
+			\end{array}
+			\label{eq:c-payload}
 		\end{equation}
 
+		The sensor node $D$ creates its payload and sends it to $A$ as follows:
+		\begin{equation}
+			\begin{array}{l}
+				D_{p} =\ <D_{0}, \textsf{Sign}_{S_{D}}(D_{0}), \textsf{Sign}_{S_{D}}(D_{\tau})>;\ where\ D_{\tau} =\ <D_{0}>\\
+				D_{0} =\ <D_{id},1,D_{value},H(N||1||D_{value})>
+			\end{array}
+			\label{eq:d-payload}
+		\end{equation}
+
+		The root node of the aggregation tree $A$ receives $B_{p}, C_{p}, D_{p}$
+		% Equations \ref{eq:b-payload},\ref{eq:c-payload},\ref{eq:d-payload} 
+		from $B,C,D$ respectively.
+		$A$ verifies all the signatures in the received payloads and creates $A_{0}$.
+		$A$ has $G_{1},C_{0},B_{1},B_{0},D_{0},A_{0}$ in its forest as shown in Figure \ref{fig:a-forest}. 
+		$A$ has four data-items with count value of $1$.
+		In the first merge, $A$ aggregates those data-items and creates $A_{10},A_{11}$ as shown in Figure \ref{fig:a-forest-first-merge}.
+		Now, $A$ has four data-items with count value of $2$.
+		In the second merge, $A$ aggregates those data-items and creates $A_{20},A_{21}$ as shown in Figure \ref{fig:a-forest-second-merge}.
+		Finally, $A$ has two data-items with count value of $4$.
+		In the final merge, $A$ aggregates those data-items and creates $A_{3}$ as shown in Figure \ref{fig:a-payload}.
+		Then $A$ creates payload and sends it to the base station as follows:
+		\begin{equation}
+			\begin{array}{l}
+				A_{p} =\ <A_{3},\textsf{Sign}_{S_{A}}(A_{3}),\textsf{Sign}_{S_{A}}(A_{\tau})>\ where\ A_{\tau} =\ <A_{3}>\\
+				A_{3} =\ <A_{id}, 8, A_{3value}, H(N||8||A_{3value}||A_{20}||A_{21})>;\ A_{3value} =\ A_{20value} + A_{21value}\\
+				A_{20} =\ <A_{id},4,A_{20value},H(N||4||A_{20value}||G_{1}||B_{1})>;\ A_{20value} =\ G_{1value} + B_{1value}\\ 
+				A_{21} =\ <A_{id},4,A_{21value},H(N||4||A_{21value}||A_{10}||A_{11})>;\ A_{21value} =\ A_{10value} + A_{11value}\\ 
+				A_{10} =\ <A_{id},2,A_{10value},H(N||2||A_{10value}||B_{0}||C_{0})>;\ A_{10value} =\ B_{value} + C_{value}\\
+				A_{11} =\ <A_{id},2,A_{11value},H(N||2||A_{11value}||D_{0}||A_{0})>;\ A_{11value} =\ D_{value} + A_{value}\\
+				A_{0} =\ <A_{id},1,A_{value},H(N||1||A_{value})>
+			\end{array}
+		\end{equation}
 		\begin{figure}[h!]
 			\centering
 			\includegraphics[scale=1]{images/a-forest.png}
 			\caption{$A$'s forest}
 			\label{fig:a-forest}
 		\end{figure}
-
 		\begin{figure}[h!]
 			\centering
 			\includegraphics[scale=1]{images/a-forest-first-merge.png}
 			\caption{$A$'s forest after first merge}
-			\label{fig:a-forest}
+			\label{fig:a-forest-first-merge}
 		\end{figure}
-		
 		\begin{figure}[h!]
 			\centering
 			\includegraphics[scale=1]{images/a-forest-second-merge.png}
 			\caption{$A$'s forest after second merge}
-			\label{fig:a-forest}
+			\label{fig:a-forest-second-merge}
 		\end{figure}
-
 		\begin{figure}[h!]
 			\centering
 			\includegraphics[scale=1]{images/a-payload.png}
@@ -193,7 +229,6 @@
 			% 		where\ A_{3value} = A_{2value} + C_{2value}
 			% 	\end{array}
 			% \end{equation}
-	\end{exmp}
 
 \section{Result checking by the sensor nodes}
 
