@@ -102,8 +102,12 @@
 \section{Commitment Payload}
 
 	We define commitment payload based on the commitment forest Defined in \ref{def:commitment-forest}.
+	We also define transmit payload as follows.
 	\begin{definition}
 		A \textbf{commitment payload} is a set of data-items of the root vertices of the trees with their respective signatures in the outgoing commitment forest and an additional signature for the transmission.
+	\end{definition}
+	\begin{definition}
+		A \textbf{transmit payload} is the concatenation of all the data-items in the commitment payload.
 	\end{definition}
 	% We use the term payload for commitment payload and the term forest for the commitment forest.
 	For brevity, we use the term forest, payload instead of commitment forest, commitment payload respectively.
@@ -115,22 +119,16 @@
 		\label{fig:Palm aggregation tree}
 	\end{figure}
 	While creating the commitment tree $A$ creates its data-item $A_{0}$ according to Equation \ref{eq:data-item}.
-	$A$ sends only one data-item to $B$ therefore $A$'s payload with its signature is given as follows:
+	$A$ sends only one data-item to $B$ therefore $A$'s transmit-payload ($A_{\tau}$), the payload($A_{p}$) are given as follows:
 	\begin{equation}
 		\label{eq:signing-payload}
-		\begin{array}{l}
-			A_{\tau} =\ < A_{0} >\ ;\ \textsf{Sign}_{S_{A}}(A_{\tau})\\
-			A_{p} =\ <A_{0}, \textsf{Sign}_{S_{A}}(A_{0}), \textsf{Sign}_{S_{A}}(A_{\tau}) >\ ;
-		\end{array}
+			A_{p} =\ <A_{0}, \textsf{Sign}_{S_{A}}(A_{0}), \textsf{Sign}_{S_{A}}(A_{\tau}) >\ where\ A_{\tau} =\ < A_{0} > 
 	\end{equation}
 	The sensor node $C$'s payload is shown in Figure \ref{fig:Commitment payload of C}.
 	The commitment tree generation process is described in the later sections. 
-	The sensor node $C$ sends two data-items to $D$ therefore $C$'s payload with its signature is given as follows:
+	The sensor node $C$ sends two data-items to $D$ therefore $C$'s transmit-payload($C_{\tau}$), the payload($C_{p}$) are given as follows:
 	\begin{equation}
-		\begin{array}{l}
-		 	C_{\tau} =\ <B_{1}\ ||\ C_{0}>\ ;\ \textsf{Sign}_{S_{C}}(C_{\tau})\\
-		 	C_{p} =\ <C_{0}, \textsf{Sign}_{S_{C}}(C_{0}), B_{1}, \textsf{Sign}_{S_{C}}(B_{1}), \textsf{Sign}_{S_{C}}(C_{\tau}) >
-		\end{array}
+		 	C_{p} =\ <C_{0}, \textsf{Sign}_{S_{C}}(C_{0}), B_{1}, \textsf{Sign}_{S_{C}}(B_{1}), \textsf{Sign}_{S_{C}}(C_{\tau}) >\ where\ C_{\tau} =\ <B_{1}\ ||\ C_{0}>
 	\end{equation}
 	\begin{figure}[h!]
 		\centering
@@ -192,9 +190,9 @@
 	In the first approach, $C$ verifies $\textsf{Sign}_{S_{B}}(B_{1})$ and sends it to $D$ without any modifications as follows:
 	\begin{equation}	
 		\begin{array}{l}
-			C_{0} =\ <C_{id}, 1, C_{value}, H(N||1||C_{value})>;\ \textsf{Sign}_{S_{C}}(C_{0})\\
-			B_{1} =\ <B_{id}, 2, B_{1value}, H(N||2||B_{1value}||A_{0}||B_{0})>;\  \textcolor{red}{\textsf{Sign}_{S_{B}}(B_{1})}\\
-			C_{p} =\ <C_{0}||B_{1}>;\ \textsf{Sign}_{S_{C}}(C_{p})
+			C_{p} =\ <C_{0},\textsf{Sign}_{S_{C}}(C_{0}),B_{1},\textcolor{red}{\textsf{Sign}_{S_{B}}(B_{1})}, \textsf{Sign}_{S_{C}}(C_{\tau})>\ where\ C_{\tau} = <C_{0} || B_{1}>\\
+			C_{0} =\ <C_{id}, 1, C_{value}, H(N||1||C_{value})>\\
+			B_{1} =\ <B_{id}, 2, B_{1value}, H(N||2||B_{1value}||A_{0}||B_{0})>\\
 		\end{array}
 		\label{eq:forwarding-payload-without-resigning}
 	\end{equation}
@@ -205,9 +203,9 @@
 	In the second approach, the sensor node $C$ can verify the $\textsf{Sign}_{S_{B}}(B_{1})$ then remove the old signature and creates new signature $\textsf{Sign}_{S_{C}}(B_{1})$ and sends to $D$ as follows:
 	\begin{equation}	
 		\begin{array}{l}
-			C_{0} =\ <C_{id}, 1, C_{value}, H(N||1||C_{value})>;\ \textsf{Sign}_{S_{C}}(C_{0})\\
-			B_{1} =\ <B_{id}, 2, B_{1value}, H(N||2||B_{1value}||A_{0}||B_{0})>;\  \textcolor{red}{\textsf{Sign}_{S_{C}}(B_{1})}\\
-			C_{p} =\ <C_{0}||B_{1}>;\ \textsf{Sign}_{S_{C}}(C_{p})
+			C_{p} =\ <C_{0},\textsf{Sign}_{S_{C}}(C_{0}),B_{1},\textcolor{red}{\textsf{Sign}_{S_{C}}(B_{1})}, \textsf{Sign}_{S_{C}}(C_{\tau})>\ where\ C_{\tau} = <C_{0} || B_{1}>\\
+			C_{0} =\ <C_{id}, 1, C_{value}, H(N||1||C_{value})>\\
+			B_{1} =\ <B_{id}, 2, B_{1value}, H(N||2||B_{1value}||A_{0}||B_{0})>\\
 		\end{array}
 		\label{eq:forwarding-payload-with-resigning}
 	\end{equation}

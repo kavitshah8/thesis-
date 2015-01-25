@@ -176,69 +176,93 @@
 			\label{fig:a-payload}
 		\end{figure}
 
-			% \begin{figure}[h!]
-			% 	\centering
-			% 	% \includegraphics[width=6in]{images/commitment-tree-example-1.png}\\
-			% 	\caption{$A$ receives $C_{2}$ from $C$, $(B_{1},B_{0})$ from $B$, $D_{0}$ from $D$ and generates $A_{0}$. The commitment payload received from a given sensor node is indicated by dashed-line box.}
-			% 	\label{fig:commitment-tree-example-1}
-			% \end{figure}
-			% \begin{equation}
-			% 	\begin{array}{l}
-			% 		A_{0} = <A_{id}, 1, A_{value}, H(N||1||A_{value})>; \textsf{Sign}_{S_{A}}(A_{0}) \\
-			% 		D_{0} = <D_{id}, 1, D_{value}, H(N||1||D_{value})>; \textsf{Sign}_{S_{D}}(D_{0})\\
-			% 		B_{0} = <B_{id}, 1, B_{value}, H(N||1||B_{value})>; \textsf{Sign}_{S_{B}}(B_{0})\\
-			% 		B_{1} = <B_{id}, 2, B_{value}, H(N||2||B_{value}||E_{0}||F_{0})>; \textsf{Sign}_{S_{B}}(B_{1})\\
-			% 		\textcolor{red}{\textsf{Sign}_{S_{B}}(B_{0} || B_{1}), benefits}\\
-			% 		C_{2} = <C_{id}, 4, C_{value}, H(N||4||C_{value})||H_{1}||C_{1})>; \textsf{Sign}_{S_{C}}(C_{2})\\
-			% 		\end{array}
-			% \end{equation}
+				% \begin{figure}[h!]
+				% 	\centering
+				% 	% \includegraphics[width=6in]{images/commitment-tree-example-1.png}\\
+				% 	\caption{$A$ receives $C_{2}$ from $C$, $(B_{1},B_{0})$ from $B$, $D_{0}$ from $D$ and generates $A_{0}$. The commitment payload received from a given sensor node is indicated by dashed-line box.}
+				% 	\label{fig:commitment-tree-example-1}
+				% \end{figure}
+				% \begin{equation}
+				% 	\begin{array}{l}
+				% 		A_{0} = <A_{id}, 1, A_{value}, H(N||1||A_{value})>; \textsf{Sign}_{S_{A}}(A_{0}) \\
+				% 		D_{0} = <D_{id}, 1, D_{value}, H(N||1||D_{value})>; \textsf{Sign}_{S_{D}}(D_{0})\\
+				% 		B_{0} = <B_{id}, 1, B_{value}, H(N||1||B_{value})>; \textsf{Sign}_{S_{B}}(B_{0})\\
+				% 		B_{1} = <B_{id}, 2, B_{value}, H(N||2||B_{value}||E_{0}||F_{0})>; \textsf{Sign}_{S_{B}}(B_{1})\\
+				% 		\textcolor{red}{\textsf{Sign}_{S_{B}}(B_{0} || B_{1}), benefits}\\
+				% 		C_{2} = <C_{id}, 4, C_{value}, H(N||4||C_{value})||H_{1}||C_{1})>; \textsf{Sign}_{S_{C}}(C_{2})\\
+				% 		\end{array}
+				% \end{equation}
 
-			% \begin{figure}[h!]
-			% 	\centering
-			% 	\includegraphics[width=6in]{images/commitment-tree-example-2.png}\\
-			% 	\caption{First Merge: $A_{1}$ vertex created by A.}
-			% 	\label{fig:commitment-tree-example-2}
-			% \end{figure}
+				% \begin{figure}[h!]
+				% 	\centering
+				% 	\includegraphics[width=6in]{images/commitment-tree-example-2.png}\\
+				% 	\caption{First Merge: $A_{1}$ vertex created by A.}
+				% 	\label{fig:commitment-tree-example-2}
+				% \end{figure}
 
-			% \begin{equation}
-			% 	\begin{array}{l}
-			% A_{1} = <A_{id}, 2, A_{1value}, H(N||2||A_{1value}||A_{0}||D_{0})>; \textsf{Sign}_{S_{A}}(A_{1})\\
-			% where\  A_{1value} = A_{value} + D_{value} \\
-			% 	\end{array}	
-			% \end{equation}
-			% \begin{figure}[h!]
-			% 	\centering
-			% 	\includegraphics[width=\textwidth]{images/commitment-tree-example-3.png}\\
-			% 	\caption{Second Merge: $A_{2}$ vertex created by A.}
-			% 	\label{fig:commitment-tree-example-3}
-			% \end{figure}
-			% \begin{equation}
-			% 	\begin{array}{l}
-			% 		A_{2} = <A_{id}, 4, A_{2value}, H(N||4||A_{2value}||B_{1}||A_{1}) >; \textsf{Sign}_{S_{A}}(A_{2})\\
-			% 		where\  A_{2value} = B_{1value} + A_{1value} \\
-			% 	\end{array}
-			% \end{equation}
-			% \begin{figure}[h!]
-			% 	\centering
-			% 	\includegraphics[width=6in]{images/commitment-tree-example-4.png}\\
-			% 	\caption{Third Merge: $A_{3}$ vertex created by A.}
-			% 	\label{fig:commitment-tree-example-4}
-			% \end{figure}
-			% \begin{equation}
-			% 	\begin{array}{l}
-			% 		A_{3} = <A_{id},8, A_{3value},H(N||8||A_{3value}||C_{2}||A_{2})>; \textsf{Sign}_{S_{A}}(A_{3})\\
-			% 		where\ A_{3value} = A_{2value} + C_{2value}
-			% 	\end{array}
-			% \end{equation}
+				% \begin{equation}
+				% 	\begin{array}{l}
+				% A_{1} = <A_{id}, 2, A_{1value}, H(N||2||A_{1value}||A_{0}||D_{0})>; \textsf{Sign}_{S_{A}}(A_{1})\\
+				% where\  A_{1value} = A_{value} + D_{value} \\
+				% 	\end{array}	
+				% \end{equation}
+				% \begin{figure}[h!]
+				% 	\centering
+				% 	\includegraphics[width=\textwidth]{images/commitment-tree-example-3.png}\\
+				% 	\caption{Second Merge: $A_{2}$ vertex created by A.}
+				% 	\label{fig:commitment-tree-example-3}
+				% \end{figure}
+				% \begin{equation}
+				% 	\begin{array}{l}
+				% 		A_{2} = <A_{id}, 4, A_{2value}, H(N||4||A_{2value}||B_{1}||A_{1}) >; \textsf{Sign}_{S_{A}}(A_{2})\\
+				% 		where\  A_{2value} = B_{1value} + A_{1value} \\
+				% 	\end{array}
+				% \end{equation}
+				% \begin{figure}[h!]
+				% 	\centering
+				% 	\includegraphics[width=6in]{images/commitment-tree-example-4.png}\\
+				% 	\caption{Third Merge: $A_{3}$ vertex created by A.}
+				% 	\label{fig:commitment-tree-example-4}
+				% \end{figure}
+				% \begin{equation}
+				% 	\begin{array}{l}
+				% 		A_{3} = <A_{id},8, A_{3value},H(N||8||A_{3value}||C_{2}||A_{2})>; \textsf{Sign}_{S_{A}}(A_{3})\\
+				% 		where\ A_{3value} = A_{2value} + C_{2value}
+				% 	\end{array}
+				% \end{equation}
+
+	Once the base station receives the payload from the root of the aggregation tree, it verifies all the signatures in the payload.
+	In the previous example the base station receives $A_{p}$ from the sensor node $A$.
+	It verifies the signatures $\textsf{Sign}_{S_{A}}(A_{3})$, $\textsf{Sign}_{S_{A}}(A_{\tau})$ in the received payload.	 
+	If the base station verifies all the signatures to true it initiates the result checking phase.
 
 \section{Result checking by the sensor nodes}
+	The purpose of the result checking phase is to enable all the sensor nodes to verify their individual contributions to the final aggregate value.
+	If there is any inconsistency in the aggregation process then with the help of the base station, trace down the node responsible for causing the inconsistency in the aggregation process.
 
-	\subsection{dissemination final commitment}
+	\subsection{Dissemination Final Payload}
+		After the base station has received the payloads of the root node of the aggregation tree, the base station sends each of the data-items in the payload to the entire sensor network using authenticated broadcast.
+		We use authenticated broadcast allows the sensor nodes to verify that this data-items are coming from the base station.
+		In our previous example, the base station receives only one data-item $A_{3}$ in the payload received from $A$.
+		In that case, the base station's payload $\textsf{B}_{p}$ is given as follows:
+ 		\begin{equation}
+			\textsf{B}_{p} =\ <A_{3}, \textsf{Sign}_{S_{\textsf{B}}}(A_{3}), \textsf{Sign}_{S_{\textsf{B}}}(\textsf{B}_{\tau})>\ where\ \textsf{B}_{\tau} =\ <A_{3}>
+		\end{equation}
+
 	\subsection{dissemination of off-path values}
-		Two cases:
-		\begin{itemize}
-			\item {With signatures}
-		\end{itemize}
+		To enable verification each sensor node must receive all of its off-path values.
+		The off-path values of the sensor nodes can be determined according to the Definition \ref{def:off-path}.
+		
+		Each internal vertex $t$ in the commitment tree has two children $u1$ and $u2$. 
+		To disseminate off-path values, $t$ sends the data-item of $u1$ to $u2$, and vice-versa ($t$ also attaches relevant information tagging $u1$ as the right child and $u2$ as the left child) along with the signatures of the data-item and the signature of the transmit-payload.
+		In our previous example, internal vertex $A_{10}$ as shown in Figure \ref{fig:a-payload} has two children $C_{0},B_{0}$.
+		$A_{10}$ sends the following off-path values to $B,C$ respectively.
+		\begin{equation}
+			\begin{array}{l}
+			<B_{0}, \textsf{Sign}_{S_{A}}(B_{0}),\textsf{Sign}_{S_{A}}(A_{10\tau})>\ where\ A_{10\tau} =\ <B_{0}>\\
+			<C_{0}, \textsf{Sign}_{S_{A}}(C_{0}),\textsf{Sign}_{S_{A}}(A_{10\tau})>\ where\ A_{10\tau} =\ <C_{0}>
+			\end{array}
+		\end{equation}
 	\subsection{verification of inclusion}
 	\subsection{collection of authentication codes}
 
