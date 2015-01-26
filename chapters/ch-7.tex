@@ -10,7 +10,7 @@
 	The pros and cons of each approach are discussed in the following sections. 
 	And once the base station receives the aggregated value it starts the verification process. 
 	If there is no malicious activity in the network then  it accepts the result and takes an action.
-	If the malicious activity is detected during the verification phase then the base station starts interactive activity to detect an adversary. 
+	If the malicious activity is detected during the verification phase then the base station starts interacting with the nodes in the network and detects an adversary using interactive proof. 
 
 \section{Data-Item}
 	
@@ -28,7 +28,7 @@
 		\label{eq:data-item}
 	 	S_{0} =\ <S_{id}, 1, S_{value}, H(N||1||S_{value})>
 	 \end{equation}
-	where $S_{id}, S_{value}$ is the unique ID and sensor reading of the sensor node $S$. 
+	where $S_{id}, S_{value}$ is the unique ID and sensor reading of the node $S$. 
 	The count is $1$ as there is only vertex in the subtree rooted at $S$, $H$ is the collision resistant hash function, and $N$ is the query nonce.
 
 	The first difference between SHIA's label structure and our data-item structure is that we remove the $complement$ field from the label structure Defined \ref{def:label}. 
@@ -73,7 +73,7 @@
 	  	\caption{Digital Certificate}
 		  \label{table:digital-certificate}
 	  \end{table}
-	  From the digital certificate the parent node receives the public-key of its child, which is necessary to verify the signature.
+	  From the digital certificate the parent node receives the public-key of its child, which is used to decipher the signature.
 	  For example, the parent node of $S$ verifies $\textsf{Sign}_{S_{S}}(S_{0})$ as follows:
 	  \begin{equation}
 			\textsf{Verify}_{P_{S}}(S_{0},\textsf{S}) = 
@@ -92,10 +92,10 @@
 		The signature allows the parent node to verify the \textit{authenticity} of the sensor node.
 		As only sensor node $S$ can create the signature using its secret key. 
 		The signature $\textsf{S}$ assures the \textit{integrity} of the data-item $S_{0}$.
-		Because either the data-item or the signature has been tampered in any way the verification algorithm return false.
+		Because either the data-item or the signature has been tampered in any way the verification algorithm returns false.
 		Furthermore, it allows the sender to have the proof for the sent data-item.
 		And the receiver for the proof for the received data-item, providing the security service of \textit{non-repudiation}.
-		The digital signature depends on the message so the parent node can not reuse the signature for other data-items in the future.
+		The digital signature depends on the message so the parent node can not reuse the signature for other messages in the future.
 		Hence, protecting the network against the \textit{replay attacks}.
 		Hence, it protects against the \textit{active attacks}.
 
@@ -119,14 +119,14 @@
 		\label{fig:Palm aggregation tree}
 	\end{figure}
 	While creating the commitment tree $A$ creates its data-item $A_{0}$ according to Equation \ref{eq:data-item}.
-	$A$ sends only one data-item to $B$ therefore $A$'s transmit-payload ($A_{\tau}$), the payload($A_{p}$) are given as follows:
+	$A$ sends only one data-item to $B$ therefore $A$'s payload ($A_{p}$), transmit-payload ($A_{\tau}$) are given as follows:
 	\begin{equation}
 		\label{eq:signing-payload}
 			A_{p} =\ <A_{0}, \textsf{Sign}_{S_{A}}(A_{0}), \textsf{Sign}_{S_{A}}(A_{\tau}) >\ where\ A_{\tau} =\ < A_{0} > 
 	\end{equation}
 	The sensor node $C$'s payload is shown in Figure \ref{fig:Commitment payload of C}.
 	The commitment tree generation process is described in the later sections. 
-	The sensor node $C$ sends two data-items to $D$ therefore $C$'s transmit-payload($C_{\tau}$), the payload($C_{p}$) are given as follows:
+	The sensor node $C$ sends two data-items to $D$ therefore $C$'s payload ($C_{p}$), transmit-payload ($C_{\tau}$) are given as follows:
 	\begin{equation}
 		 	C_{p} =\ <C_{0}, \textsf{Sign}_{S_{C}}(C_{0}), B_{1}, \textsf{Sign}_{S_{C}}(B_{1}), \textsf{Sign}_{S_{C}}(C_{\tau}) >\ where\ C_{\tau} =\ <B_{1}\ ||\ C_{0}>
 	\end{equation}
@@ -136,37 +136,36 @@
 		\caption{Commitment Payload of Sensor Node $C$}
 		\label{fig:Commitment payload of C}
 	\end{figure}
-	The verification of the received signatures of the payload is done by the parent node in the same way described in Section \ref{subsection:Signing and Verification of the Data-Item}.
+	The verification of the received signatures in the payload is done by the parent node in the same way described in Section \ref{subsection:Signing and Verification of the Data-Item}.
 
 	\subsection{Security Benefits}
 		\textcolor{red}{Might need refactoring}
-		As described in Subsection \ref{subsec:security benefits of signing the data-item}, the signature of the payload $\textsf{Sign}_{S_{S}}(S_{p})$ assures the integrity and authentication of the payload $S_{p}$.
-		In addition to that, the signature of the payload is like the signature for the transmission.
-		To the sender, it assures that it is sending only the data-items included in the signature of the payload.
-		And none of the data-items gets added or remove from the payload during the transmission. 
-		To the receiver, it assures that it receives all the data-items included in the signature of the payload. 
+		As described in Subsection \ref{subsec:security benefits of signing the data-item}, the signature of the transmit-payload $\textsf{Sign}_{S_{S}}(S_{\tau})$ assures the integrity and authentication of the transmit-payload $S_{\tau}$.
+		In addition to that, the signature of the transmit-payload is like the signature for the transmission.
+		To the sender, it assures that it is sending only the data-items included in the signature of the transmit-payload.
+		And none of the data-items gets added or remove from the transmit-payload during the transmission. 
+		To the receiver, it assures that it receives all the data-items included in the signature of the transmit-payload. 
 		And none of the data-items were stranded or added additionally to the payload of its child.
-		For example, the signature on the $C$'s payload $\textsf{Sign}_{S_{C}}(C_{p})$ assures that the sensor node $C$ sent only two data-items $C_{0},B_{1}$ in its payload.
+		For example, the signature on the $C$'s transmit-payload $\textsf{Sign}_{S_{C}}(C_{\tau})$ assures that the sensor node $C$ sent only two data-items $C_{0},B_{1}$ in its payload.
 		And none of the data-items in its payload have been left stranded.
-		It is true for the sensor node $A$.
+		% It is true for the sensor node $A$.
 		As we said, it like the signature for the transmission.
 
 \section{Key Differences from SHIA}
 
 	In SHIA, all the leaf nodes in the aggregation tree send only their respective data-items to the parent in the aggregation tree.
-	In our approach, all the leaf nodes send the data-item, the signature of the data-item and the signature of the payload to their parent node in the aggregation tree. 
+	In our approach, all the leaf nodes send the data-item, the signature of the data-item and the signature of the transmit-payload to their parent node in the aggregation tree. 
 	The child node sends its certificate as well if the parent node does not have it in its memory already.
 
 	In SHIA, the parent node proceeds with the aggregation process without verifying the received data-items.
-	\textbf{The parent node first verifies the payload signature.}
 	In our protocol, the parent node verifies the received signature using the the verification algorithm.
-	And the parent node proceeds with the aggregation only if all the signatures were verified successfully.
+	And it proceeds with the aggregation only if all the signatures are verified true.
 
 	In SHIA, the trusted base station verifies the final received data-items.
 	And upon detecting the malicious activity in the network, the base station raises an alarm. 
 	The base station does not do anything to detect malicious node responsible for the malicious activity.
-	In our approach, upon detecting the malicious activity the base station interacts with different nodes in the network to detect the malicious node.
-	Also, the  base station issues the certificate to the sensor nodes in the network.
+	In our approach, upon detecting the malicious activity the base station interacts with several relevant nodes in the network to trace down the malicious node.
+	Also, the base station issues the certificate to the sensor nodes in the network.
 	
 	\subsection{Bandwidth Analysis}
 	
@@ -182,34 +181,34 @@
 
 \section{Two ways of Forwarding the Commitment Payload}	
 	
-	As described in the previous sections, we send the data-items with their signature along with the signature of the payload while creating the commitment tree.
+	As described in the previous sections, we send the data-items with their signature along with the signature of the transmit-payload while creating the commitment tree.
 	Here, we describe two different approaches to send the signatures in the aggregation tree hierarchy based on the two different ways of signing the data-items.
 	To demonstrate two approaches we use the aggregation tree shown in Figure \ref{fig:Palm aggregation tree} and the payload of the sensor node $C$ shown in Figure \ref{fig:Commitment payload of C}.
-	In both the approaches, the sensor node $C$ sends all the data-items in its payload with their respective signatures to its parent sensor node $D$ along with the signature of its payload $C_{p}$.
+	In both the approaches, the sensor node $C$ sends all the data-items in its payload with their respective signatures to its parent sensor node $D$ along with the signature of its transmit-payload $C_{\tau}$.
 
 	In the first approach, $C$ verifies $\textsf{Sign}_{S_{B}}(B_{1})$ and sends it to $D$ without any modifications as follows:
 	\begin{equation}	
 		\begin{array}{l}
 			C_{p} =\ <C_{0},\textsf{Sign}_{S_{C}}(C_{0}),B_{1},\textcolor{red}{\textsf{Sign}_{S_{B}}(B_{1})}, \textsf{Sign}_{S_{C}}(C_{\tau})>\ where\ C_{\tau} = <C_{0} || B_{1}>\\
 			C_{0} =\ <C_{id}, 1, C_{value}, H(N||1||C_{value})>\\
-			B_{1} =\ <B_{id}, 2, B_{1value}, H(N||2||B_{1value}||A_{0}||B_{0})>\\
+			B_{1} =\ <B_{id}, 2, B_{1value}, H(N||2||B_{1value}||A_{0}||B_{0})>;\ B_{1value} =\ B_{value} + A_{value}
 		\end{array}
 		\label{eq:forwarding-payload-without-resigning}
 	\end{equation}
 	% The sensor node $C$ has two data-items $C_{0},B_{1}$ in its payload. 
-	The sensor node $C$ sends three signatures $\textsf{Sign}_{S_{B}}(B_{1})$, $\textsf{Sign}_{S_{C}}(C_{0}) $ and $\textsf{Sign}_{S_{C}}(C_{p})$ to its parent $D$.
+	The sensor node $C$ sends three signatures $\textsf{Sign}_{S_{B}}(B_{1})$, $\textsf{Sign}_{S_{C}}(C_{0}) $ and $\textsf{Sign}_{S_{C}}(C_{\tau})$ to its parent $D$.
 	It requires the parent node $D$ to know the public key of the sensor nodes $C$ and $B$, hence two certificates.
 
 	In the second approach, the sensor node $C$ can verify the $\textsf{Sign}_{S_{B}}(B_{1})$ then remove the old signature and creates new signature $\textsf{Sign}_{S_{C}}(B_{1})$ and sends to $D$ as follows:
 	\begin{equation}	
 		\begin{array}{l}
 			C_{p} =\ <C_{0},\textsf{Sign}_{S_{C}}(C_{0}),B_{1},\textcolor{red}{\textsf{Sign}_{S_{C}}(B_{1})}, \textsf{Sign}_{S_{C}}(C_{\tau})>\ where\ C_{\tau} = <C_{0} || B_{1}>\\
-			C_{0} =\ <C_{id}, 1, C_{value}, H(N||1||C_{value})>\\
-			B_{1} =\ <B_{id}, 2, B_{1value}, H(N||2||B_{1value}||A_{0}||B_{0})>\\
+			% C_{0} =\ <C_{id}, 1, C_{value}, H(N||1||C_{value})>\\
+			% B_{1} =\ <B_{id}, 2, B_{1value}, H(N||2||B_{1value}||A_{0}||B_{0})>\\
 		\end{array}
 		\label{eq:forwarding-payload-with-resigning}
 	\end{equation}
-	The sensor node $C$ sends three signatures $\textsf{Sign}_{S_{C}}(B_{1})$, $\textsf{Sign}_{S_{C}}(C_{0}) $ and $\textsf{Sign}_{S_{C}}(C_{p})$ to its parent $D$.
+	The sensor node $C$ sends three signatures $\textsf{Sign}_{S_{C}}(B_{1})$, $\textsf{Sign}_{S_{C}}(C_{0}) $ and $\textsf{Sign}_{S_{C}}(C_{\tau})$ to its parent $D$.
 	But all the signatures are signed by the sensor node $C$, it requires the parent node $D$ to know the public key of only the sensor node $C$, hence $D$ need to know only one certificate.
 
 	To give an analogy with the real world application consider the following example.

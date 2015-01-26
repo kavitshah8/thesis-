@@ -91,6 +91,27 @@
 	In physical world, your signatures are the same for all the messages. 
 	But this can not be possibly true for digital signatures as the attacker can obtain one signature and then use the same signature to pretend some one else.
 
+\section{MAC}
+
+Table for integrity-protection of HASH, MAC, Signature.
+\begin{table}[!htb]	
+	\begin{center}
+		\begin{tabular}{ |l| l| l| }
+	    \hline
+	     & Who can generate it & Who can verify it \\
+	    \hline
+	    Hash & Everyone & Everyone \\	
+	    \hline
+	    MAC & Holders of secret & Holders of secret \\
+	    \hline
+	    Signature & Holder of secret & Everyone \\
+	    \hline
+		\end{tabular}
+	\end{center}
+	\caption{A comparison of integrity-protecting primitives}
+  \label{table:digital-certificate}
+\end{table}
+
 \section {Tree generation algorithms}
 
 \section{XOR function}
