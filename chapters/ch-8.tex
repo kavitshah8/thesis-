@@ -236,11 +236,11 @@
 	It verifies the signatures $\textsf{Sign}_{S_{A}}(A_{3})$, $\textsf{Sign}_{S_{A}}(A_{\tau})$ in the received payload.	 
 	If the base station verifies all the signatures to true it initiates the result checking phase.
 
-\section{Result checking by the sensor nodes}
+\section{Result Checking}
 	The purpose of the result checking phase is to enable all the sensor nodes to verify their individual contributions to the final aggregate value.
 	If there is any inconsistency in the aggregation process then with the help of the base station, trace down the node responsible for causing the inconsistency in the aggregation process.
 
-	\subsection{Dissemination Final Payload}
+	\subsection{Dissemination Final Payload by the Base Station}
 		After the base station has received the payloads of the root node of the aggregation tree, the base station sends each of the data-items in the payload to the entire sensor network using authenticated broadcast.
 		We use authenticated broadcast allows the sensor nodes to verify that this data-items are coming from the base station.
 		In our previous example, the base station receives only one data-item $A_{3}$ in the payload received from $A$.
@@ -259,46 +259,63 @@
 		$A_{10}$ sends the following off-path values as follows to $C, B$ respectively.
 		\begin{equation}
 			\begin{array}{l}
-			<B_{0}, \textsf{Sign}_{S_{A}}(B_{0}),\textsf{Sign}_{S_{A}}(A_{10\tau})>\ where\ A_{10\tau} =\ <B_{0}>\\
-			<C_{0}, \textsf{Sign}_{S_{A}}(C_{0}),\textsf{Sign}_{S_{A}}(A_{10\tau})>\ where\ A_{10\tau} =\ <C_{0}>
+			<B_{0}, \textsf{Sign}_{S_{A}}(B_{0}),\textsf{Sign}_{S_{A}}(A_{\tau})>\ where\ A_{\tau} =\ <B_{0}>\\
+			<C_{0}, \textsf{Sign}_{S_{A}}(C_{0}),\textsf{Sign}_{S_{A}}(A_{\tau})>\ where\ A_{\tau} =\ <C_{0}>
 			\end{array}
 		\end{equation}
 		An internal vertex $t$ receives data-items with their respective signatures from its parent. 
-		It verifies the signatures of the data-items and then sends data-items (and left/right tags) to both of its children.
+		It verifies the signatures of the received data-items then resigns them and sends those data-items (and left/right tags) with their signatures to both of its children.
 		Continuing the previous example, internal vertex $A_{10}$ receives $A_{11}, A_{20}$ form its parent $A_{21}$.
 		$A_{10}$ sends the following off-path values as follows to $C, B$ respectively.
 		\begin{equation}
 			\begin{array}{l}
-			<B_{0}, \textsf{Sign}_{S_{A}}(B_{0}),A_{11},\textsf{Sign}_{S_{A}}(A_{11}),A_{20},\textsf{Sign}_{S_{A}}(A_{20}),\textsf{Sign}_{S_{A}}(A_{10\tau})>\\ 
-				where\  A_{10\tau} =\ <B_{0}||A_{11}||A_{20}>\\
-			<C_{0}, \textsf{Sign}_{S_{A}}(C_{0}),A_{11},\textsf{Sign}_{S_{A}}(A_{11}),A_{20},\textsf{Sign}_{S_{A}}(A_{20}),\textsf{Sign}_{S_{A}}(A_{10\tau})>\\ 
-				where\  A_{10\tau} =\ <C_{0}||A_{11}||A_{20}>
+			<B_{0}, \textsf{Sign}_{S_{A}}(B_{0}),A_{11},\textsf{Sign}_{S_{A}}(A_{11}),A_{20},\textsf{Sign}_{S_{A}}(A_{20}),\textsf{Sign}_{S_{A}}(A_{\tau})>\\ 
+				where\  A_{\tau} =\ <B_{0}||A_{11}||A_{20}>\\
+			<C_{0}, \textsf{Sign}_{S_{A}}(C_{0}),A_{11},\textsf{Sign}_{S_{A}}(A_{11}),A_{20},\textsf{Sign}_{S_{A}}(A_{20}),\textsf{Sign}_{S_{A}}(A_{\tau})>\\ 
+				where\  A_{\tau} =\ <C_{0}||A_{11}||A_{20}>
 			\end{array}
 		\end{equation}
+		Once a vertex has received all the data-items of its off-path vertices, it can proceed to the verification step.
+	
+	\subsection{Verification of Inclusion}
+	
+		When the sensor node has received all the data-items of its off-path vertices from its parent, first it verifies the signature of all the received data-items and then it may verify that no aggregation result-tampering has occurred on the path between its leaf vertex and the root of its commitment tree.
+		For each vertex on the path from the root of its commitment tree, it derives the data-items according to Definition \ref{def:label}.
+		It is able to do so since the off-path values provide all the necessary information to perform the data-item computation.
+		In the previous example, $C$ receives $B_{0}, A_{11}, A_{20}$ from its parent node and it has $C_{0}$.
+		It aggregates $<C_{0}, B_{0}>$ and derives $A_{10}$.
+		Then it aggregates $A_{10}, A_{11}$ and derives $A_{21}$.
+		And finally it aggregates $A_{21}, A_{20}$ and derives $A_{3}$.
+		Then it compares the derived $A_{3}$ with the $A_{3}$ received from the base station.
+		Based on those data-items are identical or not the node proceeds with the next step accordingly.
+		If those data-items are not identical then the node will send NACK message in its authentication code.
+		And if those data-items are identical then the node will send ACK message in its authentication code.	
 
-	\subsection{verification of inclusion}
-	\subsection{collection of authentication codes}
+	\subsection{Collection of Authentication Codes}
+		The authentication codes for sensor node $S$, with their positive and negative acknowledgment message, are defined as follows:
+		\begin{equation}
+			\begin{array}{l}
+				MAC_{S_{S}}(N || ACK)\\
+				MAC_{S_{S}}(N || NACK)
+			\end{array}
+		\end{equation}
+		$S_{s}$ is the secret key of the sensor node $S$,	ACK, NACK are special messages for positive and negative acknowledgment respectively.
+		The authentication code with ACK message is sent by the sensor node if it verifies its contribution correctly to the root commitment value during the \textit{verification of inclusion} phase and vice versa.
+		Leaf sensor nodes in the aggregation tree first send their authentication codes to their parents in the aggregation tree.
+		Once an internal sensor node has received authentication codes from all its children, it computes the XOR of its own authentication code with all the received codes, and forwards it to its parent.
+		Because of the XOR function we do not have to forward all the authentication codes. 
+		We can forward only one authentication code to the base station in the end, which consume the less bandwidth in the network.
+		At the end of the process, the base station will receive a single authentication code from the root of an aggregation tree.
+		Note that this phase is similar to the SHIA's collection of confirmation phase.
 
-\section{Result checking by the base station}
-	\subsection{verification of authentication codes}
+	\subsection{Verification of Authentication Codes}
 		\label{sec:verficiation-of-authentication-codes}
-		The authentication codes for sensor node $s$, with either positive or negative acknowledgment message, are defined as follows:
-		\begin{equation}
-			MAC_{K_{s}}(N\ ||\ \textit{ACK})
-		\end{equation}
-		\begin{equation}
-			MAC_{K_{s}}(N\ ||\ \textit{NACK})
-		\end{equation}
-		$K_{s}$ is the key that $s$ shares with the base station;
-		$\textit{ACK}$, $\textit{NACK}$ are special messages for positive and negative acknowledgment respectively.
-		The authentication code with $\textit{ACK}$ message is sent by the sensor node if it verifies its contribution correctly to the root commitment value during the 
-		\textit{verification of inclusion} phase and vice versa.
 		
 		To verify that every sensor node has sent its authentication code with \ack, the base station computes the $\Delta_{ack}$ as follows:
 		\begin{equation}
 			\displaystyle{\Delta_{ack} = \bigoplus_{i = 1}^n MAC_{K_{i}}(N || ACK) }
 		\end{equation}
-		The base station can compute $\Delta_{ack}$ as it knows $K_{s}$\ for each sensor node $s$.
+		The base station can compute $\Delta_{ack}$ as it knows $S_{s}$\ for each sensor node $s$.
 		Then it compares the computed $\Delta_{ack}$\ with the received root authentication code $\Delta_{root}$\ from the root of the aggregation tree. 
 		If those two codes match then it accepts the aggregated value or else it proceeds further to find an adversary. 
 
@@ -311,7 +328,7 @@
 		\end{equation}
 		Then it computes the complainer code $c_{i}$\ for all node $i = 1, 2, \dotsc, n$. 
 		\begin{equation}\label{eq:caomplainer-node}
-			c_{i} := MAC_{K_{i}}(N\ ||\ \textit{ACK}) \oplus MAC_{K_{i}}(N\ ||\ \textit{NACK})
+			c_{i} := MAC_{K_{i}}(N\ ||\ ACK) \oplus MAC_{K_{i}}(N\ ||\ NACK)
 		\end{equation}
 		Then it compares $c$\ with all $c_{i}$\ one at a time. 
 		The matching code indicates the complainer node.
