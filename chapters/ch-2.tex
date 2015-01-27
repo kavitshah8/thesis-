@@ -1,50 +1,66 @@
 \chapter{Sensor Networks Background} 
 \label{cha:Sensor Networks/Data Aggregation/Security Background}
+	
 	Sensor networks are becoming ubiquitous in our day to day life. 
-	They are known also known as Internet of Things.
-	In the following sections we show the applications and the rise of sensor networks.
-	Then we describe why doing security in the sensor network presents the number of unique challenges and solutions to tackle those challenges.
+	They are known also known as Internet of Things or Ubiquitous Computing.
+	It is the vision of a world in which computing power and digital communications are extremely inexpensive commodities, so cheap that they are embedded in all the everyday objects that surround us \cite{2002-Stajano-ubiquitous}.
+	
+	In this chapter we introduce the sensor networks and its applications, we define basic terminologies and then we discuss major 
+	barriers to achieve security in the sensor networks.
+	 % and solutions to tackle those challenges.
 
 \section{Sensor Networks and Applications}
-	In sensor networks, thousands of sensor nodes may interact with the physical environment and collectively monitor an area, generating a large amount of data to be transmitted and reasoned about.
-	With the recent advances in sensor network research, we can use tiny and cheap sensor nodes to obtain a lot of useful information about physical environment.
+	In sensor networks, thousands of sensor nodes may interact with the physical world and collectively monitor an area, generating a large amount of data to be transmitted and reasoned about.
+	With the recent advances in hardware technologies of sensors, we can use tiny and cheap sensor nodes to obtain a lot of useful information about physical world.
 	For example, we can use them to discover temperature, humidity, water quality, lightning condition, pressure, noise level, carbon dioxide level, oxygen level, soil moisture, magnetic field, characteristics of objects such as speed, direction, and size, the presence or absence of certain kinds of objects, and all kinds of values about machinery like mechanical stress level or movement \cite{hof2007applications}.
 	These versatile types of sensors, allow us to use sensor network in a wide variety of scenarios.
 	For example, sensor networks are used in habitat and environment monitoring, health care, military surveillance, industrial machinery surveillance, home automation, scientific data collection, emergency fire alarm systems, traffic monitoring, wildfire tracking, wildlife monitoring and many other applications.
 	
-	\textbf{Military Application}
-	Sensor networks can be used for enemy tracking, battlefield surveillance or target classification \cite{li2002detection}.
-	For example, \textit{Palo Alto Research Center} tries to spot ``interesting'' vehicles (the vehicles marked specially) using motes equipped with microphones or steerable cameras \cite{chu2004distributed}.
-	The objective is to coordinate a number of this kind of sensors in order to keep sensing the track of a chosen moving object minimizing any information gaps about the track that may occur.
+	\textbf{Military Application}: 
+		Sensor networks can be used for enemy tracking, battlefield surveillance or target classification \cite{li2002detection}.
+		For example, \textit{Palo Alto Research Center} tries to spot ``interesting'' vehicles (the vehicles marked specially) using motes equipped with microphones or steerable cameras \cite{chu2004distributed}.
+		The objective is to coordinate a number of this kind of sensors in order to keep sensing the track of a chosen moving object minimizing any information gaps about the track that may occur.
 	
-	\textbf{Environmental Monitoring} 
-	For example, \textit{Meteorology and Hydrology in Yosemite National Park} \cite{lundquist2003meteorology}, a sensor network was deployed to monitor the water system across and within the Sierra Nevada, especially regarding natural climate fluctuation, global warming, and the growing needs of water consumers.
-	Research of the water system in the Sierra Nevada is difficult, because of its geographical structure.
-	And sensor networks can be real blessing in such situation as they can operate with little or no human intervention.
+	\textbf{Environmental Monitoring}: 
+		Sensor networks can be used to monitor a geographical location. 
+		For example, \textit{Meteorology and Hydrology in Yosemite National Park} \cite{lundquist2003meteorology}, a sensor network was deployed to monitor the water system across and within the Sierra Nevada, especially regarding natural climate fluctuation, global warming, and the growing needs of water consumers.
+		Research of the water system in the Sierra Nevada is difficult, because of its geographical structure.
+		And sensor networks can be real blessing in such situation as they can operate with little or no human intervention.
 	
-	\textbf{Health Care} 
-	Sensors can be used to monitor the patients round the clock. The most important criteria for the such networks are security and reliability.
-	
-	\textbf{The Active Floor} \cite{addlesee1997orl} is a system which can detect person walking on it using pressure sensors.
-	It also allows to extract information from the raw sensor data which has reasonable success in identifying people based on their gait.
-	Authors used Hidden Markov Models based analysis techniques originally developed for speech and face recognition.
-	
-	\textbf{CodeBlue} \cite{lorincz2004sensor} is a system to enhance emergency medical care with the goal to have a seamless patient transfer between a disaster area and a hospital.
-	
-	\textbf{Sustainable Mobility} - with the driver less cars from companies like Google, connected and coordinated vehicles seems the future of transportation.
-	Autonomous vehicle systems \cite{benenson2008towards} describes how various various technologies in addition to the sensor networks is used in making sustainable mobility. 
+	\textbf{Health Care}:
+		Sensors can be used to monitor the patients round the clock. 
+		They can report various statistics to the doctors and nurses regarding patients health.
+		Also, it can send reminders to them to take care of the patient periodically. 	
+		The most important criteria for the such networks are security and reliability.
+		Because based on the sensor readings, doctors decide what treatment or what medicine to prescribe to the patients.
+		If those readings are modified by an adversary then the consequences might be lethal to the patients.
 
-	% Therefore, the sensor network was designed to operate with little or no human interaction.
-	The application of a sensor network usually determines the design of the sensor nodes and the design of the network itself.
-	As far as we know, there is no general architecture for sensor networks.
+	\textbf{Sustainable Mobility}:
+		Sensor networks can be used to build digitally connected and coordinated vehicles.
+		With the driver less cars from companies like Google, autonomous vehicle systems seems the future of transportation.
+		Autonomous vehicle systems \cite{benenson2008towards} describes how various various technologies in addition to the sensor networks is used in making the sustainable mobility.
+	
+	\textbf{The Active Floor} 
+		is a system which can detect person walking on the floor using pressure sensors \cite{addlesee1997orl}.
+		It also allows to extract information from the raw sensor data which has reasonable success in identifying people based on their gait.
+		Authors used Hidden Markov Models based analysis techniques originally developed for speech and face recognition to identify people.
+	
+	\textbf{CodeBlue} 
+		is a system to enhance emergency medical care with the goal to have a seamless patient transfer between a disaster area and a hospital\cite{lorincz2004sensor} .
+	
+	The applications of the sensor networks are enormous. 
+	The application of a sensor network determines the design of the sensor nodes, the network protocol and security architecture.
+	As far as we know, there is no general architecture for such design.
 	Therefore, developing a protocol for sensor networks can certainly be challenging. 
 
-\section{Energy Consumption}
+\section{Energy Consumption in Sensor Networks}
+
 	The sensor network's lifetime can be maximized by minimizing the power consumption of the sensor node's radio module.
+	The radio module is responsible for all the wireless communications.
 	To estimate the power consumption, we have to consider the communication and computation power consumption at each sensor node.
 	The radio module energy dissipation depends on two main parameters \cite{wang2002energy}.
 	The first is $E_{elec} (J/b)$, the energy dissipated to run the transmit or receive electronics.
-	The second is $\varepsilon_{amp} (J/m^2 b)$, the energy dissipated by the transmit power amplifier to achieve an acceptable noise ratio $E_{b} / N_{o} $ at the receiver.
+	The second is $\varepsilon_{amp} (J/m^2 b)$, the energy dissipated by the transmit power amplifier to achieve an acceptable signal to noise ratio $E_{b} / N_{o} $ at the receiver.
 	We assume the $d^2$ energy loss for transmission between sensor nodes since the distances between sensors are relatively short \cite{ettus1998system}. 
 	To transmit a $k$ - bit packet at distance $d$, the energy dissipated is:
 	\begin{equation}
@@ -62,23 +78,28 @@
 	It is shown in \cite{wang2002energy} that by distributing the Fast Fourier Transform (FFT) algorithm in the network requires less communication between the sensor nodes.
 	Also, for minimal energy dissipation, a processor should operate at the lowest voltage for a given clock frequency.
 
-\section{Data Aggregation}
+\section{Data Aggregation in Sensor Networks}
+
 	The sensor nodes in the network often have limited resources, such as computation power, memory, storage, communication capacity and most significantly, battery power.
-	Furthermore, data communications between nodes consume a large portion of the total energy consumption. 
-	The in-network data aggregation reduces the energy consumption by aggregating the data before sending it to the parent node in the network which reduces the communications between nodes.
-	For example, in-network data aggregation of the SUM function can be performed as follows. 
-	Each intermediate sensor node in the network forwards a single sensor reading containing the sum of all the sensor readings from all of its descendants, rather than forwarding each descendants' sensor reading one at a time to the base station.
+	The wireless data communications between nodes consume a large portion of the total energy consumption. 
+	In-network data aggregation techniques allow the sensor nodes to aggregate the data before sending it to their parents.
+	That reduces the wireless communication happening between the nodes and the overall energy consumption in the network. 	
+	For example, in-network data aggregation of the SUM function can be performed as follows.
+	All the intermediate sensor nodes in the network, receives the sensor readings from all of its children.
+	They aggregate all those readings by applying the summation function to those readings.
+	Now, instead of sending all those sensor readings one at a time to their parent they can send one aggregated sensor reading.
+
 	It is shown that the energy savings achieved by in-network data aggregation are significant \cite{madden2002tag}.
 	The in-network data aggregation approach requires the sensor nodes to do more computations.
-	But studies have shown that transmitting the data requires more energy than computing the data. 
-	Hence, in-network data aggregation is an efficient and a widely used approach for saving bandwidth by doing less communications between sensor nodes and ultimately giving longer battery life to sensor nodes in the network.
+	But studies have shown that wireless communication of data transmission requires more energy than local computation of the data. 
+	In a nutshell, in-network data aggregation is an efficient and a widely used approach for saving bandwidth by doing less wireless communications between sensor nodes and ultimately giving longer battery life to sensor nodes in the network.
 
 	We define the following terms to help us define the goals of in-network data aggregation approach.
 	\begin{definition}\label{def:payload}\cite{PayloadWiKi}
 		\textbf{Payload} is the part of the transmitted data which is the fundamental purpose of the transmission, to the exclusion of information sent with it such as meta data solely to facilitate the delivery.
 	\end{definition}
 	\begin{definition}\label{def:information-rate}
-		\textbf{Information rate} for a given node is the ratio of the \payloads, number of \payloads\ sent divided by the number of \payloads\ received.
+		For a given node \textbf {Information rate} is the ratio of the number of sent payloads over the received payloads.
 	\end{definition}
 	The goal of the aggregation process is to achieve the lowest possible information-rate.
 	In the following sections, we show that lowering information-rate makes the intermediate sensor nodes (aggregator) more powerful.
