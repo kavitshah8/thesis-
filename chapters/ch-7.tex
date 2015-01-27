@@ -33,7 +33,8 @@
 
 	The first difference between SHIA's label structure and our data-item structure is that we remove the $complement$ field from the label structure Defined \ref{def:label}. 
 	We think the complement filed is redundant information in the label. 
-	The complement field is used by the base station (the querier, according to SHIA), before the result checking phase, to verify \textbf{SUM + COMPLEMENT =} $\textbf{n} \cdot \textbf{r}$ ; where $\textbf{n}$ is the number of nodes in the network, $\textbf{r}$ is the upper bound on the allowed sensor readings.
+	The complement field is used by the base station (the querier in SHIA), before the result checking phase.
+	It is used to verify \textbf{SUM + COMPLEMENT =} $\textbf{n} \cdot \textbf{r}$ where $\textbf{n}$ is the number of nodes in the network, $\textbf{r}$ is the upper bound on the allowed sensor readings.
 	We can achieve the same upper bound without the complement field.
 	As the querier knows $n, r$ and it gets SUM from the root of the aggregation tree.
 	If \textbf{SUM} $> \textbf{n} \cdot \textbf{r}$ , then the base station knows some node or nodes in the network reported out of range readings.
@@ -107,10 +108,10 @@
 		A \textbf{commitment payload} is a set of data-items of the root vertices of the trees with their respective signatures in the outgoing commitment forest and an additional signature for the transmission.
 	\end{definition}
 	\begin{definition}
-		A \textbf{transmit payload} is the concatenation of all the data-items in the commitment payload.
+		The \textbf{transmit payload} is the concatenation of all the data-items in the commitment payload.
 	\end{definition}
 	% We use the term payload for commitment payload and the term forest for the commitment forest.
-	For brevity, we use the term forest, payload instead of commitment forest, commitment payload respectively.
+	For brevity, we use the term forest instead of the commitment forest and payload instead of the commitment payload.
 	Consider, the aggregation tree shown in Figure \ref{fig:Palm aggregation tree}, where $B$ is the parent of $A$, $C$ is the parent of $B$ and $D$ is the parent of $C$. 
 	\begin{figure}[h!]
 		\centering
