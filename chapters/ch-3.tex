@@ -4,20 +4,20 @@
 	For example, we describe the Hash function, its properties and how it helps us achieve data integrity.
 
 	The word cryptography means ``secret writing'' and is the art and science of concealing meaning.
-	Cryptoanalysis is the breaking of codes.
+	Cryptanalysis is the breaking of codes.
 	The basic component of cryptography is a cryptosystem \cite{bishop2004introduction}.
 	\begin{definition}
-		A cryptosystem is a $5$-tuple ($ \mathcal{E,D,M,K,C}$), where $\mathcal{M}$ is the set of \textit{plaintexts}, $\mathcal{K}$ is the set of \textit{keys}, $\mathcal{C}$ is the set of \textit{ciphertexts}, $\mathcal{E}:\mathcal{E} \times \mathcal{K} \rightarrow \mathcal{C}$ is the set of \textit{enciphering functions}, and $\mathcal{D}:\mathcal{C} \times \mathcal{K} \rightarrow \mathcal{M}$ is the set of \textit{deciphering functions}.
+		A cryptosystem is a $5$-tuple ($ \mathcal{E,D,M,K,C}$), where $\mathcal{M}$ is the set of \textit{plaintexts}, $\mathcal{K}$ is the set of \textit{keys}, $\mathcal{C}$ is the set of \textit{ciphertexts}, $\mathcal{E}:\mathcal{M} \times \mathcal{K} \rightarrow \mathcal{C}$ is the set of \textit{enciphering functions}, and $\mathcal{D}:\mathcal{C} \times \mathcal{K} \rightarrow \mathcal{M}$ is the set of \textit{deciphering functions}.
 	\end{definition}
 
 	Classical cryptosystem (also called symmetric cryptosystem or single-key cryptosystem) are cryptosystem that use the same key for encipherment and decipherement.
 	In these system, for all $E_{k} \in \mathcal{C}$ and $k \in \mathcal{K}$, there is a $D_{k} \in \mathcal{D}$ such that $D_{k} = E_{k}^{-1}$.
 
-	In asymmetric or public-key cryptosystem, uses different keys for encipherment and decipherement .
-	In such systems, for all $E_{k_{1}} \in \mathcal{C}$ and $k_{1} \in \mathcal{K}$, there is a $D_{k_{2}} \in \mathcal{D}$ such that $k_{2} \in \mathcal{K}$ where $\mathcal{K} = k_{1} \times k_{2}$.
-	For all $k \in \mathcal{K},\  \exists (s_{k},p_{k})$ such that the following is true.
+	In asymmetric or public-key cryptosystem, uses a key pair for encipherment and decipherement .
+	In such systems, for all $E_{K_{1}} \in \mathcal{C}$ and $K_{1} \in \mathcal{K}$, there is a $D_{K_{2}} \in \mathcal{D}$ such that $K_{2} \in \mathcal{K}$ where $\mathcal{K} = K_{1} \times K_{2}$.
+	For all $k \in \mathcal{K}$,\  there exists $(S_{k},P_{k})$ such that the following is true.
 	\begin{equation}
-		\mathcal{D}(\ \mathcal{E}(\ \mathcal{M},\ s_{k}\ ),\ p_{k}\ ) =\ \mathcal{M}
+		{D}(\ {E}(\ {M},\ S_{k}\ ),\ P_{k}\ ) =\ {M}
 	\end{equation}
 
 
@@ -93,7 +93,9 @@
 
 \section{MAC}
 
-Table for integrity-protection of HASH, MAC, Signature.
+Three different integrity-protection mechanisms HASH, MAC, Signature can be summarized in a matrix like Table \ref{table:summary} \cite{2002-Stajano-ubiquitous}.
+The main difference between the various primitives stems from identifying who can generate the code and who can verify it.
+This determines the suitability of the construction for a given purpose.
 \begin{table}[!htb]	
 	\begin{center}
 		\begin{tabular}{ |l| l| l| }
@@ -109,7 +111,7 @@ Table for integrity-protection of HASH, MAC, Signature.
 		\end{tabular}
 	\end{center}
 	\caption{A comparison of integrity-protecting primitives}
-  \label{table:digital-certificate}
+  \label{table:summary}
 \end{table}
 
 \section {Tree generation algorithms}

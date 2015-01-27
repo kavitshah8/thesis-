@@ -10,20 +10,28 @@
 	With the recent advances in sensor network research, we can use tiny and cheap sensor nodes to obtain a lot of useful information about physical environment.
 	For example, we can use them to discover temperature, humidity, water quality, lightning condition, pressure, noise level, carbon dioxide level, oxygen level, soil moisture, magnetic field, characteristics of objects such as speed, direction, and size, the presence or absence of certain kinds of objects, and all kinds of values about machinery like mechanical stress level or movement \cite{hof2007applications}.
 	These versatile types of sensors, allow us to use sensor network in a wide variety of scenarios.
-	For example, sensor networks are used in habitat and environment monitoring, health care, military surveillance, industrial machinery surveillance, home automation, scientific data collection, emergency fire alarm systems, traffic monitoring, wildfire tracking, wildlife monitoring and many other applications.\\
+	For example, sensor networks are used in habitat and environment monitoring, health care, military surveillance, industrial machinery surveillance, home automation, scientific data collection, emergency fire alarm systems, traffic monitoring, wildfire tracking, wildlife monitoring and many other applications.
+	
 	\textbf{Military Application}
 	Sensor networks can be used for enemy tracking, battlefield surveillance or target classification \cite{li2002detection}.
 	For example, \textit{Palo Alto Research Center} tries to spot ``interesting'' vehicles (the vehicles marked specially) using motes equipped with microphones or steerable cameras \cite{chu2004distributed}.
-	The objective is to coordinate a number of this kind of sensors in order to keep sensing the track of a chosen moving object minimizing any information gaps about the track that may occur.\\
+	The objective is to coordinate a number of this kind of sensors in order to keep sensing the track of a chosen moving object minimizing any information gaps about the track that may occur.
+	
 	\textbf{Environmental Monitoring} 
 	For example, \textit{Meteorology and Hydrology in Yosemite National Park} \cite{lundquist2003meteorology}, a sensor network was deployed to monitor the water system across and within the Sierra Nevada, especially regarding natural climate fluctuation, global warming, and the growing needs of water consumers.
 	Research of the water system in the Sierra Nevada is difficult, because of its geographical structure.
-	And sensor networks can be real blessing in such situation as they can operate with little or no human intervention.\\
+	And sensor networks can be real blessing in such situation as they can operate with little or no human intervention.
+	
 	\textbf{Health Care} 
 	Sensors can be used to monitor the patients round the clock. The most important criteria for the such networks are security and reliability.
-	\textit{CodeBlue} \cite{lorincz2004sensor} is a system to enhance emergency medical care with the goal to have a seamless patient transfer between a disaster area and a hospital.\\
-	\textbf{Sustainable Mobility} 
-	With the driver less cars from companies like Google, connected and coordinated vehicles seems the future of transportation.
+	
+	\textbf{The Active Floor} \cite{addlesee1997orl} is a system which can detect person walking on it using pressure sensors.
+	It also allows to extract information from the raw sensor data which has reasonable success in identifying people based on their gait.
+	Authors used Hidden Markov Models based analysis techniques originally developed for speech and face recognition.
+	
+	\textbf{CodeBlue} \cite{lorincz2004sensor} is a system to enhance emergency medical care with the goal to have a seamless patient transfer between a disaster area and a hospital.
+	
+	\textbf{Sustainable Mobility} - with the driver less cars from companies like Google, connected and coordinated vehicles seems the future of transportation.
 	Autonomous vehicle systems \cite{benenson2008towards} describes how various various technologies in addition to the sensor networks is used in making sustainable mobility. 
 
 	% Therefore, the sensor network was designed to operate with little or no human interaction.
@@ -90,7 +98,7 @@
 	Some nodes in the sensor network have more congestion than the others, the highly congested nodes are the most important to the the network connectivity.
 	For example, the nodes closer to the base station are essential for the network connectivity.
 	The failure of the highly congested nodes may cause the sensor network to fail even though most of the nodes in the network are alive.
-	Hence, it is desirable to have a lower congestion on the highly congested nodes even though it costs more congestion within the overall sensor network.\\
+	Hence, it is desirable to have a lower congestion on the highly congested nodes even though it costs more congestion within the overall sensor network.
 	To distribute the congestion uniformly across the network, we can construct an aggregation protocol where each node transmits a single payload Defined in \ref{def:payload} to its parent in the aggregation tree.
 	% Picture
 	% Definitions vs Equations errorsis $\Omega(1)$ congestion on each edge in the aggregation tree, thus resulting in $\Omega(\delta)$ congestion on the node  according to Definition \ref{def:congestion}, where $\delta$ is the fanout of the node.
@@ -98,7 +106,7 @@
 	For example, an aggregation tree shown in Figure \ref{fig:star-network}, 
 	\begin{figure}[h!]
 		\centering
-		\includegraphics[scale = 1]{images/star-tree.png}\\
+		\includegraphics[scale = 1]{images/star-tree.png}
 		\caption{Star Network}
 		\label{fig:star-network}
 	\end{figure}
@@ -106,7 +114,7 @@
 	And the network organized in the palm tree topology as shown in Figure \ref{fig:palm-tree-network}
 	\begin{figure}[h!]
 		\centering
-		\includegraphics[scale = 1]{images/palm-tree.png}\\
+		\includegraphics[scale = 1]{images/palm-tree.png}
 		\caption{Palm Tree Network}
 		\label{fig:palm-tree-network}
 	\end{figure}
