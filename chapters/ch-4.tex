@@ -43,6 +43,19 @@
 		\label{fig:star-network}
 	\end{figure}
 
+	According to \cite{zareafifi2012secure}, data aggregation can be defined as follows.
+	Consider a sensor network with $n$ sensors collecting data, the data will be propagated in some fashion to the Base Station.
+	At the Base Station, the data is aggregated and processed into information. 
+	This can be represented as
+		$f(x_{1}, x_{2},...,x_{n})$
+	where $x_{1}, x_{2},..., x_{m}$ represent the sensor readings.
+	Here $f$ is some mapping $f: \mathcal{D}_{1} \times \mathcal{D}_{2} \times ... \mathcal{D}_{n}$ $\rightarrow$ $I$, where $\mathcal{D}_{i}$ represents sensor $i$'s domain and $I$ represents the set of all possible information. 
+	Thus the goal is to compute the information as follows:
+	\begin{equation}
+		\label{eq:aggregation}
+		y =\ f(x_{1}, x_{2},...,x_{n})
+	\end{equation}
+
 	It is shown that the energy savings achieved by in-network data aggregation are significant \cite{madden2002tag}.
 	The in-network data aggregation approach requires the sensor nodes to do more computations.
 	But studies have shown that wireless communication of data transmission requires more energy than local computation of the data. 
@@ -87,37 +100,39 @@
 	Hence, it is desirable to have uniform distribution of congestion across the aggregation tree.
 
 \section{Security Issues}
-	% Most of them assume that the other nodes are trustable and thus do not consider the security and attack issues.
 	Designing secure data aggregation protocol for the wireless sensor network poses a numerous challenges due to resource limitations and inherent characteristics discussed in the previous chapter. 
-	As we know, one widely used approach to overcome the bandwidth limitation is to use in-network data aggregation.
-	In-network data aggregation approach saves bandwidth by transmitting less payloads  between sensor nodes.
-	But that empowers an intermediate aggregate sensor nodes in the network by allowing it to control certain part of the network.
-	For example, a malicious intermediate sensor node who does aggregation over all of its descendants payloads, needs to tamper with only one aggregated payload instead of tampering with all the payloads received from its descendants. 
+	As we know, one widely used approach to overcome the bandwidth limitation is to use in-network data aggregation techniques.
+	In-network data aggregation approach saves bandwidth by transmitting less payloads between sensor nodes thus increasing the lifetime of the network.
+	But that empowers an intermediate aggregate sensor nodes in the network by allowing it to control certain portion of the network.
+	The integrity of the aggregated value becomes more valuable.
+	A malicious intermediate sensor node who does aggregation over all of its descendants payloads, needs to tamper with only one aggregated payload instead of tampering with all the payloads received from its descendants. 
 	Thus, a malicious intermediate sensor node needs to do less work to skew the final aggregated payload.
 	An adversary controlling few sensor nodes in the network can cause the network to return unpredictable payloads, making an entire sensor network unreliable.
-	Notice that the more descendants an intermediate sensor node has the more powerful it becomes.
+	Also, an intermediate sensor node becomes more powerful with the increase in number of descendants.
+
+	The aggregation techniques can be compared with compression techniques.
+	``Lossy data compression'' is the class of data encoding methods that uses inexact approximations (or partial data discarding) for representing the content that has been encoded. 
+	``Lossless data compression'' is a class of data compression algorithms that allows the original data to be perfectly reconstructed from the compressed data.
+	The aggregation technique we use is lossy data compression because once the base station receives the final aggregated value it can not create the original sensor readings of the sensor nodes.
+	Hence, it is very important the base station has very high confidence in the received final aggregated value. 
+	For example, in Equation \ref{eq:aggregation} sensor $2$'s reading is changed from $x_{2}$ (the ``true reading'') to $x'_{2}$ by an intermediate aggregator, then an aggregate node computes $y' =\ f(x_{1},x'_{2},...,x_{n})$.
+	It is very likely that $y' \neq y$ where $y$ is the true information if the true reading was counted.
+	The base station takes an action based on the received information $y'$.
+	How dangerous would it be to act using $y'$?
+	Thus, if one ``knows there is some likelihood of false data'' how do we protect the information generated?
 	
-	Despite the fact that in-network aggregation makes an intermediate sensor nodes more powerful, some aggregation approaches requires strong network topology assumptions or honest behaviors from the sensor nodes.
+	Suppose $n$ seismic sensors are collecting seismic readings \cite{zareafifi2012secure}.
+	The sensor data is then processed to compute $y = f(x_{1},..., x_{n})$ where $y = (y_{1}, y_{2})$, here $y_{1}$ represents the time prediction of an earthquake and $y_{2}$ represents the duration of the earthquake. Suppose $y^* = (y^*_{1}, y^*_{2})$, where $y^*$ is the approximate (or faulty) information.
+	Then to measure the quality we need to compute $|y - y^*|$, but observe that many of the common metrics fail to capture the essence of the prediction (it is more important to determine date than duration).
+	Thus a metric that measure the quality of the approximation must make sense. 
+	It is possible that the best measure of the essence of the computation does not possess all the	properties of a metric.
+
+	Despite the fact that in-network aggregation makes an intermediate sensor nodes more powerful and aggregated value more vulnerable to various security attacks, some aggregation approaches requires strong network topology assumptions or honest behaviors from the sensor nodes.
 	For example, in-network aggregation schemes in \cite{yao2002cougar, madden2003design} assumes that all the sensor nodes in the network are honest. 
-	Secure Information Aggregation (SIA) of \cite{przydatek2003sia}, provides security for the network topology with a single-aggregator model.  
+	Secure Information Aggregation (SIA) of \cite{przydatek2003sia} enables secure information aggregation such that the user accepts the data with high probability if the aggregated result is within a desired bound, but that the user detects cheating with high probability and rejects the result if it is outside of the bound.
+	But SIA provides probabilistic security for the network topology with a single-aggregate model.
 	
 	Secure hierarchical in-network aggregation (SHIA) in sensor networks \cite{chan2006secure} presents the first and provably secure sensor network data aggregation protocol for general networks and multiple adversaries. 
-		We discuss the details of the protocol in the next chapter. 
-	SHIA limits the adversary's ability to tamper with the aggregation result with the tightest bound possible but it does not help detecting an adversary in the network.
-	Also, we claim that same upper bound can be achieved with compact label format defined in the next chapter.
-
-Literature survey on data aggregation
-	
-	Read SIA; you can take inspiration from it for SIA
-
-	talk about compression
-
-	lossy compression
-
-	lossless compression
-
-	data aggregation is lossy compression as there is no way the base station can know the original sensor readings 
-
-	Hence, confidence in data is so important.
-
-then talk about SHIA
+	We discuss the details of the protocol in the next chapter. 
+	SHIA limits the adversary's ability to tamper with the aggregation result with the tightest bound possible.
+	But it does not help detecting an adversary in the network.
