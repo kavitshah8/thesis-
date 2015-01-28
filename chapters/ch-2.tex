@@ -53,12 +53,64 @@
 	As far as we know, there is no general architecture for such design.
 	Therefore, developing a protocol for sensor networks can certainly be challenging. 
 
+\section{Sensor Node Architecture}
+	Sensor networks consists of an individual sensor node and the construction of each node depends on the application.
+	The major components of the sensor nodes are shown in Figure \ref{fig:sensor-node-architecture} \cite{karl2007protocols}.
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[scale = 1]{images/sensor-node-architecture.png}
+		\caption{Sensor Node Architecture}
+		\label{fig:sensor-node-architecture}
+	\end{figure}
+
+	\textbf{Controller} is the Central Processing Unit (CPU) of the node.
+	It collects data from the sensors, processes this data, decides when and where to send it, receives data from other sensor nodes, and decides on the actuator’s behavior.
+	It executes various programs, ranging from time-critical signal processing and communication protocols to application programs.
+	
+	\textbf{Communication Device} is used to exchange data between individual nodes at radio frequency.
+	Radio Frequency (RF)-based communication is widely used in sensor networks as it best fits the requirements of numerous applications.
+	It provides relatively long range and high data rates, acceptable error rates at reasonable energy expenditure, and does not require line of sight between sender and receiver.
+	Both a transmitter and a receiver are required in a sensor node. 
+	The essential task for the devices is to convert a bit stream coming from a microcontroller (or a sequence of bytes or frames) and convert them to and from radio waves. 
+	It is convenient to use a device that combines these two tasks in a single entity, called transceivers. 
+	Usually, half-duplex operation is realized since transmitting and receiving at the same time on a wireless medium is impractical in most cases.
+
+	\textbf{Sensors} can be roughly categorized into three categories.
+		\textit{Passive, omnidirectional sensors} can measure a physical quantity at the point of the sensor node without actually manipulating the environment by active probing in this sense, they are passive. 
+		Moreover, some of these sensors actually are self-powered in the sense that they obtain the energy they need from the environment – energy is only needed to amplify their analog signal. 
+		There is no notion of ``direction'' involved in these measurements.
+		Typical examples for such sensors include thermometer, light sensors, vibration, microphones, humidity, mechanical stress or tension in materials, chemical sensors sensitive for given substances, smoke detectors, air pressure, and so on.
+		\textit{Passive, narrow-beam sensors} are passive as well, but have a well-defined notion of direction of measurement. 
+		A typical example is a camera, which can ``take measurements'' in a given direction, but has to be rotated if need be.
+		\textit{Active sensors} are the last group of sensors actively probes the environment, for example, a sonar or radar sensor or some types of seismic sensors, which generate shock waves by small explosions.
+		These are quite specific – triggering an explosion is certainly not a lightly undertaken action – and require quite special attention.
+
+	\textbf{Power supply of sensor nodes} is a crucial system component which has two main aspects.
+		First, storing energy and providing power in the required form; second, attempting to replenish consumed energy by ``scavenging'' it from some node-external power source over time.
+		Storing power is conventionally done using batteries, the normal AA battery stores about 2.2–2.5 Ah at 1.5 V.
+		To ensure truly long-lasting nodes and wireless sensor networks, such a limited energy store is unreliable. 
+		We can use energy from a node’s environment ``energy scavenging''.
+		For example, \textit{Vibrations} is almost pervasive form of mechanical energy: walls or windows in buildings are resonating with cars or trucks passing in the streets, machinery often has low frequency vibrations, ventilations also cause it, and so on.
+		The available energy depends on both amplitude and frequency of the vibration.
+		\textit{Pressure variations} is similar to vibrations, a variation of pressure can also be used as a power source. 
+		Such piezoelectric generators are in fact used already. 
+		One well-known example is the inclusion of a piezoelectric generator in the heel of a shoe, to generate power as a human walks about \cite{shenck2001energy}. 
+		This device can produce, on average, 330 $\mu W / cm^{2}$. 
+		\textit{Photovoltaics} effect is used in the solar cells can be used to power sensor nodes.
+		\textit{Temperature gradients} effect utilizing the differences in temperature can be directly converted to electrical energy.
+
+	\textbf{The memory component} is fairly straightforward. 
+		Random Access Memory (RAM) is used to store intermediate sensor readings, packets from other nodes, and so on. 
+		While RAM is fast, its main disadvantage is that it loses its content if power supply is interrupted. 
+		Program code can be stored in Read-Only Memory (ROM). 
+		Correctly dimensioning memory sizes, especially RAM, can be crucial with respect to manufacturing costs and power consumption.
+
 \section{Energy Consumption in Sensor Networks}
 
-	The sensor network's lifetime can be maximized by minimizing the power consumption of the sensor node's radio module.
-	The radio module is responsible for all the wireless communications.
-	To estimate the power consumption, we have to consider the communication and computation power consumption at each sensor node.
-	The radio module energy dissipation depends on two main parameters \cite{wang2002energy}.
+	The sensor network's lifetime can be maximized by minimizing the power consumption of communication devices (or transreceiver ) of the sensor nodes.
+	The transreceiver is responsible for all the wireless communications between nodes.
+	To estimate the power consumption, we have to consider the communication and computation power consumption.
+	The transreceiver's energy dissipation depends on two main parameters \cite{wang2002energy}.
 	The first is $E_{elec} (J/b)$, the energy dissipated to run the transmit or receive electronics.
 	The second is $\varepsilon_{amp} (J/m^2 b)$, the energy dissipated by the transmit power amplifier to achieve an acceptable signal to noise ratio $E_{b} / N_{o} $ at the receiver.
 	We assume the $d^2$ energy loss for transmission between sensor nodes since the distances between sensors are relatively short \cite{ettus1998system}. 
@@ -72,6 +124,10 @@
 	\end{equation}
 	For $\mu Amp$\ wireless sensor, $E_{elec} = 50nJ/b$\ and $\varepsilon_{amp} = 100pJ/m^2 b$.
 
+	Transreceiver can be put into different states to save energy \cite{karl2007protocols}.
+	It can be in either transmit or receive state and energy consumption of those states are describe above.
+	It can be in Idle state where it is ready to receive packet but is not currently receiving anything.
+	It can be in Sleep state where majority of the parts are switched off, and is not able to receive immediately. 
  	To sustain the sensor network for longer time all aspects of the sensor network should be efficient.
 	For example, the networking algorithm for routing should be such that it minimizes the distance $d$\ between the nodes.
 	The signal processing algorithm should be such that it process the networking packets with less computations.
