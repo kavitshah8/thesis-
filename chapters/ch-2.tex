@@ -9,7 +9,7 @@
 	barriers to achieve security in the sensor networks.
 	 % and solutions to tackle those challenges.
 
-\section{Sensor Networks and Applications}
+\section{Applications}
 	In sensor networks, thousands of sensor nodes may interact with the physical world and collectively monitor an area, generating a large amount of data to be transmitted and reasoned about.
 	With the recent advances in hardware technologies of sensors, we can use tiny and cheap sensor nodes to obtain a lot of useful information about physical world.
 	For example, we can use them to discover temperature, humidity, water quality, lightning condition, pressure, noise level, carbon dioxide level, oxygen level, soil moisture, magnetic field, characteristics of objects such as speed, direction, and size, the presence or absence of certain kinds of objects, and all kinds of values about machinery like mechanical stress level or movement \cite{hof2007applications}.
@@ -105,7 +105,7 @@
 		Program code can be stored in Read-Only Memory (ROM). 
 		Correctly dimensioning memory sizes, especially RAM, can be crucial with respect to manufacturing costs and power consumption.
 
-\section{Energy Consumption in Sensor Networks}
+\section{Energy Consumption}
 
 	The sensor network's lifetime can be maximized by minimizing the power consumption of communication devices (or transreceiver ) of the sensor nodes.
 	The transreceiver is responsible for all the wireless communications between nodes.
@@ -134,87 +134,16 @@
 	It is shown in \cite{wang2002energy} that by distributing the Fast Fourier Transform (FFT) algorithm in the network requires less communication between the sensor nodes.
 	Also, for minimal energy dissipation, a processor should operate at the lowest voltage for a given clock frequency.
 
-\section{Data Aggregation in Sensor Networks}
-
-	The sensor nodes in the network often have limited resources, such as computation power, memory, storage, communication capacity and most significantly, battery power.
-	The wireless data communications between nodes consume a large portion of the total energy consumption. 
-	In-network data aggregation techniques allow the sensor nodes to aggregate the data before sending it to their parents.
-	That reduces the wireless communication happening between the nodes and the overall energy consumption in the network. 	
-	For example, in-network data aggregation of the SUM function can be performed as follows.
-	All the intermediate sensor nodes in the network, receives the sensor readings from all of its children.
-	They aggregate all those readings by applying the summation function to those readings.
-	Now, instead of sending all those sensor readings one at a time to their parent they can send one aggregated sensor reading.
-
-	It is shown that the energy savings achieved by in-network data aggregation are significant \cite{madden2002tag}.
-	The in-network data aggregation approach requires the sensor nodes to do more computations.
-	But studies have shown that wireless communication of data transmission requires more energy than local computation of the data. 
-	In a nutshell, in-network data aggregation is an efficient and a widely used approach for saving bandwidth by doing less wireless communications between sensor nodes and ultimately giving longer battery life to sensor nodes in the network.
-
-	We define the following terms to help us define the goals of in-network data aggregation approach.
-	\begin{definition}\label{def:payload}\cite{PayloadWiKi}
-		\textbf{Payload} is the part of the transmitted data which is the fundamental purpose of the transmission, to the exclusion of information sent with it such as meta data solely to facilitate the delivery.
-	\end{definition}
-	\begin{definition}\label{def:information-rate}
-		For a given node \textbf {Information rate} is the ratio of the number of sent payloads over the received payloads.
-	\end{definition}
-	The goal of the aggregation process is to achieve the lowest possible information-rate.
-	In the following sections, we show that lowering information-rate makes the intermediate sensor nodes (aggregator) more powerful.
-	Also, it makes aggregated \payload\ more fragile and vulnerable to various security attacks.
-	% Now, we describe bandwidth analysis of different in-network data aggregation approaches.
-
-
-\section{Bandwidth Analysis}
-	Congestion is a widely used parameter while doing bandwidth analysis of networking applications.
-	% Picture
-	% Definitions vs Equations errors 
-	The congestion for any given node is defined as follows:
-	\begin{equation}\label{def:congestion}
-		Node\ congestion = Edge\ congestion \cdot Fanout
-	\end{equation}
-	Congestion is a useful factor while analyzing sensor network as it measures how quickly the sensor nodes will exhaust their batteries \cite{madden2003design}. 
-	Some nodes in the sensor network have more congestion than the others, the highly congested nodes are the most important to the the network connectivity.
-	For example, the nodes closer to the base station are essential for the network connectivity.
-	The failure of the highly congested nodes may cause the sensor network to fail even though most of the nodes in the network are alive.
-	Hence, it is desirable to have a lower congestion on the highly congested nodes even though it costs more congestion within the overall sensor network.
-	To distribute the congestion uniformly across the network, we can construct an aggregation protocol where each node transmits a single payload Defined in \ref{def:payload} to its parent in the aggregation tree.
-	% Picture
-	% Definitions vs Equations errorsis $\Omega(1)$ congestion on each edge in the aggregation tree, thus resulting in $\Omega(\delta)$ congestion on the node  according to Definition \ref{def:congestion}, where $\delta$ is the fanout of the node.
-	In this approach, $\delta$ is dependent on the given aggregation tree.
-	For example, an aggregation tree shown in Figure \ref{fig:star-network}, 
-	\begin{figure}[h!]
-		\centering
-		\includegraphics[scale = 1]{images/star-tree.png}
-		\caption{Star Network}
-		\label{fig:star-network}
-	\end{figure}
-	with $n$\ nodes, organized in the star tree topology congestion is $O(n)$.
-	And the network organized in the palm tree topology as shown in Figure \ref{fig:palm-tree-network}
-	\begin{figure}[h!]
-		\centering
-		\includegraphics[scale = 1]{images/palm-tree.png}
-		\caption{Palm Tree Network}
-		\label{fig:palm-tree-network}
-	\end{figure}
-	the congestion is $O(1)$.
-	This approach can create some highly congested nodes in the aggregation tree which is undesirable.
-	In most of the real world applications we cannot control $\delta$ as the aggregation tree is random.
-	Hence, it is desirable to have uniform distribution of congestion across the aggregation tree.
-
-	% Talk about No aggregation approach.
-
-	% \textit{SHIA} tries to achieve uniform congestion in the network.	
-
-\section{Security in Sensor Networks}
+\section{Resource constraints}
 	\label{sec:aggregate-adversary}
-	Here, we depict, what parameters should be taken into account while designing secure protocol for sensor networks.  
-	And how those parameters constrains protocol designer's choices of the protocol.
-	Then we depict how data-aggregation can help overcome some of those limitation and some examples where security is ignored by making some strong network assumptions.
+	We introduce the parameters which should be taken into account while designing secure protocol for sensor networks.  
+	And how these parameters constrains protocol designer's choices of the protocol.
 
 	\subsection{Physical Limitations}
-	Sensor nodes are often deployed in open, hostile and unattended environments, so they are vulnerable to physical tampering due to the lower physical security.
-	An adversary can obtain the confidential information from a compromised sensor and reprogram it with malicious software.
-	The compromised node may then report an arbitrary false sensor readings to its parent node in the tree hierarchy, causing the final aggregation result to far deviate from the true aggregate result.
-	This attack becomes more damaging when multiple adversaries succeeds in injecting false data into the network which may cause catastrophic consequences \cite{wagner2007algorithms}.	
+		Sensor nodes are often deployed in open, hostile and unattended environments, so they are vulnerable to physical tampering due to the lower physical security.
+		An adversary can obtain the confidential information from a compromised sensor and reprogram it with malicious software.
+		The compromised node may then report an arbitrary false sensor readings to its parent node in the tree hierarchy, making the sensor readings unreliable and irrelevant	.
+		This attack becomes more damaging when multiple adversaries succeeds in injecting false data into the network which may cause catastrophic consequences \cite{wagner2007algorithms}.	
 
 	\subsection{Hardware Limitations}
 		As far as we know, one of the first hardware platform for developing sensor network application is MICA \cite{hill2002mica} developed by University of Berkeley.
@@ -223,28 +152,28 @@
 		For example, the major specifications for the latest ZigBee chip supporting IEEE 802.15.4 standard, CC2538 from TexasInstruments are shown in Table \ref{table:soc}.
 		This chip can do most of the security algorithms but has really little amount of memory storage. It has limited output power which constraints its transmission range which forces us to use multi-hop routing in the network as one node can not communicate with the node outside of its transmission range.
 		This hardware limitations constrains protocol designer's choice of algorithms for applications.  
-	\begin{table}[!htb]	
-		\begin{center}
-			\begin{tabular}{ |l| l| }
-				\hline
-			     & CC2538 \\
-			    \hline
-			    Device Type & Wireless Micro controller \\
-			    Frequency & 2.4GHz \\
-			    Processor Integration & ARM Cortex-M3 \\
-					Flash & Up to 512 KB \\
-					RAM & Up to 32 KB \\
-					Security & AES-128/256;ECC-128/256; SHA2; RSA \\
-					RX Current & 20 (mA) \\
-					Output Power & 7 (dBm) \\
-					Data Rate(Max) & 250 kbps \\
-					Type of Battery & AAA; AA; Rechargable(Li-ION) \\
-			    \hline
-			\end{tabular}
-		\end{center}
-		 \caption{System-on-Chip specifications for IEEE 802.15.4 from TexasInstruments}
-		 \label{table:soc}
-	\end{table}
+		\begin{table}[!htb]	
+			\begin{center}
+				\begin{tabular}{ |l| l| }
+					\hline
+				     & CC2538 \\
+				    \hline
+				    Device Type & Wireless Micro controller \\
+				    Frequency & 2.4GHz \\
+				    Processor Integration & ARM Cortex-M3 \\
+						Flash & Up to 512 KB \\
+						RAM & Up to 32 KB \\
+						Security & AES-128/256;ECC-128/256; SHA2; RSA \\
+						RX Current & 20 (mA) \\
+						Output Power & 7 (dBm) \\
+						Data Rate(Max) & 250 kbps \\
+						Type of Battery & AAA; AA; Rechargable(Li-ION) \\
+				    \hline
+				\end{tabular}
+			\end{center}
+			 \caption{System-on-Chip specifications for IEEE 802.15.4 from TexasInstruments}
+			 \label{table:soc}
+		\end{table}
 	
 	\subsection{Transmission Medium}
 		In sensor networks, a group of sensor nodes ( or processors ) communicate over the radio (e.g., Bluetooth, WLAN).
@@ -252,30 +181,13 @@
 		For example, wireless network has approximately $10^6$ times higher bit error rate (BER) than wired network which causes frequent link loss and then path loss. 
 		Hence, making unstable routing in the network.
 		Higher BER creates higher collision rate in the network, generating higher overhead of retransmission and lowering the channel utilization and the throughput of the network.
-		This kind of transmission medium with constrained resources makes it challenging to design the secure data-aggregation protocol for sensor networks.
+		This kind of transmission medium with constrained resources makes it challenging to design the reliable networking protocol as we have to consider all the possible retransmissions.
 
 	\subsection{Mobility}
 		As we know, sensor nodes communicate via radio and the availability of the transmission medium changes over time due to link failure, bandwidth limitations or change in network topology.
 		Nodes may be able to move, which further contributes to the instability of the communication link.
 		The mobility issue makes difficult to do the routing in the network with the directional antennas in place.
 		It also requires network to be agile enough to do the reconfiguration for the newer network topology.
-		It impedes whiled doing the quality of service in the network. 
-		All these parameters combined contributes to making strong assumptions on the network topology while designing the secure data aggregation protocol for sensor networks.
-
-		\subsection{In-network Data Aggregation}
-		% Most of them assume that the other nodes are trustable and thus do not consider the security and attack issues.
-		Designing secure data aggregation protocol for the wireless sensor network poses a numerous challenges due to resource limitations and inherent characteristics discussed in the previous subsections. 
-		One widely used approach to overcome the bandwidth limitation is to use in-network data aggregation.
-		In-network data aggregation approach saves bandwidth by transmitting less \payloads\  between sensor nodes.
-		But that empowers an intermediate aggregate sensor nodes in the network by allowing it to control certain part of the network.
-		For example, a malicious intermediate sensor node who does aggregation over all of its descendants \payloads, needs to tamper with only one aggregated \payload\ instead of tampering with all the \payloads\ received from its descendants. 
-		Thus, a malicious intermediate sensor node needs to do less work to skew the final aggregated \payload.
-		An adversary controlling few sensor nodes in the network can cause the network to return unpredictable \payloads, making an entire sensor network unreliable.
-		Notice that the more descendants an intermediate sensor node has the more powerful it becomes.
+		It impedes while doing the quality of service in the network. 
 		
-		Despite the fact that in-network aggregation makes an intermediate sensor nodes more powerful, some aggregation approaches requires strong network topology assumptions or honest behaviors from the sensor nodes.
-		For example, in-network aggregation schemes in \cite{yao2002cougar, madden2003design} assumes that all the sensor nodes in the network are honest. Secure Information Aggregation (SIA) of \cite{przydatek2003sia}, provides security for the network topology with a single-aggregator model.  
-		Secure hierarchical in-network aggregation (SHIA) in sensor networks \cite{chan2006secure} presents the first and provably secure sensor network data aggregation protocol for general networks and multiple adversaries. 
-		We discuss the details of the protocol in the next chapter. 
-		SHIA limits the adversary's ability to tamper with the aggregation result with the tightest bound possible but it does not help detecting an adversary in the network.
-		Also, we claim that same upper bound can be achieved with compact label format defined in the next chapter.
+	All these parameters combined contributes to making strong assumptions on the network topology while designing the protocol for sensor networks.
