@@ -16,37 +16,39 @@
 	These versatile types of sensors, allow us to use sensor network in a wide variety of scenarios.
 	For example, sensor networks are used in habitat and environment monitoring, health care, military surveillance, industrial machinery surveillance, home automation, scientific data collection, emergency fire alarm systems, traffic monitoring, wildfire tracking, wildlife monitoring and many other applications.
 	
-	\textbf{Military Application}: 
-		Sensor networks can be used for enemy tracking, battlefield surveillance or target classification \cite{li2002detection}.
-		For example, \textit{Palo Alto Research Center} tries to spot ``interesting'' vehicles (the vehicles marked specially) using motes equipped with microphones or steerable cameras \cite{chu2004distributed}.
-		The objective is to coordinate a number of this kind of sensors in order to keep sensing the track of a chosen moving object minimizing any information gaps about the track that may occur.
-	
-	\textbf{Environmental Monitoring}: 
-		Sensor networks can be used to monitor a geographical location. 
-		For example, \textit{Meteorology and Hydrology in Yosemite National Park} \cite{lundquist2003meteorology}, a sensor network was deployed to monitor the water system across and within the Sierra Nevada, especially regarding natural climate fluctuation, global warming, and the growing needs of water consumers.
-		Research of the water system in the Sierra Nevada is difficult, because of its geographical structure.
-		And sensor networks can be real blessing in such situation as they can operate with little or no human intervention.
-	
-	\textbf{Health Care}:
-		Sensors can be used to monitor the patients round the clock. 
-		They can report various statistics to the doctors and nurses regarding patients health.
-		Also, it can send reminders to them to take care of the patient periodically. 	
-		The most important criteria for the such networks are security and reliability.
-		Because based on the sensor readings, doctors decide what treatment or what medicine to prescribe to the patients.
-		If those readings are modified by an adversary then the consequences might be lethal to the patients.
+	\begin{description}
+		\item[Military Application]
+			Sensor networks can be used for enemy tracking, battlefield surveillance or target classification \cite{li2002detection}.
+			For example, \textit{Palo Alto Research Center} tries to spot ``interesting'' vehicles (the vehicles marked specially) using motes equipped with microphones or steerable cameras \cite{chu2004distributed}.
+			The objective is to coordinate a number of this kind of sensors in order to keep sensing the track of a chosen moving object minimizing any information gaps about the track that may occur.
 
-	\textbf{Sustainable Mobility}:
-		Sensor networks can be used to build digitally connected and coordinated vehicles.
-		With the driver less cars from companies like Google, autonomous vehicle systems seems the future of transportation.
-		Autonomous vehicle systems \cite{benenson2008towards} describes how various various technologies in addition to the sensor networks is used in making the sustainable mobility.
-	
-	\textbf{The Active Floor} 
-		is a system which can detect person walking on the floor using pressure sensors \cite{addlesee1997orl}.
-		It also allows to extract information from the raw sensor data which has reasonable success in identifying people based on their gait.
-		Authors used Hidden Markov Models based analysis techniques originally developed for speech and face recognition to identify people.
-	
-	\textbf{CodeBlue} 
-		is a system to enhance emergency medical care with the goal to have a seamless patient transfer between a disaster area and a hospital\cite{lorincz2004sensor} .
+		\item[Environmental Monitoring] 
+			Sensor networks can be used to monitor a geographical location. 
+			For example, \textit{Meteorology and Hydrology in Yosemite National Park} \cite{lundquist2003meteorology}, a sensor network was deployed to monitor the water system across and within the Sierra Nevada, especially regarding natural climate fluctuation, global warming, and the growing needs of water consumers.
+			Research of the water system in the Sierra Nevada is difficult, because of its geographical structure.
+			And sensor networks can be real blessing in such situation as they can operate with little or no human intervention.
+		
+		\item[Health Care]
+			Sensors can be used to monitor the patients round the clock. 
+			They can report various statistics to the doctors and nurses regarding patients health.
+			Also, it can send reminders to them to take care of the patient periodically. 	
+			The most important criteria for the such networks are security and reliability.
+			Because based on the sensor readings, doctors decide what treatment or what medicine to prescribe to the patients.
+			If those readings are modified by an adversary then the consequences might be lethal to the patients.
+
+		\item[Sustainable Mobility]
+			Sensor networks can be used to build digitally connected and coordinated vehicles.
+			With the driver less cars from companies like Google, autonomous vehicle systems seems the future of transportation.
+			Autonomous vehicle systems \cite{benenson2008towards} describes how various various technologies in addition to the sensor networks is used in making the sustainable mobility.
+		
+		\item[The Active Floor]
+			is a system which can detect person walking on the floor using pressure sensors \cite{addlesee1997orl}.
+			It also allows to extract information from the raw sensor data which has reasonable success in identifying people based on their gait.
+			Authors used Hidden Markov Models based analysis techniques originally developed for speech and face recognition to identify people.
+		
+		\item[CodeBlue]
+			is a system to enhance emergency medical care with the goal to have a seamless patient transfer between a disaster area and a hospital\cite{lorincz2004sensor}.
+	\end{description}
 	
 	The applications of the sensor networks are enormous. 
 	The application of a sensor network determines the design of the sensor nodes, the network protocol and security architecture.
@@ -63,19 +65,20 @@
 		\label{fig:sensor-node-architecture}
 	\end{figure}
 
-	\textbf{Controller} is the Central Processing Unit (CPU) of the node.
-	It collects data from the sensors, processes this data, decides when and where to send it, receives data from other sensor nodes, and decides on the actuator’s behavior.
-	It executes various programs, ranging from time-critical signal processing and communication protocols to application programs.
+	\begin{description}
+	\item[Controller] is the Central Processing Unit (CPU) of the node.
+		It collects data from the sensors, processes this data, decides when and where to send it, receives data from other sensor nodes, and decides on the actuator’s behavior.
+		It executes various programs, ranging from time-critical signal processing and communication protocols to application programs.
 	
-	\textbf{Communication Device} is used to exchange data between individual nodes at radio frequency.
-	Radio Frequency (RF)-based communication is widely used in sensor networks as it best fits the requirements of numerous applications.
-	It provides relatively long range and high data rates, acceptable error rates at reasonable energy expenditure, and does not require line of sight between sender and receiver.
-	Both a transmitter and a receiver are required in a sensor node. 
-	The essential task for the devices is to convert a bit stream coming from a microcontroller (or a sequence of bytes or frames) and convert them to and from radio waves. 
-	It is convenient to use a device that combines these two tasks in a single entity, called transceivers. 
-	Usually, half-duplex operation is realized since transmitting and receiving at the same time on a wireless medium is impractical in most cases.
+	\item[Communication Device] is used to exchange data between individual nodes at radio frequency.
+		Radio Frequency (RF)-based communication is widely used in sensor networks as it best fits the requirements of numerous applications.
+		It provides relatively long range and high data rates, acceptable error rates at reasonable energy expenditure, and does not require line of sight between sender and receiver.
+		Both a transmitter and a receiver are required in a sensor node. 
+		The essential task for the devices is to convert a bit stream coming from a microcontroller (or a sequence of bytes or frames) and convert them to and from radio waves. 
+		It is convenient to use a device that combines these two tasks in a single entity, called transceivers. 
+		Usually, half-duplex operation is realized since transmitting and receiving at the same time on a wireless medium is impractical in most cases.
 
-	\textbf{Sensors} can be roughly categorized into three categories.
+	\item[Sensors] can be roughly categorized into three categories.
 		\textit{Passive, omnidirectional sensors} can measure a physical quantity at the point of the sensor node without actually manipulating the environment by active probing in this sense, they are passive. 
 		Moreover, some of these sensors actually are self-powered in the sense that they obtain the energy they need from the environment – energy is only needed to amplify their analog signal. 
 		There is no notion of ``direction'' involved in these measurements.
@@ -85,7 +88,7 @@
 		\textit{Active sensors} are the last group of sensors actively probes the environment, for example, a sonar or radar sensor or some types of seismic sensors, which generate shock waves by small explosions.
 		These are quite specific – triggering an explosion is certainly not a lightly undertaken action – and require quite special attention.
 
-	\textbf{Power supply of sensor nodes} is a crucial system component which has two main aspects.
+	\item[Power supply of sensor nodes] is a crucial system component which has two main aspects.
 		First, storing energy and providing power in the required form; second, attempting to replenish consumed energy by ``scavenging'' it from some node-external power source over time.
 		Storing power is conventionally done using batteries, the normal AA battery stores about 2.2–2.5 Ah at 1.5 V.
 		To ensure truly long-lasting nodes and wireless sensor networks, such a limited energy store is unreliable. 
@@ -99,11 +102,12 @@
 		\textit{Photovoltaics} effect is used in the solar cells can be used to power sensor nodes.
 		\textit{Temperature gradients} effect utilizing the differences in temperature can be directly converted to electrical energy.
 
-	\textbf{The memory component} is fairly straightforward. 
+	\item[The memory component] is fairly straightforward. 
 		Random Access Memory (RAM) is used to store intermediate sensor readings, packets from other nodes, and so on. 
 		While RAM is fast, its main disadvantage is that it loses its content if power supply is interrupted. 
 		Program code can be stored in Read-Only Memory (ROM). 
 		Correctly dimensioning memory sizes, especially RAM, can be crucial with respect to manufacturing costs and power consumption.
+	\end{description}
 
 \section{Energy Consumption}
 
@@ -171,7 +175,7 @@
 				    \hline
 				\end{tabular}
 			\end{center}
-			 \caption{System-on-Chip specifications for IEEE 802.15.4 from TexasInstruments}
+			 \caption{System-on-Chip specifications for CC2538 from TexasInstruments implementing IEEE 802.15.4 standards}
 			 \label{table:soc}
 		\end{table}
 	
