@@ -32,59 +32,58 @@
 	 \end{figure} 
 
 \section{Asymmetric/Public Key Encryption}
-% In asymmetric or public-key cryptosystem, uses a key pair for encipherment and decipherement .
-% In such systems, for all $E_{K_{1}} \in \mathcal{C}$ and $K_{1} \in \mathcal{K}$, there is a $D_{K_{2}} \in \mathcal{D}$ such that $K_{2} \in \mathcal{K}$ where $\mathcal{K} = K_{1} \times K_{2}$.
-% For all $k \in \mathcal{K}$,\  there exists $(S_{k},P_{k})$ such that the following is true.
-% \begin{equation}
-% 	{D}(\ {E}(\ {M},\ S_{k}\ ),\ P_{k}\ ) =\ {M}
-% \end{equation}
-Let $\{E_{e}: e \in \mathcal{K}\}$ be a set of encryption transformations, and let $\{D_{d}: d \in \mathcal{K}\}$ be the set of corresponding decryption transformations, where $\mathcal{K}$ is the key space.
-Consider any pair of associated encryption/decryption transformations $(E_{e},D_{d})$ and suppose that each pair has the property that knowing $E_{e}$ it is computationally infeasible, given a random ciphertext $c \in \mathcal{C}$, to find the message $m \in \mathcal{M}$ such that $E_{e}(m) = c$.
-This property implies that given $e$ it is infeasible to determine the corresponding decryption key $d$.
-This is unlike symmetric key ciphers where $e$ and $d$ are essentially the same\cite{menezes2010handbook}.
+	% In asymmetric or public-key cryptosystem, uses a key pair for encipherment and decipherement .
+	% In such systems, for all $E_{K_{1}} \in \mathcal{C}$ and $K_{1} \in \mathcal{K}$, there is a $D_{K_{2}} \in \mathcal{D}$ such that $K_{2} \in \mathcal{K}$ where $\mathcal{K} = K_{1} \times K_{2}$.
+	% For all $k \in \mathcal{K}$,\  there exists $(S_{k},P_{k})$ such that the following is true.
+	% \begin{equation}
+	% 	{D}(\ {E}(\ {M},\ S_{k}\ ),\ P_{k}\ ) =\ {M}
+	% \end{equation}
+	Let $\{E_{e}: e \in \mathcal{K}\}$ be a set of encryption transformations, and let $\{D_{d}: d \in \mathcal{K}\}$ be the set of corresponding decryption transformations, where $\mathcal{K}$ is the key space.
+	Consider any pair of associated encryption/decryption transformations $(E_{e},D_{d})$ and suppose that each pair has the property that knowing $E_{e}$ it is computationally infeasible, given a random ciphertext $c \in \mathcal{C}$, to find the message $m \in \mathcal{M}$ such that $E_{e}(m) = c$.
+	This property implies that given $e$ it is infeasible to determine the corresponding decryption key $d$.
+	This is unlike symmetric key ciphers where $e$ and $d$ are essentially the same\cite{menezes2010handbook}.
 
-Consider the two party communication between Alice and Bob illustrated in Figure \ref{fig:public-key}. 
-Bob selects the key pair $(e, d)$. 
-Bob sends the encryption key $e$ (called the \textit{public key}) to Alice over any channel but keeps the decryption key $d$ (called the \textit{private key}) secure and secret.
-Alice may subsequently send a message $m$ to Bob and applying the encryption transformation determined by Bob's public key to get $c = E_{e}(m)$.
-Bob decrypts the ciphertext $c$ by applying the inverse transformation $D_{d}$ uniquely determined by $d$.
-Here the encryption key is transmitted to Alice over an unsecured channel.
-Since, the encryption key $e$ nedd not be kept secret, it may be made public.
-\begin{figure}[h!]
-	\centering
-	\includegraphics{images/public-key.png}
-	\caption{Encryption using public key techniques}
-	\label{fig:public-key}
-\end{figure}
+	Consider the two party communication between Alice and Bob illustrated in Figure \ref{fig:public-key}. 
+	Bob selects the key pair $(e, d)$. 
+	Bob sends the encryption key $e$ (called the \textit{public key}) to Alice over any channel but keeps the decryption key $d$ (called the \textit{private key}) secure and secret.
+	Alice may subsequently send a message $m$ to Bob and applying the encryption transformation determined by Bob's public key to get $c = E_{e}(m)$.
+	Bob decrypts the ciphertext $c$ by applying the inverse transformation $D_{d}$ uniquely determined by $d$.
+	Here the encryption key is transmitted to Alice over an unsecured channel.
+	Since, the encryption key $e$ need not be kept secret, it may be made public.
+	\begin{figure}[h!]
+		\centering
+		\includegraphics{images/public-key.png}
+		\caption{Encryption using public key techniques}
+		\label{fig:public-key}
+	\end{figure}
 
 \section{Hash Function}
 	A hash function takes a message as its input and outputs a fixed length message called hash code.
 	The hash code represents a compact image of the message like a digital fingerprint.
-	Hash functions are used to achieve data integrity.
-
+	Hash functions are essential mathematical tools to achieve data integrity.
 	A hash function $h$ should have the following properties:
-	\begin{itemize}
-		\item Compression - $h$ maps an input $x$ of arbitrary finite bitlength, to an output $h(x)$ of fixed bitlength $n$.
-		\item Ease of computation - given $h,x$ it is easy to compute $h(x)$.
-		\item Preimage resistance - for all pre-specified outputs, it is computationally infeasible to find any input which hashes to that output, i.e., to find any preimage $x'$ such that $h(x') = y$ when given $y$ for which a corresponding input is not known.
-		\item 2nd-preimage resistance - it is computationally infeasible to find any second input which has the same output as any specified input, i.e, given $x$, to find a 2nd-preimage $x' \neq x$ such that $h(x') = h(x)$.
-		\item Collision resistance - it is computationally to find any two distinct inputs $x,x'$ which hash to the same output, i.e., such that $h(x) = h(x')$.
-	\end{itemize} 
-
-	SHA-256, is a 256-bit hash and is meant to provide $128$ bits of security against collision attacks\cite{SHA256}.
+	\begin{description}
+		\item [Compression] A hash function $h$ maps an input $x$ of arbitrary finite bitlength, to an output $h(x)$ of fixed bitlength $n$.
+		\item [Ease of computation] For given $h,x$ it is easy to compute $h(x)$.
+		\item [Preimage resistance] For all pre-specified outputs, it is computationally infeasible to find any input which hashes to that output, i.e., to find any preimage $x'$ such that $h(x') = y$ when given $y$ for which a corresponding input is not known.
+		\item [2nd-preimage resistance] It is computationally infeasible to find any second input which has the same output as any specified input, i.e, given $x$, to find a 2nd-preimage $x' \neq x$ such that $h(x') = h(x)$.
+		\item [Collision resistance] It is computationally to find any two distinct inputs $x,x'$ which hash to the same output, i.e., such that $h(x) = h(x')$.
+	\end{description} 
+	SHA-256, is a 256-bit hash and provides $128$ bits of security against collision attacks\cite{SHA256}.
 	And $128$ bits security is adequate for most of the applications.
 
 \section{Message Authentication Codes}
-A Message Authentication Code (MAC) is a family of hash functions parameterized by a secret key $k$, also known as keyed hash function ($h_{k}$).
-It has the following properties:
-\begin{description}
-	\item [Ease of computation] For a known function $h_{k}$, given a value $k$
-	and an input $x$, $h_{k}(x)$ is easy to compute.
-	This result is called MAC.
-	\item [Compression] The function $h_{k}$ maps an input $x$ of arbitrary finite bitlength to an output $h_{k}(x)$ of fixed length $n$.  
-	\item [Computation-resistance] Given a description of the function family $h$, for every fixed allowable value of $k$ (unknown to an adversary), given zero or more text-MAC pairs ($x_{i}, h_{k}(x_{i})$), it is computationally infeasible to compute any text-MAC pair ($x,h_{k}(x)$) for any new input $x \neq x^{'}$ (including possibly for $h_{k}(x) = h_{k}(x_{i})$ for some $i$). 
-If computation-resistance does not hold, a MAC algorithm is subject to MAC-forgery.
-\end{description}
+	A Message Authentication Code (MAC) is a family of hash functions parameterized by a secret key $k$, also known as keyed hash function ($h_{k}$).
+	It has the following properties:
+	\begin{description}
+		\item [Ease of computation] For a known function $h_{k}$, given a value $k$
+		and an input $x$, $h_{k}(x)$ is easy to compute.
+		This result is called MAC.
+		\item [Compression] The function $h_{k}$ maps an input $x$ of arbitrary finite bitlength to an output $h_{k}(x)$ of fixed length $n$.  
+		\item [Computation-resistance] Given a description of the function family $h$, for every fixed allowable value of $k$ (unknown to an adversary), given zero or more text-MAC pairs ($x_{i}, h_{k}(x_{i})$), it is computationally infeasible to compute any text-MAC pair ($x,h_{k}(x)$) for any new input $x \neq x^{'}$ (including possibly for $h_{k}(x) = h_{k}(x_{i})$ for some $i$). 
+	If computation-resistance does not hold, a MAC algorithm is subject to MAC-forgery.
+	\end{description}
+
 \section{Digital Signatures}
 	\label{sec:digital-signature}
 	A digital signature is a mathematical scheme for demonstrating the authenticity of a digital message. 
@@ -114,28 +113,27 @@ If computation-resistance does not hold, a MAC algorithm is subject to MAC-forge
 	\end{equation}
 	where the probability space is determine by the $\mathcal {M, S, K, K^{'}}$ and perhaps the signing and verification algorithms.
 	The ``overwhelming probability'' for the signature scheme determines the probability that the scheme allows for a forgery.
-	Note that the Digital Signature scheme satisfies the following requirements:
-		\begin{itemize}
-			\item Only the owner of the secret key can generate a valid signature.
-			\item The digital signature is easily verified by other parties as long as they know the public key.
-			\item The digital signature is not only tied to the signer but also to the message that is being signed.
-			\item Digital signatures do not encrypt the message. However, if necessary, a signed message can be encrypted after it is signed.
-		\end{itemize}
 	In Figure \ref{fig:digita-signature}, we show the steps for signing and verifying the hashed message \cite{DigitalSignature}. 
+	The message is hashed before its being signed to reduce the message size. 
+	If the message is not hashed before signing then the signature can be longer than the message which is problematic for the longer messages.
 	\begin{figure}[h!]
 		\centering
 		\includegraphics[scale = 0.4]{images/Digital_Signature_diagram.png}
 		\caption{ Signing and verification of digital signatures}
 		\label{fig:digita-signature}
 	\end{figure}
-	The message is hashed before its being signed to reduce the message size. 
-	If the message is not hashed before signing then the signature can be longer than the message which is problematic for the longer messages.
-	\textbf{Talk about non-repudiation, authenticity, integrity.}
-	\textbf{Talk about similarities and differences between physical world signature non-repudiation, authenticity, integrity.}
-	In physical world, your signatures are the same for all the messages. 
-	But this can not be possibly true for digital signatures as the attacker can obtain one signature and then use the same signature to pretend some one else.
 
+	In the Digital Signature scheme only the owner of the secret key can generate a valid signature.
+	The digital signature is easily verified by other parties as long as they know the public key.
+	The digital signature is not only tied to the signer but also to the message that is being signed.
+	Digital signatures do not encrypt the message. However, if necessary, a signed message can be encrypted after it is signed.
 
+	% \textbf{Talk about non-repudiation, authenticity, integrity.}
+	% \textbf{Talk about similarities and differences between physical world signature non-repudiation, authenticity, integrity.}
+	% In physical world, your signatures are the same for all the messages. 
+	% But this can not be possibly true for digital signatures as the attacker can obtain one signature and then use the same signature to pretend some one else.
+
+\section{Summary}
 	Three different integrity-protection mechanisms HASH, MAC, Signature can be summarized in a matrix like Table \ref{table:summary} \cite{2002-Stajano-ubiquitous}.
 	The main difference between the various primitives stems from identifying who can generate the code and who can verify it.
 	This determines the suitability of the construction for a given purpose.
@@ -157,8 +155,8 @@ If computation-resistance does not hold, a MAC algorithm is subject to MAC-forge
 	  \label{table:summary}
 	\end{table}
 
-\section {Tree generation algorithms}
+% \section {Tree generation algorithms}
 
-\section{XOR function}
+% \section{XOR function}
 
-\section{Elliptic curve}
+% \section{Elliptic curve}
