@@ -27,14 +27,14 @@
 	In-network data aggregation techniques allow the sensor nodes to aggregate the data before sending it to their parents.
 	That reduces the wireless communication happening between the nodes and the overall energy consumption in the network. 	
 	For example, in-network data aggregation of the SUM function can be performed as follows.
-	All the intermediate sensor nodes in the network, receives the sensor readings from all of its children.
+	All the intermediate sensor nodes in the network, receives the sensor readings from all of their children.
 	They aggregate all those readings by applying the summation function to those readings.
 	For the star topology shown in Figure \ref{fig:star-network}, the root of the tree receives the following sensor readings $S_{1}(10),S_{2}(14),S_{3}(12),S_{4}(15),S_{5}(11),S_{6}(17)$. And the root has its own reading of $S_{0}(15)$. 
 	The root node aggregates all these seven readings and creates an aggregated result as follows:
 	\begin{equation}
 		S = \sum_{i=0}^6 S_{i}
 	\end{equation}
-	Now, instead of sending all those sensor readings one at a time to their parent they can send one aggregated sensor reading.
+	Now, instead of sending all those sensor readings one at a time to its parent, it can send one aggregated sensor reading.
 	In this example the aggregate function is summation, but it can be replaced with most of the aggregate function such as (average, median, count) with little or no modification.
 	\begin{figure}[h!]
 		\centering
@@ -48,7 +48,7 @@
 	At the Base Station, the data is aggregated and processed into information. 
 	This can be represented as
 		$f(x_{1}, x_{2},...,x_{n})$
-	where $x_{1}, x_{2},..., x_{m}$ represent the sensor readings.
+	where $x_{1}, x_{2},..., x_{n}$ represent the sensor readings.
 	Here $f$ is some mapping $f: \mathcal{D}_{1} \times \mathcal{D}_{2} \times ... \mathcal{D}_{n}$ $\rightarrow$ $I$, where $\mathcal{D}_{i}$ represents sensor $i$'s domain and $I$ represents the set of all possible information. 
 	Thus the goal is to compute the information as follows:
 	\begin{equation}
@@ -87,7 +87,7 @@
 	Hence, it is desirable to have a lower congestion on the highly congested nodes even though it costs more congestion within the overall sensor network.
 	To distribute the congestion uniformly across the network, we can construct an aggregation protocol where each node transmits a single payload Defined in \ref{def:payload} to its parent in the aggregation tree.
 	In this approach, the fanout ($\delta$) depends on the given aggregation tree.
-	For example, an aggregation tree shown in Figure \ref{fig:star-network}, with $n$\ nodes, organized in the star tree topology congestion is $O(n)$.
+	For example, an aggregation tree shown in Figure \ref{fig:star-network}, with $n$\ nodes, organized in the star tree topology the congestion is $O(n)$.
 	And the network organized in the palm tree topology as shown in Figure \ref{fig:palm-tree-network} the congestion is $O(1)$.
 	\begin{figure}[h!]
 		\centering
@@ -101,41 +101,77 @@
 
 \section{Security Issues}
 	Designing secure data aggregation protocol for the wireless sensor network poses a numerous challenges due to resource limitations and inherent characteristics discussed in the previous chapter. 
-	As we know, one widely used approach to overcome the bandwidth limitation is to use in-network data aggregation techniques.
-	In-network data aggregation approach saves bandwidth by transmitting less payloads between sensor nodes thus increasing the lifetime of the network.
-	But that empowers an intermediate aggregate sensor nodes in the network by allowing it to control certain portion of the network.
-	The integrity of the aggregated value becomes more valuable.
-	A malicious intermediate sensor node who does aggregation over all of its descendants payloads, needs to tamper with only one aggregated payload instead of tampering with all the payloads received from its descendants. 
-	Thus, a malicious intermediate sensor node needs to do less work to skew the final aggregated payload.
-	An adversary controlling few sensor nodes in the network can cause the network to return unpredictable payloads, making an entire sensor network unreliable.
-	Also, an intermediate sensor node becomes more powerful with the increase in number of descendants.
 
 	The aggregation techniques can be compared with compression techniques.
 	``Lossy data compression'' is the class of data encoding methods that uses inexact approximations (or partial data discarding) for representing the content that has been encoded. 
 	``Lossless data compression'' is a class of data compression algorithms that allows the original data to be perfectly reconstructed from the compressed data.
-	The aggregation technique we use is lossy data compression because once the base station receives the final aggregated value it can not create the original sensor readings of the sensor nodes.
-	Hence, it is very important the base station has very high confidence in the received final aggregated value. 
+	The aggregation technique we use is \textit{lossy data compression} because once the base station receives the final aggregated value it can not create the original sensor readings of the sensor nodes.
+	Hence, it is very important that the base station has very high confidence in the received final aggregated value. 
 	For example, in Equation \ref{eq:aggregation} sensor $2$'s reading is changed from $x_{2}$ (the ``true reading'') to $x'_{2}$ by an intermediate aggregator, then an aggregate node computes $y' =\ f(x_{1},x'_{2},...,x_{n})$.
 	It is very likely that $y' \neq y$ where $y$ is the true information if the true reading was counted.
 	The base station takes an action based on the received information $y'$.
 	How dangerous would it be to act using $y'$?
 	Thus, if one ``knows there is some likelihood of false data'' how do we protect the information generated?
 	
-	Fail to safe operation
+	As we know, one widely used approach to overcome the bandwidth limitation is to use in-network data aggregation techniques.
+	In-network data aggregation approach saves bandwidth by transmitting less payloads between sensor nodes thus increasing the lifetime of the network.
+	But that empowers an intermediate aggregate sensor nodes in the network by allowing it to control certain portion of the network.
+	A malicious intermediate sensor node who does aggregation over all of its descendants payloads, needs to tamper with only one aggregated payload instead of tampering with all the payloads received from its descendants. 
+	Thus, a malicious intermediate sensor node needs to do less work to skew the final aggregated payload.
+	An adversary controlling few sensor nodes in the network can cause the network to return unpredictable payloads, making an entire sensor network unreliable.
+	An intermediate sensor nodes adversarial power is proportional to their number of descendants.
+	While applying the data-aggregation techniques the integrity of the sensor readings becomes more valuable.
+	As one or few faulty sensor readings can deviate the final aggregated result and create catastrophic situations as discussed in the following examples.
 
+	% Fail to safe operation
 		
-	Suppose $n$ seismic sensors are collecting seismic readings \cite{zareafifi2012secure}.
-	The sensor data is then processed to compute $y = f(x_{1},..., x_{n})$ where $y = (y_{1}, y_{2})$, here $y_{1}$ represents the time prediction of an earthquake and $y_{2}$ represents the duration of the earthquake. Suppose $y^* = (y^*_{1}, y^*_{2})$, where $y^*$ is the approximate (or faulty) information.
-	Then to measure the quality we need to compute $|y - y^*|$, but observe that many of the common metrics fail to capture the essence of the prediction (it is more important to determine date than duration).
-	Thus a metric that measure the quality of the approximation must make sense. 
-	It is possible that the best measure of the essence of the computation does not possess all the	properties of a metric.
+	% Suppose $n$ seismic sensors are collecting seismic readings \cite{zareafifi2012secure}.
+	% The sensor data is then processed to compute $y = f(x_{1},..., x_{n})$ where $y = (y_{1}, y_{2})$, here $y_{1}$ represents the time prediction of an earthquake and $y_{2}$ represents the duration of the earthquake. Suppose $y^* = (y^*_{1}, y^*_{2})$, where $y^*$ is the approximate (or faulty) information.
+	% Then to measure the quality we need to compute $|y - y^*|$, but observe that many of the common metrics fail to capture the essence of the prediction (it is more important to determine date than duration).
+	% Thus a metric that measure the quality of the approximation must make sense. 
+	% It is possible that the best measure of the essence of the computation does not possess all the	properties of a metric.
 
+
+	Speed Sensor Failure Led to Crash of Air France flight - Airbus A$330$-$203$ AF $447$ on $1$st June $2009$.
+	France's Bureau of Investigation and Analysis (BEA) released the Airbus final report \cite{final-report}.
+	According to an official report, the pilots couldn't reclaim control as the plane dropped out of the sky at a rate of $10,000$ feet per minute.
+	The findings from the flight's black boxes, which were found intact at the bottom of the Atlantic in early May.
+	And their analysis paints a harrowing picture of Air France flight 447's literal dropping out of the sky.
+	The co-pilots encountered trouble with the speed sensors four hours and 10 minutes into the flight. 
+	The flight was on autopilot as the pilot in command took a routine rest out of the cockpit. 
+	They were knowingly headed into a turbulent and storm-ridden spot over the Atlantic, and the black boxes show the pilots attempted to maneuver around the storm slightly.
+	For nearly a minute, as the speed sensors jumped, the pilot was not present in the cockpit. 
+	By the time the pilot returned, the plane had started to fall at 10,000 feet per minute while violently rolling from side to side.
+	The plane's speed sensors never regained normal functionality as the plane began its three-and-a-half minute freefall.
+	The flight plunged into the Atlantic nose-up, killing all 228 on board.
+	The findings coincide with investigators' earlier theory that the sensors, known as pitot tubes, malfunctioned, possibly because of ice at such a high altitude.
+
+	National Snow And Ice Data Center on June $3, 2008$ had reported that Arctic sea ice extent had declined through the month of May as summer approaches \cite{nsidc}. 
+	Daily ice extents in May continued to be below the long-term average and approached the low levels seen at the same time last year.
+	The spring ice cover was thin, one sign of thin and fairly weak ice was the formation of several polynyas in the ice pack.
+	The Defense Meteorological Satellite Program (DMSP) F13 \cite{dmsp-f13} satellite that had been central to their Arctic sea ice analysis for the past several years is nearing the end of its mission.
+	As the standard data practice, they have transitioned to a newer sensor, in that case the DMSP F15 \cite{dmsp-f15}. 
+	The DMSP F15 had the same type of sensor as the DMSP F13. 
+	NSIDC had done preliminary inter calibration to assure consistency with the historical record. 
+	And they said that due to the inter calibration errors the final reported ice extent values might differ on average $+/- 30,000$ square kilometers or $11,600$ square miles per preliminary number reported.
+
+	As shown in the previous examples, the faulty sensor readings can cause catastrophic situations. 
+	The faulty sensor readings can be caused due to malfunctioning sensors, the active attacks on true sensor readings or incorrect interpretations of the data.
+	Hence, it is necessary to take counter precautions while using data-aggregation techniques.
+	
 	Despite the fact that in-network aggregation makes an intermediate sensor nodes more powerful and aggregated value more vulnerable to various security attacks, some aggregation approaches requires strong network topology assumptions or honest behaviors from the sensor nodes.
 	For example, in-network aggregation schemes in \cite{yao2002cougar, madden2003design} assumes that all the sensor nodes in the network are honest. 
 	Secure Information Aggregation (SIA) of \cite{przydatek2003sia} enables secure information aggregation such that the user accepts the data with high probability if the aggregated result is within a desired bound, but that the user detects cheating with high probability and rejects the result if it is outside of the bound.
 	But SIA provides probabilistic security for the network topology with a single-aggregate model.
-	
+
+	An approach to detection and diagnosis of multiple failures in a dynamic system is proposed in \cite{zhang1998detection}. 
+	It is based on the interacting multiple-model (IMM) estimation algorithm, which is one of the most cost-effective adaptive estimation techniques for systems involving structural as well as parametric changes. 
+	The proposed approach provides an integrated framework for fault detection, diagnosis, and state estimation. 
+	It is able to detect and isolate multiple faults substantially more quickly and more reliably than many existing approaches. 
+	Its superiority is illustrated in two aircraft examples for single and double faults of both sensors and actuators, in the forms of total, partial, and simultaneous failures. 
+
 	Secure hierarchical in-network aggregation (SHIA) in sensor networks \cite{chan2006secure} presents the first and provably secure sensor network data aggregation protocol for general networks and multiple adversaries. 
 	We discuss the details of the protocol in the next chapter. 
 	SHIA limits the adversary's ability to tamper with the aggregation result with the tightest bound possible.
 	But it does not help detecting an adversary in the network.
+	We build our work on the foundation of SHIA, which allows to track down the adversary and remove it from the network.
