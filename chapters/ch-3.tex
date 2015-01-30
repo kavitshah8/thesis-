@@ -71,14 +71,20 @@ Since, the encryption key $e$ nedd not be kept secret, it may be made public.
 		\item Collision resistance - it is computationally to find any two distinct inputs $x,x'$ which hash to the same output, i.e., such that $h(x) = h(x')$.
 	\end{itemize} 
 
-	If you want 128-bit security you should use SHA-$256$\cite{SHA256} hash algorithm as a collision resistant hash function.
-	It provides 128-bit encryption which is adequate for the application.
-	Birthday attacks.
-	Provides sqrt security.
-	% cite NIST for SHA-256
+	SHA-256, is a 256-bit hash and is meant to provide $128$ bits of security against collision attacks\cite{SHA256}.
+	And $128$ bits security is adequate for most of the applications.
 
 \section{Message Authentication Codes}
-
+A Message Authentication Code (MAC) is a family of hash functions parameterized by a secret key $k$, also known as keyed hash function ($h_{k}$).
+It has the following properties:
+\begin{description}
+	\item [Ease of computation] For a known function $h_{k}$, given a value $k$
+	and an input $x$, $h_{k}(x)$ is easy to compute.
+	This result is called MAC.
+	\item [Compression] The function $h_{k}$ maps an input $x$ of arbitrary finite bitlength to an output $h_{k}(x)$ of fixed length $n$.  
+	\item [Computation-resistance] Given a description of the function family $h$, for every fixed allowable value of $k$ (unknown to an adversary), given zero or more text-MAC pairs ($x_{i}, h_{k}(x_{i})$), it is computationally infeasible to compute any text-MAC pair ($x,h_{k}(x)$) for any new input $x \neq x^{'}$ (including possibly for $h_{k}(x) = h_{k}(x_{i})$ for some $i$). 
+If computation-resistance does not hold, a MAC algorithm is subject to MAC-forgery.
+\end{description}
 \section{Digital Signatures}
 	\label{sec:digital-signature}
 	A digital signature is a mathematical scheme for demonstrating the authenticity of a digital message. 
