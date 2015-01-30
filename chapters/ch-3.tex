@@ -1,25 +1,61 @@
-\chapter{Networking and Cryptography tools} % (fold)
+\chapter{Networking And Cryptography Tools} % (fold)
 \label{cha:Networking and Cryptography tools}
-	Here we describe the networking and cryptographic tools used in this protocol referred from \cite{menezes2010handbook,stinson2005cryptography}.
-	For example, we describe the Hash function, its properties and how it helps us achieve data integrity.
+	% We discuss the networking and cryptographic tools used in our work.
+	% referred from \cite{menezes2010handbook,stinson2005cryptography}.
+	% For example, we describe the Hash function, its properties and how it helps us achieve data integrity.
 
-	The word cryptography means ``secret writing'' and is the art and science of concealing meaning.
+	The word cryptography means ``secret writing''.
+	It is the art and science of concealing meaning.
 	Cryptanalysis is the breaking of codes.
 	The basic component of cryptography is a cryptosystem \cite{bishop2004introduction}.
 	\begin{definition}
 		A cryptosystem is a $5$-tuple ($ \mathcal{E,D,M,K,C}$), where $\mathcal{M}$ is the set of \textit{plaintexts}, $\mathcal{K}$ is the set of \textit{keys}, $\mathcal{C}$ is the set of \textit{ciphertexts}, $\mathcal{E}:\mathcal{M} \times \mathcal{K} \rightarrow \mathcal{C}$ is the set of \textit{enciphering functions}, and $\mathcal{D}:\mathcal{C} \times \mathcal{K} \rightarrow \mathcal{M}$ is the set of \textit{deciphering functions}.
 	\end{definition}
 
-	Classical cryptosystem (also called symmetric cryptosystem or single-key cryptosystem) are cryptosystem that use the same key for encipherment and decipherement.
-	In these system, for all $E_{k} \in \mathcal{C}$ and $k \in \mathcal{K}$, there is a $D_{k} \in \mathcal{D}$ such that $D_{k} = E_{k}^{-1}$.
+\section{Symmetric Key Encryption}
+	% Classical cryptosystem (also called symmetric cryptosystem or single-key cryptosystem) are cryptosystem that use the same key for encipherment and decipherement.
+	% In these system, for all $E_{k} \in \mathcal{C}$ and $k \in \mathcal{K}$, there is a $D_{k} \in \mathcal{D}$ such that $D_{k} = E_{k}^{-1}$.
+	% \begin{definition}
+	Consider an encryption scheme consisting of the sets of encryption and decryption transformations $\{E_{e}: e \in \mathcal{K}\}$ and $\{D_{d}: d \in \mathcal{K}\}$, respectively, where $\mathcal{K}$ is the key space.
+	The encryption scheme is said to be \textit{symmetric-key} if for each associated encryption/decryption key pair ($e,d$), it is computationally ``easy'' to determine $d$ knowing only $e$, and to determine $e$ from $d$ \cite{menezes2010handbook}.
+	In most practical symmetric-key schemes $e = d$.
+	% \end{definition}
 
-	In asymmetric or public-key cryptosystem, uses a key pair for encipherment and decipherement .
-	In such systems, for all $E_{K_{1}} \in \mathcal{C}$ and $K_{1} \in \mathcal{K}$, there is a $D_{K_{2}} \in \mathcal{D}$ such that $K_{2} \in \mathcal{K}$ where $\mathcal{K} = K_{1} \times K_{2}$.
-	For all $k \in \mathcal{K}$,\  there exists $(S_{k},P_{k})$ such that the following is true.
-	\begin{equation}
-		{D}(\ {E}(\ {M},\ S_{k}\ ),\ P_{k}\ ) =\ {M}
-	\end{equation}
+	A two party communication using symmetric key encryption can be described by the block diagram of Figure \ref{fig:symmetric-key}. 
+	One major issue with symmetric key system is to find an efficient method to agree upon and exchange keys securely, which is known as \textit{key-distribution problem}. 
 
+	\begin{figure}[h!]
+	 	\centering
+	 	\includegraphics{images/symmetric-key.png}
+	 	\caption{Two party communication using encryption, with a secure channel for key exchange. The decryption key $d$ can be efficiently computed from the encryption key $e$. }
+	 	\label{fig:symmetric-key}
+	 \end{figure} 
+
+\section{Asymmetric/Public Key Encryption}
+% In asymmetric or public-key cryptosystem, uses a key pair for encipherment and decipherement .
+% In such systems, for all $E_{K_{1}} \in \mathcal{C}$ and $K_{1} \in \mathcal{K}$, there is a $D_{K_{2}} \in \mathcal{D}$ such that $K_{2} \in \mathcal{K}$ where $\mathcal{K} = K_{1} \times K_{2}$.
+% For all $k \in \mathcal{K}$,\  there exists $(S_{k},P_{k})$ such that the following is true.
+% \begin{equation}
+% 	{D}(\ {E}(\ {M},\ S_{k}\ ),\ P_{k}\ ) =\ {M}
+% \end{equation}
+Let $\{E_{e}: e \in \mathcal{K}\}$ be a set of encryption transformations, and let $\{D_{d}: d \in \mathcal{K}\}$ be the set of corresponding decryption transformations, where $\mathcal{K}$ is the key space.
+Consider any pair of associated encryption/decryption transformations $(E_{e},D_{d})$ and suppose that each pair has the property that knowing $E_{e}$ it is computationally infeasible, given a random ciphertext $c \in \mathcal{C}$, to find the message $m \in \mathcal{M}$ such that $E_{e}(m) = c$.
+This property implies that given $e$ it is infeasible to determine the corresponding decryption key $d$.
+This is unlike symmetric key ciphers where $e$ and $d$ are essentially the same\cite{menezes2010handbook}.
+
+Consider the two party communication between Alice and Bob illustrated in Figure \ref{fig:public-key}. 
+Bob selects the key pair $(e, d)$. 
+Bob sends the encryption key $e$ (called the \textit{public key}) to Alice over any channel but keeps the decryption key $d$ (called the \textit{private key}) secure and secret.
+Alice may subsequently send a message $m$ to Bob and applying the encryption transformation determined by Bob's public key to get $c = E_{e}(m)$.
+Bob decrypts the ciphertext $c$ by applying the inverse transformation $D_{d}$ uniquely determined by $d$.
+Here the encryption key is transmitted to Alice over an unsecured channel.
+Since, the encryption key $e$ nedd not be kept secret, it may be made public.
+\begin{figure}[h!]
+	\centering
+	\includegraphics{images/public-key.png}
+	\caption{Encryption using public key techniques}
+	\label{fig:public-key}
+\end{figure}
 
 \section{Hash Function}
 	A hash function takes a message as its input and outputs a fixed length message called hash code.
@@ -40,6 +76,8 @@
 	Birthday attacks.
 	Provides sqrt security.
 	% cite NIST for SHA-256
+
+\section{Message Authentication Codes}
 
 \section{Digital Signatures}
 	\label{sec:digital-signature}
@@ -91,28 +129,27 @@
 	In physical world, your signatures are the same for all the messages. 
 	But this can not be possibly true for digital signatures as the attacker can obtain one signature and then use the same signature to pretend some one else.
 
-\section{MAC}
 
-Three different integrity-protection mechanisms HASH, MAC, Signature can be summarized in a matrix like Table \ref{table:summary} \cite{2002-Stajano-ubiquitous}.
-The main difference between the various primitives stems from identifying who can generate the code and who can verify it.
-This determines the suitability of the construction for a given purpose.
-\begin{table}[!htb]	
-	\begin{center}
-		\begin{tabular}{ |l| l| l| }
-	    \hline
-	     & Who can generate it & Who can verify it \\
-	    \hline
-	    Hash & Everyone & Everyone \\	
-	    \hline
-	    MAC & Holders of secret & Holders of secret \\
-	    \hline
-	    Signature & Holder of secret & Everyone \\
-	    \hline
-		\end{tabular}
-	\end{center}
-	\caption{A comparison of integrity-protecting primitives}
-  \label{table:summary}
-\end{table}
+	Three different integrity-protection mechanisms HASH, MAC, Signature can be summarized in a matrix like Table \ref{table:summary} \cite{2002-Stajano-ubiquitous}.
+	The main difference between the various primitives stems from identifying who can generate the code and who can verify it.
+	This determines the suitability of the construction for a given purpose.
+	\begin{table}[!htb]	
+		\begin{center}
+			\begin{tabular}{ |l| l| l| }
+		    \hline
+		     & Who can generate it & Who can verify it \\
+		    \hline
+		    Hash & Everyone & Everyone \\	
+		    \hline
+		    MAC & Holders of secret & Holders of secret \\
+		    \hline
+		    Signature & Holder of secret & Everyone \\
+		    \hline
+			\end{tabular}
+		\end{center}
+		\caption{A comparison of integrity-protecting primitives}
+	  \label{table:summary}
+	\end{table}
 
 \section {Tree generation algorithms}
 
