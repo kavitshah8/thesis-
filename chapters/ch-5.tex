@@ -23,8 +23,7 @@
 	All the sensor nodes are capable of doing symmetric key encryption and symmetric key decryption.
 	They are also capable of computing collision resistant cryptographic hash function $H$ (SHA-$256$)\cite{SHA256}. 
 
-\section{Attacker Model}
-	
+\section{Attacker Model And Security Goal}
 	We consider a model with a polynomially bounded adversary of \cite{przydatek2003sia}, which has a complete control over some of the sensor nodes in the network.
 	Most significantly, the adversary can change the measured values reported by sensor nodes under its control.
 	An adversary can perform a wide variety of attacks.
@@ -37,16 +36,16 @@
 	One of the security goals of SHIA is to detect the stealthy attacks.
 	And one of the security goals of our work is to detect an adversary who caused the stealthy attacks and remove it from the network to prevent these attacks in the future.
 	
-\section{Security Goal}
+% \section{Security Goal}
 	Without precise knowledge of application, the direct data injection attacks are indistinguishable from the malicious sensor readings.
 	The goal of SHIA is to design an \textbf{optimally secure} aggregation algorithm with only \textbf{sublinear edge congestion}.
 	\begin{definition}
 		\label{def:optimally-secure}
-		According to \cite{chan2006secure}, an aggregation algorithm is \textbf{optimally secure} if, by tampering with the aggregation process, an adversary is unable to induce the base station to accept any aggregation result which is not already achievable by direct data injection.
+		\cite{chan2006secure} An aggregation algorithm is \textbf{optimally secure} if, by tampering with the aggregation process, an adversary is unable to induce the base station to accept any aggregation result which is not already achievable by direct data injection.
 	\end{definition}
 
-\section{The SUM Aggregate Algorithm}
-		In this algorithm, the aggregate function $f$\ is summation meaning that we want to compute $a_{1} + a_{2} + \dotsc + a_{n}$, where $a_{i}$\ is the sensed data value of the node $i$.
+\section{The SUM Aggregate Algorithm of SHIA}
+		In this algorithm, the aggregate function $f$\ is summation meaning that we want to compute $a_{1} + a_{2} + \dotsc + a_{n}$, where $a_{i}$\ is the reading of the sensor node $i$.
 		This algorithm has three main phases:
 		\begin{itemize}
 			\item Query dissemination - initiates the aggregation process
@@ -64,15 +63,15 @@
 		One possible aggregation tree for given network graph in Figure \ref{fig:ng} is shown in Figure \ref{fig:at}. 
 		\begin{figure}[h!]
 			\centering
-			\includegraphics[scale = 1]{images/network-graph.png}\\
+			\includegraphics[scale = 1]{images/network-graph.png}
 			\caption{Network graph}
 			\label{fig:ng}
 		\end{figure}
-		
+
 		To initiate the query dissemination phase, the base station broadcasts the query request message with the query nonce $N$\ in the aggregation tree. 
-		The query request message contains new query nonce $N$\ for each query to prevent replay attacks in the network.
-		It is very important that the same nonce is never re-used by the base station.
-		$SHIA$\ uses \textbf{hash chain} to generate new nonce for each query. 
+		The query request message contains new query nonce $N$\ for each query.
+		The fresh nonce is used for each new query to prevent replay attacks in the network.
+		SHIA uses \textbf{hash chain} to generate new nonce for each query. 
 		A hash chain is constructed by repeatedly evaluating a pre-image resistant hash function $h$\ on some initial random value, the final value (or ``anchor value'') is preloaded on the nodes in the network.
 		The base station uses the pre-image of the last used  value as the nonce for the next broadcast.
 		For example, if the last known value of the hash chain is $h^i(X)$, then the next broadcast uses $h^{i-1}(X)$ as the nonce; $X$ is the initial random value.
@@ -80,8 +79,8 @@
 		A hash chain prevents an adversary from predicting the query nonce for future queries as it has to reverse the hash chain computation to get an acceptable pre-image.
 		\begin{figure}[h!]
 			\centering
-			\includegraphics[scale = 1]{images/aggregation-tree.png}\\
-			\caption{Aggregation tree for network graph in Figure \ref{fig:ng}}
+			\includegraphics[scale = 1]{images/aggregation-tree.png}
+			\caption{Simplified Aggregation tree for network graph in Figure \ref{fig:ng}}
 			\label{fig:at}
 		\end{figure}		
 
@@ -92,22 +91,6 @@
 		These commitments are then passed on to the base station by the root of an aggregation tree.
 		The base station then rebroadcasts the commitments to the sensor network using an authenticated broadcast so that the rest of the sensor nodes in the network can verify that their respective data values have been incorporated into the final aggregate value.
 
-		\subsection{Aggregate Commit: Naive Approach}
-		% (fold)
-			\label{sub:aggregate_commit_naive_approach}
-			In the naive approach, during aggregation process each sensor node computes a cryptographic hash of all its inputs (including its own data value).
-			The aggregation result along with the hash value called a label, is then passed on to the parent in the aggregation tree.
-			The label is format is described in Definition \ref{def:label}.
-			Figure \ref{fig:naive-commitment-tree} shows a commitment tree for the aggregation tree shown in Figure \ref{fig:at}.
-			Conceptually, a commitment tree is a logical tree built on top of an aggregation tree, with additional aggregate information attached to the nodes to help in the result checking phase.
-			\begin{figure}[h!]
-				\centering
-				\includegraphics[scale = 1]{images/naive-commitment-tree.png}\\
-				\caption{Naive commitment tree for Figure \ref{fig:at}.
-				For each sensor node $s$, $s_{0}$ is its leaf vertex, while $s_{1}$ is the internal vertex representing the aggregate computation at $s$ (if any).
-				The labels of the vertices on the path of node $I$ to the root are shown from Equation \ref{eq:label-1} to \ref{eq:label-5}.}
-				\label{fig:naive-commitment-tree}
-			\end{figure}
 
 			\begin{definition}
 				\cite{chan2006secure}
@@ -117,36 +100,42 @@
 				$\hspace{100pt}$ $<$count, value, complement, commitment$>$\\
 				Where count is the number of leaf vertices in the subtree rooted at this vertex; value is the SUM aggregate computed over all the leaves in the subtree; complement is the aggregate over the COMPLEMENT of the data values; and commitment is a cryptographic commitment.
 			\end{definition}
-			There is one leaf vertex $u_{s}$ for each sensor node $s$, which we call the leaf vertex of $s$. The label of $u_{s}$ consists of count = 1, value = $a_{s}$ where $a_{s}$ is the data value of $s$, complement = $r - a_{s}$ where $r$ is the upper bound on allowable data values, and commitment is the node’s unique ID.\\
+			There is one leaf vertex $u_{s}$ for each sensor node $s$, which we call the leaf vertex of $s$. The label of $u_{s}$ consists of count = 1, value = $a_{s}$ where $a_{s}$ is the data value of $s$, complement = $r - a_{s}$ where $r$ is the upper bound on allowable data values, and commitment is the node’s unique ID.
 			Internal vertices represent aggregation operations, and have labels that are defined based on their children. Suppose an internal vertex has child vertices with the following labels: $u_{1}$, $u_{2}$, $\dotsc$ , $u_{q}$, where $u_{i}$ = $<$ $c_{i}$, $v_{i}$, $\bar{v_{i}}$,$h_{i}$$>$. 
 			Then the vertex has label $<$$c$, $v$, $\bar{v}$, $h$$>$, with $c$ $=$ $\sum c_{i}$, $v$ $=$ $\sum v_{i}$, $\bar{v}$ $=$ $\sum \bar{v_{i}}$ and $h$ $=$ $H[N||c||v||\bar{v}||u_{1}||u_{2}|| \dotsc ||u_{q}]$.\\
-			The labels of the vertices of the commitment tree of Figure \ref{fig:naive-commitment-tree} are shown below.
-			\begin{equation}
-				I_{0} = <1, a_{I}, r - a_{I}, I>
-				\label{eq:label-1}
-			\end{equation}
-			\begin{equation}
-				H_{1} = <2, v_{H_{1}}, r - v_{H_{1}}, H[N||2||v_{H_{1}}||\bar{v_{H_{1}}}||H_{0}||I_{0}]>
-				\label{eq:label-2}
-			\end{equation}
-			\begin{equation}
-				B_{1} = <3, v_{B_{1}}, r - v_{B_{1}}, H[N||3||v_{B_{1}}||\bar{v_{B_{1}}}||B_{0}||E_{0}||F_{0}]>
-				\label{eq:label-3}
-			\end{equation}
-			\begin{equation}
-				C_{1} = <4, v_{C_{1}}, r - v_{C_{1}}, H[N||4||v_{C_{1}}||\bar{v_{C_{1}}}||C_{0}||G_{0}||H_{1}]>
-				\label{eq:label-4}
-			\end{equation}
-			\begin{equation}
-				A_{1} = <9, v_{A_{1}}, r - v_{A_{1}}, H[N||9||v_{A_{1}}||\bar{v_{A_{1}}}||A_{0}||D_{0}||B_{1}||C_{1}]>
-				\label{eq:label-5}
-			\end{equation}
 		% subsection aggregate_commit_naive_approach (end)
 		
 		The word vertices is used for the nodes in the commitment tree and the word node is used for the nodes in the aggregation tree.
 		There is a mapping between the nodes in the aggregation tree and the vertices in the commitment tree, a vertex is a logical element in the commitment tree where as the node is a physical sensor node which does all the communications.		
 		The collision resistant hash function makes it impossible for an adversary to change the commitment structure once it is sent to the base station.
 		Our payload format is compact than the label format which is discussed in the next chapter.
+
+		\subsection{Aggregate Commit: Naive Approach}
+		% (fold)
+			\label{sub:aggregate_commit_naive_approach}
+			In the naive approach, during aggregation process each sensor node computes a cryptographic hash of all its inputs (including its own data value).
+			The aggregation result along with the hash value called a label, is then passed on to the parent in the aggregation tree.
+			The label is format is described in Definition \ref{def:label}.
+			The commitment tree for the aggregation tree of Figure \ref{fig:at} is  shown in Figure \ref{fig:naive-commitment-tree} .
+			Conceptually, a commitment tree is a logical tree built on top of an aggregation tree, with additional aggregate information attached to the nodes to help in the result checking phase.
+			\begin{figure}[h!]
+				\centering
+				\includegraphics[scale = 1]{images/naive-commitment-tree.png}
+				\caption{Naive commitment tree for Figure \ref{fig:at}.
+				For each sensor node $S$, $S_{0}$ is its leaf vertex, while $S_{1}$ is the internal vertex representing the aggregate computation at $S$ (if any).
+				The internal vertices are represented by dashed box.}
+				\label{fig:naive-commitment-tree}
+			\end{figure}
+			The labels of the vertices on the path of node $I$ to the root for the commitment tree are given as follows:
+			\begin{equation}
+				\begin{array}{l}
+					I_{0} = <1, a_{I}, r - a_{I}, I>\\
+					H_{1} = <2, v_{H_{1}}, r - v_{H_{1}}, H[N||2||v_{H_{1}}||\bar{v_{H_{1}}}||H_{0}||I_{0}]>\\
+					B_{1} = <3, v_{B_{1}}, r - v_{B_{1}}, H[N||3||v_{B_{1}}||\bar{v_{B_{1}}}||B_{0}||E_{0}||F_{0}]>\\
+					C_{1} = <4, v_{C_{1}}, r - v_{C_{1}}, H[N||4||v_{C_{1}}||\bar{v_{C_{1}}}||C_{0}||G_{0}||H_{1}]>\\
+					A_{1} = <9, v_{A_{1}}, r - v_{A_{1}}, H[N||9||v_{A_{1}}||\bar{v_{A_{1}}}||A_{0}||D_{0}||B_{1}||C_{1}]>
+				\end{array}
+			\end{equation}
 		
 		\subsection{Aggregate Commit: Improved Approach} 
 		% (fold)
