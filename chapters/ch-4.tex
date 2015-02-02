@@ -99,7 +99,77 @@
 	In most of the real world applications, we cannot control $\delta$ as the aggregation tree is random.
 	Hence, it is desirable to have uniform distribution of congestion across the aggregation tree.
 
+\section{Resilient And Non-Resilient Aggregate Functions}
+	
+	Wagner \cite{wagner2004resilient} uses statistical estimation theory to quantify the effects of direct data injection on various aggregates functions as follows:
+	% Data aggregation definition should be in section 3.1
+
+	% \begin{definition}
+	% 	\cite{chan2006secure} Each sensor node $s_{i}$ has a data value $a_{i}$\ assuming that all the data values are non-negative bounded by real value $a_{i} \in [0,r]$, where $r$\ is the maximum allowed data value.
+	% 	The objective of the \textbf{Aggregation Function} is to compute some function $f$ over all the data values, i.e., $f (a_{1}, \dotsc ,a_{n})$.
+	% \end{definition}
+	\begin{definition}
+		\label{def:direct-data-injection}
+		\cite{chan2006secure} A \textbf{Direct Data Injection} attack occurs when an adversary modifies the data readings reported by the nodes under its direct control, under the constraint that only legal readings in $[0, r]$ are reported.
+	\end{definition}
+	An \textbf{estimator} is an algorithm $ f :\ \R^n \rightarrow \rm I\!R$\ where $f(x_{1},\dotsc, x_{n})$\ is intended as an estimate of some real valued function of $\theta$.
+	We assume that $\theta$ is real-valued and that we wish to estimate $\theta$ itself.
+	Next, we define $\widehat{\Theta} := f(X_{1},\dotsc,X_{n})$, where $X_{1},\dotsc,X_{n}$\ are $n$ random variables. We can define the root-mean-square(r.m.s)  error (at $\theta$):
+	\begin{equation}
+		rms(f) := \rm I\!E[(\widehat{\Theta} - \theta)^2 | \theta]^{1/2}
+	\end{equation}
+	Note that r.m.s($f$) is a function of $\theta$; we compare functions pointwise. 
+	Also, an unbiased estimator is one for which $E[\widehat{\Theta} | \theta] = \theta $ for all $\theta$.
+
+	Wagner in \cite{wagner2004resilient} defines \textbf{resilient estimators and resilient aggregation } as follows.
+	A $k$-node attack $A$ is an algorithm that is allowed to change up to $k$ of the values $X_{1}, \dotsc, X_{n}$ before the estimator is applied.
+	In particular, the attack $A$ is specified by a function $\tau_{A} : \R^n \rightarrow  \R^n $ with the property that the vectors $x$ and $\tau_{A}(x)$ never differ at more than $k$ positions.
+	We can define the r.m.s error associated with $A$ as follows:
+	\begin{equation}
+		rms^*(f,A) := \rm I\!E[(\widehat{\Theta}^* - \theta)^2 | \theta]^{1/2} 		  
+	\end{equation}
+	where $\widehat{\Theta}^* := f(\tau_{A}(X_{1},\dotsc,X_{n}))$.
+	To explain, $\widehat{\Theta}^*$\ is a random variable that represents the aggregate calculated at the base station in the presence of the $k$-node attack $A$, and $rms^*(f,A)$\ is a measure of inaccuracy of the aggregate after $A$'s intrusion.
+	If $rms^*(f,A) >> rms(f)$, then the attack has succeeded in noticeably affecting the operation of the sensor network.
+	If $rms^*(f,A) \approx rms(f)$, the attack had little or no effect.
+	We define
+	\begin{equation}
+		rms^*(f,k) := max\{rms^*(f,A): A\ is\ a\ k-node\ attack\}
+	\end{equation}
+	so that $rms^*(f,k)$\ denotes the r.m.s. error of the most powerful
+	$k$-node attack possible. 
+	Note that $rms^* (f, 0) = rms(f)$.
+	We think of an aggregation function $f$ as an instance of the resilient aggregation paradigm if $rms^* (f, k)$ grows slowly as a function of $k$.
+	\begin{definition}
+		According to \cite{wagner2004resilient}, an aggregation function $f$ is \textbf{$(k, \alpha)$-resilient} (with respect to a parameterized distribution $p(X_{i} | \theta))$ if $rms^*(f, k) \le \alpha \cdot rms(f)$ for the estimator $f$.
+		\label{def:resilient}
+	\end{definition}
+	The intuition is that the $(k, \alpha)$-resilient functions, for small values of $\alpha$, are the ones that can be computed meaningfully and securely in the presence of up to $k$ compromised or malicious nodes.
+	Wagner's work is summarized in the Table~\ref{table:wagner}.
+	According to this quantitative study measuring the effects of direct data injection on various aggregates, concludes that the \textbf{aggregates (truncated SUM and AVERAGE ) can be resilient} under such attacks.
+	\begin{table}[!htb]	
+		\begin{center}
+			\begin{tabular}{ |l| l| }
+				\hline
+			    Aggregate(f) & Security Level \\
+			    \hline
+			    minimum & insecure \\
+			    maximum & insecure \\
+			    sum & insecure \\
+				average & insecure \\
+				count & acceptable \\
+				$[l,u]$-truncated average & problematic \\
+				5\% -trimmed average & better \\
+				median & much better \\
+			    \hline
+			\end{tabular}
+		\end{center}
+		 \caption{Summary of Wagner's work}
+		 \label{table:wagner}
+	\end{table}
+
 \section{Security Issues}
+	\label{sec:security-issues}
 	Designing secure data aggregation protocol for the wireless sensor network poses a numerous challenges due to resource limitations and inherent characteristics discussed in the previous chapter. 
 
 	The aggregation techniques can be compared with compression techniques.
