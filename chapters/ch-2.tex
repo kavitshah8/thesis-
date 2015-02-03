@@ -2,11 +2,11 @@
 \label{cha:Sensor Networks/Data Aggregation/Security Background}
 	
 	Sensor networks are becoming ubiquitous in our day to day life. 
-	They are known also known as Internet of Things or Ubiquitous Computing.
-	It is the vision of a world in which computing power and digital communications are extremely inexpensive commodities, so cheap that they are embedded in all the everyday objects that surround us \cite{2002-Stajano-ubiquitous}.
+	Collectively, they are known also known as Internet of Things or Ubiquitous Computing.
+	A vision of a world in which computing power and digital communications are extremely inexpensive commodities, so cheap that they are embedded in all the everyday objects that surround us \cite{2002-Stajano-ubiquitous}.
 	
-	In this chapter we introduce the sensor networks and its applications, we define basic terminologies and then we discuss major 
-	barriers to achieve security in the sensor networks.
+	In this chapter we introduce sensor networks and its applications, we define basic terminologies and then we discuss major 
+	barriers to achieve security in the area of sensor networks.
 	 % and solutions to tackle those challenges.
 
 \section{Applications}
@@ -26,10 +26,10 @@
 			Sensor networks can be used to monitor a geographical location. 
 			For example, \textit{Meteorology and Hydrology in Yosemite National Park} \cite{lundquist2003meteorology}, a sensor network was deployed to monitor the water system across and within the Sierra Nevada, especially regarding natural climate fluctuation, global warming, and the growing needs of water consumers.
 			Research of the water system in the Sierra Nevada is difficult, because of its geographical structure.
-			And sensor networks can be real blessing in such situation as they can operate with little or no human intervention.
+			Sensor networks can be very useful in such situations as they can operate with little or no human intervention.
 		
 		\item[Health Care]
-			Sensors can be used to monitor the patients round the clock. 
+			Sensors can be used to monitor the patients around the clock. 
 			They can report various statistics to the doctors and nurses regarding patients health.
 			Also, it can send reminders to them to take care of the patient periodically. 	
 			The most important criteria for the such networks are security and reliability.
@@ -141,7 +141,7 @@
 \section{Resource Constraints}
 	\label{sec:aggregate-adversary}
 	We introduce the parameters which should be taken into account while designing secure protocol for sensor networks.  
-	And how these parameters constrains protocol designer's choices of the protocol.
+	These parameters can constrain the protocol designer's choices within the protocol.
 
 	\subsection{Physical Limitations}
 		Sensor nodes are often deployed in open, hostile and unattended environments, so they are vulnerable to physical tampering due to the lower physical security.
@@ -155,7 +155,7 @@
 		Due to lower manufacturing cost of sensor nodes, they have low speed processor, limited storage, a short range trans receiver.
 		For example, the major specifications for the latest ZigBee chip supporting IEEE 802.15.4 standard, CC2538 from TexasInstruments are shown in Table \ref{table:soc}.
 		This chip can do most of the security algorithms but has really little amount of memory storage. It has limited output power which constraints its transmission range which forces us to use multi-hop routing in the network as one node can not communicate with the node outside of its transmission range.
-		This hardware limitations constrains protocol designer's choice of algorithms for applications.  
+		These hardware limitations can constrain protocol designer's choice of algorithms for applications.  
 		\begin{table}[!htb]	
 			\begin{center}
 				\begin{tabular}{ |l| l| }
@@ -181,8 +181,8 @@
 	
 	\subsection{Transmission Medium}
 		In sensor networks, a group of sensor nodes ( or processors ) communicate over the radio (e.g., Bluetooth, WLAN).
-		Traditionally, wireless medium has the issues of in synchronization, hidden station and expose station terminal problems, distributed arbitration, directional antennas, bandwidth limitations, higher error rate, security, scalability etcetera.
-		For example, wireless network has approximately $10^6$ times higher bit error rate (BER) than wired network which causes frequent link loss and then path loss. 
+		Traditionally, wireless mediums have issues due to synchronization, hidden station and expose station terminal problems, distributed arbitration, directional antennas, bandwidth limitations, higher error rate, security, scalability etcetera.
+		For example, wireless networks have approximately $10^6$ times higher bit error rate (BER) than wired networks which causes frequent link loss and then path loss. 
 		Hence, making unstable routing in the network.
 		Higher BER creates higher collision rate in the network, generating higher overhead of retransmission and lowering the channel utilization and the throughput of the network.
 		This kind of transmission medium with constrained resources makes it challenging to design the reliable networking protocol as we have to consider all the possible retransmissions.

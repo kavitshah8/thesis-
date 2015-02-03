@@ -87,28 +87,31 @@
 \section{Aggregate Commit} 
 	% (fold)
 		\label{sub:aggregate_commit}
-		The aggregate commit phase constructs cryptographic commitments to the data values and to the intermediate in-network aggregation operations.
+		The aggregate commit phase constructs cryptographic commitments to the data values and to the intermediate aggregated data-values.
 		These commitments are then passed on to the base station by the root of an aggregation tree.
 		The base station then rebroadcasts the commitments to the sensor network using an authenticated broadcast so that the rest of the sensor nodes in the network can verify that their respective data values have been incorporated into the final aggregate value.
+		\begin{definition}
+			\cite{chan2006secure}
+			A commitment tree is a tree where each vertex has an associated label representing the data that is passed on to its parent. The labels have the following format:
 
+			$\hspace{100pt}$ $<$count, value, complement, commitment$>$\\
+			Where count is the number of leaf vertices in the subtree rooted at this vertex; value is the SUM aggregate computed over all the leaves in the subtree; complement is the aggregate over the COMPLEMENT of the data values; and commitment is a cryptographic commitment.
+			\label{def:label}
+		\end{definition}
+		There is one leaf vertex $u_{S}$ for each sensor node $S$ as follows:
+		\begin{equation}
+			u_{S} =\ <1, S_{value}, r - S_{value}, S_{id}>
+		\end{equation}
+		The label of $u_{S}$ consists of count = 1, value = $S_{value}$ which is the sensor-reading of $S$, complement = $r - S_{value}$ where $r$ is the upper bound on allowable data values, and commitment = $S_{id}$ which is the node $S$'s unique ID.
 
-			\begin{definition}
-				\cite{chan2006secure}
-				\label{def:label}
-				A commitment tree is a tree where each vertex has an associated label representing the data that is passed on to its parent. The labels have the following format:
-
-				$\hspace{100pt}$ $<$count, value, complement, commitment$>$\\
-				Where count is the number of leaf vertices in the subtree rooted at this vertex; value is the SUM aggregate computed over all the leaves in the subtree; complement is the aggregate over the COMPLEMENT of the data values; and commitment is a cryptographic commitment.
-			\end{definition}
-			There is one leaf vertex $u_{s}$ for each sensor node $s$, which we call the leaf vertex of $s$. The label of $u_{s}$ consists of count = 1, value = $a_{s}$ where $a_{s}$ is the data value of $s$, complement = $r - a_{s}$ where $r$ is the upper bound on allowable data values, and commitment is the node’s unique ID.
-			Internal vertices represent aggregation operations, and have labels that are defined based on their children. Suppose an internal vertex has child vertices with the following labels: $u_{1}$, $u_{2}$, $\dotsc$ , $u_{q}$, where $u_{i}$ = $<$ $c_{i}$, $v_{i}$, $\bar{v_{i}}$,$h_{i}$$>$. 
-			Then the vertex has label $<$$c$, $v$, $\bar{v}$, $h$$>$, with $c$ $=$ $\sum c_{i}$, $v$ $=$ $\sum v_{i}$, $\bar{v}$ $=$ $\sum \bar{v_{i}}$ and $h$ $=$ $H[N||c||v||\bar{v}||u_{1}||u_{2}|| \dotsc ||u_{q}]$.\\
-		% subsection aggregate_commit_naive_approach (end)
+		Internal vertices represent aggregation operations, and have labels that are defined based on their children. 
+		Suppose an internal vertex has child vertices with the following labels: $u_{1}$, $u_{2}$, $\dotsc$ , $u_{q}$, where $u_{i}$ = $<$ $c_{i}$, $v_{i}$, $\bar{v_{i}}$,$h_{i}$$>$. 
+		The internal-vertex has label $<$$c$, $v$, $\bar{v}$, $h$$>$, with $c$ $=$ $\sum c_{i}$, $v$ $=$ $\sum v_{i}$, $\bar{v}$ $=$ $\sum \bar{v_{i}}$ and $h$ $=$ $H[N||c||v||\bar{v}||u_{1}||u_{2}|| \dotsc ||u_{q}]$.
 		
 		The word vertices is used for the nodes in the commitment tree and the word node is used for the nodes in the aggregation tree.
 		There is a mapping between the nodes in the aggregation tree and the vertices in the commitment tree, a vertex is a logical element in the commitment tree where as the node is a physical sensor node which does all the communications.		
 		The collision resistant hash function makes it impossible for an adversary to change the commitment structure once it is sent to the base station.
-		Our payload format is compact than the label format which is discussed in the next chapter.
+		% Our payload format is compact than the label format which is discussed in the next chapter.
 
 		\subsection{Aggregate Commit: Naive Approach}
 		% (fold)
