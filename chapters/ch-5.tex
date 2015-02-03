@@ -10,18 +10,18 @@
 	% The goal of the SHIA is to compute the aggregate functions while assuming that partially a network is controlled by an adversary which is attempting to skew the final aggregated result.
 
 \section{Network Assumptions}
-	We assume a multi hop network with a set $ S = \{s1,...,s_{n}\} $ of $n$ sensor nodes where all $n$ nodes are alive and reachable. 
+	We assume a multi hop network with a set $ S = \{S_{1},...,S_{n}\} $ of $n$ sensor nodes where all $n$ nodes are alive and reachable. 
 	The network is organized in a rooted tree topology.
 	The trusted base station resides outside of the network and has more computation, storage capacity then the sensor nodes in the network. 
 	\textbf{Note}: SHIA names the base station as the querier and the root of the tree as the base station. 
-	The base station knows total number of sensor nodes $n$ in the network and the network topology. 
+	The base station knows total number of sensor nodes in the network and the network topology. 
 	It also has the capacity to directly communicate with every sensor node in the network using authenticated broadcast.
-	All the wireless communications between the nodes is peer-to-peer and we do not consider the local wireless broadcast.
-	Each sensor node $s$ has a unique identifier ID and shares a unique secret symmetric key $K_{s}$ with the base station.
+	All the wireless communications between the nodes are peer-to-peer and we do not consider the local wireless broadcast.
+	Each sensor node $S$ has a unique ID and shares a unique secret symmetric key $K_{S}$ with the base station.
 	The keys enable message authentication between sensor node and the base station.
 	And it also allows encryption if the data confidentiality is required.
 	All the sensor nodes are capable of doing symmetric key encryption and symmetric key decryption.
-	They are also capable of computing collision resistant cryptographic hash function $H$ (SHA-$256$)\cite{SHA256}. 
+	They are also capable of computing collision resistant cryptographic hash function. 
 
 \section{Attacker Model And Security Goal}
 	We consider a model with a polynomially bounded adversary of \cite{przydatek2003sia}, which has a complete control over some of the sensor nodes in the network.
@@ -46,12 +46,12 @@
 
 \section{The SUM Aggregate Algorithm of SHIA}
 		In this algorithm, the aggregate function $f$\ is summation meaning that we want to compute $a_{1} + a_{2} + \dotsc + a_{n}$, where $a_{i}$\ is the reading of the sensor node $i$.
-		This algorithm has three main phases:
-		\begin{itemize}
-			\item Query dissemination - initiates the aggregation process
-			\item Aggregate commit - initiates the commitment tree generation process
-			\item Result checking - initiates the distributed, interactive verification process
-		\end{itemize}
+		The algorithm has the following three main phases.
+		\begin{description}
+			\item [Query dissemination,] initiates the aggregation process.
+			\item [Aggregate commit,] initiates the commitment tree generation process.
+			\item [Result checking,] initiates the distributed, interactive verification process.
+		\end{description}
 
 \section{Query dissemination}
 		\label{sec:query-dissemination}
@@ -98,18 +98,29 @@
 			Where count is the number of leaf vertices in the subtree rooted at this vertex; value is the SUM aggregate computed over all the leaves in the subtree; complement is the aggregate over the COMPLEMENT of the data values; and commitment is a cryptographic commitment.
 			\label{def:label}
 		\end{definition}
-		There is one leaf vertex $u_{S}$ for each sensor node $S$ as follows:
+		The leaf vertex $S_{0}$ for each sensor node $S$ is given as follows:
 		\begin{equation}
-			u_{S} =\ <1, S_{value}, r - S_{value}, S_{id}>
+			S_{0} =\ <1, S_{value}, r - S_{value}, S_{id}>
 		\end{equation}
-		The label of $u_{S}$ consists of count = 1, value = $S_{value}$ which is the sensor-reading of $S$, complement = $r - S_{value}$ where $r$ is the upper bound on allowable data values, and commitment = $S_{id}$ which is the node $S$'s unique ID.
+		The label of $S_{0}$ consists of count = 1, value = $S_{value}$ is the sensor-reading of $S$, complement = $r - S_{value}$ where $r$ is the upper bound on allowable data values, and commitment = $S_{id}$ is unique ID of $S$.
 
 		Internal vertices represent aggregation operations, and have labels that are defined based on their children. 
 		Suppose an internal vertex has child vertices with the following labels: $u_{1}$, $u_{2}$, $\dotsc$ , $u_{q}$, where $u_{i}$ = $<$ $c_{i}$, $v_{i}$, $\bar{v_{i}}$,$h_{i}$$>$. 
-		The internal-vertex has label $<$$c$, $v$, $\bar{v}$, $h$$>$, with $c$ $=$ $\sum c_{i}$, $v$ $=$ $\sum v_{i}$, $\bar{v}$ $=$ $\sum \bar{v_{i}}$ and $h$ $=$ $H[N||c||v||\bar{v}||u_{1}||u_{2}|| \dotsc ||u_{q}]$.
-		
-		The word vertices is used for the nodes in the commitment tree and the word node is used for the nodes in the aggregation tree.
-		There is a mapping between the nodes in the aggregation tree and the vertices in the commitment tree, a vertex is a logical element in the commitment tree where as the node is a physical sensor node which does all the communications.		
+		The internal-vertex label is given as follows:
+		\begin{equation}
+			% \begin{array}{l}
+				<c, v, \bar{v}, h>
+			% \end{array}
+		\end{equation}
+		where 
+		$c = \sum c_{i}$, 
+		$v = \sum v_{i}$, 
+		$\bar{v} = \sum \bar{v_{i}}$, 
+		$h = H[N||c||v||\bar{v}||u_{1}||u_{2}|| \dotsc ||u_{q}]$.
+
+		The word vertex is used for the node in the commitment tree and the node is used for the node in the aggregation tree.
+		There is a mapping between the node in the aggregation tree and the vertices in the commitment tree.
+		A vertex is a logical element in the commitment tree where as the node is a physical sensor node which does all the communications.	
 		The collision resistant hash function makes it impossible for an adversary to change the commitment structure once it is sent to the base station.
 		% Our payload format is compact than the label format which is discussed in the next chapter.
 
@@ -121,15 +132,20 @@
 			The label is format is described in Definition \ref{def:label}.
 			The commitment tree for the aggregation tree of Figure \ref{fig:at} is  shown in Figure \ref{fig:naive-commitment-tree} .
 			Conceptually, a commitment tree is a logical tree built on top of an aggregation tree, with additional aggregate information attached to the nodes to help in the result checking phase.
+			For example, the sensor node $B$ receives $E_{0}$ from $E$, $F_{0}$ from $F$ and has its own leaf vertex $B_{0}$.
+			It aggregates all three vertices and creates a new vertex $B_{1}$ as follows: 
+				\begin{equation}
+					B_{1} = <3, v_{B_{1}}, r - v_{B_{1}}, H[N||3||v_{B_{1}}||\bar{v_{B_{1}}}||B_{0}||E_{0}||F_{0}]>\\
+				\end{equation}
+			And sends $B_{1}$ to its parent node $A$.
+
 			\begin{figure}[h!]
 				\centering
 				\includegraphics[scale = 1]{images/naive-commitment-tree.png}
-				\caption{Naive commitment tree for Figure \ref{fig:at}.
-				For each sensor node $S$, $S_{0}$ is its leaf vertex, while $S_{1}$ is the internal vertex representing the aggregate computation at $S$ (if any).
-				The internal vertices are represented by dashed box.}
+				\caption{Naive commitment tree for Figure \ref{fig:at}. For each sensor node $S$, $S_{0}$ is its leaf vertex, while $S_{1}$ is the internal vertex representing the aggregate computation at $S$ (if any). The internal vertices are represented by dashed box.}
 				\label{fig:naive-commitment-tree}
 			\end{figure}
-			The labels of the vertices on the path of node $I$ to the root for the commitment tree are given as follows:
+			The labels of the vertices on the path of node $I$ to the root for the commitment tree $A$ are given as follows:
 			\begin{equation}
 				\begin{array}{l}
 					I_{0} = <1, a_{I}, r - a_{I}, I>\\
