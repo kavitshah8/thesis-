@@ -98,14 +98,14 @@
 			Where count is the number of leaf vertices in the subtree rooted at this vertex; value is the SUM aggregate computed over all the leaves in the subtree; complement is the aggregate over the COMPLEMENT of the data values; and commitment is a cryptographic commitment.
 			\label{def:label}
 		\end{definition}
-		The leaf vertex $S_{0}$ for each sensor node $S$ is given as follows:
+		The leaf vertex $s_{0}$ for each sensor node $s$ is given as follows:
 		\begin{equation}
-			S_{0} =\ <1, S_{value}, r - S_{value}, S_{id}>
+			s_{0} =\ <s_{count}, s_{value}, \overline{s_{value}}, s_{commitment}>
 		\end{equation}
-		The label of $S_{0}$ consists of count = 1, value = $S_{value}$ is the sensor-reading of $S$, complement = $r - S_{value}$ where $r$ is the upper bound on allowable data values, and commitment = $S_{id}$ is unique ID of $S$.
+		The label of $s_{0}$ consists of count = 1, $s_{value}$ is the sensor-reading of $s$, $\overline{s_{value}}$ = $r - s_{value}$ where $r$ is the upper bound on allowable data values, and $s_{id}$ is unique ID of $s$.
 
 		Internal vertices represent aggregation operations, and have labels that are defined based on their children. 
-		Suppose an internal vertex has child vertices with the following labels: $u_{1}$, $u_{2}$, $\dotsc$ , $u_{q}$, where $u_{i}$ = $<$ $c_{i}$, $v_{i}$, $\bar{v_{i}}$,$h_{i}$$>$. 
+		Suppose an internal vertex has child vertices with the following labels: $u_{1}$, $u_{2}$, $\dotsc$ , $u_{q}$, where $u_{i}$ = $<$ $u_{icount}$, $u_{ivalue}$, $\overline{u_{ivalue}}$, $u_{icommitment}$$>$. 
 		The internal-vertex label is given as follows:
 		\begin{equation}
 			% \begin{array}{l}
