@@ -10,7 +10,7 @@
 	% The goal of the SHIA is to compute the aggregate functions while assuming that partially a network is controlled by an adversary which is attempting to skew the final aggregated result.
 
 \section{Network Assumptions}
-	We assume a multi hop network with a set $ S = \{S_{1},...,S_{n}\} $ of $n$ sensor nodes where all $n$ nodes are alive and reachable. 
+	We assume a multi hop network with a set $ S = \{S_{1},...,S_{n}\} $ of $n$ sensor nodes where all sensor nodes are alive and reachable. 
 	The network is organized in a rooted tree topology.
 	The trusted base station resides outside of the network and has more computation, storage capacity then the sensor nodes in the network. 
 	\textbf{Note}: SHIA names the base station as the querier and the root of the tree as the base station. 
@@ -54,202 +54,199 @@
 		\end{description}
 
 \section{Query dissemination}
-		\label{sec:query-dissemination}
-		Prior to this phase, an aggregation trees is created using a tree generation algorithm.
-		We can use any tree generation algorithm as this protocol works on any aggregation tree structure.
-		For completeness of this protocol, one can use Tiny Aggregation Service (TaG)\cite{madden2002tag}.
-		TaG uses broadcast message from the base station to initiate a tree generation.
-		Each node selects its parent from whichever node it first receives the tree formation message.
-		One possible aggregation tree for given network graph in Figure \ref{fig:ng} is shown in Figure \ref{fig:at}. 
-		\begin{figure}[h!]
-			\centering
-			\includegraphics[scale = 1]{images/network-graph.png}
-			\caption{Network graph}
-			\label{fig:ng}
-		\end{figure}
+	\label{sec:query-dissemination}
+	Prior to this phase, an aggregation trees is created using a tree generation algorithm.
+	We can use any tree generation algorithm as this protocol works on any aggregation tree structure.
+	For completeness of this protocol, one can use Tiny Aggregation Service (TaG)\cite{madden2002tag}.
+	TaG uses broadcast message from the base station to initiate a tree generation.
+	Each node selects its parent from whichever node it first receives the tree formation message.
+	One possible aggregation tree for given network graph in Figure \ref{fig:ng} is shown in Figure \ref{fig:at}. 
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[scale = 1]{images/network-graph.png}
+		\caption{Network graph}
+		\label{fig:ng}
+	\end{figure}
 
-		To initiate the query dissemination phase, the base station broadcasts the query request message with the query nonce $N$\ in the aggregation tree. 
-		The query request message contains new query nonce $N$\ for each query.
-		The fresh nonce is used for each new query to prevent replay attacks in the network.
-		SHIA uses \textbf{hash chain} to generate new nonce for each query. 
-		A hash chain is constructed by repeatedly evaluating a pre-image resistant hash function $h$\ on some initial random value, the final value (or ``anchor value'') is preloaded on the nodes in the network.
-		The base station uses the pre-image of the last used  value as the nonce for the next broadcast.
-		For example, if the last known value of the hash chain is $h^i(X)$, then the next broadcast uses $h^{i-1}(X)$ as the nonce; $X$ is the initial random value.
-		When a node receives a new nonce $N^{'}$, it verifies that $N^{'}$ is a precursor to the most recently received (and authenticated) nonce $N$ on the hash chain, i.e., $h^{i}(N^{'}) = N$ for some $i$ bounded by a fixed $k$ of number of hash applications.  
-		A hash chain prevents an adversary from predicting the query nonce for future queries as it has to reverse the hash chain computation to get an acceptable pre-image.
-		\begin{figure}[h!]
-			\centering
-			\includegraphics[scale = 1]{images/aggregation-tree.png}
-			\caption{Simplified Aggregation tree for network graph in Figure \ref{fig:ng}}
-			\label{fig:at}
-		\end{figure}		
+	To initiate the query dissemination phase, the base station broadcasts the query request message with the query nonce $N$\ in the aggregation tree. 
+	The query request message contains new query nonce $N$\ for each query.
+	The fresh nonce is used for each new query to prevent replay attacks in the network.
+	SHIA uses \textbf{hash chain} to generate new nonce for each query. 
+	A hash chain is constructed by repeatedly evaluating a pre-image resistant hash function $h$\ on some initial random value, the final value (or ``anchor value'') is preloaded on the nodes in the network.
+	The base station uses the pre-image of the last used  value as the nonce for the next broadcast.
+	For example, if the last known value of the hash chain is $h^i(X)$, then the next broadcast uses $h^{i-1}(X)$ as the nonce; $X$ is the initial random value.
+	When a node receives a new nonce $N^{'}$, it verifies that $N^{'}$ is a precursor to the most recently received (and authenticated) nonce $N$ on the hash chain, i.e., $h^{i}(N^{'}) = N$ for some $i$ bounded by a fixed $k$ of number of hash applications.  
+	A hash chain prevents an adversary from predicting the query nonce for future queries as it has to reverse the hash chain computation to get an acceptable pre-image.
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[scale = 1]{images/aggregation-tree.png}
+		\caption{Simplified Aggregation tree for network graph in Figure \ref{fig:ng}}
+		\label{fig:at}
+	\end{figure}		
 
 \section{Aggregate Commit} 
 	% (fold)
-		\label{sub:aggregate_commit}
-		The aggregate commit phase constructs cryptographic commitments to the data values and to the intermediate aggregated data-values.
-		These commitments are then passed on to the base station by the root of an aggregation tree.
-		The base station then rebroadcasts the commitments to the sensor network using an authenticated broadcast so that the rest of the sensor nodes in the network can verify that their respective data values have been incorporated into the final aggregate value.
+	\label{sub:aggregate_commit}
+	The aggregate commit phase constructs cryptographic commitments to the data values and to the intermediate aggregated data-values.
+	These commitments are then passed on to the base station by the root of an aggregation tree.
+	The base station then rebroadcasts the commitments to the sensor network using an authenticated broadcast so that the rest of the sensor nodes in the network can verify that their respective data values have been incorporated into the final aggregate value.
+	The commitment tree is a logical tree built on top of an aggregation tree.
+	The commitment tree is defined as follows:
+	\begin{definition}
+		\cite{chan2006secure}
+		A commitment tree is a tree where each vertex has an associated label representing the data that is passed on to its parent. The labels have the following format:
+
+		$\hspace{100pt}$ $<$count, value, complement, commitment$>$\\
+		where count is the number of leaf vertices in the subtree rooted at this vertex; value is the SUM aggregate computed over all the leaves in the subtree; complement is the aggregate over the COMPLEMENT of the data values; and commitment is a cryptographic commitment.
+		\label{def:label}
+	\end{definition}
+	The sensor node $A$ creates the label for the leaf vertex $A_{0}$ is given as follows :
+	\begin{equation}
+		A_{0} =\ <A_{count}, A_{value}, \overline{A_{value}}, A_{commitment}>
+	\end{equation}
+	where $A_{value}$ is the sensor data collected by $A$, $\overline{A_{value}}$ = $r - A_{value}$ with $r$ being the upper bound on allowable data values.
+	The values of $A_{count} = 1$, and $A_{commitment}$ = $A_{id}$ which is unique ID of $A$ as $A_{0}$ is the leaf vertex of $A$.
+	Internal vertices in the commitment tree represent aggregation operations, and have labels that are defined based on their children. 
+	Suppose an internal node $I$ has child vertices with the following labels : $A_{1}$, $A_{2}$, $\dotsc$ , $A_{q}$, where $A_{i}$ = $<$ $A_{icount}$, $A_{ivalue}$, $\overline{A_{ivalue}}$, $A_{icommitment}$$>$. 
+	The label for the internal vertex $I_{j}$ is given as follows:
+	\begin{equation}
+		\begin{array}{l}
+			I_{j} =\ <I_{jcount}, I_{jvalue}, \overline{I_{jvalue}}, I_{jcommitment}>\\
+			I_{jcount} = \sum A_{icount}\\ 
+			I_{jvalue} = \sum A_{ivalue}\\
+			\overline{I_{jvalue}} = \sum \overline{A_{ivalue}}\\
+			I_{jcommitment} = H[N||I_{jcount}||I_{jvalue}||\overline{I_{jvalue}}||A_{1}||A_{2}|| \dotsc ||A_{q}]\\
+		\end{array}
+	\end{equation}
+	The word vertex is used for the node in the commitment tree and the node is used for the node in the aggregation tree.
+	There is a mapping between the node in the aggregation tree and the vertices in the commitment tree.
+	A vertex is a logical element in the commitment tree where as the node is a physical sensor node which does all the local computations and wireless communications.
+	The commitment field in the label is calculated using collision resistant hash function which makes impossible for an adversary to change the commitment structure once it is sent to the base station.
+	% Our payload format is compact than the label format which is discussed in the next chapter.
+
+	\subsection{Aggregate Commit: Naive Approach}
+	% (fold)
+		\label{sub:aggregate_commit_naive_approach}
+		In the naive approach, during aggregation process each sensor node computes a cryptographic hash of all its inputs (including its own data value).
+		The aggregation result along with the hash value called a label, is then passed on to the parent in the aggregation tree.
+		Conceptually, a commitment tree is a logical tree built on top of an aggregation tree, with additional aggregate information attached to the nodes. 
+		% , to help in the result checking phase.
+		% The label is format is described in Definition \ref{def:label}.
+		The commitment tree for the aggregation tree of Figure \ref{fig:at} is  shown in Figure \ref{fig:naive-commitment-tree} .
+		In this example, the node $B$ receives $E_{0}$ from $E$, $F_{0}$ from $F$ and has its own leaf vertex $B_{0}$.
+		The node $B$ aggregates all three vertices by creating a new vertex $B_{1}$ and sends $B_{1}$ to its parent node $A$.
+		The label of an internal vertex $B_{1}$ is defined as follows:
+		\begin{equation}
+			B_{1} =\ <3, B_{1value}, \overline{B_{1value}}, H[N || 3 || B_{1value} || \overline{B_{1value}} ||B_{0}||E_{0}||F_{0}]>\\
+		\end{equation}
+		The labels of the vertices on the path of node $I$ to the root for the commitment tree $A$ are given as follows:
+		\begin{equation}
+			\begin{array}{l}
+				I_{0} =\ <1, I_{value}, \overline{I_{value}}, I_{id}>\\
+				H_{1} =\ <2, H_{1value}, \overline{H_{1value}}, H [ N || 2 || H_{1value} || \overline{H_{1value}} || H_{0} || I_{0} ] > ; H_{1value} = I_{value} + H_{value}\\
+				B_{1} =\ <3, B_{1value}, \overline{B_{1value}}, H [ N || 3 || B_{1value} || \overline{B_{1value}} || B_{0} || E_{0} || F_{0} ] > ; \\ 
+				B_{1value} = B_{value} + E_{value} + F_{value} \\
+				C_{1} =\ <4, C_{1value}, \overline{C_{1value}}, H [ N || 4 || C_{1value} || \overline{C_{1value}} || C_{0} || G_{0} || H_{1} ] > \\
+				C_{1value} = C_{value} + G_{value} + H_{1value} \\
+				A_{1} =\ <9, A_{1value}, \overline{A_{1value}}, H [ N || 9 || A_{1value} || \overline{A_{1value}} || A_{0} || D_{0} || B_{1} || C_{1} ] >\\
+				A_{1value} = A_{value} + D_{value} + B_{1value} + C_{1value} \\
+			\end{array}
+		\end{equation}
+		\begin{figure}[h!]
+			\centering
+			\includegraphics[scale = 1]{images/naive-commitment-tree.png}
+			\caption{Naive commitment tree for Figure \ref{fig:at}. For each sensor node $S$, $S_{0}$ is its leaf vertex, while $S_{1}$ is the internal vertex representing the aggregate computation at $S$ (if any). The internal vertices are represented by dashed box.}
+			\label{fig:naive-commitment-tree}
+		\end{figure}
+		In the naive approach the information rate is $1/n$ where $n$ is the number of children for the given node.
+		As each node aggregates all the labels into one label before sending it to the parent node.  
+	\subsection{Aggregate Commit: Improved Approach} 
+	% (fold)
+		\label{sub:aggregate_commit_improved_approach}
+		The aggregation tree is a subgraph of the network graph so it may be randomly unbalanced.
+		This approach tries to separate the structure of the commitment tree from the structure of the aggregation tree.
+		So, the commitment tree can be perfectly balanced.
+		In the naive approach, each sensor node always computes the aggregate sum of all its inputs which is a greedy approach.
+		SHIA uses delayed aggregation approach, which performs an aggregation operation if and only if it results in a complete, binary commitment tree.
+
+		We now describe SHIA's delayed aggregation algorithm for producing balanced commitment trees.
+		In the naive commitment tree, each sensor node passes to its parent a single message containing the label of the root vertex of its commitment subtree $T_{s}$.
+		In the delayed aggregation algorithm, each sensor node passes on the labels of the root vertices of a set of commitment subtrees $F = \{ T_{1}, \dotsc, T_{q} \}$.
+		We call this set a commitment forest, and we enforce the condition that the trees in the forest must be complete binary trees, and no two trees have the same height. 
+		These constraints are enforced by continually combining equal-height trees into complete binary trees of greater height.
 		\begin{definition}
 			\cite{chan2006secure}
-			A commitment tree is a tree where each vertex has an associated label representing the data that is passed on to its parent. The labels have the following format:
-
-			$\hspace{100pt}$ $<$count, value, complement, commitment$>$\\
-			Where count is the number of leaf vertices in the subtree rooted at this vertex; value is the SUM aggregate computed over all the leaves in the subtree; complement is the aggregate over the COMPLEMENT of the data values; and commitment is a cryptographic commitment.
-			\label{def:label}
+			\label{def:commitment-forest}
+			A commitment forest is a set of complete binary commitment trees such that there is at most one commitment tree of any given height.
 		\end{definition}
-		The leaf vertex $s_{0}$ for each sensor node $s$ is given as follows:
+		The commitment forest is built as follows. 
+		Leaf nodes in the aggregation tree originate a single-vertex commitment forest, which they then communicate to their parent nodes. Each internal node $I$ originates a similar single-vertex commitment forest.
+		In addition, $I$ also receives commitment forests from each of its children.
+		The node $I$ keeps track of which root vertices were received from which of its children.
+		It then combines all the forests to form a new forest as follows.
+		Suppose $I$ wishes to combine $q$ commitment forests $F_{1}$,$\dotsc$,$F_{q}$.
+		Note that since all commitment trees are complete binary trees, tree heights can be determined by inspecting the count field of the root vertex.
+		We let the intermediate result be $F$ $=$ $F_{1}$ $\cup$ $\dotsc$ $\cup$ $F_{q}$, and repeat the following until no two trees are the same height in $F$.
+		Let $h$ be the smallest height such that more than one tree in $F$ has height $h$.
+		Find two commitment trees $T_{1}$ and $T_{2}$ of height $h$ in $F$, and merge them into a tree of height $h + 1$ by creating a new vertex that is the parent of both the roots of $T_{1}$ and $T_{2}$ according to the inductive rule in Definition \ref{def:label}.
+		The following example illustrates the commitment tree generation process for the node $A$ of Figure \ref{fig:at}.
+		\begin{figure}[h!]
+			\includegraphics{images/commitment-tree-example-1-shia.png}
+			\caption{$A$ receives $C_{2}$ from $C$, $(B_{1},B_{0})$ from $B$, $D_{0}$ from $D$ and generates $A_{0}$. The commitment forest received from a given sensor node is indicated by dashed-line box.}
+			\label{fig:commitment-tree-example-1-shia}
+		\end{figure}
 		\begin{equation}
-			s_{0} =\ <s_{count}, s_{value}, \overline{s_{value}}, s_{commitment}>
+			\begin{array}{l}
+				A_{0} = <1, A_{value}, \overline{A_{value}}, A_{id}>\\
+				D_{0} = <1, D_{value}, \overline{D_{value}}, D_{id}>\\
+				E_{0} = <1, E_{value}, \overline{E_{value}}, E_{id}>\\
+				B_{1} = <2, B_{1value}, \overline{B_{1value}}, H(N || 2 || B_{1value} || \overline{B_{1value}} || B_{0} || F_{0})>\\
+				C_{2} = <4, C_{2value}, \overline{C_{2value}}, H(N || 4 || C_{2value} || \overline{C_{2value}} || H_{1} || C_{1})>\\
+			\end{array}
 		\end{equation}
-		The label of $s_{0}$ consists of count = 1, $s_{value}$ is the sensor-reading of $s$, $\overline{s_{value}}$ = $r - s_{value}$ where $r$ is the upper bound on allowable data values, and $s_{id}$ is unique ID of $s$.
-
-		Internal vertices represent aggregation operations, and have labels that are defined based on their children. 
-		Suppose an internal vertex has child vertices with the following labels: $u_{1}$, $u_{2}$, $\dotsc$ , $u_{q}$, where $u_{i}$ = $<$ $u_{icount}$, $u_{ivalue}$, $\overline{u_{ivalue}}$, $u_{icommitment}$$>$. 
-		The internal-vertex label is given as follows:
+		\begin{figure}[h!]
+			\centering
+			\includegraphics{images/commitment-tree-example-2-shia.png}
+			\caption{First Merge: $A_{1}$ vertex created by A.}
+			\label{fig:commitment-tree-example-2-shia}
+		\end{figure}
 		\begin{equation}
-			% \begin{array}{l}
-				<c, v, \bar{v}, h>
-			% \end{array}
+			\begin{array}{l}
+				A_{1} =\  < 2, A_{1value}, \overline{A_{1value}}, H(N || 2 || A_{1value}|| \overline{A_{1value}} || A_{0} || D_{0})>\\
+				A_{1value} =\  A_{value} + D_{value};\ \overline{A_{1value}} = \overline{A_{value}} + \overline{D_{value}}
+			\end{array}
 		\end{equation}
-		where 
-		$c = \sum c_{i}$, 
-		$v = \sum v_{i}$, 
-		$\bar{v} = \sum \bar{v_{i}}$, 
-		$h = H[N||c||v||\bar{v}||u_{1}||u_{2}|| \dotsc ||u_{q}]$.
-
-		The word vertex is used for the node in the commitment tree and the node is used for the node in the aggregation tree.
-		There is a mapping between the node in the aggregation tree and the vertices in the commitment tree.
-		A vertex is a logical element in the commitment tree where as the node is a physical sensor node which does all the communications.	
-		The collision resistant hash function makes it impossible for an adversary to change the commitment structure once it is sent to the base station.
-		% Our payload format is compact than the label format which is discussed in the next chapter.
-
-		\subsection{Aggregate Commit: Naive Approach}
-		% (fold)
-			\label{sub:aggregate_commit_naive_approach}
-			In the naive approach, during aggregation process each sensor node computes a cryptographic hash of all its inputs (including its own data value).
-			The aggregation result along with the hash value called a label, is then passed on to the parent in the aggregation tree.
-			The label is format is described in Definition \ref{def:label}.
-			The commitment tree for the aggregation tree of Figure \ref{fig:at} is  shown in Figure \ref{fig:naive-commitment-tree} .
-			Conceptually, a commitment tree is a logical tree built on top of an aggregation tree, with additional aggregate information attached to the nodes to help in the result checking phase.
-			For example, the sensor node $B$ receives $E_{0}$ from $E$, $F_{0}$ from $F$ and has its own leaf vertex $B_{0}$.
-			It aggregates all three vertices and creates a new vertex $B_{1}$ as follows: 
-				\begin{equation}
-					B_{1} = <3, v_{B_{1}}, r - v_{B_{1}}, H[N||3||v_{B_{1}}||\bar{v_{B_{1}}}||B_{0}||E_{0}||F_{0}]>\\
-				\end{equation}
-			And sends $B_{1}$ to its parent node $A$.
-
-			\begin{figure}[h!]
-				\centering
-				\includegraphics[scale = 1]{images/naive-commitment-tree.png}
-				\caption{Naive commitment tree for Figure \ref{fig:at}. For each sensor node $S$, $S_{0}$ is its leaf vertex, while $S_{1}$ is the internal vertex representing the aggregate computation at $S$ (if any). The internal vertices are represented by dashed box.}
-				\label{fig:naive-commitment-tree}
-			\end{figure}
-			The labels of the vertices on the path of node $I$ to the root for the commitment tree $A$ are given as follows:
-			\begin{equation}
-				\begin{array}{l}
-					I_{0} = <1, a_{I}, r - a_{I}, I>\\
-					H_{1} = <2, v_{H_{1}}, r - v_{H_{1}}, H[N||2||v_{H_{1}}||\bar{v_{H_{1}}}||H_{0}||I_{0}]>\\
-					B_{1} = <3, v_{B_{1}}, r - v_{B_{1}}, H[N||3||v_{B_{1}}||\bar{v_{B_{1}}}||B_{0}||E_{0}||F_{0}]>\\
-					C_{1} = <4, v_{C_{1}}, r - v_{C_{1}}, H[N||4||v_{C_{1}}||\bar{v_{C_{1}}}||C_{0}||G_{0}||H_{1}]>\\
-					A_{1} = <9, v_{A_{1}}, r - v_{A_{1}}, H[N||9||v_{A_{1}}||\bar{v_{A_{1}}}||A_{0}||D_{0}||B_{1}||C_{1}]>
-				\end{array}
-			\end{equation}
-		
-		\subsection{Aggregate Commit: Improved Approach} 
-		% (fold)
-			\label{sub:aggregate_commit_improved_approach}
-			The aggregation tree is a subgraph of the network graph so it may be randomly unbalanced.
-			This approach tries to separate the structure of the commitment tree from the structure of the aggregation tree.
-			So, the commitment tree can be perfectly balanced.
-
-			In the naive approach, each sensor node always computes the aggregate sum of all its inputs which is a greedy approach.
-			SHIA uses delayed aggregation approach, which performs an aggregation operation if and only if it results in a complete, binary commitment tree.
-
-			We now describe SHIA's delayed aggregation algorithm for producing balanced commitment trees.
-			In the naive commitment tree, each sensor node passes to its parent a single message containing the label of the root vertex of its commitment subtree $T_{s}$.
-			In the delayed aggregation algorithm, each sensor node passes on the labels of the root vertices of a set of commitment subtrees $F = \{ T_{1}, \dotsc, T_{q} \}$.
-			We call this set a commitment forest, and we enforce the condition that the trees in the forest must be complete binary trees, and no two trees have the same height. 
-			These constraints are enforced by continually combining equal-height trees into complete binary trees of greater height.
-			\begin{definition}
-				\cite{chan2006secure}
-				\label{def:commitment-forest}
-				A commitment forest is a set of complete binary commitment trees such that there is at most one commitment tree of any given height.
-			\end{definition}
-
-			The commitment forest is built as follows. Leaf sensor nodes in the aggregation tree originate a single-vertex commitment forest, which they then communicate to their parent sensor nodes. Each internal sensor node $s$ originates a similar single-vertex commitment forest.
-			In addition, $s$ also receives commitment forests from each of its children.
-			Sensor node $s$ keeps track of which root vertices were received from which of its children.
-			It then combines all the forests to form a new forest as follows.
-			Suppose $s$ wishes to combine $q$ commitment forests $F_{1}$,$\dotsc$,$F_{q}$.
-			Note that since all commitment trees are complete binary trees, tree heights can be determined by inspecting the count field of the	root vertex.
-			We let the intermediate result be $F$ $=$ $F_{1}$ $\cup$ $\dotsc$ $\cup$ $F_{q}$, and repeat the following until no two trees are the same height in $F$.
-			Let $h$ be the smallest height such that more than one tree in $F$ has height $h$.
-			Find two commitment trees $T_{1}$ and $T_{2}$ of height $h$ in $F$, and merge them into a tree of height $h + 1$ by creating a new vertex that is the parent of both the roots of $T_{1}$ and $T_{2}$ according to the inductive rule in Definition \ref{def:label}.
-
-			\begin{exmp} The commitment-forest generation process for node $A$ of Figure \ref{fig:at} is shown here.\\
-				\begin{figure}[h!]
-					% \centering
-					\includegraphics[width=6in]{images/commitment-tree-example-1-shia.png}\\
-					\caption{$A$ receives $C_{2}$ from $C$, $(B_{1},B_{0})$ from $B$, $D_{0}$ from $D$ and generates $A_{0}$. The commitment forest received from a given sensor node is indicated by dashed-line box.}
-					\label{fig:commitment-tree-example-1-shia}
-				\end{figure}\\
-
-				\begin{equation}
-					\begin{array}{l}
-						A_{0} = <1, a_{A}, r - a_{A}, A>\\
-						D_{0} = <1, a_{D}, r - a_{D}, D>\\
-						E_{0} = <1, a_{E}, r - a_{E}, E>\\
-						B_{1} = <2, v_{B_{1}}, \bar{v_{B_{1}}}, H(N || 2 || v_{B_{1}}|| \bar{v_{B_{1}}} || B_{0} || F_{0})>\\
-						C_{2} = <4, v_{C_{2}}, \bar{v_{C_{2}}}, H(N || 4 || v_{C_{2}}|| \bar{v_{C_{2}}} || H_{1} || C_{1})>\\
-					\end{array}
-				\end{equation}
-				\begin{figure}[h!]
-					\centering
-					\includegraphics[width=6in]{images/commitment-tree-example-2-shia.png}\\
-					\caption{First Merge: $A_{1}$ vertex created by A.}
-					\label{fig:commitment-tree-example-2-shia}
-				\end{figure}
-				\begin{equation}
-					\begin{array}{l}
-						A_{1} = <2, v_{A_{1}}, \bar{v_{A_{1}}}, H(N || 2 || v_{A_{1}}|| \bar{v_{A_{1}}} || A_{0} || D_{0})>\\
-						v_{A_{1}} = a_{A} + a_{D}; \bar{v_{A_{1}}} = r - a_{A} + r - a_{D}\\
-					\end{array}
-				\end{equation}
-				\begin{figure}[h!]
-					\centering
-					\includegraphics[width=6in]{images/commitment-tree-example-3-shia.png}\\
-					\caption{Second Merge: $A_{2}$ vertex created by A.}
-					\label{fig:commitment-tree-example-3-shia}
-				\end{figure}
-				\begin{equation}
-					\begin{array}{l}
-						A_{2} = <4, v_{A_{2}},\bar{v_{A_{2}}},H(N || 4 || v_{A_{2}} || \bar{v_{A_{2}}} || B_{1} ||A_{1}) >\\
-						v_{A_{2}} = v_{A_{1}} + v_{B_{1}}; \bar{v_{A_{2}}} = r - v_{A_{1}} + r - v_{B_{1}}
-					\end{array}
-				\end{equation}
-				\begin{figure}[h!]
-					\centering
-					\includegraphics[width=6in]{images/commitment-tree-example-4-shia.png}\\
-					\caption{Third Merge: $A_{3}$ vertex created by A.}
-					\label{fig:commitment-tree-example-4-shia}
-				\end{figure}
-				\begin{equation}
-					\begin{array}{l}
-						A_{3} = <8, v_{A_{3}},\bar{v_{A_{3}}},H(N || 8 || v_{A_{3}} || \bar{v_{A_{3}}} || C_{2} ||A_{2}) >\\
-						v_{A_{3}} = v_{A_{2}} + v_{C_{2}}; \bar{v_{A_{3}}} = r - v_{A_{2}} + r - v_{C_{2}}
-					\end{array}
-				\end{equation}
-			\end{exmp}
-		% subsection aggregate_commit_improved_approach (end)
-	% section aggregate_commit (end)
-
+		\begin{figure}[h!]
+			\centering
+			\includegraphics{images/commitment-tree-example-3-shia.png}
+			\caption{Second Merge: $A_{2}$ vertex created by A.}
+			\label{fig:commitment-tree-example-3-shia}
+		\end{figure}
+		\begin{equation}
+			\begin{array}{l}
+				A_{2} = <4, A_{2value}, \overline{A_{2value}}, H(N || 4 || A_{2value} || \overline{A_{2value}} || B_{1} ||A_{1}) >\\
+				A_{2value} = A_{1value} + B_{1value};\ \overline{A_{2value}} = \overline{A_{1value}} + \overline{B_{1value}}
+			\end{array}
+		\end{equation}
+		\begin{figure}[h!]
+			\centering
+			\includegraphics{images/commitment-tree-example-4-shia.png}
+			\caption{Third Merge: $A_{3}$ vertex created by A.}
+			\label{fig:commitment-tree-example-4-shia}
+		\end{figure}
+		\begin{equation}
+			\begin{array}{l}
+				A_{3} = <8, A_{3value}, \overline{A_{3value}}, H(N || 8 || A_{3value} || \overline{A_{3value}} || C_{2} ||A_{2}) >\\
+				A_{3value} = A_{2value} + C_{2value};\ \overline{A_{3value}} = \overline{A_{2value}} + \overline{C_{2value}}
+			\end{array}
+		\end{equation}
+			
 \section{Result checking} % (fold)
 	\label{sec:result_checking}
 	SHIA presents novel distributed verification algorithm achieving provably optimal security while maintaining sublinear edge congestion.
 	In our work, we take similar approach and add new capabilities to help find an adversary.
 	Here, we describe the SHIA's result checking phase to build the basis for our work.
-	The purpose of the result checking phase is to enable each sensor node $s$ to independently verify that its data value as was added into the SUM aggregate, and the complement $(r - a_{s})$ of its data value was added into the COMPLEMENT aggregate. 
+	The purpose of the result checking phase is to enable each sensor node $I$ to independently verify that its data value as was added into the SUM aggregate, and the complement $(r - a_{s})$ of its data value was added into the COMPLEMENT aggregate. 
 	First, the aggregation results from the aggregation-commit phase are sent by the base station using authenticated broadcast to every sensor node in the network.
 	Each sensor node then individually verifies that its contributions to the respective SUM and COMPLEMENT aggregates were indeed counted.
 	If so, it sends an authentication code to the base station.
