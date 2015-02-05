@@ -240,70 +240,90 @@
 				A_{3value} = A_{2value} + C_{2value};\ \overline{A_{3value}} = \overline{A_{2value}} + \overline{C_{2value}}
 			\end{array}
 		\end{equation}
-			
-\section{Result checking} % (fold)
+		
+		Once the base station has received the final commitment forest from the root node, it checks that none of the SUM or COMPLEMENT aggregates of the roots of the trees in the forest are negative. 
+		If any aggregates are negative, the base station rejects the result and raises an alarm: a negative aggregate is a sure sign of tampering since all the data values (and their complements) are non-negative. 
+		Otherwise, the base station then computes the final pair of aggregates SUM and COMPLEMENT. 
+		The base station verifies that SUM + COMPLEMENT = $nr$ where $r$ is the upper bound on the range of allowable data values on each node. 
+		If this verifies correctly, the base station then initiates the result checking phase.
+
+\section{Result Checking} % (fold)
 	\label{sec:result_checking}
-	SHIA presents novel distributed verification algorithm achieving provably optimal security while maintaining sublinear edge congestion.
+	SHIA presents novel distributed verification algorithm, achieving provably optimal security while maintaining sublinear edge congestion.
 	In our work, we take similar approach and add new capabilities to help find an adversary.
 	Here, we describe the SHIA's result checking phase to build the basis for our work.
-	The purpose of the result checking phase is to enable each sensor node $I$ to independently verify that its data value as was added into the SUM aggregate, and the complement $(r - a_{s})$ of its data value was added into the COMPLEMENT aggregate. 
-	First, the aggregation results from the aggregation-commit phase are sent by the base station using authenticated broadcast to every sensor node in the network.
+
+	The purpose of the result checking phase is to enable each sensor node $I$ to independently verify that its data value ($I_{value}$) was added into the SUM aggregate, and the complement $\overline{I_{value}}$ of its data value was added into the COMPLEMENT aggregate.
+	First, the base station sends the aggregation results from the aggregation commit phase to every sensor node in the network using authenticated broadcast.
 	Each sensor node then individually verifies that its contributions to the respective SUM and COMPLEMENT aggregates were indeed counted.
 	If so, it sends an authentication code to the base station.
 	The authentication code is also aggregated for communication efficiency. 
 	When the base station has received all the authentication codes, it is then able to verify that all sensor nodes have checked that their contribution to the aggregate has been correctly counted.
-	The result checking process has the following phases.\\
-	\textbf{Dissemination of final commitment values.}
-	Once the base station receives final commitment labels from the root of the commitment forest, it sends each of those commitment labels to the entire network using authenticated broadcast.
-	Authenticated broadcast means that the each sensor node can verify that the message was sent by the base station and no one else.\\
-	\textbf{Dissemination of off-path values.} 
-	Each vertex must receive all of its off-path values to do the verification.
-	The off-path values are defined as follows.
-	\begin{definition}
-		\label{def:off-path}
-		\cite{chan2006secure}
-		The set of off-path vertices for a vertex $u$ in a tree is the set of all the siblings of each of the vertices on the path from $u$ to the root of the tree that $u$ is in (the path is inclusive of $u$).
-	\end{definition}
-	\begin{figure}[h!]
-		\centering
-		\includegraphics[scale = 1]{images/off-path.png}\\
-		\caption{Off-path vertices from $u$ are highlighted in bold.}
-		\label{fig:commitment-tree-example-2-shia}
-	\end{figure}
-	Vertex receives its off-path values from its parent.
-	Each internal vertex has two children.
-	For example, an internal vertex $k$\ has two children $k_{1},k_{2}$.
-	$k$\ sends the label of $k_{1}$\ to $k_{2}$\ and vice versa.
-	$k$\ tags the relevant information of its left and right child.
-	Once a vertex receives all of its off-path values it begins a verification phase.
-	\textbf{Verification of contribution.}
-	The leaf vertex calculates the root vertex's label using its own label and off-path vertex labels.
-	This allows the leaf to verify that its label was not modified on the path to the root during the aggregation-commit process. 
-	Then it compares the the calculated root vertex's label with the label received from the base station via authenticated broadcast.
-	If those two labels match then it proceeds to the next step with ACK message or with NACK message.\\
-	\textbf{Collection of authentication codes.} Once each sensor node $s$\ does verification of contribution for its leaf vertex $v_{s}$\ it sends the relevant authentication code to the base station.
-	The authentication code for sensor node $s$\ with ACK and NACK message has the following format.
-	\begin{equation}
-		MAC_{K_{s}}(N||ACK)	
-	\end{equation}
-	\begin{equation}
-		MAC_{K_{s}}(N||NACK)	
-	\end{equation}
-	Where ACK, NACK are unique message identifier for positive acknowledgment and negative acknowledgment respectively, $N$ is the query nonce and $K_{s}$\ is secret key that $s$\ shares with the base station.
-	Collection of authentication code starts with the leaf nodes in the aggregation tree.
-	Leaf nodes in the aggregation tree send their authentication codes to their parent.
-	Once the parent node has received the authentication from all of its children it does XOR operation on all the authentication codes including its own authentication code and sends it to its parent in the aggregation tree.
-	Each internal sensor node $s$\ in the aggregation tree repeats the process.
-	Finally, the root of an aggregation tree sends a single authentication code to the base station which is an XOR of all the authentication codes of the aggregation tree.\\  
-	\textbf{Verification of confirmations.}
-	Since the base station knows the key $K_{s}$ for each sensor node $s$, it verifies that every sensor node has released its authentication code by computing the XOR of the authentication codes for all the sensor nodes in the network, i.e., $\bigoplus_{i = 1}^n MAC_{K_{i}}(N || ACK)$.
-	The base station then compares the computed code with the received code. If the two codes match, then the base station accepts the aggregation result.
+	The result checking process has the following phases.
+
+	\begin{description}
+		\item[Distributing Final Commitment Values]
+			In this phase, the base station sends each of the received commitment labels to the entire network using authenticated broadcast.
+			Authenticated broadcast means that each sensor node can verify that the message was sent by the base station and no one else.
+		\item[Distributing Off-path Values]
+			Each vertex must receive all of its off-path values to do the verification.
+			The off-path values are defined as follows.
+			\begin{definition}
+				\label{def:off-path}
+				\cite{chan2006secure}
+				The set of off-path vertices for a vertex $u$ in a tree is the set of all the siblings of each of the vertices on the path from $u$ to the root of the tree that $u$ is in (the path is inclusive of $u$).
+			\end{definition}
+			\begin{figure}[h!]
+				\centering
+				\includegraphics[scale = 1]{images/off-path.png}
+				\caption{Off-path vertices of $u$ are highlighted in bold.}
+				\label{fig:commitment-tree-example-2-shia}
+			\end{figure}
+			Vertex receives its off-path values from its parent.
+			Each internal vertex has two children.
+			For example, an internal vertex $k$\ has two children $k_{1},k_{2}$.
+			$k$\ sends the label of $k_{1}$\ to $k_{2}$\ and vice versa.
+			$k$\ tags the relevant information of its left and right child.
+			Once a vertex receives all of its off-path values it begins the verification phase.
+		\item[Verification of Contribution]
+			In this phase, the leaf vertex calculates the root vertex's label using its own label and off-path vertex labels received from its parent.
+			It compares the the calculated root vertex's label with the label received from the base station.
+			If those two labels match then it proceeds to the next step with Acknowledgment (ACK) message or with Negative Acknowledgment (NACK) message.
+			This allows the leaf to verify that its label was not modified on the path to the root during the aggregation commit phase.
+		\item[Collection of Authentication Codes] 
+			Once each sensor node verifies its contribution to the root label it sends the relevant authentication code to its parent.
+			The authentication code for sensor node $A$\ with ACK and NACK message is given as follows :
+			\begin{equation}
+				\begin{array}{l}
+					\mbox{MAC}_{S_{A}}( \mbox{N} || \mbox{ACK})\\
+					\mbox{MAC}_{S_{A}}( \mbox{N} || \mbox{NACK})	
+				\end{array}
+			\end{equation}
+			Where ACK, NACK are unique message identifier for positive and negative acknowledgment respectively, 
+			MAC is  the message authentication algorithm, 
+			N is the query nonce and $S_{A}$\ is secret key that node $A$\ shares with the base station.
+			Collection of authentication code starts with the leaf nodes in the aggregation tree.
+			Leaf nodes in the aggregation tree send their authentication codes to their parent.
+			Once the parent node has received the authentication from all of its children it does XOR operation on all the authentication codes including its own authentication code and sends it to its parent in the aggregation tree hierarchy.
+			Each internal node in the aggregation tree repeats the process.
+			Finally, the root of an aggregation tree sends a single authentication code to the base station which is an XOR of all the authentication codes of the aggregation tree.  
+		\item[Verification of confirmations]
+			Since the base station shares the secret key of all the nodes in the network, it computes the following:
+			\begin{equation}
+				\bigoplus_{i = 1}^n \mbox{MAC}_{S_{i}}(\mbox{N} || \mbox{ACK})
+			\end{equation}
+			Then it compares the computed code with the received code. 
+			If those two codes match, then the base station accepts the aggregation result.
+	\end{description}
 
 	\begin{theorem}
 		\cite{chan2006secure}
 		Let the final SUM aggregate received by the base station be $S$.
-		If the base station accepts $S$, then $S_{L} \leq S \leq (SL + \mu \cdot r)$ where $S_{L}$ is the sum of the data values of all the legitimate nodes, $\mu$ is the total number of malicious nodes, and $r$ is the upper bound on the range of allowable values on each node.
+		If the base station accepts $S$, then $S_{L} \leq S \leq (S_{L} + \mu \cdot r)$ where $S_{L}$ is the sum of the data values of all the legitimate nodes, $\mu$ is the total number of malicious nodes, and $r$ is the upper bound on the range of allowable values on each node.
 	\end{theorem}
-	The above theorem is proven by SHIA. SHIA achieves security over the truncated SUM which is a resilient aggregator according to Wagner\cite{wagner2004resilient}.
-	Our protocol works on SUM which is non-resilient aggregate and achieves the similar security goals. 
+	The proof for the above theorem is given in \cite{chan2006secure}.
+	The theorem gives the proof of correctness of the SHIA protocol.
+	It proves that if the final aggregated value is accepted by the base station then it has to be in the given range. 
+	Hence, SHIA achieves security over the Truncated SUM which is a resilient aggregator according to Wagner\cite{wagner2004resilient}.
+	Our protocol enhances SHIA to achieve desired security over the SUM which is non-resilient aggregate.
 % section result_checking (end)
