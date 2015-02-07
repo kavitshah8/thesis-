@@ -152,7 +152,7 @@
 		% It is true for the sensor node $A$.
 		As we said, it like the signature for the transmission.
 
-\section{Key Differences from SHIA}
+\section{Key Differences}
 
 	In SHIA, all the leaf nodes in the aggregation tree send only their respective data-items to the parent in the aggregation tree.
 	In our approach, all the leaf nodes send the data-item, the signature of the data-item and the signature of the transmit-payload to their parent node in the aggregation tree. 
@@ -180,7 +180,7 @@
 		\textbf{Note:} The packets size are close approximate to the actual packet size. 
 		The actual packet size may differ based on the implementation.
 
-\section{Two ways of Forwarding the Commitment Payload}	
+\section{Two Ways of Forwarding Payload}	
 	
 	As described in the previous sections, we send the data-items with their signature along with the signature of the transmit-payload while creating the commitment tree.
 	Here, we describe two different approaches to send the signatures in the aggregation tree hierarchy based on the two different ways of signing the data-items.
@@ -249,7 +249,7 @@
 	Both the approaches have their pros and cons and the perfect approach depends heavily on the application.
 	The various aspects of both the approaches for sensor nodes are discussed in the following sections.
 
-	\section{Comparison of two approaches for forwarding the Commitment Payload}
+	\section{Analysis}
 		To do the analysis we developed a performance matrix. 
 		We analysis different network topologies based on that matrix.
 		% In both the approaches, the commitment tree is complete binary.
@@ -319,5 +319,3 @@
 				\item Number of certificates needed in the network is $O(n)$; n is the number of nodes in the network.
 				\item We do not need the signature of the payload.
 			\end{itemize}
-
-	\section{\textcolor{red}{Forwarding signatures without resigning the data-items}}
