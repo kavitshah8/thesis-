@@ -1,6 +1,27 @@
 \chapter{Introduction} % (fold)
 \label{cha:introduction}
 	
+	Mark Weiser of Xerox PARC \cite{weiser1991computer} coined the term ``ubiquitous computing'' in $1988$. 
+	It is the scenario in which computing is omnipresent, and particularly in which devices that do not look like computers are endowed with computing capabilities.
+	For example, light switches, door locks, fridges and shoes have data processing power in them.
+	It is situation in which all these devices are note only capable of computing but also of communicating, because their synergy then makes the whole worth more than the sum of the parts.
+	We do not expect a fixed networking infrastructure to be in place-certainly not one based on cables.
+	It would be less practical to run data cables between switches, fridges and locks-not to mention shoes.
+	A wireless infrastructure looks more plausible: as happens with mobile telephones, a base station could cover a cell, and a network of suitable positioned base stations could cover a larger area.
+	But we are interested in a broader picture, in which even this arrangement may not always be possible: think of a photographer taking pictures in the desert and whose camera wants to ask the GPS unit what coordinates and time stamp to associate with the picture.
+	The computing and the communications may be ubiquitous, but the network infrastructure might not be.
+	In such cases the devices will have to communicate as peers and form a local network as needed when they recognize each other's presence.
+	This is what we mean by \textbf{ad hoc networking}.
+	The wireless network formed by the camera and the GPS receiver is ad hoc in the sense that it was established just for that specific situation instead of being a permanent infrastructural fixture \cite{2002-Stajano-ubiquitous}.
+
+	Kevin Ashton is a British technology pioneer who co-founded the Auto-ID Center at the Massachusetts Institute of Technology (MIT), which created a global standard system for RFID and other sensors.
+	He is known for inventing the term ``the Internet of Things'' to describe a system where the Internet is connected to the physical world via ubiquitous sensors \cite{ashton2009internet}.
+	IoT means putting all kinds of devices on the Internet and gaining efficiency from it. 
+	For example, Uber is a company built around location awareness \cite{Uber}.
+	An Uber driver is a taxi driver with the real-time location awareness.
+	An Uber passenger knows when the taxi will show up.
+	It is about eliminating slack time and worry.
+	It connects passengers, taxi drivers, smart phones and GPS in a way that it provides an efficient and flexible way of transportation.  
 	The trend in consumer electronics is to embed a microprocessor in everything-cellphones, car stereos,  televisions, watches, Global Positioning Systems (GPS) receivers, digital cameras.
 	In some specific environments such as avionics, electronic devices are already becoming networked; in others, work is underway.
 	Medical device manufacturers want instruments such as thermometers, heart monitors and blood oxygen meters to report to a nursing station; kitchen appliance vendors envisage a future in which the oven will talk to the fridge, which will reorder food over the net. 
@@ -8,47 +29,38 @@
 	The next step is to embed a short range wireless transceiver into everything; then many gadgets can become more useful and effective by communicating and cooperating with each other.
 	A camera, for example, might obtain the geographical position and exact time from a nearby GPS unit every time a picture is taken, and record that information with the image.
 	At present, if the photographer wants to record a voice note with the picture, the camera must incorporate digital audio hardware; in the future, the camera might instead let the photographer speak into her digital audio recorder or cellphone.
-	Even better, the audio data might optimally take a detour through the user's powerful laptop, where a speech recognition engine could transcribe the utterance, so as to annotate the photograph with searchable text rather than just with audio samples-and of course this could be done at any time that the camera detects the proximity and availability if the laptop with the speech recognition service.
-	In this scenario each device, by becoming a network node, may take advantage of the services offered by other nearby devices instead of having to duplicate their functionality.
-	Mark Weiser of Xerox PARC \cite{weiser1991computer} coined the term ``ubiquitous computing'' in $1988$. 
-	\textbf{ubiquitous computing} is the scenario in which computing is omnipresent, and particularly in which devices that do not look like computers are endowed with computing capabilities.
-	For example, light switches, door locks, fridges and shoes have data processing power in them.
-	It is situation in which all those devices are note only capable of computing but also of communicating, because they have synergy
-	then makes the whole worth more than the sum of the parts.
-	We do not expect a fixed networking infrastructure to be in place-certainly not one based on cables.
-	It would be less practical to run data cables between switches, fridges and locks-not to mention shoes.
-	A wireless infrastructure looks more plausible: as happens with mobile telephones, a base station could cover a cell, and a network of suitable positioned base stations could cover a larger area.
-	But we are interested in a broader picture, in which even this arrangement may not always be possible: think of a photographer taking pictures in the desert and whose camera wants to ask the GPS unit what coordinates and time stamp to associate with the picture.
-	The computing and the communications may be ubiquitous, but the network infrastructure might not be.
-	In such cases the devices will have to communicate as peers and form a local network as needed when they recognize each other's presence.
-	This is what we by \textbf{as hoc networking}.
-	The wireless network formed by the camera and the GPS receiver is ad hoc in the sense that it was established just for that specific situation instead of being a permanent infrastructural fixture.
+	Even better, the audio data might optimally take a detour through the user's powerful laptop, where a speech recognition engine could transcribe the utterance, so as to annotate the photograph with searchable text rather than just with audio samples-and of course this could be done at any time that the camera detects the proximity and availability of the laptop with the speech recognition service.
+	In this scenario each device, by becoming a network node, may take advantage of the services offered by other nearby devices instead of having to duplicate their functionality \cite{2002-Stajano-ubiquitous}.
+	At the core of Internet of things and ubiquitous computing are the sensors generating raw data and wireless network providing transmission medium for communications. 
+	Collectively, we refer these concepts as \textbf{Sensor Networks} which enable economically viable solutions to a variety of applications.
 
-	It is very important to talk about security issues in such scenarios.
-	The term is not new or unfamiliar, but it is overloaded and may be interpreted differently by different readers.
-	A common mistake is identify security with cryptology, the art of building and breaking ciphers (cryptography and cryptanalysis respectively).
-	While it's true that cryptology gives computer security many of its technical weapons, to identify the two i                                
+	% It is very important to talk about security issues in sensor networks.
+	% The term is not new or unfamiliar, but it is overloaded and may be interpreted differently by different readers.
+	% A common mistake is identify security with cryptology, the art of building and breaking ciphers (cryptography and cryptanalysis respectively).
+	% While it's true that cryptology gives computer security many of its technical weapons, but it is not the solution for all the security problems.
+	% Security is really risk management.
+	% Security is assessing threats (bad things that may happen, e.g. your money getting stolen), vulnerabilities (weakness in your defenses, e.g. your front door being made of thin wood and glass) and attacks (ways in which the threats may be actualized, e.g. a thief breaking through the weak front door while you and the neighbors are on holiday), estimating the cost for the threats, estimating the probabilities for the attacks given the vulnerabilities, developing appropriate safeguards (a prior vaccines) and countermeasures (a posteriori remedies), and implementing the ones for which the certain price of the defense is worth spending compared to the uncertain loss that a potential threat implies.
+	% In this context cryptology is only one of many tools, not the discipline itself.
+	% Schneier, author of an extremely popular cryptography textbook \cite{schneider1996applied}, candidly admits in a later book \cite{schneier2011secrets} to having previously missed the forest for the trees.
+	Security challenges increase drastically in sensor networks. 
+	As all these digital devices (or computers) are so blended into the physical world that they are hard to distinguish from the physical objects.
+	The computers may disappear so well that users lose not just the control but even awareness of what is actually going on.
+	While it is a welcome strategy to hide irrelevant complexity, it can easily become a liability.
+	% The ``reactive room'' built at the University of Toronto \cite{cooperstock1997reactive} was a ubicomp-equipped conference room in which lights, cameras and other equipment went on and off automatically based on user behavior; but there have been informal reports of it providing little feedback to its users as to be nicknamed the ``possessed room''.
+	This is a serious problem if you can't tell what your computer is doing when you are online, how can you be sure it's not transmitting your documents to a malicious destination? 
+	And if you already can't tell with your visible computer, how can you hope to tell with the invisible ones inside your appliances? 
+	Weiser \cite{weiser1999origins} acknowledges the following: 
+	``	If the computational system in invisible as well as extensive, it becomes hard to know what is controlling what, what is connected to what, where information is flowing, how it is being used, what is broken and what are the consequences of any given action.''
+	The small error in the system design could result in significant bad consequences.
+	For example, the recent data breach attack on the company Anthem, exposed Social Security numbers and other sensitive details of 80 million customers.
+	It is considers as one of the biggest thefts of medical-related customer data in U.S. history \cite{anthem}. 
 
-	Security is really risk management, 
-	Security is assessing threats (bad things that may happen, e.g. your money getting stolen), vulnerabilities (weakness in your defenses, e.g. your front door being made of thin wood and glass) and attacks (ways in which the threats may be actualized, e.g. a thief breaking through the weak front door while you and the neighbors are on holiday), estimating the cost for the threats, estimating the probabilities for the attacks given the vulnerabilities, developing appropriate safeguards (a prior vaccines) and countermeasures (a posteriori remedies), and implementing the ones for which the certain price of the defense is worth spending compared to the uncertain loss that a potential threat implies.
+	In such scenarios, where computing is invisible, and it is unclear who is responsible for what, detecting an adversary is a challenging task.
+	We think that the detecting an adversary is necessary in sensor networks for countermeasures (a posteriori remedies).
+	It is essential for the longevity of the sensor network.
+	Hence, we focus on designing the protocol which helps detect an adversary in the sensor networks. 
 
-	In this context cryptology is only one of many tools, not the discipline itself.
-	Schneier, author of an extremely popular cryptography textbook \cite{schneider1996applied}, candidly admits in a later book \cite{schneier2011secrets} to having previously missed the forest for the trees.
-	
-	Motivation
-	Networks
-
-	Security Attacks
-		
-		Data breach attacks\cite{anthem} - 	Recent attacks on Anthem
-		
-		Chinese hacker
-
-
-	Sensor networks
-
-	Applications
-
-	Security
+	% The users give away their personal secrets to the these digital devices without their knowledge.
+	% It becomes difficult to blame someone for any malicious activity in the network.
 
 % chapter introduction (end)
