@@ -1,22 +1,22 @@
 \chapter{Data Aggregation Background} % (fold)
 \label{cha:Data Aggregation Background}
 
-	Data aggregation has been put forward as an essential paradigm for wireless routing in sensor networks \cite{krishnamachari2002impact}. 
-	The idea is to combine the data coming from different sources enroute eliminating redundancy, minimizing the number of transmissions and thus saving energy.
+	Data aggregation has essential paradigm for wireless routing in sensor networks \cite{krishnamachari2002impact}. 
+	The idea is to compress the data coming from different sources enroute eliminating redundancy, minimizing the number of transmissions and thus saving energy.
 	This paradigm shifts the focus from the traditional address-centric approaches for networking (finding short routes between pairs
 	of addressable end-nodes) to a more data-centric approach (finding routes from multiple sources to a single destination that allows in-network consolidation of redundant data).
 
-	One of the fundamental and indispensable functionalities of sensor networks is the ability to answer queries over the data acquired by the sensors. 
-	For example, in Figure \ref{fig:Routing River} the base station might be at the end of the river who initiates the query to the sensor network.
-	And all the sensor nodes on both sides of the river has to response to the queries of the base station.
-	The transreceiver module in the sensor nodes have the limited transreceiving range. 
-	The sensor nodes can not communicate to the base station in peer-to-peer fashion.
+	One of the fundamental and indispensable functionalities of sensor networks is the ability to answer queries concerning the data acquired by the sensors. 
+	For example, in Figure \ref{fig:Routing River} \cite{RoutingRiver} the base station who initiates the query to the sensor network might be at the end of the river.
+	The sensor nodes may lie on both sides of the river and they have to response to the queries of the base station.
+	The transreceiver module in the sensor nodes has a limited transreceiving range. 
+	So, the sensor nodes cannot communicate to the base station in peer-to-peer fashion.
 	The sensor nodes have to communicate via hop-by-hop to the base station.
 	This resource constraint forces us to design distributed protocol for sensor networks.  
 	\begin{figure}[h!]
 		\centering
 		\includegraphics[scale = 2]{images/routing-river.jpg}
-		\caption{Routing River \cite{RoutingRiver}}
+		\caption{Routing River}
 		\label{fig:Routing River}
 	\end{figure}
 
@@ -25,17 +25,18 @@
 	The sensor nodes in the network often have limited resources, such as computation power, memory, storage, communication capacity and most significantly, battery power.
 	The wireless data communications between nodes consume a large portion of the total energy consumption. 
 	In-network data aggregation techniques allow the sensor nodes to aggregate the data before sending it to their parents.
-	That reduces the wireless communication happening between the nodes and the overall energy consumption in the network. 	
+	This technique reduces the wireless communication happening between the nodes and the overall energy consumption in the network. 	
 	For example, in-network data aggregation of the SUM function can be performed as follows.
 	All the intermediate sensor nodes in the network, receives the sensor readings from all of their children.
 	They aggregate all those readings by applying the summation function to those readings.
-	For the star topology shown in Figure \ref{fig:star-network}, the root of the tree receives the following sensor readings $S_{1}(10),S_{2}(14),S_{3}(12),S_{4}(15),S_{5}(11),S_{6}(17)$. And the root has its own reading of $S_{0}(15)$. 
-	The root node aggregates all these seven readings and creates an aggregated result as follows:
+	A network, which has the star topology, shown in Figure \ref{fig:star-network}, the root of the tree receives the following sensor readings $S_{1}(10),S_{2}(14),S_{3}(12),S_{4}(15),S_{5}(11),S_{6}(17)$.
+	The root has its own reading of $S_{0}(15)$. 
+	The root node aggregates these seven readings and creates an aggregated result as follows:
 	\begin{equation}
 		S = \sum_{i=0}^6 S_{i}
 	\end{equation}
 	Now, instead of sending all those sensor readings one at a time to its parent, it can send one aggregated sensor reading.
-	In this example the aggregate function is summation, but it can be replaced with most of the aggregate function such as (average, median, count) with little or no modification.
+	In this example the aggregate function is summation, but it can be replaced with other statistical functions such as average, median, count etc., with little or no modification.
 	\begin{figure}[h!]
 		\centering
 		\includegraphics[scale = 1]{images/star-tree.png}
@@ -44,8 +45,8 @@
 	\end{figure}
 
 	According to \cite{zareafifi2012secure}, \textbf{data aggregation} can be defined as follows.
-	Consider a sensor network with $n$ sensors collecting data, the data will be propagated in some fashion to the Base Station.
-	At the Base Station, the data is aggregated and processed into information. 
+	Consider a sensor network with $n$ sensors collecting data, the data will be propagated in some fashion to the base station.
+	At the base station, the data is aggregated and processed into information. 
 	This can be represented as
 		$f(x_{1}, x_{2},...,x_{n})$
 	where $x_{1}, x_{2},..., x_{n}$ represent the sensor readings.
@@ -59,9 +60,9 @@
 	It is shown that the energy savings achieved by in-network data aggregation are significant \cite{madden2002tag}.
 	The in-network data aggregation approach requires the sensor nodes to do more computations.
 	But studies have shown that wireless communication of data transmission requires more energy than local computation of the data. 
-	In a nutshell, in-network data aggregation is an efficient and a widely used approach for saving bandwidth by doing less wireless communications between sensor nodes and ultimately giving longer battery life to sensor nodes in the network.
+	In-network data aggregation is an efficient and a widely used approach for saving bandwidth by doing less wireless communications between sensor nodes and ultimately giving longer battery life to sensor nodes in the network.
 
-	We define the following terms to help us define the goals of in-network data aggregation approach.
+	We define the following terms to help us define the goals of in-network data aggregation.
 	\begin{definition}\label{def:payload}\cite{PayloadWiKi}
 		\textbf{Payload} is the part of the transmitted data which is the fundamental purpose of the transmission, to the exclusion of information sent with it such as meta data solely to facilitate the delivery.
 	\end{definition}
@@ -85,14 +86,14 @@
 	For example, the nodes closer to the base station are essential for the network connectivity.
 	The failure of the highly congested nodes may cause the sensor network to fail even though most of the nodes in the network are alive.
 	Hence, it is desirable to have a lower congestion on the highly congested nodes even though it costs more congestion within the overall sensor network.
-	To distribute the congestion uniformly across the network, we can construct an aggregation protocol where each node transmits a single payload Defined in \ref{def:payload} to its parent in the aggregation tree.
+	To distribute the congestion uniformly across the network, we can construct an aggregation protocol where each node transmits a single payload as Definition in \ref{def:payload} to its parent in the aggregation tree.
 	In this approach, the fanout ($\delta$) depends on the given aggregation tree.
-	For example, an aggregation tree shown in Figure \ref{fig:star-network}, with $n$\ nodes, organized in the star tree topology the congestion is $O(n)$.
-	And the network organized in the palm tree topology as shown in Figure \ref{fig:palm-tree-network} the congestion is $O(1)$.
+	For example, in the aggregation tree shown in Figure \ref{fig:star-network}, with $n$\ nodes, organized in the star tree topology, we see the congestion is $O(n)$.
+	For the network organized in the palm tree topology, as shown in Figure \ref{fig:palm-tree-network}, the congestion is $\theta(1)$.
 	\begin{figure}[h!]
 		\centering
 		\includegraphics[scale = 1]{images/palm-tree.png}
-		\caption{Palm Tree Network}
+		\caption{Palm Tree Network Topology}
 		\label{fig:palm-tree-network}
 	\end{figure}
 	This approach can create some highly congested nodes in the aggregation tree which is undesirable.
@@ -172,24 +173,25 @@
 	\label{sec:security-issues}
 	Designing secure data aggregation protocol for the wireless sensor network poses a numerous challenges due to resource limitations and inherent characteristics discussed in the previous chapter. 
 
-	The aggregation techniques can be compared with compression techniques.
-	``Lossy data compression'' is the class of data encoding methods that uses inexact approximations (or partial data discarding) for representing the content that has been encoded. 
-	``Lossless data compression'' is a class of data compression algorithms that allows the original data to be perfectly reconstructed from the compressed data.
-	The aggregation technique we use is \textit{lossy data compression} because once the base station receives the final aggregated value it can not create the original sensor readings of the sensor nodes.
+	The aggregation schemes can be compared with compression schemes.
+	``Lossless data compression'' produces a compressed file from which the original data can be recovered exactly.
+	Facsimile uses lossless data compression \cite{alberto2000communication}.
+	However, lossless data compression schemes are limited in the compression rates they can achieve.
+	``Lossy data compression'' schemes produces a compressed file from which only an approximation to the original information can be recovered. Much higher compression ratios are possible.
+	The aggregation scheme will be a \textit{lossy data compression} because once the base station receives the final aggregated value it can not create the original sensor readings of the sensor nodes.
 	Hence, it is very important that the base station has very high confidence in the received final aggregated value. 
-	For example, in Equation \ref{eq:aggregation} sensor $2$'s reading is changed from $x_{2}$ (the ``true reading'') to $x'_{2}$ by an intermediate aggregator, then an aggregate node computes $y' =\ f(x_{1},x'_{2},...,x_{n})$.
+	For example, in Equation \ref{eq:aggregation} Sensor\rom{2}'s reading is changed from $x_{2}$ (the ``true reading'') to $x'_{2}$ by an intermediate aggregator, then an aggregate node computes $y' =\ f(x_{1},x'_{2},...,x_{n})$.
 	It is very likely that $y' \neq y$ where $y$ is the true information if the true reading was counted.
 	The base station takes an action based on the received information $y'$.
 	How dangerous would it be to act using $y'$?
 	Thus, if one ``knows there is some likelihood of false data'' how do we protect the information generated?
 	
-	As we know, one widely used approach to overcome the bandwidth limitation is to use in-network data aggregation techniques.
-	In-network data aggregation approach saves bandwidth by transmitting less payloads between sensor nodes thus increasing the lifetime of the network.
-	But that empowers an intermediate aggregate sensor nodes in the network by allowing it to control certain portion of the network.
+	As we know, in-network data aggregation approach saves bandwidth by transmitting less payloads between sensor nodes thus increasing the lifetime of the network.
+	However, this empowers intermediate aggregate sensor nodes in the network by allowing them to control certain portion of the network.
 	A malicious intermediate sensor node who does aggregation over all of its descendants payloads, needs to tamper with only one aggregated payload instead of tampering with all the payloads received from its descendants. 
 	Thus, a malicious intermediate sensor node needs to do less work to skew the final aggregated payload.
 	An adversary controlling few sensor nodes in the network can cause the network to return unpredictable payloads, making an entire sensor network unreliable.
-	An intermediate sensor nodes adversarial power is proportional to their number of descendants.
+	Intermediate sensor nodes adversarial power is proportional to their number of descendants.
 	While applying the data-aggregation techniques the integrity of the sensor readings becomes more valuable.
 	As one or few faulty sensor readings can deviate the final aggregated result and create catastrophic situations as discussed in the following examples.
 
@@ -204,9 +206,8 @@
 
 	Speed Sensor Failure Led to Crash of Air France flight - Airbus A$330$-$203$ AF $447$ on $1$st June $2009$.
 	France's Bureau of Investigation and Analysis (BEA) released the Airbus final report \cite{final-report}.
-	According to an official report, the pilots couldn't reclaim control as the plane dropped out of the sky at a rate of $10,000$ feet per minute.
-	The findings from the flight's black boxes, which were found intact at the bottom of the Atlantic in early May.
-	And their analysis paints a harrowing picture of Air France flight 447's literal dropping out of the sky.
+	According to an official report, the pilots could not reclaim control as the plane dropped out of the sky at a rate of $10,000$ feet per minute.
+	The findings from the flight's black boxes, which were found intact at the bottom of the Atlantic in early May, and their analysis paints a harrowing picture of Air France flight 447's literal dropping out of the sky.
 	The co-pilots encountered trouble with the speed sensors four hours and 10 minutes into the flight. 
 	The flight was on autopilot as the pilot in command took a routine rest out of the cockpit. 
 	They were knowingly headed into a turbulent and storm-ridden spot over the Atlantic, and the black boxes show the pilots attempted to maneuver around the storm slightly.
@@ -216,14 +217,14 @@
 	The flight plunged into the Atlantic nose-up, killing all 228 on board.
 	The findings coincide with investigators' earlier theory that the sensors, known as pitot tubes, malfunctioned, possibly because of ice at such a high altitude.
 
-	National Snow And Ice Data Center on June $3, 2008$ had reported that Arctic sea ice extent had declined through the month of May as summer approaches \cite{nsidc}. 
+	National Snow and Ice Data Center on June $3, 2008$ \cite{nsidc} reported that Arctic sea ice extent had declined through the month of May as summer approaches. 
 	Daily ice extents in May continued to be below the long-term average and approached the low levels seen at the same time last year.
 	The spring ice cover was thin, one sign of thin and fairly weak ice was the formation of several polynyas in the ice pack.
-	The Defense Meteorological Satellite Program (DMSP) F13 \cite{dmsp-f13} satellite that had been central to their Arctic sea ice analysis for the past several years is nearing the end of its mission.
+	The Defense Meteorological Satellite Program (DMSP) F13 \cite{dmsp-f13} satellite, which had been central to their Arctic sea ice analysis for the past several years, is nearing the end of its mission.
 	As the standard data practice, they have transitioned to a newer sensor, in that case the DMSP F15 \cite{dmsp-f15}. 
 	The DMSP F15 had the same type of sensor as the DMSP F13. 
 	NSIDC had done preliminary inter calibration to assure consistency with the historical record. 
-	And they said that due to the inter calibration errors the final reported ice extent values might differ on average $+/- 30,000$ square kilometers or $11,600$ square miles per preliminary number reported.
+	They said that due to the inter calibration errors the final reported ice extent values might differ on average $\pm 30,000$ square kilometers or $11,600$ square miles per preliminary number reported.
 
 	As shown in the previous examples, the faulty sensor readings can cause catastrophic situations. 
 	The faulty sensor readings can be caused due to malfunctioning sensors, the active attacks on true sensor readings or incorrect interpretations of the data.
@@ -232,10 +233,10 @@
 	Despite the fact that in-network aggregation makes an intermediate sensor nodes more powerful and aggregated value more vulnerable to various security attacks, some aggregation approaches requires strong network topology assumptions or honest behaviors from the sensor nodes.
 	For example, in-network aggregation schemes in \cite{yao2002cougar, madden2003design} assumes that all the sensor nodes in the network are honest. 
 	Secure Information Aggregation (SIA) of \cite{przydatek2003sia} enables secure information aggregation such that the user accepts the data with high probability if the aggregated result is within a desired bound, but that the user detects cheating with high probability and rejects the result if it is outside of the bound.
-	But SIA provides probabilistic security for the network topology with a single-aggregate model.
+	The SIA provides probabilistic security for the network topology with a single-aggregate model.
 
 	An approach to detection and diagnosis of multiple failures in a dynamic system is proposed in \cite{zhang1998detection}. 
-	It is based on the interacting multiple-model (IMM) estimation algorithm, which is one of the most cost-effective adaptive estimation techniques for systems involving structural as well as parametric changes. 
+	It is based on the Interacting Multiple-Model (IMM) estimation algorithm, which is one of the most cost-effective adaptive estimation techniques for systems involving structural as well as parametric changes. 
 	The proposed approach provides an integrated framework for fault detection, diagnosis, and state estimation. 
 	It is able to detect and isolate multiple faults substantially more quickly and more reliably than many existing approaches. 
 	Its superiority is illustrated in two aircraft examples for single and double faults of both sensors and actuators, in the forms of total, partial, and simultaneous failures. 
