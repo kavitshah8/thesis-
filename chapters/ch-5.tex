@@ -5,9 +5,9 @@
 	It is designed for general networks with single or multiple adversaries.
 	Our work enhances SHIA, by making it communication efficient, adds new security services to the protocol, achieves similar security goals with non-resilient aggregation functions and efficient ways of analyzing the protocol.
 	In this chapter, we summarize the important parts of SHIA and relevant terms, to build the foundation to describe our protocol in the following chapters.
-	% SHIA computes the aggregate functions (such as $\textit{truncated SUM}$, $\textit{AVERAGE}$, $\textit{COUNT}$, $\Phi-QUANTILE$) of the sensor readings.
+	% SHIA computes the statistical functions (such as $\textit{truncated SUM}$, $\textit{AVERAGE}$, $\textit{COUNT}$, $\Phi-QUANTILE$) of the sensor readings.
 	% For example, a network with $5$ nodes having the following sensor readings $10,11,8,15,12$ has the overall all sum of $56$, the average of $11.2$ and the median ($\Phi = 0.5$) of $11$.
-	% The goal of the SHIA is to compute the aggregate functions while assuming that partially a network is controlled by an adversary which is attempting to skew the final aggregated result.
+	% The goal of the SHIA is to compute the statistical functions while assuming that partially a network is controlled by an adversary which is attempting to skew the final aggregated result.
 
 \section{Network Assumptions}
 	We assume a multi hop network with a set $ S = \{S_{1},...,S_{n}\} $ of $n$ sensor nodes where all sensor nodes are alive and reachable. 
@@ -24,17 +24,18 @@
 	They are also capable of computing collision resistant cryptographic hash function. 
 
 \section{Attacker Model And Security Goal}
-	We consider a model with a polynomially bounded adversary of \cite{przydatek2003sia}, which has a complete control over some of the sensor nodes in the network.
+	We consider a model with a polynomially bounded adversary \cite{przydatek2003sia}, which has a complete control over some of the sensor nodes in the network.
 	Most significantly, the adversary can change the measured values reported by sensor nodes under its control.
 	An adversary can perform a wide variety of attacks.
-	For example, an adversary could report fictitious values (probably completely independent of the measured reported values), instead of the real aggregate values and the base station receives the fictitious aggregated information. 
+	For example, an adversary could report fictitious values (probably completely independent of the measured reported values), instead of the real aggregate values.
+	In such a case, the base station receives the inaccurate aggregated data. 
 	Since in many applications the information received by the base station provides a basis for critical decisions, false information could have ruinous consequences as described in Section \ref{sec:security-issues}.
 	However, we do not want to limit ourselves to just a few specific selected adversarial models. 
 	Instead, we assume that the adversary can misbehave in any arbitrary way, and the only limitations we put on the adversary are its computational resources (polynomial in terms of the security parameter) and the fraction of nodes that it can have control over. 
 	We focus on \textbf{stealthy attacks} \cite{przydatek2003sia}, where the goal of an adversary is to make the base station accept false aggregation results, which are significantly different from the true results determined by the measured values, while not being detected by the base station.
 	In this setting, denial-of-service (DoS) attacks such as not responding to the queries or always responding with negative acknowledgment at the end of verification phase clearly indicates to the base station that something is wrong in the network and therefore is not a stealthy attack.
 	One of the security goals of SHIA is to detect the stealthy attacks.
-	And one of the security goals of our work is to detect an adversary who caused the stealthy attacks and remove it from the network to prevent these attacks in the future.
+	One of the security goals of our work is to detect an adversary who caused the stealthy attacks and remove it from the network to prevent these attacks in the future.
 	
 % \section{Security Goal}
 	Without precise knowledge of application, the direct data injection attacks are indistinguishable from the malicious sensor readings.

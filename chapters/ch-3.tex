@@ -6,8 +6,8 @@
 
 	The word cryptography means ``secret writing''.
 	It is the art and science of concealing meaning.
-	Cryptanalysis is the breaking of codes.
-	The basic component of cryptography is a cryptosystem \cite{bishop2004introduction}.
+	Cryptanalysis is the science breaking of cryptography schemes.
+	Formally, the basic component of cryptography is a cryptosystem \cite{bishop2004introduction}.
 	\begin{definition}
 		A cryptosystem is a $5$-tuple ($ \mathcal{E,D,M,K,C}$), where $\mathcal{M}$ is the set of \textit{plaintexts}, $\mathcal{K}$ is the set of \textit{keys}, $\mathcal{C}$ is the set of \textit{ciphertexts}, $\mathcal{E}:\mathcal{M} \times \mathcal{K} \rightarrow \mathcal{C}$ is the set of \textit{enciphering functions}, and $\mathcal{D}:\mathcal{C} \times \mathcal{K} \rightarrow \mathcal{M}$ is the set of \textit{deciphering functions}.
 	\end{definition}
@@ -17,12 +17,12 @@
 	% In these system, for all $E_{k} \in \mathcal{C}$ and $k \in \mathcal{K}$, there is a $D_{k} \in \mathcal{D}$ such that $D_{k} = E_{k}^{-1}$.
 	% \begin{definition}
 	Consider an encryption scheme consisting of the sets of encryption and decryption transformations $\{E_{e}: e \in \mathcal{K}\}$ and $\{D_{d}: d \in \mathcal{K}\}$, respectively, where $\mathcal{K}$ is the key space.
-	The encryption scheme is said to be \textit{symmetric-key} if for each associated encryption/decryption key pair ($e,d$), it is computationally ``easy'' to determine $d$ knowing only $e$, and to determine $e$ from $d$ \cite{menezes2010handbook}.
-	In most practical symmetric-key schemes $e = d$.
+	The encryption scheme is said to be \textit{symmetric-key} if for each associated encryption/decryption key pair ($e,d$), it is computationally ``easy'' to determine $d$ given $e$, and to determine $e$ from $d$ \cite{menezes2010handbook}.
+	Moreover, most symmetric-key schemes satisfy $e = d$.
 	% \end{definition}
 
 	A two party communication using symmetric key encryption can be described by the block diagram of Figure \ref{fig:symmetric-key}. 
-	One major issue with symmetric key system is to find an efficient method to agree upon and exchange keys securely, which is known as \textit{key-distribution problem}. 
+	One major issue with symmetric key system is to find an efficient method to agree upon and exchange keys securely, which is known as \textit{key-distribution problem} \cite{menezes2010handbook}. 
 
 	\begin{figure}[h!]
 	 	\centering
@@ -86,8 +86,8 @@
 
 \section{Digital Signatures}
 	\label{sec:digital-signature}
-	A digital signature is a mathematical scheme for demonstrating the authenticity of a digital message. 
-	A valid digital signature gives a recipient reason to believe that the message was created by a known sender, such that the sender cannot deny having sent the message (authentication and non-repudiation) and that the message was not altered in transit (integrity).
+	A digital signature is a cryptographic scheme for demonstrating the authenticity of a digital message. 
+	A valid digital signature gives a recipient strong reason to believe that the message was created by a known sender, such that the sender cannot deny having sent the message (authentication and non-repudiation) and that the message was not altered in transit (integrity).
 	A Digital Signature scheme consists of the following:
 	\begin{enumerate}
 		\item a plain text message space $\mathcal{M}$ (set of strings over alphabets)
@@ -139,9 +139,10 @@
 	This determines the suitability of the construction for a given purpose.
 	\begin{table}[!htb]	
 		\begin{center}
-			\begin{tabular}{ |l| l| l| }
+			\begin{tabular}{ |l || l| l| }
 		    \hline
 		     & Who can generate it & Who can verify it \\
+		    \hline
 		    \hline
 		    Hash & Everyone & Everyone \\	
 		    \hline

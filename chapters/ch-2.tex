@@ -2,13 +2,10 @@
 \label{cha:Sensor Networks/Data Aggregation/Security Background}
 	
 	Sensor networks are becoming ubiquitous in our day to day life. 
-	Collectively, they are known also known as Internet of Things or Ubiquitous Computing.
 	It is the vision of a world in which computing power and digital communications are extremely inexpensive commodities.
-	So, cheap that they are embedded in all of the everyday objects that surround us \cite{2002-Stajano-ubiquitous}.
-	
+	So, cheap that they are embedded in all of the everyday objects that surround us \cite{2002-Stajano-ubiquitous}.	
 	In this chapter we introduce sensor networks and its applications, we define basic terminologies and then we discuss major 
-	barriers to achieve security in the area of sensor networks.
-	 % and solutions to tackle those challenges.
+	barriers to achieve security in sensor networks.
 
 \section{Applications}
 	In sensor networks, thousands of sensor nodes may interact with the physical world and collectively monitor an area, generating a large amount of data to be transmitted and reasoned about.
@@ -61,7 +58,7 @@
 	The major components of the sensor nodes are shown in Figure \ref{fig:sensor-node-architecture} \cite{karl2007protocols}.
 	\begin{figure}[h!]
 		\centering
-		\includegraphics[scale = 1]{images/sensor-node-architecture.png}
+		\includegraphics{images/sensor-node-architecture.png}
 		\caption{Sensor Node Architecture}
 		\label{fig:sensor-node-architecture}
 	\end{figure}
@@ -87,9 +84,9 @@
 		\textit{Passive, narrow-beam sensors} are passive as well, but have a well-defined notion of direction of measurement. 
 		A typical example is a camera, which can ``take measurements'' in a given direction, but has to be rotated if need be.
 		\textit{Active sensors} are the last group of sensors actively probes the environment, for example, a sonar or radar sensor or some types of seismic sensors, which generate shock waves by small explosions.
-		These are quite specific – triggering an explosion is certainly not a lightly undertaken action – and require quite special attention.
+		These are quite specific - triggering an explosion is certainly not a lightly undertaken action – and require quite special attention.
 
-	\item[Power supply of sensor nodes] is a crucial system component which has two main aspects.
+	\item[Power Supply of Sensor Nodes] is a crucial system component which has two main aspects.
 		First, storing energy and providing power in the required form; second, attempting to replenish consumed energy by ``scavenging'' it from some node-external power source over time.
 		Storing power is conventionally done using batteries, the normal AA battery stores about 2.2–2.5 Ah at 1.5 V.
 		To ensure truly long-lasting nodes and wireless sensor networks, such a limited energy store is unreliable. 
@@ -103,7 +100,7 @@
 		\textit{Photovoltaics} effect is used in the solar cells can be used to power sensor nodes.
 		\textit{Temperature gradients} effect utilizing the differences in temperature can be directly converted to electrical energy.
 
-	\item[The memory component] is fairly straightforward. 
+	\item[The Memory Component] is fairly straightforward. 
 		Random Access Memory (RAM) is used to store intermediate sensor readings, packets from other nodes, and so on. 
 		While RAM is fast, its main disadvantage is that it loses its content if power supply is interrupted. 
 		Program code can be stored in Read-Only Memory (ROM). 
