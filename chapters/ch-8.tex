@@ -13,12 +13,12 @@
 \section{Commitment Tree Generation}
 	For the given aggregation tree the commitment forest is built as follows.
 	The commitment tree generation begins from the sensor nodes with the highest depth (leaf nodes) in the aggregation tree.
-	Leaf sensor nodes in the aggregation tree create their leaf vertex by creating data-items, signatures of those data-items and signature of the \textcolor{red}{transmit-payload} according to Equation \ref{eq:data-item}, \ref{eq:sign-data-item}, \ref{eq:signing-payload} respectively.
-	And then send the payload to their parents in the aggregation tree.	
+	Leaf sensor nodes in the aggregation tree create their leaf vertex by creating data-items, signatures of those data-items and signature of the \textcolor{red}{transmit-payload} according to Equations \ref{eq:data-item}, \ref{eq:sign-data-item}, \ref{eq:signing-payload} respectively.
+	They then send the payload to their parents in the aggregation tree.	
 	Each internal sensor node in the aggregation tree also creates their leaf vertex.
-	In addition, internal sensor node receives the payload from each of its children which creates the forest for it.
-	For all of its children, internal node first verifies the signature of the transmit-payload and then the signature of the data-item for one child at a time.
-	Once internal node verifies all the received signatures, it merges all the data-items in its forest with same count value.
+	In addition, internal sensor node receives the payload from each of its children, which has created a forest.
+	For each child, internal node first verifies the signature of the transmit-payload and then the signature of the data-item for one child at a time.
+	Once internal node verifies all the received signatures, it merges all the data-items into its forest with same count value.
 	It merges two data-items by creating a new data-item with count value incremented by one and whose value is the addition of value field of the previous two data-items. 
 	Note that we can easily determine the height of the commitment tree from the count value.
 	Suppose, after verifying all the signatures from the payloads, an internal sensor node $I$ has to merge $i$ data-items $D_{1}$, $D_{2}$, $\dotsc$, $D_{i}$ in its forest.
@@ -26,18 +26,18 @@
 	% Then $I$ verifies the received signatures $Sign(D_{1})$, $Sign(D_{2})$, $\dotsc$, $Sign(D_{i})$.
 	% Once verified, $I$ starts merging the data-items as follows.
 	Let $c$ be the smallest count value in $I$'s forest.
-	The sensor node $I$ finds two data-items $D_{1},D_{2}$ in its forest with the same count value $c$ and merges them into a new data-item with the count of $c+1$ as shown in Figure \ref{fig:increase-height}.
+	The sensor node $I$ finds two data-items $D_{1},D_{2}$ into its forest with the same count value $c$ and merges them into a new data-item with the count of $c+1$ as shown in Figure \ref{fig:increase-height}.
 	\begin{figure}[h!]
 		% \centering
 		\includegraphics{images/increase-height.png}
-		\caption{$A$ has $B_{1}, C_{1}$ in his forest and aggregates those two trees and creates $A_{2}$.}
+		\caption{Input node $A$ has $B_{1}, C_{1}$ in its forest and aggregates those two trees and creates $A_{2}$.}
 		\label{fig:increase-height}
 	\end{figure}
 	It repeats the process until no two data-items in its forest have the same count value.	
 	The data-item of the $A_{2}$ is given as follows:
-	\begin{equation}
+	\begin{equation*}
 		A_{2} = <A_{id}, 4, A_{2value},H(N||4||A_{2value}||B_{1}||D_{1})>;\ A_{2value} = B_{1value} + D_{1value} 
-	\end{equation}
+	\end{equation*}
 	
 	We demonstrate the commitment tree generation process for the aggregation tree shown in Figure \ref{fig:Aggregation-tree-1}.
 		\begin{figure}[h!]
@@ -46,7 +46,8 @@
 			\caption{Aggregation Tree.}
 			\label{fig:Aggregation-tree-1}
 		\end{figure}
-		In this example, $A$ has three children. $A$ receives one payload from each of its children which creates $A$'s forest.
+		In this example, $A$ has three children.
+		$A$ receives one payload from each of its children, which impacts $A$'s forest.
 		After verifying all the signatures from its forest, $A$ uses the data-items in its forest to create its payload, which is sent to the base station.
 		First, we describe the payload generation process of $B,C,D$ and then for $A$.
 
@@ -59,12 +60,12 @@
 		% 	\caption{E's payload}
 		% 	\label{fig:e-payload}
 		% \end{figure}
-		\begin{equation}
+		\begin{equation*}
 			\begin{array}{l}
 			E_{p} =\ <E_{0}, \textsf{Sign}_{S_{E}}(E_{0}), \textsf{Sign}_{S_{E}}(E_{\tau}) >\ where\ E_{\tau} =\ <E_{0}>\\
 			E_{0} =\ <E_{id}, 1, E_{value}, H(N||1||E_{value})>
 			\end{array}
-		\end{equation}
+		\end{equation*}
 		% \begin{figure}[h!]
 		% 	\centering
 		% 	\includegraphics{images/f-payload.png}
@@ -81,18 +82,18 @@
 		$B$ verifies all the signatures in the received payloads.
 		Then it creates its own data-item $B_{0}$.
 		Now, $B$ has $B_{0},E_{0},F_{0}$ in its forest as shown in Figure \ref{fig:b-forest-payload}. 
-		As all the data-items have the same count value, $B$ has an option which two data-items to merge.
+		As all the data-items have the same count value, $B$ has an option, when selecting two data-items to merge.
 		$B$ aggregates $E_{0},F_{0}$ and creates $B_{1}$.
 		After creating $B_{1}$ none of the data-items have the same count value. 
 		So, $B$ creates its payload $B_{p}$ and sends it to $A$ as follows:
-		\begin{equation}
+		\begin{equation*}
 			\begin{array}{l}
 				B_{p} =\ < B_{0}, \textsf{Sign}_{S_{B}}(B_{0}), B_{1}, \textsf{Sign}_{S_{B}}(B_{1}), \textsf{Sign}_{S_{B}}(B_{\tau}) >\ where\ B_{\tau} =\ <B_{0} || B_{1}>\\
 				B_{1} =\ < B_{id}, 2, B_{1value}, H(N||2||B_{1value}||E_{0}||F_{0})>;\ B_{1value} = E_{value} + F_{value} \\
 				B_{0} =\ <B_{id}, 1, B_{value}, H(N||1||B_{value})>
 			\end{array}
 			\label{eq:b-payload}
-		\end{equation}
+		\end{equation*}
 		\begin{figure}[h!]
 			\centering
 			\includegraphics{images/b-forest-payload.png}
@@ -102,14 +103,14 @@
 		\end{figure}
 
 		In similar way, the sensor node $C$ in the aggregation tree receives $G_{p}$ from $G$ which is defined as follows:
-		\begin{equation}
+		\begin{equation*}
 			\begin{array}{l}
 				G_{p} =\ <G_{1},\textcolor{red}{\textsf{Sign}_{S_{G}}(G_{1})}, \textsf{Sign}_{S_{G}}(G_{\tau})>\ where\ G_{\tau} =\ <G_{0} || H_{0}>\\
 				G_{1} =\ < G_{id}, 2, G_{1value}, H(N||2||G_{1value}||G_{0}||H_{0})>;\ G_{1value} = G_{value} + H_{value} \\
 				G_{0} =\ <G_{id}, 1, G_{value}, H(N||1||G_{value})>\\
 				H_{0} =\ <H_{id}, 1, H_{value}, H(N||1||H_{value})>
 			\end{array}
-		\end{equation}
+		\end{equation*}
 		$C$ verifies all the signatures in the received payload $G_{p}$ and creates $C_{0}$.
 		Now, $C$ has $C_{0},G_{1}$ in its forest as shown in Figure \ref{fig:c-forest-payload}. 
 		As none of the data-items have the same count value, $C$ does not merge those two data-items.
@@ -121,22 +122,22 @@
 			\caption{$C$'s forest aggregation creating its payload.}
 			\label{fig:c-forest-payload}
 		\end{figure}
-		\begin{equation}
+		\begin{equation*}
 			\begin{array}{l}
 				C_{p} =\ <C_{0},\textsf{Sign}_{S_{C}}(C_{0}),G_{1},\textcolor{red}{\textsf{Sign}_{S_{C}}(G_{1})}, \textsf{Sign}_{S_{C}}(C_{\tau})>\ where\ C_{\tau} =\ <C_{0} || G_{1}>\\
 				C_{0} =\ <C_{id}, 1, C_{value}, H(N||1||C_{value})>
 			\end{array}
-			\label{eq:c-payload}
-		\end{equation}
+			%\label{eq:c-payload}
+		\end{equation*}
 
 		The sensor node $D$ creates its payload ($D_{p}$) and sends it to $A$ as follows:
-		\begin{equation}
+		\begin{equation*}
 			\begin{array}{l}
 				D_{p} =\ <D_{0}, \textsf{Sign}_{S_{D}}(D_{0}), \textsf{Sign}_{S_{D}}(D_{\tau})>;\ where\ D_{\tau} =\ <D_{0}>\\
 				D_{0} =\ <D_{id},1,D_{value},H(N||1||D_{value})>
 			\end{array}
-			\label{eq:d-payload}
-		\end{equation}
+			%\label{eq:d-payload}
+		\end{equation*}
 
 		The root node of the aggregation tree $A$ receives the payloads $B_{p}, C_{p}, D_{p}$
 		% Equations \ref{eq:b-payload},\ref{eq:c-payload},\ref{eq:d-payload} 
@@ -168,17 +169,19 @@
 		Finally, $A$ has two data-items with count value of $4$.
 		In the final merge, $A$ aggregates those data-items and creates $A_{3}$ as shown in Figure \ref{fig:a-payload}.
 		Then $A$ creates payload and sends it to the base station as follows:
-		\begin{equation}
-			\begin{array}{l}
-				A_{p} =\ <A_{3},\textsf{Sign}_{S_{A}}(A_{3}),\textsf{Sign}_{S_{A}}(A_{\tau})>\ where\ A_{\tau} =\ <A_{3}>\\
-				A_{3} =\ <A_{id}, 8, A_{3value}, H(N||8||A_{3value}||A_{20}||A_{21})>;\ A_{3value} =\ A_{20value} + A_{21value}\\
-				A_{20} =\ <A_{id},4,A_{20value},H(N||4||A_{20value}||G_{1}||B_{1})>;\ A_{20value} =\ G_{1value} + B_{1value}\\ 
-				A_{21} =\ <A_{id},4,A_{21value},H(N||4||A_{21value}||A_{10}||A_{11})>;\ A_{21value} =\ A_{10value} + A_{11value}\\ 
-				A_{10} =\ <A_{id},2,A_{10value},H(N||2||A_{10value}||B_{0}||C_{0})>;\ A_{10value} =\ B_{value} + C_{value}\\
-				A_{11} =\ <A_{id},2,A_{11value},H(N||2||A_{11value}||D_{0}||A_{0})>;\ A_{11value} =\ D_{value} + A_{value}\\
-				A_{0} =\ <A_{id},1,A_{value},H(N||1||A_{value})>
-			\end{array}
-		\end{equation}
+		\begin{footnotesize}		
+			\begin{equation*}
+				\begin{array}{l}
+					A_{p} =\ <A_{3},\textsf{Sign}_{S_{A}}(A_{3}),\textsf{Sign}_{S_{A}}(A_{\tau})>\ where\ A_{\tau} =\ <A_{3}>\\
+					A_{3} =\ <A_{id}, 8, A_{3value}, H(N||8||A_{3value}||A_{20}||A_{21})>;\ A_{3value} =\ A_{20value} + A_{21value}\\
+					A_{20} =\ <A_{id},4,A_{20value},H(N||4||A_{20value}||G_{1}||B_{1})>;\ A_{20value} =\ G_{1value} + B_{1value}\\ 
+					A_{21} =\ <A_{id},4,A_{21value},H(N||4||A_{21value}||A_{10}||A_{11})>;\ A_{21value} =\ A_{10value} + A_{11value}\\ 
+					A_{10} =\ <A_{id},2,A_{10value},H(N||2||A_{10value}||B_{0}||C_{0})>;\ A_{10value} =\ B_{value} + C_{value}\\
+					A_{11} =\ <A_{id},2,A_{11value},H(N||2||A_{11value}||D_{0}||A_{0})>;\ A_{11value} =\ D_{value} + A_{value}\\
+					A_{0} =\ <A_{id},1,A_{value},H(N||1||A_{value})>
+				\end{array}
+			\end{equation*}
+		\end{footnotesize}
 		\begin{figure}[h!]
 			\centering
 			\includegraphics{images/a-payload.png}
@@ -247,13 +250,13 @@
 	If the base station verifies all the signatures to true it initiates the result checking phase.
 
 \section{Result Checking}
-	The purpose of the result checking phase is to enable all the sensor nodes to verify their individual contributions to the final aggregate value.
+	The purpose of the \textit{result checking} phase is to require that all the sensor nodes verify their individual contributions to the final aggregate value.
 	If there is any inconsistency in the aggregation process then with the help of the base station, trace down the node responsible for causing the inconsistency in the aggregation process.
 
 	\subsection{Dissemination Final Payload by the Base Station}
 		Once the base station receives the payloads of the root node of the aggregation tree, it verifies all the signatures in the payload and then sends each of the data-items in the payload to the entire sensor network using authenticated broadcast.
-		The authenticated broadcast allows the sensor nodes to verify that the data-items are sent by from the base station. 
-		And no one else is masquerading the base station.
+		The authenticated broadcast allows the sensor nodes to verify that the data-items are sent by the base station. 
+		The authentication requires no one else is masquerading the base station.
 		In our previous example, the base station receives only one data-item $A_{3}$ in the payload sent by $A$.
 		In that case, the base station's payload $\textsf{B}_{p}$ which is sent to the entire network is given as follows:
  		\begin{equation}
@@ -263,19 +266,19 @@
 	\subsection{Dissemination of Off-Path Values}
 		To enable verification each sensor node must receive all of its off-path values.
 		The off-path values of the sensor nodes can be determined according to the Definition \ref{def:off-path}.
-		Each internal vertex $t$ in the commitment tree has two children $u1$ and $u2$. 
-		To disseminate off-path values, $t$ sends the data-item of $u1$ to $u2$, and vice-versa ($t$ also attaches relevant information tagging $u1$ as the right child and $u2$ as the left child) along with the signatures of the data-item and the signature of the transmit-payload.
+		Each internal vertex $I$ in the commitment tree has two children $u_{1}$ and $u_{2}$. 
+		To disseminate off-path values, $I$ sends the data-item of $u_{1}$ to $u_{2}$, and vice-versa ($I$ also attaches relevant information tagging $u_{1}$ as the right child and $u_{2}$ as the left child) along with the signatures of the data-item and the signature of the transmit-payload.
 		In our previous example, internal vertex $A_{10}$ as shown in Figure \ref{fig:a-payload} has two children $C_{0},B_{0}$.
-		$A_{10}$ sends the following off-path values to $C, B$ respectively as follows:
+		$A_{10}$ (which is sensor node $A$ in aggregation tree) sends the following off-path values to $C, B$ respectively as follows:
 		\begin{equation}
 			\begin{array}{l}
 			<B_{0}, \textsf{Sign}_{S_{A}}(B_{0}),\textsf{Sign}_{S_{A}}(A_{\tau})>\ where\ A_{\tau} =\ <B_{0}>\\
 			<C_{0}, \textsf{Sign}_{S_{A}}(C_{0}),\textsf{Sign}_{S_{A}}(A_{\tau})>\ where\ A_{\tau} =\ <C_{0}>
 			\end{array}
 		\end{equation}
-		An internal vertex $t$ receives data-items with their respective signatures from its parent. 
+		An internal vertex $I$ receives data-items with their respective signatures from its parent. 
 		It verifies the signatures of the received data-items then resigns them and sends those data-items (and left/right tags) with their signatures to both of its children.
-		Continuing the previous example, internal vertex $A_{10}$ receives $A_{11}, A_{20}$ form its parent $A_{21}$.
+		Continuing the previous example, internal vertex $A_{10}$ receives $A_{11}, A_{20}$ from its parent $A_{21}$.
 		$A_{10}$ sends the following off-path values to $C, B$ respectively as follows:
 		\begin{equation}
 			\begin{array}{l}
@@ -285,18 +288,18 @@
 				where\  A_{\tau} =\ <C_{0}||A_{11}||A_{20}>
 			\end{array}
 		\end{equation}
-		Once a vertex has received all the data-items of its off-path vertices, it can proceed to the verification step.
+		Once a vertex has received all the data-items off its off-path vertices, it can proceed to the verification step.
 	
 	\subsection{Verification of Inclusion}
 	
-		Once the sensor node has received all the data-items of its off-path vertices from its parent, first it verifies the signature of all the received data-items and then it verify that no aggregation result tampering has occurred on the path between its leaf vertex and the root of its commitment tree.
-		And its senor reading was aggregated correctly by all the intermediate aggregate nodes.
+		Once the sensor node has received all the data-items of its off-path vertices from its parent, first it verifies the signature of all the received data-items and then it verifies that no aggregation result tampering has occurred on the path between its leaf vertex and the root of its commitment tree.
+		It also verifies that its senor reading was aggregated correctly by all the intermediate aggregate nodes.
 		For each vertex on the path from the root of its commitment tree, it derives the data-items according to Definition \ref{def:label}.
 		It is able to do so since the off-path values provide all the necessary information to perform the data-item computation.
 		In the previous example, $C$ receives $B_{0}, A_{11}, A_{20}$ from its parent node and it has $C_{0}$.
 		It aggregates $<C_{0}, B_{0}>$ and derives $A_{10}$.
 		Then it aggregates $A_{10}, A_{11}$ and derives $A_{21}$.
-		And finally it aggregates $A_{21}, A_{20}$ and derives $A_{3}$.
+		Finally it aggregates $A_{21}, A_{20}$ and derives $A_{3}$.
 		Then it compares the derived $A_{3}$ with the $A_{3}$ received from the base station.
 		Based on those data-items are identical or not the node proceeds with the next step accordingly.
 		If those data-items are not identical then the node sends the authentication code with NACK message.
@@ -304,15 +307,15 @@
 
 	\subsection{Collection of Authentication Codes}
 		\label{subsection:collection-of-authentication-codes}
-		The authentication codes for sensor node $S$, with their positive and negative acknowledgment message, are defined as follows:
+		The authentication codes for sensor node $I$, with their positive and negative acknowledgment message, are defined as follows:
 		\begin{equation}
 			\begin{array}{l}
-				MAC_{S_{S}}(N || ACK)\\
-				MAC_{S_{S}}(N || NACK)
+				MAC_{S_{I}}(N || ACK)\\
+				MAC_{S_{I}}(N || NACK)
 			\end{array}
 		\end{equation}
 
-		\textcolor{red}{refactor-$S_{s}$ is the secret key of the sensor node $S$},	ACK, NACK are special messages for positive and negative acknowledgment respectively.
+		\textcolor{red}{$S_{I}$ is the secret key of the sensor node $I$},	ACK, NACK are special messages for positive and negative acknowledgment respectively.
 		The authentication code with ACK message is sent by the sensor node if it verifies its contribution correctly to the root commitment value during the \textit{verification of inclusion} phase and vice versa.
 		Leaf sensor nodes in the aggregation tree first send their authentication codes to their parents in the aggregation tree.
 		Once an internal sensor node has received authentication codes from all its children, it computes the XOR of its own authentication code with all the received codes, and forwards it to its parent.
@@ -351,7 +354,7 @@
 			c_{i} := MAC_{S_{i}}(N || ACK) \oplus MAC_{S_{i}}(N || NACK)
 		\end{equation}
 		After that, it compares $c$\ with all $c_{i}$\ one at a time. 
-		And the matching code indicates the complainer node.
+		The matching code indicates the complainer node.
 		The base station needs to do $n \choose 1$\ calculations according to Equation \ref{eq:caomplainer-node} and same number of comparisons to find a complainer in the aggregation tree. 
 		Hence, the base station can find a single complainer in linear time.
 		\begin{exmp} 
@@ -365,7 +368,7 @@
 				\end{array}
 			\end{equation}
 			Let's say the root of an aggregation tree computed the $\Delta_{root} = (0100)_{2}$ as described in Subsection \ref{subsection:collection-of-authentication-codes}.
-			And the base station calculates $\Delta_{ack} = (1001)_{2}$ according to the Equation \ref{eq:mac-auth}.
+			The base station calculates $\Delta_{ack} = (1001)_{2}$ according to the Equation \ref{eq:mac-auth}.
 			Then it calculates the complainer code $c = (1101)_{2}$ according to the Equation \ref{eq:complainer}.
 			The base station also computes the complainer codes for each sensor node according to the Equation \ref{eq:caomplainer-node} as follows:
 			\begin{equation}			
@@ -374,10 +377,10 @@
 			The base station compares complainer code $c$ with individual complainer code $c_{i}$ and finds that $c=c_{4}$.
 			So, the base station identifies that the $s_{4}$\ complained, during verification of inclusion phase.
 		\end{exmp}
-		The binary illustration shows below helps visualize	\textcolor{red}{How applying XOR is negating the contribution of the authentication code with NACK?}
+		The binary illustration shows below helps visualize	that applying XOR is negating the contribution of the authentication code with NACK?
 		The base station receives the following from the root an aggregation tree, which includes one authentication code with NACK.
-		\[ 
-			\left( 
+		\[
+			\underbrace{			
 				\begin{array}{cccc}
 					1 & 0 & 0 & 1 \\ 
 					0 & 1 & 1 & 0 \\
@@ -386,51 +389,50 @@
 					\hline
 					0 & 1 & 0 & 0 
 				\end{array}
-			\right)
+				}_{\Delta_{root}}
 		\]
 		The base station calculates $\Delta_{ack}, \Delta_{nack} $ and complainer code $c$ as follows:
 		\[ 
-			\left( 
-				\begin{array}{cccc}
-					1 & 0 & 0 & 1 \\ 
-					0 & 1 & 1 & 0 \\
-					0 & 1 & 0 & 1 \\
-					0 & 0 & 1 & 1 \\
-					\hline
-					1 & 0 & 0 & 1 
-				\end{array}
-			\right)
-			\left( 
-				\begin{array}{cccc}
-					1 & 1 & 0 & 1 \\ 
-					1 & 1 & 1 & 1 \\
-					0 & 1 & 1 & 1 \\
-					1 & 1 & 1 & 0 \\
-					\hline
-					1 & 0 & 1 & 1 
-				\end{array}
-			\right)
+		\underbrace{
+			\begin{array}{ccccc}
+				& 1 & 0 & 0 & 1 \\ 
+				& 0 & 1 & 1 & 0 \\
+				& 0 & 1 & 0 & 1 \\
+				+ & 0 & 0 & 1 & 1 \\
+				\hline
+				 & 1 & 0 & 0 & 1 
+			\end{array}
+		}_{\Delta_{ack}}
+		\mbox{          }
+		\underbrace{
+			\begin{array}{cccc}
+				1 & 1 & 0 & 1 \\ 
+				1 & 1 & 1 & 1 \\
+				0 & 1 & 1 & 1 \\
+				1 & 1 & 1 & 0 \\
+				\hline
+				1 & 0 & 1 & 1 
+			\end{array}
+		}_{\Delta_{nack}}			
 		\]
 		\[ 
-			\left( 
-				\begin{array}{cccc}
-					1 & 0 & 0 & 1 \\ 
-					0 & 1 & 0 & 0 \\
-					\hline
-					1 & 1 & 0 & 1 \\
-				\end{array}
-			\right)
+		\underbrace{
+			\begin{array}{cccc}
+				1 & 0 & 0 & 1 \\ 
+				0 & 1 & 0 & 0 \\
+				\hline
+				1 & 1 & 0 & 1 \\
+			\end{array}
+		}_{c}		
 		\]
 		Then the base station calculates the complainer code for each node $i$ as follows:
 		\[
-			\left( 
-				\begin{array}{cccc cccc cccc cccc}
-					1 & 0 & 0 & 1\ \vline\  0 & 1 & 1 & 0\ \vline\  0 & 1 & 0 & 1\ \vline\  0 & 0 & 1 & 1 \\
-					1 & 1 & 0 & 1\ \vline\  1 & 1 & 1 & 1\ \vline\	0 & 1 & 1 & 1\ \vline\	1 & 1 & 1 & 0 \\ 
-					\hline
-					0 & 1 & 0 & 0\ \vline\ 1 & 0 & 0 & 1\ \vline\ 0 & 0 & 1 & 0\ \vline\ 1 & 1 & 0 & 1\\
-				\end{array}
-			\right)
+			\begin{array}{cccc cccc cccc cccc}
+				1 & 0 & 0 & 1\ \vline\  0 & 1 & 1 & 0\ \vline\  0 & 1 & 0 & 1\ \vline\  0 & 0 & 1 & 1 \\
+				1 & 1 & 0 & 1\ \vline\  1 & 1 & 1 & 1\ \vline\	0 & 1 & 1 & 1\ \vline\	1 & 1 & 1 & 0 \\ 
+				\hline
+				0 & 1 & 0 & 0\ \vline\ 1 & 0 & 0 & 1\ \vline\ 0 & 0 & 1 & 0\ \vline\ 1 & 1 & 0 & 1\\
+			\end{array}
 		\]
 		And concludes that node $4 $ is complaining.
 		In general, to find $k$\ complainers the base station needs to do $ n \choose k$\ calculations and the same number of comparisons to find $k$\ complainers.
@@ -574,3 +576,28 @@
 				
 \textbf{Node power level},
 \textbf{Surveillance Application}
+
+	\begin{equation*}	
+		\begin{array}{rl}
+			\begin{array}{r}
+				\\
+				\\
+				\\
+				+\\
+
+			\end{array}
+			&
+			\underbrace{
+				% \left( 
+					\begin{array}{cccc}
+						1 & 0 & 0 & 1 \\ 
+						0 & 1 & 1 & 0 \\
+						0 & 1 & 0 & 1 \\
+						0 & 0 & 1 & 1 \\
+						\hline
+						1 & 0 & 0 & 1 
+					\end{array}
+				% \right)
+			}_{\Delta_{P}}
+		\end{array}
+	\end{equation*}

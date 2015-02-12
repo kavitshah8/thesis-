@@ -57,8 +57,12 @@
 		where $S_{A}$ is the secret key of the sensor node $A$, $\textsf{Sign}$ is the signing algorithm.
 		The parent node receives the data-item and its signature from its child. 
 		It also receives the certificate from its child which is shown in Table \ref{table:digital-certificate}.
+		
 		\begin{table}[!htb]	
-			\begin{center}
+			% \begin{center}
+	  		\caption{Digital Certificate}
+			  \label{table:digital-certificate}
+				\centering
 				\begin{tabular}{ |l| }
 			    \hline
 			    Unique ID of the sensor node \\
@@ -70,9 +74,7 @@
 			    Certification Authority's digital signature \\
 			    \hline
 				\end{tabular}
-			\end{center}
-	  	\caption{Digital Certificate}
-		  \label{table:digital-certificate}
+			% \end{center}
 	  \end{table}
 	  From the digital certificate the parent node receives the public-key of its child, which is used to decipher the signature.
 	  For example, the parent node of $B$ verifies $\textsf{Sign}_{S_{A}}(A_{0})$ as follows:
@@ -249,73 +251,75 @@
 	Both the approaches have their pros and cons and the perfect approach depends heavily on the application.
 	The various aspects of both the approaches for sensor nodes are discussed in the following sections.
 
-	\section{Analysis}
-		To do the analysis we developed a performance matrix. 
-		We analysis different network topologies based on that matrix.
-		% In both the approaches, the commitment tree is complete binary.
-		% As we know, the complete binary tree has  $2^{h + 1} - 1$ vertices in the tree; where $h$ is the height of the tree with the root height is $0$. 
-		% So, we need $\Omega(2^{h + 1} - 1)$ signatures in both the approaches. 
-		% Analysis model:	
-		% 	While creating CT;While distributing off-path; Both places together\\
-		% Initial analysis says, if a single aggregate node cheats while CT generation or distributing off-path values it gets caught.
+\section{Analysis}
+	To do the analysis we developed a performance matrix. 
+	We analysis different network topologies based on that matrix.
+	% In both the approaches, the commitment tree is complete binary.
+	% As we know, the complete binary tree has  $2^{h + 1} - 1$ vertices in the tree; where $h$ is the height of the tree with the root height is $0$. 
+	% So, we need $\Omega(2^{h + 1} - 1)$ signatures in both the approaches. 
+	% Analysis model:	
+	% 	While creating CT;While distributing off-path; Both places together\\
+	% Initial analysis says, if a single aggregate node cheats while CT generation or distributing off-path values it gets caught.
 
-		Table \ref{table:Analysis table for Star Aggregation Tree} shows the analysis for the star tree network with $n$ nodes while creating the commitment tree.
-		\begin{table}[!htb]	
-			\begin{center}
-				\begin{tabular}{ |l| l| l| }
-			    \hline
-			    & With resigning & Without resigning \\
-			    \hline
-			    Number of created signatures & $2n + 1$ & $2n + 1$ \\	
-			    \hline
-			    Number of transmitted signatures & T & T\\
-			    \hline
-			    Number of signing activity & $2n + 1$ & $2n + 1$ \\
-			    \hline
-			    Number of verifying activity & $n - 1$ & $n - 1$ \\
-			    \hline
-			    Number of certificates & $n - 1$ & $n - 1$ \\
-			    \hline
-			    Edge congestion & $3(n - 1)$ & $3(n - 1)$\\
-			    \hline
-				\end{tabular}
-			\end{center}
-	  	\caption{Analysis for Star Aggregation Tree}
-		  \label{table:Analysis table for Star Aggregation Tree}
-	  \end{table}
+	As there are two signatures associated with any vertex in the commitment tree, there are at least $2 (2^{\lg n + 1} - 1)$ signatures created where $n$ is the number of nodes in the network.
+	Table \ref{table:Analysis table for Star Aggregation Tree} shows the analysis for the star tree network with $n$ nodes while creating the commitment tree.
+	\begin{table}[!htb]	
+		\begin{center}
+			\begin{tabular}{ |l| l| l| }
+		    \hline
+		    & FSwR & FSwoR \\
+		    \hline
+		    Number of created signatures & $2n + 1$ & $2n + 1$ \\	
+		    \hline
+		    Number of transmitted signatures & T & T\\
+		    \hline
+		    Number of signing activity & $2n + 1$ & $2n + 1$ \\
+		    \hline
+		    Number of verifying activity & $n - 1$ & $n - 1$ \\
+		    \hline
+		    Number of certificates & $n - 1$ & $n - 1$ \\
+		    \hline
+		    Edge congestion & $3(n - 1)$ & $3(n - 1)$\\
+		    \hline
+			\end{tabular}
+		\end{center}
+  	\caption{Analysis for Star Aggregation Tree}
+	  \label{table:Analysis table for Star Aggregation Tree}
+  \end{table}
 
-	  Table \ref{table:Analysis table for Palm Aggregation Tree} shows the analysis for the star tree network with $n$ nodes while creating the commitment tree.
-		\begin{table}[!htb]	
-			\begin{center}
-				\begin{tabular}{ |l| l| l| }
-			    \hline
-			    & With resigning & Without resigning \\
-			    \hline
-			    Number of created signatures & T & $2n$ \\	
-			    \hline
-			    Number of transmitted signatures & T & T\\
-			    \hline
-			    Number of signing activity & T & T \\
-			    \hline
-			    Number of verifying activity & T & T \\
-			    \hline
-			    Number of certificates & T & T \\
-			    \hline
-			    Edge congestion & T & T\\
-			    \hline
-				\end{tabular}
-			\end{center}
-	  	\caption{Analysis for Palm Aggregation Tree}
-		  \label{table:Analysis table for Palm Aggregation Tree}
-	  \end{table} 
-		
-		Note that we send signatures while distributing off-path values as well.
+  Table \ref{table:Analysis table for Palm Aggregation Tree} shows the analysis for the star tree network with $n$ nodes while creating the commitment tree.
+	\begin{table}[!htb]	
+		\begin{center}
+			\begin{tabular}{ |l| l| l| }
+		    \hline
+		    & FSwR & FSwoR \\
+		    \hline
+		    Number of created signatures & T & $2 (2^{\lg n + 1} - 1) + (n / 2)$ \\	
+		    \hline
+		    Number of transmitted signatures & T & T\\
+		    \hline
+		    Number of signing activity & T & T \\
+		    \hline
+		    Number of verifying activity & T & T \\
+		    \hline
+		    Number of certificates & T & T \\
+		    \hline
+		    Edge congestion & T & T\\
+		    \hline
+			\end{tabular}
+		\end{center}
+  	\caption{Analysis for Palm Aggregation Tree}
+	  \label{table:Analysis table for Palm Aggregation Tree}
+  \end{table}
+	As there are two signatures associated with any vertex in the commitment tree, there are at least  signatures created where $n$ is the number of nodes in the network.
 	
-		If we throw away the old signatures and resign the data-item with current aggregate node then following is true:
-			\begin{itemize}
-				\item Each parent needs the certificates of only its direct children.
-				\item Each child needs to know the certificate of its parent only.
-				\item Number of signatures remain the same as previous approach.
-				\item Number of certificates needed in the network is $O(n)$; n is the number of nodes in the network.
-				\item We do not need the signature of the payload.
-			\end{itemize}
+	Note that we send signatures while distributing off-path values as well.
+
+	If we throw away the old signatures and resign the data-item with current aggregate node then following is true:
+		\begin{itemize}
+			\item Each parent needs the certificates of only its direct children.
+			\item Each child needs to know the certificate of its parent only.
+			\item Number of signatures remain the same as previous approach.
+			\item Number of certificates needed in the network is $O(n)$; n is the number of nodes in the network.
+			\item We do not need the signature of the payload.
+		\end{itemize}
