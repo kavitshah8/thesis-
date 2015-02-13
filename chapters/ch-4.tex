@@ -99,6 +99,10 @@
 	In most of the real world applications, we cannot control $\delta$ as the aggregation tree is random.
 	Hence, it is desirable to have uniform distribution of congestion across the aggregation tree.
 
+	Even though network topology can be random, in our observation, palm tree, star tree, binary tree are widely used network topologies to do the performance analysis.
+	In the following chapters, we describe how to run our protocol for any random aggregation tree.
+	In the end, we do bandwidth analysis of the protocol for star, palm and binary trees.
+
 \section{Resilient And Non-Resilient Aggregate Functions}
 	
 	Wagner \cite{wagner2004resilient} uses statistical estimation theory to quantify the effects of direct data injection on various aggregates functions as follows:
@@ -145,10 +149,11 @@
 		\label{def:resilient}
 	\end{definition}
 	The intuition is that the $(k, \alpha)$-resilient functions, for small values of $\alpha$, are the ones that can be computed meaningfully and securely in the presence of up to $k$ compromised or malicious nodes.
-	Wagner's work is summarized in the Table~\ref{table:wagner}.
 	According to this quantitative study measuring the effects of direct data injection on various aggregates, concludes that the \textbf{aggregates (truncated SUM and AVERAGE ) can be resilient} under such attacks.
+	Wagner's work is summarized in the following Table.
 	\begin{table}[!htb]	
 		\begin{center}
+		\caption{Summary of Wagner's work}
 			\begin{tabular}{ |l| l| }
 				\hline
 			    Aggregate(f) & Security Level \\
@@ -164,8 +169,7 @@
 			    \hline
 			\end{tabular}
 		\end{center}
-		 \caption{Summary of Wagner's work}
-		 \label{table:wagner}
+		\label{table:wagner}
 	\end{table}
 
 \section{Security Issues}
