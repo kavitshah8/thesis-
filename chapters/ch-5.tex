@@ -110,7 +110,7 @@
 	Internal vertices in the commitment tree represent aggregation operations, and have labels that are defined based on their children. 
 	Suppose an internal node $I$ has child vertices with the following labels : $A_{1}$, $A_{2}$, $\dotsc$ , $A_{q}$, where $A_{i}$ = $<$ $A_{icount}$, $A_{ivalue}$, $\overline{A_{ivalue}}$, $A_{icommitment}$$>$. 
 	The label for the internal vertex $I_{j}$ is given as follows:
-	\begin{equation}
+	\begin{equation*}
 		\begin{array}{l}
 			I_{j} =\ <I_{jcount}, I_{jvalue}, \overline{I_{jvalue}}, I_{jcommitment}>\\
 			I_{jcount} = \sum A_{icount}\\ 
@@ -118,7 +118,7 @@
 			\overline{I_{jvalue}} = \sum \overline{A_{ivalue}}\\
 			I_{jcommitment} = H[N||I_{jcount}||I_{jvalue}||\overline{I_{jvalue}}||A_{1}||A_{2}|| \dotsc ||A_{q}]\\
 		\end{array}
-	\end{equation}
+	\end{equation*}
 	The word vertex is used for the node in the commitment tree and the node is used for the node in the aggregation tree.
 	There is a mapping between the node in the aggregation tree and the vertices in the commitment tree.
 	A vertex is a logical element in the commitment tree where as the node is a physical sensor node which does all the local computations and wireless communications.
@@ -137,11 +137,11 @@
 		In this example, the node $B$ receives $E_{0}$ from $E$, $F_{0}$ from $F$ and has its own leaf vertex $B_{0}$.
 		The node $B$ aggregates all three vertices by creating a new vertex $B_{1}$ and sends $B_{1}$ to its parent node $A$.
 		The label of an internal vertex $B_{1}$ is defined as follows:
-		\begin{equation}
+		\begin{equation*}
 			B_{1} =\ <3, B_{1value}, \overline{B_{1value}}, H[N || 3 || B_{1value} || \overline{B_{1value}} ||B_{0}||E_{0}||F_{0}]>\\
-		\end{equation}
+		\end{equation*}
 		The labels of the vertices on the path of node $I$ to the root for the commitment tree $A$ are given as follows:
-		\begin{equation}
+		\begin{equation*}
 			\begin{array}{l}
 				I_{0} =\ <1, I_{value}, \overline{I_{value}}, I_{id}>\\
 				H_{1} =\ <2, H_{1value}, \overline{H_{1value}}, H [ N || 2 || H_{1value} || \overline{H_{1value}} || H_{0} || I_{0} ] > ; H_{1value} = I_{value} + H_{value}\\
@@ -152,7 +152,7 @@
 				A_{1} =\ <9, A_{1value}, \overline{A_{1value}}, H [ N || 9 || A_{1value} || \overline{A_{1value}} || A_{0} || D_{0} || B_{1} || C_{1} ] >\\
 				A_{1value} = A_{value} + D_{value} + B_{1value} + C_{1value} \\
 			\end{array}
-		\end{equation}
+		\end{equation*}
 		\begin{figure}[h!]
 			\centering
 			\includegraphics[scale = 1]{images/naive-commitment-tree.png}
@@ -196,7 +196,7 @@
 			\caption{$A$ receives $C_{2}$ from $C$, $(B_{1},B_{0})$ from $B$, $D_{0}$ from $D$ and generates $A_{0}$. The commitment forest received from a given sensor node is indicated by dashed-line box.}
 			\label{fig:commitment-tree-example-1-shia}
 		\end{figure}
-		\begin{equation}
+		\begin{equation*}
 			\begin{array}{l}
 				A_{0} = <1, A_{value}, \overline{A_{value}}, A_{id}>\\
 				D_{0} = <1, D_{value}, \overline{D_{value}}, D_{id}>\\
@@ -204,43 +204,43 @@
 				B_{1} = <2, B_{1value}, \overline{B_{1value}}, H(N || 2 || B_{1value} || \overline{B_{1value}} || B_{0} || F_{0})>\\
 				C_{2} = <4, C_{2value}, \overline{C_{2value}}, H(N || 4 || C_{2value} || \overline{C_{2value}} || H_{1} || C_{1})>\\
 			\end{array}
-		\end{equation}
+		\end{equation*}
 		\begin{figure}[h!]
 			\centering
 			\includegraphics{images/commitment-tree-example-2-shia.png}
 			\caption{First Merge: $A_{1}$ vertex created by A.}
 			\label{fig:commitment-tree-example-2-shia}
 		\end{figure}
-		\begin{equation}
+		\begin{equation*}
 			\begin{array}{l}
 				A_{1} =\  < 2, A_{1value}, \overline{A_{1value}}, H(N || 2 || A_{1value}|| \overline{A_{1value}} || A_{0} || D_{0})>\\
 				A_{1value} =\  A_{value} + D_{value};\ \overline{A_{1value}} = \overline{A_{value}} + \overline{D_{value}}
 			\end{array}
-		\end{equation}
+		\end{equation*}
 		\begin{figure}[h!]
 			\centering
 			\includegraphics{images/commitment-tree-example-3-shia.png}
 			\caption{Second Merge: $A_{2}$ vertex created by A.}
 			\label{fig:commitment-tree-example-3-shia}
 		\end{figure}
-		\begin{equation}
+		\begin{equation*}
 			\begin{array}{l}
 				A_{2} = <4, A_{2value}, \overline{A_{2value}}, H(N || 4 || A_{2value} || \overline{A_{2value}} || B_{1} ||A_{1}) >\\
 				A_{2value} = A_{1value} + B_{1value};\ \overline{A_{2value}} = \overline{A_{1value}} + \overline{B_{1value}}
 			\end{array}
-		\end{equation}
+		\end{equation*}
 		\begin{figure}[h!]
 			\centering
 			\includegraphics{images/commitment-tree-example-4-shia.png}
 			\caption{Third Merge: $A_{3}$ vertex created by A.}
 			\label{fig:commitment-tree-example-4-shia}
 		\end{figure}
-		\begin{equation}
+		\begin{equation*}
 			\begin{array}{l}
 				A_{3} = <8, A_{3value}, \overline{A_{3value}}, H(N || 8 || A_{3value} || \overline{A_{3value}} || C_{2} ||A_{2}) >\\
 				A_{3value} = A_{2value} + C_{2value};\ \overline{A_{3value}} = \overline{A_{2value}} + \overline{C_{2value}}
 			\end{array}
-		\end{equation}
+		\end{equation*}
 		
 		Once the base station has received the final commitment forest from the root node, it checks that none of the SUM or COMPLEMENT aggregates of the roots of the trees in the forest are negative. 
 		If any aggregates are negative, the base station rejects the result and raises an alarm: a negative aggregate is a sure sign of tampering since all the data values (and their complements) are non-negative. 
