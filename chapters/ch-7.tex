@@ -2,7 +2,7 @@
 \label{cha:Data Aggregation With Internal Verification}
 
 % \section{System Design importantplementations}
-	The high level idea of the aggregate commit with verification scheme is that all the sensor nodes in the network send the signature of the message along with the message.
+	The concept of an aggregate commit with verification scheme is that all the sensor nodes in the network send the signature of the message along with the message.
 	They send their certificates if the parent node does not have it already.
 	The parent node verifies all the received signatures from its children and proceeds with the aggregation process.
 	After aggregation, the parent node can throw away all the signatures from its children and signs the message of its children or it can pass its children's signatures to its parent. 
@@ -13,7 +13,8 @@
 
 \section{Data-Item}
 	
-	We describe structure of the data-item and its signature, used in creating the commitment tree for the aggregate commit with verification approach. And differences between the data-item and the label structure of SHIA, with rational behind it.
+	We describe structure of the data-item and its signature, used in creating the commitment tree for the aggregate commit with verification approach. 
+	The differences between the data-item and the label structure of SHIA, with rationale behind it are discussed.
 	\begin{definition}
 		\label{def:data-item}
 		A commitment tree is a binary tree where each vertex has an associated data-item representing the data that is passed on to its parent. The data-items have the following format:
@@ -30,8 +31,8 @@
 	where $A_{id}, A_{value}$ is the unique ID and sensor reading of the node $A$. 
 	The count is $1$ as there is only vertex in the subtree rooted at $A$, $H$ is the collision resistant hash function, and $N$ is the query nonce.
 
-	The first difference between SHIA's label structure and our data-item structure is that we remove the $complement$ field from the label structure Defined \ref{def:label}. 
-	We think the complement filed is redundant information in the label. 
+	The first difference between SHIA's label structure and our data-item structure is that we remove the $complement$ field from the label structure Definition \ref{def:label}. 
+	The complement field is redundant information in the label. 
 	The complement field is used by the base station (the querier in SHIA), before the result checking phase.
 	It is used to verify \textbf{SUM + COMPLEMENT =} $\textbf{n} \cdot \textbf{r}$ where $\textbf{n}$ is the number of nodes in the network, $\textbf{r}$ is the upper bound on the allowed sensor readings.
 	We can achieve the same upper bound without the complement field.
@@ -55,23 +56,22 @@
 		\end{equation}
 		where $S_{A}$ is the secret key of the sensor node $A$, $\textsf{Sign}$ is the signing algorithm.
 		The parent node receives the data-item and its signature from its child. 
-		It also receives the certificate from its child which is shown in Table \ref{table:digital-certificate}.
-		
+		It also receives the certificate from its child which is shown in Table \ref{table:digital-certificate}.		
 		\begin{table}[!htb]	
 			% \begin{center}
 	  		\caption{Digital Certificate}
 			  \label{table:digital-certificate}
 				\centering
 				\begin{tabular}{ |l| }
-			    \hline
-			    Unique ID of the sensor node \\
-			    \hline
-			    Public key of the sensor node \\	
-			    \hline
-			    Certification Authority's name \\
-			    \hline
-			    Certification Authority's digital signature \\
-			    \hline
+				    \hline
+				    Unique ID of the sensor node \\
+				    \hline
+				    Public key of the sensor node \\	
+				    \hline
+				    Certification Authority's name \\
+				    \hline
+				    Certification Authority's digital signature \\
+				    \hline
 				\end{tabular}
 			% \end{center}
 	  \end{table}
@@ -96,6 +96,7 @@
 		The signature $\textsf{S}$ assures the \textit{integrity} of the data-item $S_{0}$.
 		Because either the data-item or the signature has been tampered in any way the verification algorithm returns false.
 		Furthermore, it allows the sender to have the proof for the sent data-item.
+
 		And the receiver for the proof for the received data-item, providing the security service of \textit{non-repudiation}.
 		The digital signature depends on the message so the parent node can not reuse the signature for other messages in the future.
 		Hence, protecting the network against the \textit{replay attacks}.
@@ -103,7 +104,7 @@
 
 \section{Commitment Payload}
 
-	We define commitment payload based on the commitment forest Defined in \ref{def:commitment-forest}.
+	We define commitment payload based on the commitment forest Definition \ref{def:commitment-forest}.
 	We also define transmit payload as follows.
 	\begin{definition}
 		A \textbf{commitment payload} is a set of data-items of the root vertices of the trees with their respective signatures in the outgoing commitment forest and an additional signature for the transmission.
@@ -141,16 +142,15 @@
 	The verification of the received signatures in the payload is done by the parent node in the same way described in Section \ref{subsection:Signing and Verification of the Data-Item}.
 
 	\subsection{Security Benefits}
-		As described in Subsection \ref{subsec:security benefits of signing the data-item}, the signature of the transmit-payload $\textsf{Sign}_{S_{S}}(S_{\tau})$ assures the integrity and authentication of the transmit-payload $S_{\tau}$.
+		As described in Section \ref{subsec:security benefits of signing the data-item}, the signature of the transmit-payload $\textsf{Sign}_{S_{S}}(S_{\tau})$ assures the integrity and authentication of the transmit-payload $S_{\tau}$.
 		In addition to that, the signature of the transmit-payload is like the signature for the transmission.
 		To the sender, it assures that it is sending only the data-items included in the signature of the transmit-payload.
-		And none of the data-items gets added or remove from the transmit-payload during the transmission. 
-		To the receiver, it assures that it receives all the data-items included in the signature of the transmit-payload. 
-		And none of the data-items were stranded or added additionally to the payload of its child.
+		Further, it establish that none of the data-items gets added or remove from the transmit-payload during the transmission. 
+		To the receiver, it assures that it receives all the data-items included in the signature of the transmit-payload and none of the data-items were stranded or added additionally to the payload of its child.
 		For example, the signature on the $C$'s transmit-payload $\textsf{Sign}_{S_{C}}(C_{\tau})$ assures that the sensor node $C$ sent only two data-items $C_{0},B_{1}$ in its payload.
-		And none of the data-items in its payload have been left stranded.
+		It also establishes that none of the data-items in its payload have been left stranded.
 		% It is true for the sensor node $A$.
-		As we said, it like the signature for the transmission.
+		As we said, it's like the signature for the transmission.
 
 \section{Key Differences}
 
@@ -160,7 +160,7 @@
 
 	In SHIA, the parent node proceeds with the aggregation process without verifying the received data-items.
 	In our protocol, the parent node verifies the received signature using the the verification algorithm.
-	And it proceeds with the aggregation only if all the signatures are verified true.
+	It proceeds with the aggregation only if all the signatures are verified true.
 
 	In SHIA, the trusted base station verifies the final received data-items.
 	And upon detecting the malicious activity in the network, the base station raises an alarm. 
@@ -170,15 +170,26 @@
 	
 	\subsection{Bandwidth Analysis}
 	
-		% \textcolor{red}{Might need refactoring}
-		Typical size of the data-item packet is $400$ bits.
-		If one uses Elliptic Curve Digital Signature Algorithm (ECDSA) then the size of signature is $500$ bits \cite{ecdsa2009186}.
-		And the certificate size is $1500$ bits.
-		So, at max we have to send additional $2000$ bits with the data-item.
-		We think it is worthwhile to send these additional bits.
-		Because of all the security benefits we gain from it. 
-		\textbf{Note:} The packets size are close approximate to the actual packet size. 
-		The actual packet size may differ based on the implementation.
+	% \textcolor{red}{Might need refactoring}
+	According to Definition \ref{def:data-item}, the typical size of the data-item packet is $400$ bits as shown below.
+	\begin{table}[!htb]	
+  		\caption{Data-Item Size}
+  		\centering
+		\begin{tabular}{ | l | l | l | l |}
+			\hline
+			ID & COUNT & VALUE & COMMITMENT \\
+			\hline
+			20 bits & 21 bits & 20 bits & 256 bits\\
+			\hline
+		\end{tabular}
+  	\end{table}
+	If one uses Elliptic Curve Digital Signature Algorithm (ECDSA) then the size of signature is $500$ bits \cite{ecdsa2009186}.
+	And the certificate size is $1500$ bits.
+	So, at max we have to send additional $2000$ bits with the data-item.
+	We think it is worthwhile to send these additional bits.
+	Because of all the security benefits we gain from it. 
+	\textbf{Note:} The packets size are close approximate to the actual packet size. 
+	The actual packet size may differ based on the implementation.
 
 \section{Two Ways of Forwarding Payload}	
 	
@@ -212,21 +223,21 @@
 	The sensor node $C$ sends three signatures $\textsf{Sign}_{S_{C}}(B_{1})$, $\textsf{Sign}_{S_{C}}(C_{0}) $ and $\textsf{Sign}_{S_{C}}(C_{\tau})$ to its parent $D$.
 	But all the signatures are signed by the sensor node $C$, it requires the parent node $D$ to know the public key of only the sensor node $C$, hence $D$ need to know only one certificate.
 
-	To give an analogy with the real world application consider the following example.
-	One want to buy a diamond from the local diamond retailer.
-	Diamond is an expensive commodity so the end customer wants to verify its authenticity and integrity before purchasing.
-	Suppose, the diamond was created by the manufacturer in Africa, it was sold to a national wholesaler in the United States. 
+	To give an analogy with a real world application, consider the following example.
+	Suppose, one want to buy a diamond from the local diamond retailer.
+	Some Diamonds are expensive commodity, so the end customer wants to verify its authenticity and integrity before purchasing.
+	Now, suppose the diamond was created by the manufacturer in Africa, it was sold to a national wholesaler in the United States. 
 	The national wholesaler sells it to the state level reseller and he sells it to the city or county level retailer from whom the customer purchases the diamond.
 
 	One approach to verify the authenticity of the commodity is to make each entity in the supply chain to verify all the signatures on the received entity and sign on top of it.
 	And then forward the commodity with all the signatures to the next entity in the supply chain.
 	The next entity repeats the same procedure.
 	Hence, any entity in the supply chain need to verify the signatures of all its descendants in the supply chain.
-	In our example, it means to make the manufacturer from Africa signs the diamond and sells the signed diamond with his certificate to the national level wholesaler in United States.
+	In our example, it means to make the manufacturer from Africa signs the diamond and sells the signed diamond and sends the certificate to the national level wholesaler in United States.
 	The national level wholesaler in United States verifies the signature from the manufacturer using manufacturer's certificate.
 	Then he adds his signature and certificate, and sells the diamond signed with two signatures and two certificates to the state level reseller.
 	The state level reseller verifies both the signatures on the diamond using the respective certificates.
-	Then he adds his signature and certificate, and sells the diamond singed with three signatures and three certificates to the city level retailer. 
+	Then they add their signature and send their certificate, and sells the diamond singed with three signatures and three certificates to the city level retailer. 
 	The city level retailer does the same thing before selling the diamond to the end customer.
 	In the end, the customer needs to verify all four signatures, using the respective certificates.
 
@@ -240,7 +251,7 @@
 	The national level wholesaler in United States verifies the signature from the manufacturer using the manufacturer's certificate.
 	Then he removes the signature of the manufacturer, adds his own signature and certificate, and sells the diamond signed with one signature and one certificate to the state level reseller.
 	The state level reseller verifies only the signature from the wholesaler using the wholesaler's certificate.
-	Then he removes the signature of the wholesaler, adds his own signature and certificate, and sells the diamond signed with one signature and one certificate to the city level retailer.
+	Then they remove the signature of the wholesaler, adds their own signature and certificate, and sells the diamond signed with one signature and one certificate to the city level retailer.
 	The city level retailer does the same thing before selling the diamond to the end customer.
 	In the end, the customer needs to verify only one signature of the city level retailer using retailer's certificate.
 	This approach requires very few number of certificates overall in the supply chain.
