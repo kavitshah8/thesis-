@@ -66,7 +66,7 @@
 	\begin{footnotesize}
 		\begin{equation*}
 			\begin{array}{l}
-			E_{p} =\ <E_{0}, \textsf{Sign}_{S_{E}}(E_{0}), \textsf{Sign}_{S_{E}}(E_{\tau}) >\ where\ E_{\tau} =\ <E_{0}>\\
+			E_{p} =\ <E_{0}, \textsf{Sign}_{\sk_{E}}(E_{0}), \textsf{Sign}_{\sk_{E}}(E_{\tau}) >\ where\ E_{\tau} =\ <E_{0}>\\
 			E_{0} =\ <E_{id}, 1, E_{value}, H(N||1||E_{value})>
 			\end{array}
 		\end{equation*}
@@ -74,7 +74,7 @@
 	\begin{footnotesize}
 		\begin{equation*}
 			\begin{array}{l}
-				F_{p} =\ <F_{0}, \textsf{Sign}_{S_{F}}(F_{0}), \textsf{Sign}_{S_{F}}(F{\tau}) >\ where\ F_{\tau} =\ <F_{0}>\\
+				F_{p} =\ <F_{0}, \textsf{Sign}_{\sk_{F}}(F_{0}), \textsf{Sign}_{\sk_{F}}(F{\tau}) >\ where\ F_{\tau} =\ <F_{0}>\\
 				F_{0} =\ <F_{id}, 1, F_{value}, H(N||1||F_{value})>.
 			\end{array}
 		\end{equation*}
@@ -90,7 +90,7 @@
 	\begin{footnotesize}
 		\begin{equation*}
 			\begin{array}{l}
-				B_{p} =\ < B_{0}, \textsf{Sign}_{S_{B}}(B_{0}), B_{1}, \textsf{Sign}_{S_{B}}(B_{1}), \textsf{Sign}_{S_{B}}(B_{\tau}) >\ where\ B_{\tau} =\ <B_{0} || B_{1}>\\
+				B_{p} =\ < B_{0}, \textsf{Sign}_{\sk_{B}}(B_{0}), B_{1}, \textsf{Sign}_{\sk_{B}}(B_{1}), \textsf{Sign}_{\sk_{B}}(B_{\tau}) >\ where\ B_{\tau} =\ <B_{0} || B_{1}>\\
 				B_{1} =\ < B_{id}, 2, B_{1value}, H(N||2||B_{1value}||E_{0}||F_{0})>;\ B_{1value} = E_{value} + F_{value} \\
 				B_{0} =\ <B_{id}, 1, B_{value}, H(N||1||B_{value})>
 			\end{array}
@@ -108,7 +108,7 @@
 		In similar way, the sensor node $C$ in the aggregation tree receives $G_{p}$ from $G$ which is defined as follows:
 		\begin{equation*}
 			\begin{array}{l}
-				G_{p} =\ <G_{1},\textcolor{red}{\textsf{Sign}_{S_{G}}(G_{1})}, \textsf{Sign}_{S_{G}}(G_{\tau})>\ where\ G_{\tau} =\ <G_{0} || H_{0}>\\
+				G_{p} =\ <G_{1},\textcolor{red}{\textsf{Sign}_{\sk_{G}}(G_{1})}, \textsf{Sign}_{\sk_{G}}(G_{\tau})>\ where\ G_{\tau} =\ <G_{0} || H_{0}>\\
 				G_{1} =\ < G_{id}, 2, G_{1value}, H(N||2||G_{1value}||G_{0}||H_{0})>;\ G_{1value} = G_{value} + H_{value} \\
 				G_{0} =\ <G_{id}, 1, G_{value}, H(N||1||G_{value})>\\
 				H_{0} =\ <H_{id}, 1, H_{value}, H(N||1||H_{value})>
@@ -127,7 +127,7 @@
 		\end{figure}
 		\begin{equation*}
 			\begin{array}{l}
-				C_{p} =\ <C_{0},\textsf{Sign}_{S_{C}}(C_{0}),G_{1},\textcolor{red}{\textsf{Sign}_{S_{C}}(G_{1})}, \textsf{Sign}_{S_{C}}(C_{\tau})>\ where\ C_{\tau} =\ <C_{0} || G_{1}>\\
+				C_{p} =\ <C_{0},\textsf{Sign}_{\sk_{C}}(C_{0}),G_{1},\textcolor{red}{\textsf{Sign}_{\sk_{C}}(G_{1})}, \textsf{Sign}_{\sk_{C}}(C_{\tau})>\ where\ C_{\tau} =\ <C_{0} || G_{1}>\\
 				C_{0} =\ <C_{id}, 1, C_{value}, H(N||1||C_{value})>
 			\end{array}
 			%\label{eq:c-payload}
@@ -136,7 +136,7 @@
 		The sensor node $D$ creates its payload ($D_{p}$) and sends it to $A$ as follows:
 		\begin{equation*}
 			\begin{array}{l}
-				D_{p} =\ <D_{0}, \textsf{Sign}_{S_{D}}(D_{0}), \textsf{Sign}_{S_{D}}(D_{\tau})>;\ where\ D_{\tau} =\ <D_{0}>\\
+				D_{p} =\ <D_{0}, \textsf{Sign}_{\sk_{D}}(D_{0}), \textsf{Sign}_{\sk_{D}}(D_{\tau})>;\ where\ D_{\tau} =\ <D_{0}>\\
 				D_{0} =\ <D_{id},1,D_{value},H(N||1||D_{value})>
 			\end{array}
 			%\label{eq:d-payload}
@@ -175,7 +175,7 @@
 		% \begin{footnotesize}		
 			\begin{equation*}
 				\begin{array}{l}
-					A_{p} =\ <A_{3},\textsf{Sign}_{S_{A}}(A_{3}),\textsf{Sign}_{S_{A}}(A_{\tau})>\ where\ A_{\tau} =\ <A_{3}>\\
+					A_{p} =\ <A_{3},\textsf{Sign}_{\sk_{A}}(A_{3}),\textsf{Sign}_{\sk_{A}}(A_{\tau})>\ where\ A_{\tau} =\ <A_{3}>\\
 					A_{3} =\ <A_{id}, 8, A_{3value}, H(N||8||A_{3value}||A_{20}||A_{21})>;\ A_{3value} =\ A_{20value} + A_{21value}\\
 					A_{20} =\ <A_{id},4,A_{20value},H(N||4||A_{20value}||G_{1}||B_{1})>;\ A_{20value} =\ G_{1value} + B_{1value}\\ 
 					A_{21} =\ <A_{id},4,A_{21value},H(N||4||A_{21value}||A_{10}||A_{11})>;\ A_{21value} =\ A_{10value} + A_{11value}\\ 
@@ -194,12 +194,12 @@
 
 	We claim that the binary representation of a number $x$ illustrates the payload decomposition of the sensor node $S$, where $x$ = $1$ + number of descendants of $S$.
 	For example, if sensor node $S$ has $22$ descendants then $x =23$, $(x)_{10}$ = $(10111)_{2}$. 
-	It means $S$ has four complete binary trees in its payload, with the height of four, two, one and zero.
+	This means $S$ has four complete binary trees in its payload, with the height of four, two, one and zero.
 	Note that all the trees in the commitment payload are complete binary trees and no two trees have the same height.
 
 	Once the base station receives the payload from the root of the aggregation tree, it verifies all the signatures in the payload.
-	In the previous example the base station receives $A_{p}$ from the sensor node $A$.
-	It verifies the signatures $\textsf{Sign}_{S_{A}}(A_{3})$, $\textsf{Sign}_{S_{A}}(A_{\tau})$ in the received payload.	 
+	In the previous example, the base station receives $A_{p}$ from the sensor node $A$.
+	It verifies the signatures $\textsf{Sign}_{\sk_{A}}(A_{3})$, $\textsf{Sign}_{\sk_{A}}(A_{\tau})$ in the received payload.	 
 	If the base station verifies all the signatures to true it initiates the result checking phase.
 
 \section{Result Checking}
@@ -212,9 +212,11 @@
 		The authentication requires no one else is masquerading the base station.
 		In our previous example, the base station receives only one data-item $A_{3}$ in the payload sent by $A$.
 		In that case, the base station's payload $\textsf{B}_{p}$ which is sent to the entire network is given as follows:
- 		\begin{equation}
-			\textsf{B}_{p} =\ <A_{3}, \textsf{Sign}_{S_{\textsf{B}}}(A_{3}), \textsf{Sign}_{S_{\textsf{B}}}(\textsf{B}_{\tau})>\ where\ \textsf{B}_{\tau} =\ <A_{3}>
-		\end{equation}
+		\begin{footnotesize}
+	 		\begin{equation*}
+				\textsf{B}_{p} =\ <A_{3}, \textsf{Sign}_{\sk_{\textsf{B}}}(A_{3}), \textsf{Sign}_{\sk_{\textsf{B}}}(\textsf{B}_{\tau})>\ where\ \textsf{B}_{\tau} =\ <A_{3}>.
+			\end{equation*}
+		\end{footnotesize}
 
 	\subsection{Dissemination of Off-Path Values}
 		To enable verification each sensor node must receive all of its off-path values.
@@ -223,24 +225,28 @@
 		To disseminate off-path values, $I$ sends the data-item of $u_{1}$ to $u_{2}$, and vice-versa ($I$ also attaches relevant information tagging $u_{1}$ as the right child and $u_{2}$ as the left child) along with the signatures of the data-item and the signature of the transmit-payload.
 		In our previous example, internal vertex $A_{10}$ as shown in Figure \ref{fig:a-payload} has two children $C_{0},B_{0}$.
 		$A_{10}$ (which is sensor node $A$ in aggregation tree) sends the following off-path values to $C, B$ respectively as follows:
-		\begin{equation*}
-			\begin{array}{l}
-			<B_{0}, \textsf{Sign}_{\sk_{A}}(B_{0}),\textsf{Sign}_{S_{A}}(A_{\tau})>\ where\ A_{\tau} =\ <B_{0}>\\
-			<C_{0}, \textsf{Sign}_{S_{A}}(C_{0}),\textsf{Sign}_{S_{A}}(A_{\tau})>\ where\ A_{\tau} =\ <C_{0}>
-			\end{array}
-		\end{equation*}
+		\begin{footnotesize}
+			\begin{equation*}
+				\begin{array}{l}
+					<B_{0}, \textsf{Sign}_{\sk_{A}}(B_{0}),\textsf{Sign}_{\sk_{A}}(A_{\tau})>\ where\ A_{\tau} =\ <B_{0}>\\
+					<C_{0}, \textsf{Sign}_{\sk_{A}}(C_{0}),\textsf{Sign}_{\sk_{A}}(A_{\tau})>\ where\ A_{\tau} =\ <C_{0}>
+				\end{array}
+			\end{equation*}
+		\end{footnotesize}
 		An internal vertex $I$ receives data-items with their respective signatures from its parent. 
 		It verifies the signatures of the received data-items then resigns them and sends those data-items (and left/right tags) with their signatures to both of its children.
 		Continuing the previous example, internal vertex $A_{10}$ receives $A_{11}, A_{20}$ from its parent $A_{21}$.
 		$A_{10}$ sends the following off-path values to $C, B$ respectively as follows:
-		\begin{equation*}
-			\begin{array}{l}
-			<B_{0}, \textsf{Sign}_{S_{A}}(B_{0}),A_{11},\textsf{Sign}_{S_{A}}(A_{11}),A_{20},\textsf{Sign}_{S_{A}}(A_{20}),\textsf{Sign}_{S_{A}}(A_{\tau})>\\
-				where\  A_{\tau} =\ <B_{0}||A_{11}||A_{20}>\\
-			<C_{0}, \textsf{Sign}_{S_{A}}(C_{0}),A_{11},\textsf{Sign}_{S_{A}}(A_{11}),A_{20},\textsf{Sign}_{S_{A}}(A_{20}),\textsf{Sign}_{S_{A}}(A_{\tau})>\\ 
-				where\  A_{\tau} =\ <C_{0}||A_{11}||A_{20}>
-			\end{array}
-		\end{equation*}
+		\begin{footnotesize}
+			\begin{equation*}
+				\begin{array}{l}
+					<B_{0}, \textsf{Sign}_{\sk_{A}}(B_{0}),A_{11},\textsf{Sign}_{\sk_{A}}(A_{11}),A_{20},\textsf{Sign}_{\sk_{A}}(A_{20}),\textsf{Sign}_{\sk_{A}}(A_{\tau})>\\
+						\textcolor{white}{XXXXX}where\  A_{\tau} =\ <B_{0}||A_{11}||A_{20}>\\
+					<C_{0}, \textsf{Sign}_{\sk_{A}}(C_{0}),A_{11},\textsf{Sign}_{\sk_{A}}(A_{11}),A_{20},\textsf{Sign}_{\sk_{A}}(A_{20}),\textsf{Sign}_{\sk_{A}}(A_{\tau})>\\ 
+						\textcolor{white}{XXXXX}where\  A_{\tau} =\ <C_{0}||A_{11}||A_{20}>
+				\end{array}
+			\end{equation*}
+		\end{footnotesize}
 		Once a vertex has received all the data-items off its off-path vertices, it can proceed to the verification step.
 	
 	\subsection{Verification of Inclusion}
@@ -262,18 +268,18 @@
 		The authentication codes for sensor node $I$, with their positive and negative acknowledgment message, are defined as follows:
 		\begin{equation}
 			\begin{array}{l}
-				MAC_{S_{I}}(N || ACK)\\
-				MAC_{S_{I}}(N || NACK)
+				\mbox{MAC}_{\sk_{I}}(\mbox{N} || \mbox{ACK})\\
+				\mbox{MAC}_{\sk_{I}}(\mbox{N} || \mbox{NACK})
 			\end{array}
 		\end{equation}
 
-		$S_{I}$ is the secret key of the sensor node $I$, ACK and NACK are special messages for positive and negative acknowledgment respectively.
+		$\sk_{I}$ is the secret key of the sensor node $I$, ACK and NACK are special messages for positive and negative acknowledgment respectively.
 		The authentication code with ACK message is sent by the sensor node if it verifies its contribution correctly to the root commitment value during the \textit{verification of inclusion} phase and vice versa.
 		Leaf sensor nodes in the aggregation tree first send their authentication codes to their parents in the aggregation tree.
 		Once an internal sensor node has received authentication codes from all its children, it computes the XOR of its own authentication code with all the received codes, and forwards it to its parent.
-		For example, the sensor node $B$ shown in Figure \ref{fig:Aggregation-tree-1}, receives the authentication codes $MAC_{S_{E}}(N||ACK)$, $MAC_{S_{F}}(N||ACK)$ from $E,F$ respectively, and it has its own authentication code with ACK message then $B$ sends the following authentication code to $A$.
+		For example, the sensor node $B$ shown in Figure \ref{fig:Aggregation-tree-1}, receives the authentication codes $\mbox{MAC}_{\sk_{E}}(\mbox{N}||\mbox{ACK})$, $\mbox{MAC}_{\sk_{F}}(\mbox{N}||\mbox{ACK})$ from $E,F$ respectively, and it has its own authentication code with ACK message then $B$ sends the following authentication code to $A$.
 		\begin{equation*}
-			MAC_{S_{E}}(N||ACK) \oplus MAC_{S_{F}}(N||ACK) \oplus MAC_{S_{B}}(N||ACK)
+			\mbox{MAC}_{\sk_{E}}(\mbox{N}||\mbox{ACK}) \oplus \mbox{MAC}_{\sk_{F}}(\mbox{N}||\mbox{ACK}) \oplus \mbox{MAC}_{\sk_{B}}(\mbox{N}||\mbox{ACK})
 		\end{equation*}
 		Because of the XOR function we do not have to forward all the authentication codes. 
 		At the end of the process, the base station receives a single authentication code $\Delta_{root}$\ from the root of an aggregation tree.
@@ -286,9 +292,9 @@
 		To verify that every sensor node has sent its authentication code with \ack, the base station computes the $\Delta_{ack}$ as follows:
 		\begin{equation}
 			\label{eq:mac-auth}
-			\displaystyle{\Delta_{ack} = \bigoplus_{i = 1}^n MAC_{S_{i}}(N || ACK) }
+			\displaystyle{\Delta_{ack} = \bigoplus_{i = 1}^n \mbox{MAC}_{\sk_{i}}(\mbox{N} || \mbox{ACK}) }
 		\end{equation}
-		The base station can compute $\Delta_{ack}$ as it knows the secret key $S_{i}$\ for each sensor node $i$.
+		The base station can compute $\Delta_{ack}$ as it knows the secret key $\sk_{i}$\ for each sensor node $i$.
 		Then it compares the computed $\Delta_{ack}$\ with the received root authentication code $\Delta_{root}$. 
 		If those two codes match then it accepts the aggregated value or else it proceeds further to find an adversary. 
 
@@ -303,7 +309,7 @@
 		Then it computes the complainer code $c_{i}$\ for all node $i = 1, 2, \dotsc, n$. 
 		\begin{equation}
 			\label{eq:caomplainer-node}
-			c_{i} := MAC_{S_{i}}(N || ACK) \oplus MAC_{S_{i}}(N || NACK)
+			c_{i} := \mbox{MAC}_{\sk_{i}}(\mbox{N} || \mbox{ACK}) \oplus \mbox{MAC}_{\sk_{i}}(\mbox{N} || \mbox{NACK})
 		\end{equation}
 		After that, it compares $c$\ with all $c_{i}$\ one at a time. 
 		The matching code indicates the complainer node.
@@ -313,10 +319,10 @@
 			If there are four nodes ${s_{1},s_{2},s_{3},s_{4}}$ in an aggregation tree and their authentication codes with \ack, \nack\ message in the binary format are defined as follows:
 			\begin{equation}
 				\begin{array}{l}
-					\mac_{S_{1}}(N || \ack) = (1001)_{2};\ \mac_{S_{1}}(N || \nack) = (1101)_{2}\\
-					\mac_{S_{2}}(N || \ack) = (0110)_{2};\ \mac_{S_{2}}(N || \nack) = (1111)_{2}\\	
-					\mac_{S_{3}}(N || \ack) = (0101)_{2};\ \mac_{S_{3}}(N || \nack) = (0111)_{2}\\
-					\mac_{S_{4}}(N || \ack) = (0011)_{2};\ \mac_{S_{4}}(N || \nack) = (1110)_{2}
+					\mbox{MAC}_{\sk_{1}}(\mbox{N} || \mbox{ACK}) = (1001)_{2};\ \mbox{MAC}_{\sk_{1}}(\mbox{N} || \mbox{NACK}) = (1101)_{2}\\
+					\mbox{MAC}_{\sk_{2}}(\mbox{N} || \mbox{ACK}) = (0110)_{2};\ \mbox{MAC}_{\sk_{2}}(\mbox{N} || \mbox{NACK}) = (1111)_{2}\\	
+					\mbox{MAC}_{\sk_{3}}(\mbox{N} || \mbox{ACK}) = (0101)_{2};\ \mbox{MAC}_{\sk_{3}}(\mbox{N} || \mbox{NACK}) = (0111)_{2}\\
+					\mbox{MAC}_{\sk_{4}}(\mbox{N} || \mbox{ACK}) = (0011)_{2};\ \mbox{MAC}_{\sk_{4}}(\mbox{N} || \mbox{NACK}) = (1110)_{2}
 				\end{array}
 			\end{equation}
 			Let's say the root of an aggregation tree computed the $\Delta_{root} = (0100)_{2}$ as described in Subsection \ref{subsection:collection-of-authentication-codes}.
@@ -454,3 +460,5 @@
 
 			\end{algorithmic}
 		\end{algorithm}
+
+		Talk About Impact.
