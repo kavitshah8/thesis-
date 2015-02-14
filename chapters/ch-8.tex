@@ -1,5 +1,7 @@
-\chapter{Forwarding Signatures With Resigning Data-Items (FS\lowercase{w}RD)}
-	In this chapter, we describe FSwRD from the query dissemination phase till the detecting an adversary.
+\chapter{Our Protocol}
+	In this chapter, we describe our protocol with FSwRD approach beginning with query dissemination phase till the detecting an adversary.
+	If you implement FSwRD approach in real network it looks similar to this chapter. 
+	In the end, we describe the difference between FSwRD and FSwoRD as well. 
 
 \section{Query Dissemination}
 	The protocol begins with the base station initiating the query request to the sensor network.
@@ -13,7 +15,7 @@
 \section{Commitment Tree Generation}
 	For the given aggregation tree the commitment forest is built as follows.
 	The commitment tree generation begins from the sensor nodes with the highest depth (leaf nodes) in the aggregation tree.
-	Leaf sensor nodes in the aggregation tree create their leaf vertices by creating data-items, signatures of those data-items and signature of the transmit-payload according to Equations \ref{eq:data-item}, \ref{eq:sign-data-item}, \ref{eq:signing-payload} respectively.
+	Leaf sensor nodes in the aggregation tree create their leaf vertices by creating data-items, signatures of those data-items and signature of the transmit-payload according to Equations \ref{eq:data-item}, \ref{eq:sign-data-item}, \ref{eq:signing-payload}, respectively.
 	They then send the payload to their parents in the aggregation tree.	
 	Each internal sensor node in the aggregation tree also creates their leaf vertex.
 	In addition, internal sensor node receives the payload from each of its children, which has created a forest.
@@ -35,57 +37,57 @@
 	\end{figure}
 	It repeats the process until no two data-items in its forest have the same count value.	
 	The data-item of the $A_{2}$ is given as follows:
-	\begin{equation*}
-		A_{2} = <A_{id}, 4, A_{2value},H(N||4||A_{2value}||B_{1}||D_{1})>;\ A_{2value} = B_{1value} + D_{1value} 
-	\end{equation*}
-	
+	\begin{footnotesize}
+		\begin{equation*}
+				A_{2} = <A_{id}, 4, A_{2value},H(N||4||A_{2value}||B_{1}||D_{1})>;\ A_{2value} = B_{1value} + D_{1value} 
+		\end{equation*}
+	\end{footnotesize}
 	We demonstrate the commitment tree generation process for the aggregation tree shown in Figure \ref{fig:Aggregation-tree-1}.
-		\begin{figure}[h!]
-			\centering
-			\includegraphics{images/aggregation-tree-1.png}
-			\caption{Aggregation Tree.}
-			\label{fig:Aggregation-tree-1}
-		\end{figure}
-		In this example, $A$ has three children.
-		$A$ receives one payload from each of its children, which impacts $A$'s forest.
-		After verifying all the signatures from its forest, $A$ uses the data-items in its forest to create its payload, which is sent to the base station.
-		First, we describe the payload generation process of $B,C,D$ and then for $A$.
+	\begin{figure}[h!]
+		\centering
+		\includegraphics{images/aggregation-tree-1.png}
+		\caption{Aggregation Tree.}
+		\label{fig:Aggregation-tree-1}
+	\end{figure}
+	In this example, $A$ has three children.
+	$A$ receives one payload from each of its children, which impacts $A$'s forest.
+	After verifying all the signatures from each child's payload, $A$ uses the data-items in its forest to create its payload, which is sent to the base station.
+	First, we describe the payload generation process of $B,C,D$ and then for $A$.
 
-		The sensor node $B$ creates its payload from its forest. 
-		It's forest consists of payloads received from $E,F$.
-		The leaf sensor nodes $E,F$ creates their payloads according to Equation \ref{eq:signing-payload} as follows:
-		% \begin{figure}[h!]
-		% 	\centering
-		% 	\includegraphics{images/e-payload.png}
-		% 	\caption{E's payload}
-		% 	\label{fig:e-payload}
-		% \end{figure}
+	The sensor node $B$ creates its payload from its forest. 
+	It's forest consists of payloads received from $E,F$.
+	The leaf sensor nodes $E,F$ creates their payloads according to Equation \ref{eq:signing-payload} as follows:
+	% \begin{figure}[h!]
+	% 	\centering
+	% 	\includegraphics{images/e-payload.png}
+	% 	\caption{E's payload}
+	% 	\label{fig:e-payload}
+	% \end{figure}
+	\begin{footnotesize}
 		\begin{equation*}
 			\begin{array}{l}
 			E_{p} =\ <E_{0}, \textsf{Sign}_{S_{E}}(E_{0}), \textsf{Sign}_{S_{E}}(E_{\tau}) >\ where\ E_{\tau} =\ <E_{0}>\\
 			E_{0} =\ <E_{id}, 1, E_{value}, H(N||1||E_{value})>
 			\end{array}
 		\end{equation*}
-		% \begin{figure}[h!]
-		% 	\centering
-		% 	\includegraphics{images/f-payload.png}
-		% 	\caption{F's payload}
-		% 	\label{fig:f-payload}
-		% \end{figure}
-		\begin{equation}
+	\end{footnotesize}
+	\begin{footnotesize}
+		\begin{equation*}
 			\begin{array}{l}
 				F_{p} =\ <F_{0}, \textsf{Sign}_{S_{F}}(F_{0}), \textsf{Sign}_{S_{F}}(F{\tau}) >\ where\ F_{\tau} =\ <F_{0}>\\
-				F_{0} =\ <F_{id}, 1, F_{value}, H(N||1||F_{value})>
+				F_{0} =\ <F_{id}, 1, F_{value}, H(N||1||F_{value})>.
 			\end{array}
-		\end{equation}
-		$B$ receives $E_{p},F_{p}$ from $E,F$ respectively. 
-		$B$ verifies all the signatures in the received payloads.
-		Then it creates its own data-item $B_{0}$.
-		Now, $B$ has $B_{0},E_{0},F_{0}$ in its forest as shown in Figure \ref{fig:b-forest-payload}. 
-		As all the data-items have the same count value, $B$ has an option, when selecting two data-items to merge.
-		$B$ aggregates $E_{0},F_{0}$ and creates $B_{1}$.
-		After creating $B_{1}$ none of the data-items have the same count value. 
-		So, $B$ creates its payload $B_{p}$ and sends it to $A$ as follows:
+		\end{equation*}
+	\end{footnotesize}
+	$B$ receives $E_{p},F_{p}$ from $E,F$ respectively. 
+	$B$ verifies all the signatures in the received payloads.
+	Then it creates its own data-item $B_{0}$.
+	Now, $B$ has $B_{0},E_{0},F_{0}$ in its forest as shown in Figure \ref{fig:b-forest-payload}. 
+	As all the data-items have the same count value, $B$ has an option, when selecting two data-items to merge.
+	$B$ aggregates $E_{0},F_{0}$ and creates $B_{1}$.
+	After creating $B_{1}$ none of the data-items have the same count value. 
+	So, $B$ creates its payload $B_{p}$ and sends it to $A$ as follows:
+	\begin{footnotesize}
 		\begin{equation*}
 			\begin{array}{l}
 				B_{p} =\ < B_{0}, \textsf{Sign}_{S_{B}}(B_{0}), B_{1}, \textsf{Sign}_{S_{B}}(B_{1}), \textsf{Sign}_{S_{B}}(B_{\tau}) >\ where\ B_{\tau} =\ <B_{0} || B_{1}>\\
@@ -94,13 +96,14 @@
 			\end{array}
 			\label{eq:b-payload}
 		\end{equation*}
-		\begin{figure}[h!]
-			\centering
-			\includegraphics{images/b-forest-payload.png}
-			\caption{Transformation from $B$'s forest to its payload.
-			 				Each dashed-line box shows forest and solid-line box shows payload of the respective sensor node.}
-			\label{fig:b-forest-payload}
-		\end{figure}
+	\end{footnotesize}
+	\begin{figure}[h!]
+		\centering
+		\includegraphics{images/b-forest-payload.png}
+		\caption{Transformation from $B$'s forest to its payload.
+		 				Each dashed-line box shows forest and solid-line box shows payload of the respective sensor node.}
+		\label{fig:b-forest-payload}
+	\end{figure}
 
 		In similar way, the sensor node $C$ in the aggregation tree receives $G_{p}$ from $G$ which is defined as follows:
 		\begin{equation*}
@@ -222,7 +225,7 @@
 		$A_{10}$ (which is sensor node $A$ in aggregation tree) sends the following off-path values to $C, B$ respectively as follows:
 		\begin{equation*}
 			\begin{array}{l}
-			<B_{0}, \textsf{Sign}_{S_{A}}(B_{0}),\textsf{Sign}_{S_{A}}(A_{\tau})>\ where\ A_{\tau} =\ <B_{0}>\\
+			<B_{0}, \textsf{Sign}_{\sk_{A}}(B_{0}),\textsf{Sign}_{S_{A}}(A_{\tau})>\ where\ A_{\tau} =\ <B_{0}>\\
 			<C_{0}, \textsf{Sign}_{S_{A}}(C_{0}),\textsf{Sign}_{S_{A}}(A_{\tau})>\ where\ A_{\tau} =\ <C_{0}>
 			\end{array}
 		\end{equation*}
