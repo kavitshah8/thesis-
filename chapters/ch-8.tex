@@ -192,11 +192,6 @@
 			\label{fig:a-payload}
 		\end{figure}
 
-	We claim that the binary representation of a number $x$ illustrates the payload decomposition of the sensor node $S$, where $x$ = $1$ + number of descendants of $S$.
-	For example, if sensor node $S$ has $22$ descendants then $x =23$, $(x)_{10}$ = $(10111)_{2}$. 
-	This means $S$ has four complete binary trees in its payload, with the height of four, two, one and zero.
-	Note that all the trees in the commitment payload are complete binary trees and no two trees have the same height.
-
 	Once the base station receives the payload from the root of the aggregation tree, it verifies all the signatures in the payload.
 	In the previous example, the base station receives $A_{p}$ from the sensor node $A$.
 	It verifies the signatures $\textsf{Sign}_{\sk_{A}}(A_{3})$, $\textsf{Sign}_{\sk_{A}}(A_{\tau})$ in the received payload.	 
@@ -209,7 +204,7 @@
 	\subsection{Dissemination Final Payload by the Base Station}
 		Once the base station receives the payloads of the root node of the aggregation tree, it verifies all the signatures in the payload and then sends each of the data-items in the payload to the entire sensor network using authenticated broadcast.
 		The authenticated broadcast allows the sensor nodes to verify that the data-items are sent by the base station. 
-		The authentication requires no one else is masquerading the base station.
+		The authentication ensures no one else is masquerading the base station.
 		In our previous example, the base station receives only one data-item $A_{3}$ in the payload sent by $A$.
 		In that case, the base station's payload $\textsf{B}_{p}$ which is sent to the entire network is given as follows:
 		\begin{footnotesize}

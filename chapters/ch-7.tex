@@ -20,18 +20,18 @@
 		A commitment tree is a binary tree where each vertex has an associated data-item representing the data that is passed on to its parent. The data-items have the following format:
 
 		$\hspace{100pt}$ \textbf{$<\ $id, count, value, commitment$\ >$}\\
-	Where $id$ is the unique ID of the node; $count$ is the number of leaf vertices in the subtree rooted at this vertex; $value$ is the SUM aggregate computed over all the leaves in the subtree and $commitment$ is a cryptographic commitment.
+		Where $id$ is the unique ID of the node; $count$ is the number of leaf vertices in the subtree rooted at this vertex; $value$ is the SUM aggregate computed over all the leaves in the subtree and $commitment$ is a cryptographic commitment.
 	\end{definition}
 	Each sensor node creates its own data-item during commitment tree generation process which is called the leaf vertex of the node.
 	For example, sensor node $A$ creates its data-item $A_{0}$ as follows:
 	\begin{equation}
 		\label{eq:data-item}
-	 	A_{0} =\ <A_{id}, 1, A_{value}, H(N||1||A_{value})>
-	 \end{equation}
+	 	A_{0} =\ <A_{id}, 1, A_{value}, H(N||1||A_{value})>.
+	\end{equation}
 	where $A_{id}, A_{value}$ is the unique ID and sensor reading of the node $A$. 
 	The count is $1$ as there is only vertex in the subtree rooted at $A$, $H$ is the collision resistant hash function, and $N$ is the query nonce.
 
-	The first difference between SHIA's label structure and our data-item structure is that we remove the $complement$ field from the label structure Definition \ref{def:label}. 
+	The first difference between SHIA's label structure and our data-item structure is that we remove the $complement$ field from the label structure see Definition \ref{def:label}. 
 	The complement field is redundant information in the label. 
 	The complement field is used by the base station (the querier in SHIA), before the result checking phase.
 	It is used to verify \textbf{SUM + COMPLEMENT =} $\textbf{n} \cdot \textbf{r}$ where $\textbf{n}$ is the number of nodes in the network, $\textbf{r}$ is the upper bound on the allowed sensor readings.
@@ -95,16 +95,15 @@
 		As only sensor node $S$ can create the signature using its secret key. 
 		The signature $\textsf{S}$ assures the \textit{integrity} of the data-item $S_{0}$.
 		Because either the data-item or the signature has been tampered in any way the verification algorithm returns false.
-		Furthermore, it allows the sender to have the proof for the sent data-item.
-
-		And the receiver for the proof for the received data-item, providing the security service of \textit{non-repudiation}.
+		It allows the sender to have the proof for the sent data-item and the receiver to have the proof for the received data-item.
+		Hence, providing the security service of \textit{non-repudiation}.
 		The digital signature depends on the message so the parent node can not reuse the signature for other messages in the future.
 		Hence, protecting the network against the \textit{replay attacks}.
 		Hence, it protects against the \textit{active attacks}.
 
 \section{Commitment Payload}
 
-	We define commitment payload based on the commitment forest Definition \ref{def:commitment-forest}.
+	We define commitment payload based on the commitment forest see Definition \ref{def:commitment-forest}.
 	We also define transmit payload as follows.
 	\begin{definition}
 		A \textbf{commitment payload} is a set of data-items of the root vertices of the trees with their respective signatures in the outgoing commitment forest and an additional signature for the transmission.
@@ -168,7 +167,7 @@
 	In our approach, upon detecting the malicious activity the base station interacts with several relevant nodes in the network to trace down the malicious node.
 	Also, the base station issues the certificate to the sensor nodes in the network.
 	
-	\subsection{Bandwidth Analysis}
+	\subsection{Bandwidth}
 	
 	% \textcolor{red}{Might need refactoring}
 	According to Definition \ref{def:data-item}, the typical size of the data-item packet is $400$ bits as shown below.
@@ -199,27 +198,31 @@
 	In both the approaches, the sensor node $C$ sends all the data-items in its payload with their respective signatures to its parent sensor node $D$ along with the signature of its transmit-payload $C_{\tau}$.
 
 	In the first approach, $C$ verifies $\textsf{Sign}_{S_{B}}(B_{1})$ and sends it to $D$ without any modifications as follows:
-	\begin{equation}	
-		\begin{array}{l}
-			C_{p} =\ <C_{0},\textsf{Sign}_{S_{C}}(C_{0}),B_{1},\textcolor{red}{\textsf{Sign}_{S_{B}}(B_{1})}, \textsf{Sign}_{S_{C}}(C_{\tau})>\ where\ C_{\tau} = <C_{0} || B_{1}>\\
-			C_{0} =\ <C_{id}, 1, C_{value}, H(N||1||C_{value})>\\
-			B_{1} =\ <B_{id}, 2, B_{1value}, H(N||2||B_{1value}||A_{0}||B_{0})>;\ B_{1value} =\ B_{value} + A_{value}
-		\end{array}
-		\label{eq:forwarding-payload-without-resigning}
-	\end{equation}
+	\begin{footnotesize}
+		\begin{equation}	
+			\begin{array}{l}
+				C_{p} =\ <C_{0},\textsf{Sign}_{S_{C}}(C_{0}),B_{1},\textcolor{red}{\textsf{Sign}_{S_{B}}(B_{1})}, \textsf{Sign}_{S_{C}}(C_{\tau})>\ where\ C_{\tau} = <C_{0} || B_{1}>\\
+				C_{0} =\ <C_{id}, 1, C_{value}, H(N||1||C_{value})>\\
+				B_{1} =\ <B_{id}, 2, B_{1value}, H(N||2||B_{1value}||A_{0}||B_{0})>;\ B_{1value} =\ B_{value} + A_{value}
+			\end{array}
+			\label{eq:forwarding-payload-without-resigning}
+		\end{equation}
+	\end{footnotesize}
 	% The sensor node $C$ has two data-items $C_{0},B_{1}$ in its payload. 
 	The sensor node $C$ sends three signatures $\textsf{Sign}_{S_{B}}(B_{1})$, $\textsf{Sign}_{S_{C}}(C_{0}) $ and $\textsf{Sign}_{S_{C}}(C_{\tau})$ to its parent $D$.
 	It requires the parent node $D$ to know the public key of the sensor nodes $C$ and $B$, hence two certificates.
 
 	In the second approach, the sensor node $C$ can verify the $\textsf{Sign}_{S_{B}}(B_{1})$ then remove the old signature and creates new signature $\textsf{Sign}_{S_{C}}(B_{1})$ and sends to $D$ as follows:
-	\begin{equation}	
-		\begin{array}{l}
-			C_{p} =\ <C_{0},\textsf{Sign}_{S_{C}}(C_{0}),B_{1},\textcolor{red}{\textsf{Sign}_{S_{C}}(B_{1})}, \textsf{Sign}_{S_{C}}(C_{\tau})>\ where\ C_{\tau} = <C_{0} || B_{1}>\\
-			% C_{0} =\ <C_{id}, 1, C_{value}, H(N||1||C_{value})>\\
-			% B_{1} =\ <B_{id}, 2, B_{1value}, H(N||2||B_{1value}||A_{0}||B_{0})>\\
-		\end{array}
-		\label{eq:forwarding-payload-with-resigning}
-	\end{equation}
+	\begin{footnotesize}
+		\begin{equation}	
+			\begin{array}{l}
+				C_{p} =\ <C_{0},\textsf{Sign}_{S_{C}}(C_{0}),B_{1},\textcolor{red}{\textsf{Sign}_{S_{C}}(B_{1})}, \textsf{Sign}_{S_{C}}(C_{\tau})>\ where\ C_{\tau} = <C_{0} || B_{1}>\\
+				% C_{0} =\ <C_{id}, 1, C_{value}, H(N||1||C_{value})>\\
+				% B_{1} =\ <B_{id}, 2, B_{1value}, H(N||2||B_{1value}||A_{0}||B_{0})>\\
+			\end{array}
+			\label{eq:forwarding-payload-with-resigning}
+		\end{equation}
+	\end{footnotesize}
 	The sensor node $C$ sends three signatures $\textsf{Sign}_{S_{C}}(B_{1})$, $\textsf{Sign}_{S_{C}}(C_{0}) $ and $\textsf{Sign}_{S_{C}}(C_{\tau})$ to its parent $D$.
 	But all the signatures are signed by the sensor node $C$, it requires the parent node $D$ to know the public key of only the sensor node $C$, hence $D$ need to know only one certificate.
 
