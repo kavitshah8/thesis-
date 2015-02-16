@@ -1,7 +1,7 @@
 \chapter{Our Protocol}
 	In this chapter, we describe our protocol with FSwRD approach beginning from query dissemination phase till the detecting an adversary.
 	Our protocol using FSwRD can also be applied using FSwoRD with the obvious modifications. 
-	We briefly describe the difference along the way.
+	We briefly describe the differences along the way.
 
 	% If you implement FSwRD approach in real network it looks similar to this chapter. 
 	% In the end, we describe the difference between FSwRD and FSwoRD as well. 
@@ -19,11 +19,11 @@
 	For the given aggregation tree the commitment forest is built as follows.
 	The commitment tree generation begins from the sensor nodes with the highest depth (leaf nodes) in the aggregation tree.
 	Leaf sensor nodes in the aggregation tree create their leaf vertices by creating data-items, signatures of those data-items and signature of the transmit-payload according to Equations \ref{eq:data-item}, \ref{eq:sign-data-item}, \ref{eq:signing-payload}, respectively.
-	They then send the payload to their parents in the aggregation tree.	
+	Then they send the payload to their parents in the aggregation tree.	
 	Each internal sensor node in the aggregation tree also creates their leaf vertex.
-	In addition, internal sensor node receives the payload from each of its children, which has created a forest.
+	In addition, internal sensor node receives the payload from each of its children, which impacts its forest.
 	For each child, internal node first verifies the signature of the transmit-payload and then the signature of the data-item for one child at a time.
-	Once internal node verifies all the received signatures, it merges all the data-items into its forest with same count value.
+	Once internal node verifies all the received signatures, it merges all the data-items with same count value from its forest.
 	It merges two data-items by creating a new data-item with count value incremented by one and whose value is the addition of value field of the previous two data-items. 
 	Note that we can easily determine the height of the commitment tree from the count value.
 	Suppose, after verifying all the signatures from the payloads, an internal sensor node $I$ has to merge $i$ data-items $D_{1}$, $D_{2}$, $\dotsc$, $D_{i}$ in its forest.
@@ -36,7 +36,7 @@
 	The data-item of the $A_{2}$ is given as follows:
 	% 
 	\begin{equation*}
-		A_{2} = <A_{id}, 4, A_{2value},H(N||4||A_{2value}||B_{1}||D_{1})>;\ A_{2value} = B_{1value} + D_{1value}. 
+		A_{2} =\ <A_{id}, 4, A_{2value},H(N||4||A_{2value}||B_{1}||D_{1})>;\ A_{2value} = B_{1value} + D_{1value}. 
 	\end{equation*}
 	% 
 	
@@ -78,11 +78,11 @@
 		\end{array}
 	\end{equation*}
 	
-	$B$ receives $E_{pay},F_{pay}$ from $E,F$ respectively. 
+	$B$ receives $E_{pay}$ and $F_{pay}$ from $E$ and $F$ respectively. 
 	$B$ verifies all the signatures in the received payloads.
 	Then it creates its own data-item $B_{0}$.
 	Now, $B$ has $B_{0},E_{0},F_{0}$ in its forest as shown in Figure \ref{fig:b-forest-payload}. 
-	As all the data-items have the same count value, $B$ has an option, when selecting two data-items to merge.
+	As all the data-items have the same count value, $B$ has an option while selecting two data-items to merge.
 	$B$ aggregates $E_{0},F_{0}$ and creates $B_{1}$.
 	After creating $B_{1}$ none of the data-items have the same count value. 
 	So, $B$ creates its payload $B_{pay}$ and sends it to $A$ as follows:
@@ -131,7 +131,7 @@
 			%\label{eq:c-payload}
 		\end{equation*}
 
-		The sensor node $D$ creates its payload ($D_{pay}$) and sends it to $A$ as follows:
+		The sensor node $D$ creates its payload $D_{pay}$ and sends it to $A$ as follows:
 		\begin{equation*}
 			\begin{array}{l}
 				D_{pay} =\ <D_{0}, \textsf{Sign}_{\sk_{D}}(D_{0}), \textsf{Sign}_{\sk_{D}}(D_{\tau})>;\ where\ D_{\tau} =\ <D_{0}>\\
@@ -249,7 +249,7 @@
 		We show the significance of the commitment field while distributing the off-path values. 
 		The commitment filed helps us detecting any \textit{malicious activity} in the network. 
 		Because of the signatures infrastructure eventually we can detect an adversary. 
-		For example, if an internal vertex simply forwards incorrect data-item to its children then it the relevant leaf vertex will complain, as the leaf vertex will not be able to derive the data-item received using authenticated broadcast from the base station.
+		For example, if an internal vertex simply forwards incorrect data-item to its children then the relevant leaf vertex will complain, as the leaf vertex will not be able to derive the data-item received using authenticated broadcast from the base station.
 		Because of the signatures internal vertex responsible for forwarding the incorrect data-item will be caught.
 		Another scenario could be that an internal vertex changed the its children's data-item while creating commitment tree and sending the incorrect off-path values to compensate discrepancy. 
 		To illustrate the scenario consider the following Example.
@@ -294,12 +294,12 @@
 			During the dissemination of root data-item phase, $A$ and $B$ using authenticated broadcast receives either $C'_{1}$ or $C''_{1}$ from the base station based on what $C$ sent to base station.
 			During the dissemination of off-path values phase, $A$ and $B$ receives $B''_{0}$ and $A''_{0}$ from $C$ respectively.
 			During the verification of inclusion phase, $A$ and $B$ derives the root data-item using the received off-path values, and it does not match with the received root data-item as follows:
-			\begin{equation}
+			\begin{equation*}
 				\begin{array}{l}
 					A\ \mbox{uses}\ (A_{0}, B''_{0})\ \mbox{and derives} <2,300,H(N||2||300||A_{0}||B''_{0})>\  \neq C'_{1} = C''_{1}\\
 					B\ \mbox{uses}\ (A''_{0}, B_{0})\ \mbox{and derives} <2,300,H(N||2||300||A''_{0}||B_{0})>\  = C'_{1} \neq C''_{1}.
 				\end{array}
-			\end{equation}
+			\end{equation*}
 			Hence, during the collection of authentication codes phase, either $A$ or $B$ sends its authentication codes with NACK message.
 		\end{exmp}
 			Above example shows how the commitment field in the data-item provides \textbf{data-integrity} to the protocol.
