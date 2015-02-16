@@ -1,7 +1,10 @@
 \chapter{Our Protocol}
-	In this chapter, we describe our protocol with FSwRD approach beginning with query dissemination phase till the detecting an adversary.
-	If you implement FSwRD approach in real network it looks similar to this chapter. 
-	In the end, we describe the difference between FSwRD and FSwoRD as well. 
+	In this chapter, we describe our protocol with FSwRD approach beginning from query dissemination phase till the detecting an adversary.
+	Our protocol using FSwRD can also be applied using FSwoRD with the obvious modifications. 
+	We briefly describe this in Section XX.
+
+	% If you implement FSwRD approach in real network it looks similar to this chapter. 
+	% In the end, we describe the difference between FSwRD and FSwoRD as well. 
 
 \section{Query Dissemination}
 	The protocol begins with the base station initiating the query request to the sensor network.
@@ -28,20 +31,22 @@
 	% Then $I$ verifies the received signatures $Sign(D_{1})$, $Sign(D_{2})$, $\dotsc$, $Sign(D_{i})$.
 	% Once verified, $I$ starts merging the data-items as follows.
 	Let $c$ be the smallest count value in $I$'s forest.
-	The sensor node $I$ finds two data-items $D_{1},D_{2}$ into its forest with the same count value $c$ and merges them into a new data-item with the count of $c+1$ as shown in Figure \ref{fig:increase-height}.
+	The sensor node $I$ finds two data-items $D_{1}$ and $D_{2}$ from its forest with the same count value $c$ and merges them into a new data-item with the count of $c+1$ as shown in Figure \ref{fig:increase-height}.
+	It repeats the process until no two data-items in its forest have the same count value.	
+	The data-item of the $A_{2}$ is given as follows:
+	% 
+	\begin{equation*}
+		A_{2} = <A_{id}, 4, A_{2value},H(N||4||A_{2value}||B_{1}||D_{1})>;\ A_{2value} = B_{1value} + D_{1value}. 
+	\end{equation*}
+	% 
+	
 	\begin{figure}[h!]
 		% \centering
 		\includegraphics{images/increase-height.png}
-		\caption{Input node $A$ has $B_{1}, C_{1}$ in its forest and aggregates those two trees and creates $A_{2}$.}
+		\caption{Input node $A$ has $B_{1}$ and $C_{1}$ in its forest. It aggregates these two trees and creates $A_{2}$.}
 		\label{fig:increase-height}
 	\end{figure}
-	It repeats the process until no two data-items in its forest have the same count value.	
-	The data-item of the $A_{2}$ is given as follows:
-	\begin{footnotesize}
-		\begin{equation*}
-				A_{2} = <A_{id}, 4, A_{2value},H(N||4||A_{2value}||B_{1}||D_{1})>;\ A_{2value} = B_{1value} + D_{1value} 
-		\end{equation*}
-	\end{footnotesize}
+	
 	We demonstrate the commitment tree generation process for the aggregation tree shown in Figure \ref{fig:Aggregation-tree-1}.
 	\begin{figure}[h!]
 		\centering
@@ -52,73 +57,66 @@
 	In this example, $A$ has three children.
 	$A$ receives one payload from each of its children, which impacts $A$'s forest.
 	After verifying all the signatures from each child's payload, $A$ uses the data-items in its forest to create its payload, which is sent to the base station.
-	First, we describe the payload generation process of $B,C,D$ and then for $A$.
+	We describe the payload generation process for sensor nodes $B,C,D$ and $A$ in order.
 
 	The sensor node $B$ creates its payload from its forest. 
-	It's forest consists of payloads received from $E,F$.
-	The leaf sensor nodes $E,F$ creates their payloads according to Equation \ref{eq:signing-payload} as follows:
+	It's forest consists of payloads received from $E$ and $F$.
+	The leaf sensor nodes $E$ and $F$ creates their payloads according to Equation \ref{eq:signing-payload} as follows:
 	% \begin{figure}[h!]
 	% 	\centering
 	% 	\includegraphics{images/e-payload.png}
 	% 	\caption{E's payload}
 	% 	\label{fig:e-payload}
 	% \end{figure}
-	\begin{footnotesize}
-		\begin{equation*}
-			\begin{array}{l}
-			E_{p} =\ <E_{0}, \textsf{Sign}_{\sk_{E}}(E_{0}), \textsf{Sign}_{\sk_{E}}(E_{\tau}) >\ where\ E_{\tau} =\ <E_{0}>\\
-			E_{0} =\ <E_{id}, 1, E_{value}, H(N||1||E_{value})>
-			\end{array}
-		\end{equation*}
-	\end{footnotesize}
-	\begin{footnotesize}
-		\begin{equation*}
-			\begin{array}{l}
-				F_{p} =\ <F_{0}, \textsf{Sign}_{\sk_{F}}(F_{0}), \textsf{Sign}_{\sk_{F}}(F{\tau}) >\ where\ F_{\tau} =\ <F_{0}>\\
-				F_{0} =\ <F_{id}, 1, F_{value}, H(N||1||F_{value})>.
-			\end{array}
-		\end{equation*}
-	\end{footnotesize}
-	$B$ receives $E_{p},F_{p}$ from $E,F$ respectively. 
+
+	\begin{equation*}
+		\begin{array}{l}
+		E_{pay} =\ <E_{0}, \textsf{Sign}_{\sk_{E}}(E_{0}), \textsf{Sign}_{\sk_{E}}(E_{\tau}) >\ where\ E_{\tau} =\ <E_{0}>\\
+		E_{0} =\ <E_{id}, 1, E_{value}, H(N||1||E_{value})>\\
+		F_{pay} =\ <F_{0}, \textsf{Sign}_{\sk_{F}}(F_{0}), \textsf{Sign}_{\sk_{F}}(F{\tau}) >\ where\ F_{\tau} =\ <F_{0}>\\
+		F_{0} =\ <F_{id}, 1, F_{value}, H(N||1||F_{value})>.
+		\end{array}
+	\end{equation*}
+	
+	$B$ receives $E_{pay},F_{pay}$ from $E,F$ respectively. 
 	$B$ verifies all the signatures in the received payloads.
 	Then it creates its own data-item $B_{0}$.
 	Now, $B$ has $B_{0},E_{0},F_{0}$ in its forest as shown in Figure \ref{fig:b-forest-payload}. 
 	As all the data-items have the same count value, $B$ has an option, when selecting two data-items to merge.
 	$B$ aggregates $E_{0},F_{0}$ and creates $B_{1}$.
 	After creating $B_{1}$ none of the data-items have the same count value. 
-	So, $B$ creates its payload $B_{p}$ and sends it to $A$ as follows:
-	\begin{footnotesize}
-		\begin{equation*}
-			\begin{array}{l}
-				B_{p} =\ < B_{0}, \textsf{Sign}_{\sk_{B}}(B_{0}), B_{1}, \textsf{Sign}_{\sk_{B}}(B_{1}), \textsf{Sign}_{\sk_{B}}(B_{\tau}) >\ where\ B_{\tau} =\ <B_{0} || B_{1}>\\
-				B_{1} =\ < B_{id}, 2, B_{1value}, H(N||2||B_{1value}||E_{0}||F_{0})>;\ B_{1value} = E_{value} + F_{value} \\
-				B_{0} =\ <B_{id}, 1, B_{value}, H(N||1||B_{value})>
-			\end{array}
-			\label{eq:b-payload}
-		\end{equation*}
-	\end{footnotesize}
+	So, $B$ creates its payload $B_{pay}$ and sends it to $A$ as follows:
+	\begin{equation*}
+		\begin{array}{l}
+			B_{pay} =\ < B_{0}, \textsf{Sign}_{\sk_{B}}(B_{0}), B_{1}, \textsf{Sign}_{\sk_{B}}(B_{1}), \textsf{Sign}_{\sk_{B}}(B_{\tau}) >\ where\ B_{\tau} =\ <B_{0} || B_{1}>\\
+			B_{1} =\ < B_{id}, 2, B_{1value}, H(N||2||B_{1value}||E_{0}||F_{0})>;\ B_{1value} = E_{value} + F_{value} \\
+			B_{0} =\ <B_{id}, 1, B_{value}, H(N||1||B_{value})>
+		\end{array}
+		\label{eq:b-payload}
+	\end{equation*}
+
 	\begin{figure}[h!]
 		\centering
 		\includegraphics{images/b-forest-payload.png}
 		\caption{Transformation from $B$'s forest to its payload.
-		 				Each dashed-line box shows forest and solid-line box shows payload of the respective sensor node.}
+				Each dashed-line box shows forest and solid-line box shows payload of the respective sensor node.}
 		\label{fig:b-forest-payload}
 	\end{figure}
 
-		In similar way, the sensor node $C$ in the aggregation tree receives $G_{p}$ from $G$ which is defined as follows:
+		In similar way, the sensor node $C$ in the aggregation tree receives $G_{pay}$ from $G$ which is defined as follows:
 		\begin{equation*}
 			\begin{array}{l}
-				G_{p} =\ <G_{1},\textcolor{red}{\textsf{Sign}_{\sk_{G}}(G_{1})}, \textsf{Sign}_{\sk_{G}}(G_{\tau})>\ where\ G_{\tau} =\ <G_{0} || H_{0}>\\
+				G_{pay} =\ <G_{1},\textcolor{red}{\textsf{Sign}_{\sk_{G}}(G_{1})}, \textsf{Sign}_{\sk_{G}}(G_{\tau})>\ where\ G_{\tau} =\ <G_{0} || H_{0}>\\
 				G_{1} =\ < G_{id}, 2, G_{1value}, H(N||2||G_{1value}||G_{0}||H_{0})>;\ G_{1value} = G_{value} + H_{value} \\
 				G_{0} =\ <G_{id}, 1, G_{value}, H(N||1||G_{value})>\\
 				H_{0} =\ <H_{id}, 1, H_{value}, H(N||1||H_{value})>
 			\end{array}
 		\end{equation*}
-		$C$ verifies all the signatures in the received payload $G_{p}$ and creates $C_{0}$.
+		$C$ verifies all the signatures in the received payload $G_{pay}$ and creates $C_{0}$.
 		Now, $C$ has $C_{0},G_{1}$ in its forest as shown in Figure \ref{fig:c-forest-payload}. 
 		As none of the data-items have the same count value, $C$ does not merge those two data-items.
 		But $C$ removes the old signature on $G_{1}$ and signs $G_{1}$ with its secret key.
-		So, $C$ creates its payload $C_{p}$ and sends it to $A$ as follows:
+		So, $C$ creates its payload $C_{pay}$ and sends it to $A$ as follows:
 		\begin{figure}[h!]
 			\centering
 			\includegraphics{images/c-forest-payload.png}
@@ -127,26 +125,25 @@
 		\end{figure}
 		\begin{equation*}
 			\begin{array}{l}
-				C_{p} =\ <C_{0},\textsf{Sign}_{\sk_{C}}(C_{0}),G_{1},\textcolor{red}{\textsf{Sign}_{\sk_{C}}(G_{1})}, \textsf{Sign}_{\sk_{C}}(C_{\tau})>\ where\ C_{\tau} =\ <C_{0} || G_{1}>\\
+				C_{pay} =\ <C_{0},\textsf{Sign}_{\sk_{C}}(C_{0}),G_{1},\textcolor{red}{\textsf{Sign}_{\sk_{C}}(G_{1})}, \textsf{Sign}_{\sk_{C}}(C_{\tau})>\ where\ C_{\tau} =\ <C_{0} || G_{1}>\\
 				C_{0} =\ <C_{id}, 1, C_{value}, H(N||1||C_{value})>
 			\end{array}
 			%\label{eq:c-payload}
 		\end{equation*}
 
-		The sensor node $D$ creates its payload ($D_{p}$) and sends it to $A$ as follows:
+		The sensor node $D$ creates its payload ($D_{pay}$) and sends it to $A$ as follows:
 		\begin{equation*}
 			\begin{array}{l}
-				D_{p} =\ <D_{0}, \textsf{Sign}_{\sk_{D}}(D_{0}), \textsf{Sign}_{\sk_{D}}(D_{\tau})>;\ where\ D_{\tau} =\ <D_{0}>\\
+				D_{pay} =\ <D_{0}, \textsf{Sign}_{\sk_{D}}(D_{0}), \textsf{Sign}_{\sk_{D}}(D_{\tau})>;\ where\ D_{\tau} =\ <D_{0}>\\
 				D_{0} =\ <D_{id},1,D_{value},H(N||1||D_{value})>
 			\end{array}
 			%\label{eq:d-payload}
 		\end{equation*}
 
-		The root node of the aggregation tree $A$ receives the payloads $B_{p}, C_{p}, D_{p}$
+		The root node of the aggregation tree $A$ receives the payloads $B_{pay}, C_{pay}$ and $D_{pay}$ from $B,C$ and $D$ respectively.
 		% Equations \ref{eq:b-payload},\ref{eq:c-payload},\ref{eq:d-payload} 
-		from $B,C,D$ respectively.
 		$A$ verifies all the signatures in the received payloads and creates $A_{0}$.
-		$A$ has $G_{1},C_{0},B_{1},B_{0},D_{0},A_{0}$ in its forest as shown in Figure \ref{fig:a-forest}.
+		Now, $A$ has $G_{1},C_{0},B_{1},B_{0},D_{0}$ and $A_{0}$ in its forest as shown in Figure \ref{fig:a-forest}.
 		\begin{figure}[h!]
 			\centering
 			\includegraphics{images/a-forest.png}
@@ -166,16 +163,16 @@
 			\label{fig:a-forest-second-merge}
 		\end{figure}
 		$A$ has four data-items with count value of $1$.
-		In the first merge, $A$ aggregates those data-items and creates $A_{10},A_{11}$ as shown in Figure \ref{fig:a-forest-first-merge}.
+		In the first merge, $A$ aggregates those data-items and creates $A_{10}$ and $A_{11}$ as shown in Figure \ref{fig:a-forest-first-merge}.
 		Now, $A$ has four data-items with count value of $2$.
-		In the second merge, $A$ aggregates those data-items and creates $A_{20},A_{21}$ as shown in Figure \ref{fig:a-forest-second-merge}.
+		In the second merge, $A$ aggregates those data-items and creates $A_{20}$ and$A_{21}$ as shown in Figure \ref{fig:a-forest-second-merge}.
 		Finally, $A$ has two data-items with count value of $4$.
 		In the final merge, $A$ aggregates those data-items and creates $A_{3}$ as shown in Figure \ref{fig:a-payload}.
 		Then $A$ creates payload and sends it to the base station as follows:
-		% \begin{footnotesize}		
+		% 		
 			\begin{equation*}
 				\begin{array}{l}
-					A_{p} =\ <A_{3},\textsf{Sign}_{\sk_{A}}(A_{3}),\textsf{Sign}_{\sk_{A}}(A_{\tau})>\ where\ A_{\tau} =\ <A_{3}>\\
+					A_{pay} =\ <A_{3},\textsf{Sign}_{\sk_{A}}(A_{3}),\textsf{Sign}_{\sk_{A}}(A_{\tau})>\ where\ A_{\tau} =\ <A_{3}>\\
 					A_{3} =\ <A_{id}, 8, A_{3value}, H(N||8||A_{3value}||A_{20}||A_{21})>;\ A_{3value} =\ A_{20value} + A_{21value}\\
 					A_{20} =\ <A_{id},4,A_{20value},H(N||4||A_{20value}||G_{1}||B_{1})>;\ A_{20value} =\ G_{1value} + B_{1value}\\ 
 					A_{21} =\ <A_{id},4,A_{21value},H(N||4||A_{21value}||A_{10}||A_{11})>;\ A_{21value} =\ A_{10value} + A_{11value}\\ 
@@ -184,7 +181,7 @@
 					A_{0} =\ <A_{id},1,A_{value},H(N||1||A_{value})>
 				\end{array}
 			\end{equation*}
-		% \end{footnotesize}
+		% 
 		\begin{figure}[h!]
 			\centering
 			\includegraphics{images/a-payload.png}
@@ -193,7 +190,7 @@
 		\end{figure}
 
 	Once the base station receives the payload from the root of the aggregation tree, it verifies all the signatures in the payload.
-	In the previous example, the base station receives $A_{p}$ from the sensor node $A$.
+	In the previous example, the base station receives $A_{pay}$ from the sensor node $A$.
 	It verifies the signatures $\textsf{Sign}_{\sk_{A}}(A_{3})$, $\textsf{Sign}_{\sk_{A}}(A_{\tau})$ in the received payload.	 
 	If the base station verifies all the signatures to true it initiates the result checking phase.
 
@@ -206,42 +203,40 @@
 		The authenticated broadcast allows the sensor nodes to verify that the data-items are sent by the base station. 
 		The authentication ensures no one else is masquerading the base station.
 		In our previous example, the base station receives only one data-item $A_{3}$ in the payload sent by $A$.
-		In that case, the base station's payload $\textsf{B}_{p}$ which is sent to the entire network is given as follows:
-		\begin{footnotesize}
+		In that case, the base station's payload $\textsf{B}_{pay}$ which is sent to the entire network is given as follows:
+		
 	 		\begin{equation*}
-				\textsf{B}_{p} =\ <A_{3}, \textsf{Sign}_{\sk_{\textsf{B}}}(A_{3}), \textsf{Sign}_{\sk_{\textsf{B}}}(\textsf{B}_{\tau})>\ where\ \textsf{B}_{\tau} =\ <A_{3}>.
+				\textsf{B}_{pay} =\ <A_{3}, \textsf{Sign}_{\sk_{\textsf{B}}}(A_{3}), \textsf{Sign}_{\sk_{\textsf{B}}}(\textsf{B}_{\tau})>\ where\ \textsf{B}_{\tau} =\ <A_{3}>.
 			\end{equation*}
-		\end{footnotesize}
+		
 
 	\subsection{Dissemination of Off-Path Values}
 		To enable verification each sensor node must receive all of its off-path values.
 		The off-path values of the sensor nodes can be determined according to the Definition \ref{def:off-path}.
 		Each internal vertex $I$ in the commitment tree has two children $u_{1}$ and $u_{2}$. 
 		To disseminate off-path values, $I$ sends the data-item of $u_{1}$ to $u_{2}$, and vice-versa ($I$ also attaches relevant information tagging $u_{1}$ as the right child and $u_{2}$ as the left child) along with the signatures of the data-item and the signature of the transmit-payload.
-		In our previous example, internal vertex $A_{10}$ as shown in Figure \ref{fig:a-payload} has two children $C_{0},B_{0}$.
-		$A_{10}$ (which is sensor node $A$ in aggregation tree) sends the following off-path values to $C, B$ respectively as follows:
-		\begin{footnotesize}
+		In our previous example, internal vertex $A_{10}$ as shown in Figure \ref{fig:a-payload} has two children $C_{0}$ and $B_{0}$.
+		$A_{10}$ (which is sensor node $A$ in aggregation tree) sends the following off-path values to $C$ and $B$ respectively as follows:
 			\begin{equation*}
 				\begin{array}{l}
 					<B_{0}, \textsf{Sign}_{\sk_{A}}(B_{0}),\textsf{Sign}_{\sk_{A}}(A_{\tau})>\ where\ A_{\tau} =\ <B_{0}>\\
 					<C_{0}, \textsf{Sign}_{\sk_{A}}(C_{0}),\textsf{Sign}_{\sk_{A}}(A_{\tau})>\ where\ A_{\tau} =\ <C_{0}>
 				\end{array}
 			\end{equation*}
-		\end{footnotesize}
+		
 		An internal vertex $I$ receives data-items with their respective signatures from its parent. 
 		It verifies the signatures of the received data-items then resigns them and sends those data-items (and left/right tags) with their signatures to both of its children.
-		Continuing the previous example, internal vertex $A_{10}$ receives $A_{11}, A_{20}$ from its parent $A_{21}$.
-		$A_{10}$ sends the following off-path values to $C, B$ respectively as follows:
-		\begin{footnotesize}
+		Continuing the previous example, internal vertex $A_{10}$ receives $A_{11}$ and $A_{20}$ from its parent $A_{21}$.
+		$A_{10}$ sends the following off-path values to $C$ and $B$ respectively as follows:
 			\begin{equation*}
 				\begin{array}{l}
 					<B_{0}, \textsf{Sign}_{\sk_{A}}(B_{0}),A_{11},\textsf{Sign}_{\sk_{A}}(A_{11}),A_{20},\textsf{Sign}_{\sk_{A}}(A_{20}),\textsf{Sign}_{\sk_{A}}(A_{\tau})>\\
 						\textcolor{white}{XXXXX}where\  A_{\tau} =\ <B_{0}||A_{11}||A_{20}>\\
 					<C_{0}, \textsf{Sign}_{\sk_{A}}(C_{0}),A_{11},\textsf{Sign}_{\sk_{A}}(A_{11}),A_{20},\textsf{Sign}_{\sk_{A}}(A_{20}),\textsf{Sign}_{\sk_{A}}(A_{\tau})>\\ 
-						\textcolor{white}{XXXXX}where\  A_{\tau} =\ <C_{0}||A_{11}||A_{20}>
+						\textcolor{white}{XXXXX}where\  A_{\tau} =\ <C_{0}||A_{11}||A_{20}>.
 				\end{array}
 			\end{equation*}
-		\end{footnotesize}
+		
 		Once a vertex has received all the data-items off its off-path vertices, it can proceed to the verification step.
 	
 	\subsection{Verification of Inclusion}
@@ -250,10 +245,10 @@
 		It also verifies that its senor reading was aggregated correctly by all the intermediate aggregate nodes.
 		For each vertex on the path from the root of its commitment tree, it derives the data-items according to Definition \ref{def:label}.
 		It is able to do so since the off-path values provide all the necessary information to perform the data-item computation.
-		In the previous example, $C$ receives $B_{0}, A_{11}, A_{20}$ from its parent node and it has $C_{0}$.
+		In the previous example, $C$ receives $B_{0}, A_{11}$ and $ A_{20}$ from its parent node and it has $C_{0}$.
 		It aggregates $<C_{0}, B_{0}>$ and derives $A_{10}$.
-		Then it aggregates $A_{10}, A_{11}$ and derives $A_{21}$.
-		Finally it aggregates $A_{21}, A_{20}$ and derives $A_{3}$.
+		Then it aggregates $<A_{10},A_{11}>$ and derives $A_{21}$.
+		Finally it aggregates $<A_{21}, A_{20}>$ and derives $A_{3}$.
 		Then it compares the derived $A_{3}$ with the $A_{3}$ received from the base station.
 		Based on those data-items are identical or not the node proceeds with the next step accordingly.
 		If those data-items are identical then the node sends the authentication code with ACK message and if those data-items are not identical then the node sends the authentication code with NACK message.
@@ -263,8 +258,8 @@
 		The authentication codes for sensor node $I$, with their positive and negative acknowledgment message, are defined as follows:
 		\begin{equation}
 			\begin{array}{l}
-				\mbox{MAC}_{\sk_{I}}(\mbox{N} || \mbox{ACK})\\
-				\mbox{MAC}_{\sk_{I}}(\mbox{N} || \mbox{NACK})
+				\mbox{Positive : } \mbox{MAC}_{\sk_{I}}(\mbox{N} || \mbox{ACK})\\
+				\mbox{Negative : } \mbox{MAC}_{\sk_{I}}(\mbox{N} || \mbox{NACK})
 			\end{array}
 		\end{equation}
 
@@ -289,6 +284,7 @@
 			\label{eq:mac-auth}
 			\displaystyle{\Delta_{ack} = \bigoplus_{i = 1}^n \mbox{MAC}_{\sk_{i}}(\mbox{N} || \mbox{ACK}) }
 		\end{equation}
+		Here, the addition represents an XOR operation.
 		The base station can compute $\Delta_{ack}$ as it knows the secret key $\sk_{i}$\ for each sensor node $i$.
 		Then it compares the computed $\Delta_{ack}$\ with the received root authentication code $\Delta_{root}$. 
 		If those two codes match then it accepts the aggregated value or else it proceeds further to find an adversary. 
@@ -308,29 +304,29 @@
 		\end{equation}
 		After that, it compares $c$\ with all $c_{i}$\ one at a time. 
 		The matching code indicates the complainer node.
-		The base station needs to do $n \choose 1$\ calculations according to Equation \ref{eq:caomplainer-node} and same number of comparisons to find a complainer in the aggregation tree. 
+		The base station needs to do $C_{n,1}$ \footnote{$C_{n,1}$ = $n \choose 1$} calculations according to Equation \ref{eq:caomplainer-node} and same number of comparisons to find a complainer in the aggregation tree. 
 		Hence, the base station can find a single complainer in linear time.
 		\begin{exmp} 
 			If there are four nodes ${s_{1},s_{2},s_{3},s_{4}}$ in an aggregation tree and their authentication codes with \ack, \nack\ message in the binary format are defined as follows:
-			\begin{equation}
+			\begin{equation*}
 				\begin{array}{l}
-					\mbox{MAC}_{\sk_{1}}(\mbox{N} || \mbox{ACK}) = (1001)_{2};\ \mbox{MAC}_{\sk_{1}}(\mbox{N} || \mbox{NACK}) = (1101)_{2}\\
-					\mbox{MAC}_{\sk_{2}}(\mbox{N} || \mbox{ACK}) = (0110)_{2};\ \mbox{MAC}_{\sk_{2}}(\mbox{N} || \mbox{NACK}) = (1111)_{2}\\	
-					\mbox{MAC}_{\sk_{3}}(\mbox{N} || \mbox{ACK}) = (0101)_{2};\ \mbox{MAC}_{\sk_{3}}(\mbox{N} || \mbox{NACK}) = (0111)_{2}\\
-					\mbox{MAC}_{\sk_{4}}(\mbox{N} || \mbox{ACK}) = (0011)_{2};\ \mbox{MAC}_{\sk_{4}}(\mbox{N} || \mbox{NACK}) = (1110)_{2}
+					\mbox{MAC}_{\sk_{1}}(\mbox{N}\ ||\ \mbox{ACK}) = (1001)_{2};\ \mbox{MAC}_{\sk_{1}}(\mbox{N}\ ||\ \mbox{NACK}) = (1101)_{2}\\
+					\mbox{MAC}_{\sk_{2}}(\mbox{N}\ ||\ \mbox{ACK}) = (0110)_{2};\ \mbox{MAC}_{\sk_{2}}(\mbox{N}\ ||\ \mbox{NACK}) = (1111)_{2}\\	
+					\mbox{MAC}_{\sk_{3}}(\mbox{N}\ ||\ \mbox{ACK}) = (0101)_{2};\ \mbox{MAC}_{\sk_{3}}(\mbox{N}\ ||\ \mbox{NACK}) = (0111)_{2}\\
+					\mbox{MAC}_{\sk_{4}}(\mbox{N}\ ||\ \mbox{ACK}) = (0011)_{2};\ \mbox{MAC}_{\sk_{4}}(\mbox{N} || \mbox{NACK}) = (1110)_{2}
 				\end{array}
-			\end{equation}
+			\end{equation*}
 			Let's say the root of an aggregation tree computed the $\Delta_{root} = (0100)_{2}$ as described in Subsection \ref{subsection:collection-of-authentication-codes}.
 			The base station calculates $\Delta_{ack} = (1001)_{2}$ according to the Equation \ref{eq:mac-auth}.
 			Then it calculates the complainer code $c = (1101)_{2}$ according to the Equation \ref{eq:complainer}.
 			The base station also computes the complainer codes for each sensor node according to the Equation \ref{eq:caomplainer-node} as follows:
-			\begin{equation}			
+			\begin{equation*}			
 				c_{1} = (0100)_{2}, c_{2} = (1001)_{2}, c_{3} = (0010)_{2}, c_{4} = (1101)_{2}
-			\end{equation}
+			\end{equation*}
 			The base station compares complainer code $c$ with individual complainer code $c_{i}$ and finds that $c=c_{4}$.
 			So, the base station identifies that the $s_{4}$\ complained, during verification of inclusion phase.
 		\end{exmp}
-		The following binary illustration helps visualize that applying XOR is negating the contribution of the authentication code with NACK?
+		The following binary illustration helps visualize that applying XOR is negating the contribution of the authentication code with NACK.
 		The base station receives the following from the root an aggregation tree, which includes one authentication code with NACK.
 		\[
 			\underbrace{			
@@ -425,7 +421,7 @@
 		% 	\end{array}
 		% \]
 		And concludes that node $4 $ is complaining.
-		In general, to find $k$\ complainers the base station needs to do $ n \choose k$\ calculations and the same number of comparisons to find $k$\ complainers.
+		In general, to find $k$\ complainers the base station needs to do $C_{n,k}$ \footnote{$C_{n,k}$ = $ n \choose k$} calculations and the same number of comparisons to find $k$\ complainers.
 
 	\subsection{Detecting an adversary}
 		Once the base station finds the node who send NACK during the verification of inclusion phase, it interacts with the nodes in the network to trace an adversary responsible for it. 

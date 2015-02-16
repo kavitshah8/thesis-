@@ -43,25 +43,49 @@
 		In general, an intermediate node with $n$ descendants receives $\lceil \log_2 n \rceil$ trees from its children.
 		As we know, there are at least two signatures associated with each vertex, the node with $n$ descendants receives at least $2 \lceil \log_2 n \rceil $ signatures.
 
-		We claim that the binary representation of a number $x$ illustrates the payload decomposition of the sensor node $S$, where $x$ = $1$ + number of descendants of $S$.
+		We claim that the binary representation of a non-negative number $x$ illustrates the payload decomposition of the sensor node $S$, where $x$ = $1$ + number of descendants of $S$.
 		For example, if sensor node $S$ has $22$ descendants then $x =23$, $(x)_{10}$ = $(10111)_{2}$. 
 		This means $S$ has four complete binary trees in its payload, with the height of four, two, one and zero.
 		Note that all the trees in the commitment payload are complete binary trees and no two trees have the same height.
-		
-		In both the approaches FSwRD and FSwoRD, the number of transmitted signatures remain the same. 
+		The reason $1$ is added to the descendants of $S$ is that the sensor node itself is collecting data.
+
+		In both the approaches FSwRD and FSwoRD, the number of transmitted signatures within the network remain the same as shown in Table \ref{tab:analysis-table-1} (we ignore the signature of the payload ). 
 		But the number of times a data-item is being signed differ in both the approaches which impacts the number of certificates being transmitted in the network.
 		The certificate is large in size and consumes a lot of bandwidth during the transmission.
 		To do the further analysis, we developed a performance matrix based on number of transmitted certificates for commonly used network topologies.
-		We analyzed different network topologies as shown in Table \ref{table:Analysis table for Star Aggregation Tree}. 
-		% for the star tree network with $n$ nodes while creating the commitment tree.
+		We analyzed different network topologies as shown in Table \ref{tab:analysis-table-2}. 
+		
 		\begin{table}[!htb]
 			\begin{center}
-				\caption{Analysis Table}
-				\begin{tabular}{|c|c|}
+				\caption{Analysis Table 1}
+				\label{tab:analysis-table-1}
+				\begin{tabular}{|c||c|}
+					\hline
+					Network Topology & Totality of Signatures Transmitted \\ 
+					\cline{2-2}
+					 & FSwRD \mbox{   } \vline \mbox{   } FSwoRD \\
+					\hline
+					\hline
+					Star & $2n$ \vline \mbox{   }$2n$ \\
+					\hline
+					Palm Tree & $2n$ \vline \mbox{   }$2n$\\
+					\hline
+					Complete Binary & $2n$ \vline \mbox{   }$2n$\\
+					\hline
+				\end{tabular}
+			\end{center}
+		\end{table}
+
+		\begin{table}[!htb]
+			\begin{center}
+				\caption{Analysis Table 2}
+				\label{tab:analysis-table-2}
+				\begin{tabular}{|c||c|}
 					\hline
 					Network Topology & Totality of Certificates \\ 
 					\cline{2-2}
 					 & FSwRD \mbox{   } \vline \mbox{   } FSwoRD \\
+					\hline
 					\hline
 					Star & $n - 1$ \vline \mbox{   }$n -1$ \\
 					\hline
@@ -72,7 +96,6 @@
 				\end{tabular}
 			\end{center}
 		\end{table}
-
 		% \begin{table}[!htb]	
 		% 	\begin{center}
 		% 		\begin{tabular}{ |l| l| l| }
