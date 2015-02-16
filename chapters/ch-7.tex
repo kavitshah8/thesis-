@@ -121,17 +121,18 @@
 		\label{fig:Palm aggregation tree}
 	\end{figure}
 	While creating the commitment tree $A$ creates its data-item $A_{0}$ according to Equation \ref{eq:data-item}.
-	$A$ sends only one data-item to $B$ therefore $A$'s payload ($A_{p}$), transmit-payload ($A_{\tau}$) are given as follows:
+	$A$ sends only one data-item to $B$ therefore $A$'s payload ($A_{pay}$), transmit-payload ($A_{\tau}$) are given as follows:
 	\begin{equation}
 		\label{eq:signing-payload}
-			A_{p} =\ <A_{0}, \textsf{Sign}_{S_{A}}(A_{0}), \textsf{Sign}_{S_{A}}(A_{\tau}) >\ where\ A_{\tau} =\ < A_{0} > 
+			A_{pay} =\ <A_{0}, \textsf{Sign}_{S_{A}}(A_{0}), \textsf{Sign}_{S_{A}}(A_{\tau}) >\ where\ A_{\tau} =\ < A_{0} > 
 	\end{equation}
 	The sensor node $C$'s payload is shown in Figure \ref{fig:Commitment payload of C}.
 	The commitment tree generation process is described in the later sections. 
-	The sensor node $C$ sends two data-items to $D$ therefore $C$'s payload ($C_{p}$), transmit-payload ($C_{\tau}$) are given as follows:
-	\begin{equation}
-		 	C_{p} =\ <C_{0}, \textsf{Sign}_{S_{C}}(C_{0}), B_{1}, \textsf{Sign}_{S_{C}}(B_{1}), \textsf{Sign}_{S_{C}}(C_{\tau}) >\ where\ C_{\tau} =\ <B_{1}\ ||\ C_{0}>
-	\end{equation}
+	The sensor node $C$ sends two data-items to $D$ therefore $C$'s payload ($C_{pay}$), transmit-payload ($C_{\tau}$) are given as follows:
+	\begin{equation*}
+		 	C_{pay} =\ <C_{0}, \textsf{Sign}_{S_{C}}(C_{0}), B_{1}, \textsf{Sign}_{S_{C}}(B_{1}), \textsf{Sign}_{S_{C}}(C_{\tau}) >\ where\ C_{\tau} =\ <B_{1}\ ||\ C_{0}>
+	\end{equation*}
+
 	\begin{figure}[h!]
 		\centering
 		\includegraphics[scale = 1]{images/commitment-payload-of-C.png}
@@ -198,31 +199,35 @@
 	In both the approaches, the sensor node $C$ sends all the data-items in its payload with their respective signatures to its parent sensor node $D$ along with the signature of its transmit-payload $C_{\tau}$.
 
 	In the first approach, $C$ verifies $\textsf{Sign}_{S_{B}}(B_{1})$ and sends it to $D$ without any modifications as follows:
+	
 	\begin{footnotesize}
 		\begin{equation}	
 			\begin{array}{l}
-				C_{p} =\ <C_{0},\textsf{Sign}_{S_{C}}(C_{0}),B_{1},\textcolor{red}{\textsf{Sign}_{S_{B}}(B_{1})}, \textsf{Sign}_{S_{C}}(C_{\tau})>\ where\ C_{\tau} = <C_{0} || B_{1}>\\
+				C_{pay} =\ <C_{0},\textsf{Sign}_{S_{C}}(C_{0}),B_{1},\textcolor{red}{\textsf{Sign}_{S_{B}}(B_{1})}, \textsf{Sign}_{S_{C}}(C_{\tau})>\ where\ C_{\tau} = <C_{0} || B_{1}>\\
 				C_{0} =\ <C_{id}, 1, C_{value}, H(N||1||C_{value})>\\
 				B_{1} =\ <B_{id}, 2, B_{1value}, H(N||2||B_{1value}||A_{0}||B_{0})>;\ B_{1value} =\ B_{value} + A_{value}
 			\end{array}
 			\label{eq:forwarding-payload-without-resigning}
 		\end{equation}
 	\end{footnotesize}
+
 	% The sensor node $C$ has two data-items $C_{0},B_{1}$ in its payload. 
 	The sensor node $C$ sends three signatures $\textsf{Sign}_{S_{B}}(B_{1})$, $\textsf{Sign}_{S_{C}}(C_{0}) $ and $\textsf{Sign}_{S_{C}}(C_{\tau})$ to its parent $D$.
 	It requires the parent node $D$ to know the public key of the sensor nodes $C$ and $B$, hence two certificates.
 
 	In the second approach, the sensor node $C$ can verify the $\textsf{Sign}_{S_{B}}(B_{1})$ then remove the old signature and creates new signature $\textsf{Sign}_{S_{C}}(B_{1})$ and sends to $D$ as follows:
+
 	\begin{footnotesize}
 		\begin{equation}	
 			\begin{array}{l}
-				C_{p} =\ <C_{0},\textsf{Sign}_{S_{C}}(C_{0}),B_{1},\textcolor{red}{\textsf{Sign}_{S_{C}}(B_{1})}, \textsf{Sign}_{S_{C}}(C_{\tau})>\ where\ C_{\tau} = <C_{0} || B_{1}>\\
+				C_{pay} =\ <C_{0},\textsf{Sign}_{S_{C}}(C_{0}),B_{1},\textcolor{red}{\textsf{Sign}_{S_{C}}(B_{1})}, \textsf{Sign}_{S_{C}}(C_{\tau})>\ where\ C_{\tau} = <C_{0} || B_{1}>\\
 				% C_{0} =\ <C_{id}, 1, C_{value}, H(N||1||C_{value})>\\
 				% B_{1} =\ <B_{id}, 2, B_{1value}, H(N||2||B_{1value}||A_{0}||B_{0})>\\
 			\end{array}
 			\label{eq:forwarding-payload-with-resigning}
 		\end{equation}
 	\end{footnotesize}
+	
 	The sensor node $C$ sends three signatures $\textsf{Sign}_{S_{C}}(B_{1})$, $\textsf{Sign}_{S_{C}}(C_{0}) $ and $\textsf{Sign}_{S_{C}}(C_{\tau})$ to its parent $D$.
 	But all the signatures are signed by the sensor node $C$, it requires the parent node $D$ to know the public key of only the sensor node $C$, hence $D$ need to know only one certificate.
 

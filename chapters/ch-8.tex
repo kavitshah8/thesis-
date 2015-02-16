@@ -215,12 +215,12 @@
 		The off-path values of the sensor nodes can be determined according to the Definition \ref{def:off-path}.
 		Each internal vertex $I$ in the commitment tree has two children $u_{1}$ and $u_{2}$. 
 		To disseminate off-path values, $I$ sends the data-item of $u_{1}$ to $u_{2}$, and vice-versa ($I$ also attaches relevant information tagging $u_{1}$ as the right child and $u_{2}$ as the left child) along with the signatures of the data-item and the signature of the transmit-payload.
-		In our previous example, internal vertex $A_{10}$ as shown in Figure \ref{fig:a-payload} has two children $C_{0}$ and $B_{0}$.
+		In our previous example, internal vertex $A_{10}$, shown in Figure \ref{fig:a-payload}, has two children $C_{0}$ and $B_{0}$.
 		$A_{10}$ (which is sensor node $A$ in aggregation tree) sends the following off-path values to $C$ and $B$ respectively as follows:
 			\begin{equation*}
 				\begin{array}{l}
 					<B_{0}, \textsf{Sign}_{\sk_{A}}(B_{0}),\textsf{Sign}_{\sk_{A}}(A_{\tau})>\ where\ A_{\tau} =\ <B_{0}>\\
-					<C_{0}, \textsf{Sign}_{\sk_{A}}(C_{0}),\textsf{Sign}_{\sk_{A}}(A_{\tau})>\ where\ A_{\tau} =\ <C_{0}>
+					<C_{0}, \textsf{Sign}_{\sk_{A}}(C_{0}),\textsf{Sign}_{\sk_{A}}(A_{\tau})>\ where\ A_{\tau} =\ <C_{0}>.
 				\end{array}
 			\end{equation*}
 		
@@ -228,16 +228,84 @@
 		It verifies the signatures of the received data-items then resigns them and sends those data-items (and left/right tags) with their signatures to both of its children.
 		Continuing the previous example, internal vertex $A_{10}$ receives $A_{11}$ and $A_{20}$ from its parent $A_{21}$.
 		$A_{10}$ sends the following off-path values to $C$ and $B$ respectively as follows:
+		\begin{equation*}
+			\begin{array}{l}
+				<B_{0}, \textsf{Sign}_{\sk_{A}}(B_{0}),A_{11},\textsf{Sign}_{\sk_{A}}(A_{11}),A_{20},\textsf{Sign}_{\sk_{A}}(A_{20}),\textsf{Sign}_{\sk_{A}}(A_{\tau})>\\
+					\textcolor{white}{XXXXX}where\  A_{\tau} =\ <B_{0}||A_{11}||A_{20}>\\
+				<C_{0}, \textsf{Sign}_{\sk_{A}}(C_{0}),A_{11},\textsf{Sign}_{\sk_{A}}(A_{11}),A_{20},\textsf{Sign}_{\sk_{A}}(A_{20}),\textsf{Sign}_{\sk_{A}}(A_{\tau})>\\ 
+					\textcolor{white}{XXXXX}where\  A_{\tau} =\ <C_{0}||A_{11}||A_{20}>.
+			\end{array}
+		\end{equation*}
+		
+		In FSwRD, all the leaf vertices need to know only one certificate as they receive data-items signed by their parent vertex.
+		In FSwoRD, all the leaf vertices might need to know $\log l$ certificates, where $l$ is the number of leaf-vertices in commitment tree including the leaf vertex.
+		Continuing the previous example, $C$ and $B$ receive three signatures from $A_{10}$. 
+		All these three signatures are signed by $A$.
+		Hence, $C$ and $B$ need to know the certificate of $A$.  
+		Whereas in FSwoRD, $C$ and $B$ receives three signatures from $A$.
+		From those three two will be signed by $A$ and one will be signed by either $B$ or $C$ depending on the data-item. 
+		Therefore, $B$ need to know the certificates of $A$ and $C$, and $C$ need to know the certificates of $A$ and $B$.
+
+		We show the significance of the commitment field while distributing the off-path values. 
+		The commitment filed helps us detecting any \textit{malicious activity} in the network. 
+		Because of the signatures infrastructure eventually we can detect an adversary. 
+		For example, if an internal vertex simply forwards incorrect data-item to its children then it the relevant leaf vertex will complain, as the leaf vertex will not be able to derive the data-item received using authenticated broadcast from the base station.
+		Because of the signatures internal vertex responsible for forwarding the incorrect data-item will be caught.
+		Another scenario could be that an internal vertex changed the its children's data-item while creating commitment tree and sending the incorrect off-path values to compensate discrepancy. 
+		To illustrate the scenario consider the Example \ref{ex1:malicious-activity}.
+
+		\begin{exmp}
+			\label{ex1:malicious-activity}
+			Let's say the vertices in the commitment tree of Figure \ref{fig:malicious-activity} have the data-items defined as follows.
+			Note that we did not include the signatures of these data-items in this example for simplification.
+
+			\begin{figure}[t]
+				\centering
+				\includegraphics{images/commitment-tree-2.png}
+				\caption{Smallest Possible Commitment Tree}
+				\label{fig:malicious-activity}
+			\end{figure}
+
 			\begin{equation*}
 				\begin{array}{l}
-					<B_{0}, \textsf{Sign}_{\sk_{A}}(B_{0}),A_{11},\textsf{Sign}_{\sk_{A}}(A_{11}),A_{20},\textsf{Sign}_{\sk_{A}}(A_{20}),\textsf{Sign}_{\sk_{A}}(A_{\tau})>\\
-						\textcolor{white}{XXXXX}where\  A_{\tau} =\ <B_{0}||A_{11}||A_{20}>\\
-					<C_{0}, \textsf{Sign}_{\sk_{A}}(C_{0}),A_{11},\textsf{Sign}_{\sk_{A}}(A_{11}),A_{20},\textsf{Sign}_{\sk_{A}}(A_{20}),\textsf{Sign}_{\sk_{A}}(A_{\tau})>\\ 
-						\textcolor{white}{XXXXX}where\  A_{\tau} =\ <C_{0}||A_{11}||A_{20}>.
+					A_{0} =\ <A_{id},1,10, H(N||1||10)>\\
+					B_{0} =\ <B_{id},1,20, H(N||1||20)>\\
+					C_{1} =\ <C_{id},2,30, H(N||2||30||A_{0}||B_{0})>
 				\end{array}
 			\end{equation*}
-		
-		Once a vertex has received all the data-items off its off-path vertices, it can proceed to the verification step.
+
+			$C$ changes $A_{0}$ and $B_{0}$ to $A'_{0}$ and $B'_{0}$ by changing the value fields and then applies aggregate commit algorithm.
+			$C$ sends either $C'_{1}$ or $C''_{1}$ to the base station.
+			It also creates $B''_{0}$ and $A''_{0}$ off-path values trying to compensate its malicious activity.
+
+			\begin{equation*}
+				\begin{array}{l}
+					A'_{0} =\ <A_{id},1,100, H(N||1||10)>\\
+					B'_{0} =\ <B_{id},1,200, H(N||1||20)>\\
+					\\
+					C'_{1} =\ <C_{id},2,300, H(N||2||300||A''_{0}||B_{0})>\ or\ C''_{1} =\ <C_{id},2,300, H(N||2||300||A_{0}||B''_{0})>\\
+					\\
+					B''_{0} = <B_{id},1,290,H(N||1||20)>\\
+					A''_{0} = <A_{id},1,280,H(N||1||10)>
+				\end{array}
+			\end{equation*}
+
+			During the dissemination of root data-item phase, $A$ and $B$ using authenticated broadcast receives either $C'_{1}$ or $C''_{1}$ from the base station based on what $C$ send to base station.
+			During the dissemination of off-path values phase, $A$ and $B$ receives $B''_{0},A''_{0}$ from $C$ respectively.
+			During the verification of inclusion phase, $A$ and $B$ derives the root data-item using the received off-path values, and it does not match with the received root data-item as follows:
+			\begin{equation}
+				\begin{array}{l}
+					A\ \mbox{uses}\ (A_{0}, B''_{0})\ \mbox{and derives} <2,300,H(N||2||300||A_{0}||B''_{0})>\  \neq C'_{1} = C''_{1}\\
+					B\ \mbox{uses}\ (A''_{0}, B_{0})\ \mbox{and derives} <2,300,H(N||2||300||A''_{0}||B_{0})>\  = C'_{1} \neq C''_{1}.
+				\end{array}
+			\end{equation}
+			Hence, during the collection of authentication codes phase, $A$ and $B$ send their authentication codes with NACK message.
+		\end{exmp}
+			Above example shows how the commitment field in the data-item provides \textbf{data-integrity} to the data-items.
+			It makes it nearly impossible for an adversary to tamper with the data-items while creating commitment tree and/or while distributing off-path values.
+			This malicious activity can be detected by the commitment filed in the data-item.
+			Later, we show that the adversary can be detected with the provided signature infrastructure.
+			Once a vertex has received all the data-items off its off-path vertices, it can proceed to the verification step.
 	
 	\subsection{Verification of Inclusion}
 	
@@ -423,6 +491,19 @@
 		And concludes that node $4 $ is complaining.
 		In general, to find $k$\ complainers the base station needs to do $C_{n,k}$ \footnote{$C_{n,k}$ = $ n \choose k$} calculations and the same number of comparisons to find $k$\ complainers.
 
+		If there are more that one complainers in the network then the base station uses the following recursive algorithm to find all the complainers in the network.
+		\begin{algorithm}
+			\caption{Pseudo algorithm to detect more than one complainer}
+			\label{algo:detect-a-complainer}
+			\begin{algorithmic}[1]
+
+				\STATE BS simulates the commitment trees using ACK messages.
+				\STATE BS asks the root of an aggregation tree to send the authentication codes of all the trees in its forest.
+				\STATE BS compares the received authentication codes with simulated authentication codes and identifies the complainer tree.
+				\STATE BS repeats the process until it finds all the leaves who sent authentication codes with NACK messages. 
+			\end{algorithmic}
+		\end{algorithm}
+
 	\subsection{Detecting an adversary}
 		Once the base station finds the node who send NACK during the verification of inclusion phase, it interacts with the nodes in the network to trace an adversary responsible for it. 
 		The bases station utilizes the following algorithm to trace an adversary.
@@ -431,23 +512,23 @@
 			\label{algo:detect-an-adversary}
 			\begin{algorithmic}[1]
 
-				\STATE $BS$ \ identifies all the complainer and creates $c = \{c_{1}, c_{2}, \dotsc, c_{n}\}$
+				\STATE BS\ identifies all the complainer and creates $c = \{c_{1}, c_{2}, \dotsc, c_{n}\}$
 				\FORALL {$N \in c$}
 
-					\STATE $BS$\ asks $N$ to send data-items with its signature, sent during commitment tree generation phase
+					\STATE BS asks $N$ to send data-items with its signature, sent during commitment tree generation phase
 				
 				\ENDFOR
 
-				\STATE $BS$\ identifies possible adversary based on $c$ and creates $a = \{a_{1},a_{2},\dotsc,a_{n}\}$
+				\STATE BS identifies possible adversary based on $c$ and creates $a = \{a_{1},a_{2},\dotsc,a_{n}\}$
 
 				\FORALL {$A \in a$}
 
-					\STATE $BS$\ asks $A$ to send data-items with its signature, received and sent by $A$ during commitment tree generation phase
-					\STATE If needed $BS$\  asks the parent of $A$ to send data-items with its signature
+					\STATE BS asks $A$ to send data-items with its signature, received and sent by $A$ during commitment tree generation phase
+					\STATE If needed BS  asks the parent of $A$ to send data-items with its signature
 		
 				\ENDFOR
 
-				\STATE $BS$\ determines the adversary based on the verification of signatures
+				\STATE BS determines the adversary based on the verification of signatures
 
 			\end{algorithmic}
 		\end{algorithm}
