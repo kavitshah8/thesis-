@@ -65,14 +65,14 @@
 
 	\begin{description}
 	\item[Controller] is the Central Processing Unit (CPU) of the node.
-		It collects data from the sensors, processes this data, decides when and where to send it, receives data from other sensor nodes, and decides on the actuator’s behavior.
+		It collects data from the sensors, processes this data, decides when and where to send it, receives data from other sensor nodes, and decides on the actuator's behavior.
 		It executes various programs, ranging from time-critical signal processing and communication protocols to application programs.
 	
 	\item[Communication Device] is used to exchange data between individual nodes at radio frequency.
 		Radio Frequency (RF)-based communication is widely used in sensor networks as it best fits the requirements of numerous applications.
 		It provides relatively long range and high data rates, acceptable error rates at reasonable energy expenditure, and does not require line of sight between sender and receiver.
 		Both a transmitter and a receiver are required in a sensor node. 
-		The essential task for the devices is to convert a bit stream coming from a microcontroller (or a sequence of bytes or frames) and convert them to and from radio waves. 
+		The essential task for the devices is to convert a bit stream coming from a micro-controller (or a sequence of bytes or frames) and convert them to and from radio waves. 
 		It is convenient to use a device that combines these two tasks in a single entity, called transceivers. 
 		Usually, half-duplex operation is realized since transmitting and receiving at the same time on a wireless medium is impractical in most cases.
 
@@ -84,11 +84,11 @@
 		\textit{Passive, narrow-beam sensors} are passive as well, but have a well-defined notion of direction of measurement. 
 		A typical example is a camera, which can ``take measurements'' in a given direction, but has to be rotated if need be.
 		\textit{Active sensors} are the last group of sensors actively probes the environment, for example, a sonar or radar sensor or some types of seismic sensors, which generate shock waves by small explosions.
-		These are quite specific - triggering an explosion is certainly not a lightly undertaken action – and require quite special attention.
+		These are quite specific - triggering an explosion is certainly not a lightly undertaken action - and require quite special attention.
 
 	\item[Power Supply of Sensor Nodes] is a crucial system component which has two main aspects.
 		First, storing energy and providing power in the required form; second, attempting to replenish consumed energy by ``scavenging'' it from some node-external power source over time.
-		Storing power is conventionally done using batteries, the normal AA battery stores about 2.2–2.5 Ah at 1.5 V.
+		Storing power is conventionally done using batteries, the normal AA battery stores about 2.2 - 2.5 Ah at 1.5 V.
 		To ensure truly long-lasting nodes and wireless sensor networks, such a limited energy store is unreliable. 
 		We can use energy from a node’s environment ``energy scavenging''.
 		For example, \textit{Vibrations} is almost pervasive form of mechanical energy: walls or windows in buildings are resonating with cars or trucks passing in the streets, machinery often has low frequency vibrations, ventilations also cause it, and so on.
@@ -109,10 +109,10 @@
 
 \section{Energy Consumption}
 
-	The sensor network's lifetime can be maximized by minimizing the power consumption of communication devices (or transreceiver ) of the sensor nodes.
-	The transreceiver is responsible for all the wireless communications between nodes.
+	The sensor network's lifetime can be maximized by minimizing the power consumption of communication devices (or trans receiver ) of the sensor nodes.
+	The trans receiver is responsible for all the wireless communications between nodes.
 	To estimate the power consumption, we have to consider the communication and computation power consumption.
-	The transreceiver's energy dissipation depends on two main parameters \cite{wang2002energy}.
+	The trans receiver's energy dissipation depends on two main parameters \cite{wang2002energy}.
 	The first is $E_{elec} (J/b)$, the energy dissipated to run the transmit or receive electronics.
 	The second is $\varepsilon_{amp} (J/m^2 b)$, the energy dissipated by the transmit power amplifier to achieve an acceptable signal to noise ratio $E_{b} / N_{o} $ at the receiver.
 	We assume the $d^2$ energy loss for transmission between sensor nodes since the distances between sensors are relatively short \cite{ettus1998system}. 
@@ -126,14 +126,14 @@
 	\end{equation}
 	For $\mu Amp$\ wireless sensor, $E_{elec} = 50nJ/b$\ and $\varepsilon_{amp} = 100pJ/m^2 b$.
 
-	Transreceiver can be put into different states to save energy \cite{karl2007protocols}.
+	Trans receiver can be put into different states to save energy \cite{karl2007protocols}.
 	It can be in either transmit or receive state and energy consumption of those states are describe above.
 	It can be in Idle state where it is ready to receive packet but is not currently receiving anything.
 	It can be in Sleep state where majority of the parts are switched off, and is not able to receive immediately. 
  	To sustain the sensor network for longer times all aspects of the sensor network should be efficient.
 	For example, the networking algorithm for routing should be such that it minimizes the distance $d$\ between the nodes.
 	The signal processing algorithm should be such that it process the networking packets with less computations.
-	It is shown in \cite{wang2002energy} that by distributing the Fast Fourier Transform (FFT) algorithm in the network requires less communication between the sensor nodes.
+	It is shown in \cite{wang2002energy} that by using Fast Fourier Transform (FFT) algorithm in the devices requires less communication between the sensor nodes.
 	Also, for minimal energy dissipation, a processor should operate at the lowest voltage for a given clock frequency.
 
 \section{Resource Constraints}
@@ -156,16 +156,18 @@
 		These hardware limitations can constrain protocol designer's choice of algorithms for applications.  
 		\begin{table}[!htb]	
 			\begin{center}
+			 	\caption{System-on-Chip specifications for CC2538 from Texas Instruments implementing IEEE 802.15.4 standards}
+				\label{table:soc}
 				\begin{tabular}{ |l| l| }
-					\hline
-				     & CC2538 \\
+					% \hline
+				     % & CC2538 \\
 				    \hline
 				    Device Type & Wireless Micro controller \\
 				    Frequency & 2.4GHz \\
 				    Processor Integration & ARM Cortex-M3 \\
 						Flash & Up to 512 KB \\
 						RAM & Up to 32 KB \\
-						Security & AES-128/256;ECC-128/256; SHA2; RSA \\
+						Security & AES-128/256; SHA2; RSA \\
 						RX Current & 20 (mA) \\
 						Output Power & 7 (dBm) \\
 						Data Rate(Max) & 250 kbps \\
@@ -173,12 +175,10 @@
 				    \hline
 				\end{tabular}
 			\end{center}
-			 \caption{System-on-Chip specifications for CC2538 from Texas Instruments implementing IEEE 802.15.4 standards}
-			 \label{table:soc}
 		\end{table}
 	
 	\subsection{Transmission Medium}
-		In sensor networks, a group of sensor nodes ( or processors ) communicate over the radio (e.g., Bluetooth, WLAN).
+		In sensor networks, a group of sensor nodes ( or processors ) communicate over the radio (e.g., Blue-tooth, WLAN).
 		Traditionally, wireless mediums have issues due to synchronization, hidden station and expose station terminal problems, distributed arbitration, directional antennas, bandwidth limitations, higher error rate, security, scalability etcetera.
 		For example, wireless networks have approximately $10^6$ times higher bit error rate (BER) than wired networks which causes frequent link loss and then path loss. 
 		Hence, making unstable routing in the network.

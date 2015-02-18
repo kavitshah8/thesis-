@@ -11,7 +11,7 @@
 	The base station does the authenticated broadcast of its query to the entire sensor network asking the network to report the aggregated result of the sensor reading values.
 	It includes the query nonce in its query to avoid replay attacks in the future. 
 	We use the same hash chain process to generate unique query nonce for the base station as described in Section \ref{sec:query-dissemination}.
-	Once the sensor nodes receive the query from the base station they creates their own leaf vertex by creating the data-items of their sensor readings and its signature.
+	Once the sensor nodes receive the query from the base station they constructs their own leaf vertex by creating the data-items of their sensor readings and its signature.
 	The sensor nodes create their payloads and send it to their parent in the aggregation tree. 
 	The details of the commitment tree generation is described in the next section.
 
@@ -20,7 +20,7 @@
 	The commitment tree generation begins from the sensor nodes with the highest depth (leaf nodes) in the aggregation tree.
 	Leaf sensor nodes in the aggregation tree create their leaf vertices by creating data-items, signatures of those data-items and signature of the transmit-payload according to Equations \ref{eq:data-item}, \ref{eq:sign-data-item}, \ref{eq:signing-payload}, respectively.
 	Then they send the payload to their parents in the aggregation tree.	
-	Each internal sensor node in the aggregation tree also creates their leaf vertex.
+	Each internal sensor node in the aggregation tree also constructs their leaf vertex.
 	In addition, internal sensor node receives the payload from each of its children, which impacts its forest.
 	For each child, internal node first verifies the signature of the transmit-payload and then the signature of the data-item for one child at a time.
 	Once internal node verifies all the received signatures, it merges all the data-items with same count value from its forest.
@@ -43,7 +43,7 @@
 	\begin{figure}[h!]
 		% \centering
 		\includegraphics{images/increase-height.png}
-		\caption{Input node $A$ has $B_{1}$ and $C_{1}$ in its forest. It aggregates these two trees and creates $A_{2}$.}
+		\caption{Input node $A$ has $B_{1}$ and $C_{1}$ in its forest. It aggregates these two trees and constructs $A_{2}$.}
 		\label{fig:increase-height}
 	\end{figure}
 	
@@ -59,9 +59,9 @@
 	After verifying all the signatures from each child's payload, $A$ uses the data-items in its forest to create its payload, which is sent to the base station.
 	We describe the payload generation process for sensor nodes $B,C,D$ and $A$ in order.
 
-	The sensor node $B$ creates its payload from its forest. 
+	The sensor node $B$ constructs its payload from its forest. 
 	It's forest consists of payloads received from $E$ and $F$.
-	The leaf sensor nodes $E$ and $F$ creates their payloads according to Equation \ref{eq:signing-payload} as follows:
+	The leaf sensor nodes $E$ and $F$ constructs their payloads according to Equation \ref{eq:signing-payload} as follows:
 	% \begin{figure}[h!]
 	% 	\centering
 	% 	\includegraphics{images/e-payload.png}
@@ -80,12 +80,12 @@
 	
 	$B$ receives $E_{pay}$ and $F_{pay}$ from $E$ and $F$ respectively. 
 	$B$ verifies all the signatures in the received payloads.
-	Then it creates its own data-item $B_{0}$.
+	Then it constructs its own data-item $B_{0}$.
 	Now, $B$ has $B_{0},E_{0},F_{0}$ in its forest as shown in Figure \ref{fig:b-forest-payload}. 
 	As all the data-items have the same count value, $B$ has an option while selecting two data-items to merge.
-	$B$ aggregates $E_{0},F_{0}$ and creates $B_{1}$.
+	$B$ aggregates $E_{0},F_{0}$ and constructs $B_{1}$.
 	After creating $B_{1}$ none of the data-items have the same count value. 
-	So, $B$ creates its payload $B_{pay}$ and sends it to $A$ as follows:
+	So, $B$ constructs its payload $B_{pay}$ and sends it to $A$ as follows:
 	\begin{equation*}
 		\begin{array}{l}
 			B_{pay} =\ < B_{0}, \textsf{Sign}_{\sk_{B}}(B_{0}), B_{1}, \textsf{Sign}_{\sk_{B}}(B_{1}), \textsf{Sign}_{\sk_{B}}(B_{\tau}) >\ where\ B_{\tau} =\ <B_{0} || B_{1}>\\
@@ -112,11 +112,11 @@
 				H_{0} =\ <H_{id}, 1, H_{value}, H(N||1||H_{value})>
 			\end{array}
 		\end{equation*}
-		$C$ verifies all the signatures in the received payload $G_{pay}$ and creates $C_{0}$.
+		$C$ verifies all the signatures in the received payload $G_{pay}$ and constructs $C_{0}$.
 		Now, $C$ has $C_{0},G_{1}$ in its forest as shown in Figure \ref{fig:c-forest-payload}. 
 		As none of the data-items have the same count value, $C$ does not merge those two data-items.
 		But $C$ removes the old signature on $G_{1}$ and signs $G_{1}$ with its secret key.
-		So, $C$ creates its payload $C_{pay}$ and sends it to $A$ as follows:
+		So, $C$ constructs its payload $C_{pay}$ and sends it to $A$ as follows:
 		\begin{figure}[h!]
 			\centering
 			\includegraphics{images/c-forest-payload.png}
@@ -131,7 +131,7 @@
 			%\label{eq:c-payload}
 		\end{equation*}
 
-		The sensor node $D$ creates its payload $D_{pay}$ and sends it to $A$ as follows:
+		The sensor node $D$ constructs its payload $D_{pay}$ and sends it to $A$ as follows:
 		\begin{equation*}
 			\begin{array}{l}
 				D_{pay} =\ <D_{0}, \textsf{Sign}_{\sk_{D}}(D_{0}), \textsf{Sign}_{\sk_{D}}(D_{\tau})>;\ where\ D_{\tau} =\ <D_{0}>\\
@@ -142,12 +142,12 @@
 
 		The root node of the aggregation tree $A$ receives the payloads $B_{pay}, C_{pay}$ and $D_{pay}$ from $B,C$ and $D$ respectively.
 		% Equations \ref{eq:b-payload},\ref{eq:c-payload},\ref{eq:d-payload} 
-		$A$ verifies all the signatures in the received payloads and creates $A_{0}$.
+		$A$ verifies all the signatures in the received payloads and constructs $A_{0}$.
 		Now, $A$ has $G_{1},C_{0},B_{1},B_{0},D_{0}$ and $A_{0}$ in its forest as shown in Figure \ref{fig:a-forest}.
 		\begin{figure}[h!]
 			\centering
 			\includegraphics{images/a-forest.png}
-			\caption{$A$'s forest: $A$ receives three payloads from $C,B,D$ and creates $A_{0}$}
+			\caption{$A$'s forest: $A$ receives three payloads from $C,B,D$ and constructs $A_{0}$}
 			\label{fig:a-forest}
 		\end{figure}
 		\begin{figure}[h!]
@@ -163,12 +163,12 @@
 			\label{fig:a-forest-second-merge}
 		\end{figure}
 		$A$ has four data-items with count value of $1$.
-		In the first merge, $A$ aggregates those data-items and creates $A_{10}$ and $A_{11}$ as shown in Figure \ref{fig:a-forest-first-merge}.
+		In the first merge, $A$ aggregates those data-items and constructs $A_{10}$ and $A_{11}$ as shown in Figure \ref{fig:a-forest-first-merge}.
 		Now, $A$ has four data-items with count value of $2$.
-		In the second merge, $A$ aggregates those data-items and creates $A_{20}$ and$A_{21}$ as shown in Figure \ref{fig:a-forest-second-merge}.
+		In the second merge, $A$ aggregates those data-items and constructs $A_{20}$ and$A_{21}$ as shown in Figure \ref{fig:a-forest-second-merge}.
 		Finally, $A$ has two data-items with count value of $4$.
-		In the final merge, $A$ aggregates those data-items and creates $A_{3}$ as shown in Figure \ref{fig:a-payload}.
-		Then $A$ creates payload and sends it to the base station as follows:
+		In the final merge, $A$ aggregates those data-items and constructs $A_{3}$ as shown in Figure \ref{fig:a-payload}.
+		Then $A$ constructs payload and sends it to the base station as follows:
 		% 		
 			\begin{equation*}
 				\begin{array}{l}
@@ -256,7 +256,7 @@
 
 		\begin{exmp}
 			\label{ex1:malicious-activity}
-			Let's say the vertices in the commitment tree of Figure \ref{fig:malicious-activity} have the data-items defined as follows.
+			Suppose the vertices in the commitment tree of Figure \ref{fig:malicious-activity} have the data-items defined as follows.
 			Note that we did not include the signatures of these data-items in this example for simplification.
 			\begin{equation*}
 				\begin{array}{l}
@@ -273,31 +273,31 @@
 				\label{fig:malicious-activity}
 			\end{figure}
 
-			$C$ changes $A_{0}$ and $B_{0}$ to $A'_{0}$ and $B'_{0}$ by changing the value fields and then applies aggregate commit algorithm.
+			Now suppose $C$ changes $A_{0}$ and $B_{0}$ to $A'_{0}$ and $B'_{0}$ by changing the value fields and then applies aggregate commit algorithm.
 			$C$ can send either $C'_{1}$ or $C''_{1}$ to the base station.
 			But it  will be caught by base station in both cases.
-			To compensate the discrepancy, $C$ creates $B''_{0}$ and $A''_{0}$ off-path values trying to hide its malicious activity from the base station.
+			To compensate for the discrepancy, $C$ constructs $B''_{0}$ and $A''_{0}$ off-path values trying to hide its malicious activity from the base station.
 
 			\begin{equation*}
 				\begin{array}{l}
 					A'_{0} =\ <A_{id},1,100, H(N||1||10)>\\
 					B'_{0} =\ <B_{id},1,200, H(N||1||20)>\\
 					\\
-					C'_{1} =\ <C_{id},2,300, H(N||2||300||A''_{0}||B_{0})>\ or \\ 
-					C''_{1} =\ <C_{id},2,300, H(N||2||300||A_{0}||B''_{0})>\\
+					C'_{1} =\ <C_{id},2,300, H(N||2||300||\mathbf{A''_{0}}||\mathbf{B_{0}})>\ or \\ 
+					C''_{1} =\ <C_{id},2,300, H(N||2||300||\mathbf{A_{0}}||\mathbf{B''_{0}})>\\
 					\\
 					B''_{0} = <B_{id},1,290,H(N||1||20)>\\
 					A''_{0} = <A_{id},1,280,H(N||1||10)>
 				\end{array}
 			\end{equation*}
 
-			During the dissemination of root data-item phase, $A$ and $B$ using authenticated broadcast receives either $C'_{1}$ or $C''_{1}$ from the base station based on what $C$ sent to base station.
+			During the dissemination of the root data-item phase, $A$ and $B$ using authenticated broadcast receives either $C'_{1}$ or $C''_{1}$ from the base station based on what $C$ has sent to base station.
 			During the dissemination of off-path values phase, $A$ and $B$ receives $B''_{0}$ and $A''_{0}$ from $C$ respectively.
 			During the verification of inclusion phase, $A$ and $B$ derives the root data-item using the received off-path values, and it does not match with the received root data-item as follows:
 			\begin{equation*}
 				\begin{array}{l}
-					A\ \mbox{uses}\ (A_{0}, B''_{0})\ \mbox{and derives} <2,300,H(N||2||300||A_{0}||B''_{0})>\  \neq C'_{1} = C''_{1}\\
-					B\ \mbox{uses}\ (A''_{0}, B_{0})\ \mbox{and derives} <2,300,H(N||2||300||A''_{0}||B_{0})>\  = C'_{1} \neq C''_{1}.
+					A\ \mbox{uses}\ (A_{0}, B''_{0})\ \mbox{and derives} <2,300,H(N||2||300||\mathbf{A_{0}}||\mathbf{B''_{0}})>\  = C''_{1} \neq C'_{1} \\
+					B\ \mbox{uses}\ (A''_{0}, B_{0})\ \mbox{and derives} <2,300,H(N||2||300||\mathbf{A''_{0}}||\mathbf{B_{0}})>\  = C'_{1} \neq C''_{1}.
 				\end{array}
 			\end{equation*}
 			Hence, during the collection of authentication codes phase, either $A$ or $B$ sends its authentication codes with NACK message.
@@ -373,7 +373,7 @@
 		\end{equation}
 		After that, it compares $c$\ with all $c_{i}$\ one at a time. 
 		The matching code indicates the complainer node.
-		The base station needs to do $C_{n,1}$ \footnote{$C_{n,1}$ = $n \choose 1$} calculations according to Equation \ref{eq:caomplainer-node} and same number of comparisons to find a complainer in the aggregation tree. 
+		The base station needs to do $C_{(n,1)}$ \footnote{$C_{(n,1)}$ = $n \choose 1 $ = $n$} calculations according to Equation \ref{eq:caomplainer-node} and same number of comparisons to find a complainer in the aggregation tree. 
 		Hence, the base station can find a single complainer in linear time.
 		\begin{exmp} 
 			If there are four nodes ${s_{1},s_{2},s_{3},s_{4}}$ in an aggregation tree and their authentication codes with \ack, \nack\ message in the binary format are defined as follows:
@@ -385,7 +385,7 @@
 					\mbox{MAC}_{\sk_{4}}(\mbox{N}\ ||\ \mbox{ACK}) = (0011)_{2};\ \mbox{MAC}_{\sk_{4}}(\mbox{N} || \mbox{NACK}) = (1110)_{2}
 				\end{array}
 			\end{equation*}
-			Let's say the root of an aggregation tree computed the $\Delta_{root} = (0100)_{2}$ as described in Subsection \ref{subsection:collection-of-authentication-codes}.
+			Suppose the root of an aggregation tree computed the $\Delta_{root} = (0100)_{2}$ as described in Subsection \ref{subsection:collection-of-authentication-codes}.
 			The base station calculates $\Delta_{ack} = (1001)_{2}$ according to the Equation \ref{eq:mac-auth}.
 			Then it calculates the complainer code $c = (1101)_{2}$ according to the Equation \ref{eq:complainer}.
 			The base station also computes the complainer codes for each sensor node according to the Equation \ref{eq:caomplainer-node} as follows:
@@ -491,16 +491,18 @@
 		% \]
 		Finally, concludes that node $4 $ is complaining.
 		
-		In general, to find $k$\ complainers the base station needs to do $C_{n,k}$ \footnote{$C_{n,k}$ = $ n \choose k$} calculations and the same number of comparisons to find $k$\ complainers.
-		If there are more that one complainers in the network then the base station uses the following recursive algorithm to find all the complainers in the network.
+		In general, to find $k$\ complainers the base station needs to do $C_{(n,k)}$ \footnote{$C_{(n,k)}$ = $ n \choose k$ = $n!/(k! \cdot (n-k)!)$} calculations and the same number of comparisons to find $k$\ complainers.
+		If there are more than one complainer in the network then the base station uses the following recursive algorithm to find all the complainers in the network.
+
+		Divide and conquer
+		
 		\begin{algorithm}
 			\caption{Pseudo algorithm to detect more than one complainer}
 			\label{algo:detect-a-complainer}
 			\begin{algorithmic}[1]
-
-				\STATE BS simulates the commitment trees using ACK messages.
-				\STATE BS asks the root of an aggregation tree to send the authentication codes of all the tree roots in its forest.
-				\STATE BS compares the received authentication codes with simulated authentication codes and identifies the complainer tree.
+				\STATE BS simulates the commitment trees with authentication codes of ACK messages.
+				\STATE BS asks the root of an aggregation tree to send the authentication codes of all the roots in its forest.
+				\STATE BS compares the received authentication codes with simulated authentication codes, identifies the complainer trees and constructs \textsf{T} = $\{\textsf{T}_{1},\textsf{T}_{2},\dotsc,\textsf{T}_{n}\}$.
 				\STATE BS repeats the process until it finds all the leaves who sent authentication codes with NACK messages. 
 			\end{algorithmic}
 		\end{algorithm}
@@ -512,8 +514,8 @@
 		For simplicity, we selected the commitment tree where all the vertices are unique. 
 		This analysis holds true for any commitment tree topology. 
 		\begin{exmp}
-			The base station creates a set $c=\{c_{1},c_{2} , \dotsc, c_{n}\}$ for the complainers based on the protocol described in the Section \ref{sec:verficiation-of-authentication-codes}.
-			Then based on the set $c$ it creates a set $a = \{a_{1},a_{2},\dotsc,a_{n}\}$ of the possible adversaries. 
+			The base station constructs a set $\textsf{C} =\{\textsf{C}_{1},\textsf{C}_{2} , \dotsc, \textsf{C}_{n}\}$ for the complainers based on the protocol described in the Section \ref{sec:verficiation-of-authentication-codes}.
+			Then based on the set $\textsf{C}$ it constructs a set $\textsf{A} = \{\textsf{A}_{1},\textsf{A}_{2},\dotsc,\textsf{A}_{n}\}$ of the possible adversaries. 
 			\begin{figure}[t]
 				\centering
 				\includegraphics{images/possible-cheaters.png}
@@ -521,32 +523,36 @@
 				\label{fig:cheating}
 			\end{figure}
 
-			If $c=\{A_{0}\}$ then a possible set of adversary is $a=\{I,(B,I),(B,M),(B,I,M)\}$. 
+			Suppose $\textsf{C}=\{A_{0}\}$ then a possible set of adversary $\textsf{A} =\{I,\{B,I\},\{B,M\},\{B,I,M\}\}$. 
 			Note the fact that only $I$ knows the exact data-item of $A_{0}$. 
 			The vertices $M$ and $O$ knows aggregated value of $A_{0}$. 
 			Hence, if either $M$ or $O$ tampers they tamper with more than one data-item or they have to cheat in a group. 
 			Based on the fact that the possible set of adversaries for given complainer set are as follows:\\
-			If $c=\{A_{0},B_{0}\}$ then $a=\{I,M,(I,M),(C,D,O)\}$\\
-			If $c=\{A_{0},B_{0},C_{0}\}$ then $a=\{(D,O),(I,J),(M,J),(M,J,I)\}$\\				
-			If $c=\{A_{0},B_{0},C_{0},D_{0}\}$ then $a=\{M, O,(I,J),(E,F,G,H,O)\}$\\			
-			If $c=\{A_{0},B_{0},C_{0},D_{0},E_{0}\}$ then $a=\{(O,K),(M,K),(J,I,K),(F,G,H,O)\}$\\				
-			If $c=\{A_{0},B_{0},C_{0},D_{0},E_{0},F_{0}\}$ then $a=\{(O,K),(M,N),(N,O),(J,I,K)\}$\\
-			If $c=\{A_{0},C_{0}\}$ then $a=\{(J,I)\}$
+			If $\textsf{C}=\{A_{0},B_{0}\}$ then $\textsf{A}=\{I,M,\{I,M\},\{C,D,O\}\}$\\
+			If $\textsf{C}=\{A_{0},B_{0},C_{0}\}$ then $\textsf{A}=\{\{D,O\},\{I,J\},\{M,J\},\{M,J,I\}\}$\\				
+			If $\textsf{C}=\{A_{0},B_{0},C_{0},D_{0}\}$ then $\textsf{A}=\{M, O,\{I,J\},\{E,F,G,H,O\}\}$\\			
+			If $\textsf{C}=\{A_{0},B_{0},C_{0},D_{0},E_{0}\}$ then $\textsf{A}=\{\{O,K\},\{M,K\},\{J,I,K\},\{F,G,H,O\}\}$\\				
+			If $\textsf{C}=\{A_{0},B_{0},C_{0},D_{0},E_{0},F_{0}\}$ then $\textsf{A}=\{\{O,K\},\{M,N\},\{N,O\},\{J,I,K\}\}$\\
+			If $\textsf{C}=\{A_{0},C_{0}\}$ then $\textsf{A}= \{ \{J,I\}\}$
 		\end{exmp}
 
 		Now, we describe the case for detecting an adversary for a single complainer case.
-		In above example, if $c = {A_{0}}$ then $a=\{I,(B,I),(B,M),(B,I,M)\}$.
-		Suppose $I$ is an adversary and it changed the $A_{0}$ to $A'_{0}$, creating an internal vertex $I'_{1}$ instead of $I_{1}$ while creating the commitment tree.
+		In above example, if $c = {A_{0}}$ then $a=\{I,\{B,I\},\{B,M\},\{B,I,M\}\}$.
+		Suppose $I$ is an adversary and it changed the $A_{0}$ to $A'_{0}$, creating an internal vertex $I'_{1}$ instead of $I_{1}$ while creating the commitment tree. 
+		Then,
 		\begin{equation*}
 			\begin{array}{l}
 				I_{1} =\ <I_{id}, 1, I_{1value}, H(N||1||I_{value}||A_{0}||B_{0})> \mbox{where}\ I_{1value} = A_{value} + B_{value}\\	
 				I_{pay} = <I_{1}, \textsf{Sign}_{\sk_{I}}(I_{1}), \textsf{Sign}_{\sk_{I}}(I_{\tau})> \mbox{where}\ I_{\tau} = I_{1}\\
-				\\
-				I'_{1} =\ <I_{id}, 1, I'_{1value}, H(N||1||I'_{value}||A'_{0}||B_{0})> \mbox{where}\ I_{1value} = A'_{value} + B_{value}\\
-				I'_{pay} = <I'_{1}, \textsf{Sign}_{\sk_{I}}(I'_{1}), \textsf{Sign}_{\sk_{I}}(I_{\tau})> \mbox{where}\ I_{\tau} = I'_{1}\\
 			\end{array}
 		\end{equation*}
-
+		Whereas,
+		\begin{equation*}
+			\begin{array}{l}
+				I'_{1} =\ <I_{id}, 1, I'_{1value}, H(N||1||I'_{value}||A'_{0}||B_{0})> \mbox{where}\ I_{1value} = A'_{value} + B_{value}\\
+				I'_{pay} = <I'_{1}, \textsf{Sign}_{\sk_{I}}(I'_{1}), \textsf{Sign}_{\sk_{I}}(I_{\tau})> \mbox{where}\ I_{\tau} = I'_{1},\\
+			\end{array}
+		\end{equation*}
 		To detect an adversary, first the base station asks $A$ to send its payload.
 		\begin{equation*}
 			\begin{array}{l}
@@ -554,7 +560,6 @@
 			A_{0} = <A_{id}, 1, A_{value}, H(N||1||A_{value})>
 			\end{array}
 		\end{equation*}
-
 		Then the base station asks $I$ to send all the received payloads from each of its children and its own payload.
 		So, $I$ instead of sending the its true payload it sends its false payload to the base station.
 		As $I$ is an adversary it might lie about it and send the following payload.
@@ -565,7 +570,6 @@
 				I_{pay} = <I_{1}, \textsf{Sign}_{\sk_{I}}(I_{1}), \textsf{Sign}_{\sk_{A}}(I_{\tau})> \mbox{where}\ I_{\tau} = I_{0}\\
 			\end{array}
 		\end{equation*}
-
 		Then the base station asks $M$ to send all the received payload from each of its children.
 		So, $M$ sends the following to the base station.
 		\begin{equation*}
@@ -574,7 +578,7 @@
 				J_{pay} = <J_{1}, \textsf{Sign}_{\sk_{I}}(J_{1}), \textsf{Sign}_{\sk_{A}}(J_{\tau})> \mbox{where}\ J_{\tau} = J_{0}\\
 			\end{array}
 		\end{equation*}
-		As the base station receives the $I'_{pay}$ with its signature from $M$ proves that the $I$ is lied about its payload.
+		As the base station receives the $I'_{pay}$ with a signature from $M$, then this proves that the $I$ has lied about its payload.
 		Hence, $I$ is an adversary.
 		In general, the bases station utilizes the following algorithm to trace an adversary.
 		\begin{algorithm}
@@ -582,16 +586,16 @@
 			\label{algo:detect-an-adversary}
 			\begin{algorithmic}[1]
 
-				\STATE BS\ identifies all the complainer and creates $c = \{c_{1}, c_{2}, \dotsc, c_{n}\}$
-				\FORALL {$N \in c$}
+				\STATE BS\ identifies all the complainer and constructs $\textsf{C} = \{\textsf{C}_{1}, \textsf{C}_{2}, \dotsc, c\textsf{C}_{n}\}$
+				\FORALL {$C \in \textsf{C}$}
 
-					\STATE BS asks $N$ to send data-item with its signature, sent during commitment tree generation phase
+					\STATE BS asks $C$ to send data-item with its signature, sent during commitment tree generation phase
 				
 				\ENDFOR
 
-				\STATE BS identifies possible adversary based on $c$ and creates $a = \{a_{1},a_{2},\dotsc,a_{n}\}$
+				\STATE BS identifies possible adversary based on $\textsf{C}$ and constructs $\textsf{A} = \{\textsf{A}_{1},\textsf{A}_{2},\dotsc,\textsf{A}_{n}\}$
 
-				\FORALL {$A \in a$}
+				\FORALL {$A \in \textsf{A}$}
 
 					\STATE BS asks $A$ to send data-items with its signature, received and sent by $A$ during commitment tree generation phase
 					\STATE If needed BS  asks the parent of $A$ to send data-items with its signature
@@ -602,5 +606,9 @@
 
 			\end{algorithmic}
 		\end{algorithm}
+
+		As the adversaries tempers with the data-item, it reduces the data-integrity of the protocol.
+		Once the base station detects adversaries it dispels them from the network for all the future queries.
+		Doing so removes un-necessary communication for debugging purpose in the future which saves bandwidth and increases the life-time of the network.
 
 		% Talk About Impact.

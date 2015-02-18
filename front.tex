@@ -1,3 +1,4 @@
+
 %
 %  revised  front.tex  2011-09-02  Mark Senn  http://engineering.purdue.edu/~mark
 %  created  front.tex  2003-06-02  Mark Senn  http://engineering.purdue.edu/~mark
@@ -65,28 +66,29 @@
   % List of Symbols is optional.
   % Reference: PU 17.
 \begin{symbols}
-  $s$& Sensor node \cr
+  % $s$& Sensor node \cr
   $N$& Query nonce\cr
   $H$& Hash function\cr
-  $d$& Distance \cr
-  $D$& Data-item \cr
-  $X$& Random variable \cr
-  $\delta$& Fanout of a sensor node \cr
-  $f$& Function \cr
-  $v$& Vertex \cr
-  $A$& An attack \cr
-  $\alpha$& Resilient factor \cr
+  % $d$& Distance \cr
+  % $D$& Data-item \cr
+  % $X$& Random variable \cr
+  % $\delta$& Fanout of a sensor node \cr
+  % $f$& Function \cr
+  % $v$& Vertex \cr
+  % $A$& An attack \cr
+  % $\alpha$& Resilient factor \cr
 \end{symbols}
 
   % List of Abbreviations is optional.
   % Reference: PU 17.
 \begin{abbreviations}
-  SHA& Secure hash algorithm\cr
-  SHIA& Secure hierarchical in-network aggregation\cr
-  SIA& Secure information aggregation\cr
   ACK& Positive acknowledgment message\cr
-  NACK& Negative acknowledgment message\cr
   BER& Bit error rate\cr
+  MAC& Message Authentication Code\cr
+  NACK& Negative acknowledgment message\cr
+  SHA& Secure hash algorithm\cr
+  SIA& Secure information aggregation\cr
+  SHIA& Secure hierarchical in-network aggregation\cr
 \end{abbreviations}
 
   % Nomenclature is optional.
@@ -114,10 +116,11 @@
 
   % We show that two distinguishing properties of sensor networks, i.e., the presence of a trusted base station, and the pre-knowledge of the fixed network topology, can yield security protocols that are both communication-efficient and highly general. 
   
-  To increase the lifetime of the sensor network by preserving bandwidth we propose a secure in-network data aggregation protocol with internal verification.
-  For doing secure in-network distributed computations, we show an algorithm for securely computing the sum of sensor readings in the network, which we can generalize to any random tree topology computations for any combination of mathematical functions.
-  We represent an efficient way of doing statistical analysis for the protocol.
-  We propose a novel, distributed, interactive algorithm to trace down the adversary and remove it from the network.   
-  In the end, we do bandwidth analysis of the protocol and give the proof for the efficiency of the protocol.
+  We propose a secure in-network data aggregation protocol with internal verification, to increase the lifetime of the sensor network by preserving bandwidth.
+  For doing secure in-network distributed computations, we show an algorithm for securely computing the sum of sensor readings in the network.
+  Our algorithm can be generalized to any random tree topology and can be applied to any combination of mathematical functions.
+  In addition, we represent an efficient way of doing statistical analysis for the protocol.
+  Furthermore, we propose a novel, distributed and interactive algorithm to trace down the adversary and remove it from the network.   
+  Finally, we do bandwidth analysis of the protocol and give the proof for the efficiency of the protocol.
 
 \end{abstract}

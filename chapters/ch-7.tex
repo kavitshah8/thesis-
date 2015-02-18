@@ -52,9 +52,9 @@
 		For example, the signature of $A_{0}$ of the Equation \ref{eq:data-item} is given as follows:
 		\begin{equation}
 			\label{eq:sign-data-item}
-			\textsf{S} = \textsf{Sign}_{S_{A}}(A_{0})
+			\textsf{S} = \textsf{Sign}_{\sk_{A}}(A_{0})
 		\end{equation}
-		where $S_{A}$ is the secret key of the sensor node $A$, $\textsf{Sign}$ is the signing algorithm.
+		where $\sk_{A}$ is the secret key of the sensor node $A$, $\textsf{Sign}$ is the signing algorithm.
 		The parent node receives the data-item and its signature from its child. 
 		It also receives the certificate from its child which is shown in Table \ref{table:digital-certificate}.		
 		\begin{table}[!htb]	
@@ -76,16 +76,16 @@
 			% \end{center}
 	  \end{table}
 	  From the digital certificate the parent node receives the public-key of its child, which is used to decipher the signature.
-	  For example, the parent node of $B$ verifies $\textsf{Sign}_{S_{A}}(A_{0})$ as follows:
+	  For example, the parent node of $B$ verifies $\textsf{Sign}_{\sk_{A}}(A_{0})$ as follows:
 	  \begin{equation}
-			\textsf{Verify}_{P_{A}}(A_{0},\textsf{S}) = 
+			\textsf{Verify}_{\pk_{A}}(A_{0},\textsf{S}) = 
 			\begin{cases}
-			 \textbf{true}\ \mbox{with probability of 1} & \mbox{if}\ \textsf{S} = \textsf{Sign}_{S_{A}}(A_{0})\\
-			 \textbf{false}\ \mbox{with overwhelming probability} & \mbox{if}\ \textsf{S} \neq \textsf{Sign}_{S_{A}}(A_{0})
+			 \textbf{true}\ \mbox{with probability of 1} & \mbox{if}\ \textsf{S} = \textsf{Sign}_{\sk_{A}}(A_{0})\\
+			 \textbf{false}\ \mbox{with overwhelming probability} & \mbox{if}\ \textsf{S} \neq \textsf{Sign}_{\sk_{A}}(A_{0})
 			\end{cases}
 			\label{eq:verification}
 		\end{equation}
-	  where $P_{A}$ is the public key of $A$, $\textsf{Verify}$ is the verification algorithm.
+	  where $\pk_{A}$ is the public key of $A$, $\textsf{Verify}$ is the verification algorithm.
 	
 	\subsection{Security Benefits}
 		\label{subsec:security benefits of signing the data-item}
@@ -122,15 +122,14 @@
 	\end{figure}
 	While creating the commitment tree $A$ creates its data-item $A_{0}$ according to Equation \ref{eq:data-item}.
 	$A$ sends only one data-item to $B$ therefore $A$'s payload ($A_{pay}$), transmit-payload ($A_{\tau}$) are given as follows:
-	\begin{equation}
-		\label{eq:signing-payload}
-			A_{pay} =\ <A_{0}, \textsf{Sign}_{S_{A}}(A_{0}), \textsf{Sign}_{S_{A}}(A_{\tau}) >\ where\ A_{\tau} =\ < A_{0} > 
-	\end{equation}
+	\begin{equation*}
+		A_{pay} =\ <A_{0}, \textsf{Sign}_{\sk_{A}}(A_{0}), \textsf{Sign}_{\sk_{A}}(A_{\tau}) >\ where\ A_{\tau} =\ < A_{0} > 
+	\end{equation*}
 	The sensor node $C$'s payload is shown in Figure \ref{fig:Commitment payload of C}.
 	The commitment tree generation process is described in the later sections. 
 	The sensor node $C$ sends two data-items to $D$ therefore $C$'s payload ($C_{pay}$), transmit-payload ($C_{\tau}$) are given as follows:
 	\begin{equation*}
-		 	C_{pay} =\ <C_{0}, \textsf{Sign}_{S_{C}}(C_{0}), B_{1}, \textsf{Sign}_{S_{C}}(B_{1}), \textsf{Sign}_{S_{C}}(C_{\tau}) >\ where\ C_{\tau} =\ <B_{1}\ ||\ C_{0}>
+		 	C_{pay} =\ <C_{0}, \textsf{Sign}_{\sk_{C}}(C_{0}), B_{1}, \textsf{Sign}_{\sk_{C}}(B_{1}), \textsf{Sign}_{\sk_{C}}(C_{\tau}) >\ where\ C_{\tau} =\ <B_{1}\ ||\ C_{0}>
 	\end{equation*}
 
 	\begin{figure}[h!]
@@ -147,7 +146,7 @@
 		To the sender, it assures that it is sending only the data-items included in the signature of the transmit-payload.
 		Further, it establish that none of the data-items gets added or remove from the transmit-payload during the transmission. 
 		To the receiver, it assures that it receives all the data-items included in the signature of the transmit-payload and none of the data-items were stranded or added additionally to the payload of its child.
-		For example, the signature on the $C$'s transmit-payload $\textsf{Sign}_{S_{C}}(C_{\tau})$ assures that the sensor node $C$ sent only two data-items $C_{0},B_{1}$ in its payload.
+		For example, the signature on the $C$'s transmit-payload $\textsf{Sign}_{\sk_{C}}(C_{\tau})$ assures that the sensor node $C$ sent only two data-items $C_{0},B_{1}$ in its payload.
 		It also establishes that none of the data-items in its payload have been left stranded.
 		% It is true for the sensor node $A$.
 		As we said, it's like the signature for the transmission.
@@ -198,12 +197,12 @@
 	To demonstrate two approaches we use the aggregation tree shown in Figure \ref{fig:Palm aggregation tree} and the payload of the sensor node $C$ shown in Figure \ref{fig:Commitment payload of C}.
 	In both the approaches, the sensor node $C$ sends all the data-items in its payload with their respective signatures to its parent sensor node $D$ along with the signature of its transmit-payload $C_{\tau}$.
 
-	In the first approach, $C$ verifies $\textsf{Sign}_{S_{B}}(B_{1})$ and sends it to $D$ without any modifications as follows:
+	In the first approach, $C$ verifies $\textsf{Sign}_{\sk_{B}}(B_{1})$ and sends it to $D$ without any modifications as follows:
 	
 	\begin{footnotesize}
 		\begin{equation}	
 			\begin{array}{l}
-				C_{pay} =\ <C_{0},\textsf{Sign}_{S_{C}}(C_{0}),B_{1},\textcolor{red}{\textsf{Sign}_{S_{B}}(B_{1})}, \textsf{Sign}_{S_{C}}(C_{\tau})>\ where\ C_{\tau} = <C_{0} || B_{1}>\\
+				C_{pay} =\ <C_{0},\textsf{Sign}_{\sk_{C}}(C_{0}),B_{1},\textcolor{red}{\textsf{Sign}_{\sk_{B}}(B_{1})}, \textsf{Sign}_{\sk_{C}}(C_{\tau})>\ where\ C_{\tau} = <C_{0} || B_{1}>\\
 				C_{0} =\ <C_{id}, 1, C_{value}, H(N||1||C_{value})>\\
 				B_{1} =\ <B_{id}, 2, B_{1value}, H(N||2||B_{1value}||A_{0}||B_{0})>;\ B_{1value} =\ B_{value} + A_{value}
 			\end{array}
@@ -212,15 +211,15 @@
 	\end{footnotesize}
 
 	% The sensor node $C$ has two data-items $C_{0},B_{1}$ in its payload. 
-	The sensor node $C$ sends three signatures $\textsf{Sign}_{S_{B}}(B_{1})$, $\textsf{Sign}_{S_{C}}(C_{0}) $ and $\textsf{Sign}_{S_{C}}(C_{\tau})$ to its parent $D$.
+	The sensor node $C$ sends three signatures $\textsf{Sign}_{\sk_{B}}(B_{1})$, $\textsf{Sign}_{\sk_{C}}(C_{0}) $ and $\textsf{Sign}_{\sk_{C}}(C_{\tau})$ to its parent $D$.
 	It requires the parent node $D$ to know the public key of the sensor nodes $C$ and $B$, hence two certificates.
 
-	In the second approach, the sensor node $C$ can verify the $\textsf{Sign}_{S_{B}}(B_{1})$ then remove the old signature and creates new signature $\textsf{Sign}_{S_{C}}(B_{1})$ and sends to $D$ as follows:
+	In the second approach, the sensor node $C$ can verify the $\textsf{Sign}_{\sk_{B}}(B_{1})$ then remove the old signature and creates new signature $\textsf{Sign}_{\sk_{C}}(B_{1})$ and sends to $D$ as follows:
 
 	\begin{footnotesize}
 		\begin{equation}	
 			\begin{array}{l}
-				C_{pay} =\ <C_{0},\textsf{Sign}_{S_{C}}(C_{0}),B_{1},\textcolor{red}{\textsf{Sign}_{S_{C}}(B_{1})}, \textsf{Sign}_{S_{C}}(C_{\tau})>\ where\ C_{\tau} = <C_{0} || B_{1}>\\
+				C_{pay} =\ <C_{0},\textsf{Sign}_{\sk_{C}}(C_{0}),B_{1},\textcolor{red}{\textsf{Sign}_{\sk_{C}}(B_{1})}, \textsf{Sign}_{\sk_{C}}(C_{\tau})>\ where\ C_{\tau} = <C_{0} || B_{1}>\\
 				% C_{0} =\ <C_{id}, 1, C_{value}, H(N||1||C_{value})>\\
 				% B_{1} =\ <B_{id}, 2, B_{1value}, H(N||2||B_{1value}||A_{0}||B_{0})>\\
 			\end{array}
@@ -228,7 +227,7 @@
 		\end{equation}
 	\end{footnotesize}
 	
-	The sensor node $C$ sends three signatures $\textsf{Sign}_{S_{C}}(B_{1})$, $\textsf{Sign}_{S_{C}}(C_{0}) $ and $\textsf{Sign}_{S_{C}}(C_{\tau})$ to its parent $D$.
+	The sensor node $C$ sends three signatures $\textsf{Sign}_{\sk_{C}}(B_{1})$, $\textsf{Sign}_{\sk_{C}}(C_{0}) $ and $\textsf{Sign}_{\sk_{C}}(C_{\tau})$ to its parent $D$.
 	But all the signatures are signed by the sensor node $C$, it requires the parent node $D$ to know the public key of only the sensor node $C$, hence $D$ need to know only one certificate.
 
 	To give an analogy with a real world application, consider the following example.
