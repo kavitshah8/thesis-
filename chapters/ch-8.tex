@@ -511,11 +511,11 @@
 			\caption{Finding complainer node in a given tree}
 			\label{algo:detect-a-complainer}
 			\begin{algorithmic}[1]
-				\STATE BS requests the authentication codes of each child $C_{1}$ and $C_{2}$ of the given tree.
-				\STATE BS simulates the authentication codes of the given tree's each child with ACK message.
+				\STATE BS requests the authentication codes of child $C_{1}$ and $C_{2}$ for the given tree.
+				\STATE BS simulates the authentication codes of child $C_{1}$ and $C_{2}$ with ACK message.
 				\STATE BS compares the requested and simulated authentication codes and identifies $C'$ whose authentication codes do not match.
 				\IF {$C'$ is a leaf vertex}
-					\STATE Add $C'$ to \sf{C} 
+					\STATE Add $C'$ to complainer vertex set \sf{C} 
 				\ELSE
 					\STATE Call Algorithm \ref{algo:detect-a-complainer} with ($C'$)			
 				\ENDIF
