@@ -321,7 +321,7 @@
 		Based on those data-items are identical or not the node proceeds with the next step accordingly.
 		If those data-items are identical then the node sends the authentication code with ACK message and if those data-items are not identical then the node sends the authentication code with NACK message.
 
-	\subsection{Collection of Authentication Codes}
+	\subsection{Collection of Authentication codes}
 		\label{subsection:collection-of-authentication-codes}
 		The authentication codes for sensor node $I$, with their positive and negative acknowledgment message, are defined as follows:
 		\begin{equation}
@@ -347,7 +347,7 @@
 	\subsection{Verification of Authentication Codes}
 		\label{sec:verficiation-of-authentication-codes}
 		
-		To verify that every sensor node has sent its authentication code with \ack, the base station computes the $\Delta_{ack}$ as follows:
+		To verify that every sensor node has sent its authentication code with ACK, the base station computes the $\Delta_{ack}$ as follows:
 		\begin{equation}
 			\label{eq:mac-auth}
 			\displaystyle{\Delta_{ack} = \bigoplus_{i = 1}^n \mbox{MAC}_{\sk_{i}}(\mbox{N} || \mbox{ACK}) }
@@ -357,8 +357,8 @@
 		Then it compares the computed $\Delta_{ack}$\ with the received root authentication code $\Delta_{root}$. 
 		If those two codes match then it accepts the aggregated value or else it proceeds further to find an adversary. 
 
-		To detect an adversary, the base station needs to identify which nodes in the aggregation tree sent its authentication codes with \nack\ during the verification of inclusion phase.
-		The node who sent authentication code with \nack\ during the verification of inclusion phase is called a \complainer. 
+		To detect an adversary, the base station needs to identify which nodes in the aggregation tree sent their authentication codes with NACK during the verification of inclusion phase.
+		The node who sent authentication code with NACK during the verification of inclusion phase is called a complainer. 
 		We claim that if there is a single complainer in the aggregation tree during the verification of inclusion phase then the base station can find the complainer in \textbf{linear time}.
 		To find a complainer, the base station computes the complainer code $c$ as follows:
 		\begin{equation}
@@ -375,7 +375,7 @@
 		The base station needs to do $C_{(n,1)}$ \footnote{$C_{(n,1)}$ = $n \choose 1 $ = $n$} calculations according to Equation \ref{eq:caomplainer-node} and same number of comparisons to find a complainer in the aggregation tree. 
 		Hence, the base station can find a single complainer in linear time.
 		\begin{exmp} 
-			If there are four nodes ${s_{1},s_{2},s_{3},s_{4}}$ in an aggregation tree and their authentication codes with \ack, \nack\ message in the binary format are defined as follows:
+			If there are four nodes ${s_{1},s_{2},s_{3},s_{4}}$ in an aggregation tree and their authentication codes with ACK, NACK message in the binary format are defined as follows:
 			\begin{equation*}
 				\begin{array}{l}
 					\mbox{MAC}_{\sk_{1}}(\mbox{N}\ ||\ \mbox{ACK}) = (1001)_{2};\ \mbox{MAC}_{\sk_{1}}(\mbox{N}\ ||\ \mbox{NACK}) = (1101)_{2}\\
@@ -556,7 +556,7 @@
 		\end{exmp}
 
 		Now, we describe the case for detecting an adversary for a single complainer case.
-		In above example, if $c = {A_{0}}$ then $a=\{I,\{B,I\},\{B,M\},\{B,I,M\}\}$.
+		In above example, if $\textsf{C} = {A_{0}}$ then $\textsf{A}=\{I,\{B,I\},\{B,M\},\{B,I,M\}\}$.
 		Suppose $I$ is an adversary and it changed the $A_{0}$ to $A'_{0}$, creating an internal vertex $I'_{1}$ instead of $I_{1}$ while creating the commitment tree. 
 		Then,
 		\begin{equation*}
