@@ -12,13 +12,13 @@
 	It includes the query nonce in its query to avoid replay attacks in the future. 
 	We use the same hash chain process to generate unique query nonce for the base station as described in Section \ref{sec:query-dissemination}.
 	Once the sensor nodes receive the query from the base station they constructs their own leaf vertex by creating the data-items of their sensor readings and its signature.
-	The sensor nodes create their payloads and send it to their parent in the aggregation tree. 
+	The sensor nodes constructs their payloads and send it to their parent in the aggregation tree. 
 	The details of the commitment tree generation is described in the next section.
 
 \section{Commitment Tree Generation}
 	For the given aggregation tree the commitment forest is built as follows.
 	The commitment tree generation begins from the sensor nodes with the highest depth (leaf nodes) in the aggregation tree.
-	Leaf sensor nodes in the aggregation tree create their leaf vertices by creating data-items, signatures of those data-items and signature of the transmit-payload according to Equations \ref{eq:data-item}, \ref{eq:sign-data-item}, \ref{eq:signing-payload}, respectively.
+	Leaf sensor nodes in the aggregation tree constructs their leaf vertices by creating data-items, signatures of those data-items and signature of the transmit-payload according to Equations \ref{eq:data-item}, \ref{eq:sign-data-item}, \ref{eq:signing-payload}, respectively.
 	Then they send the payload to their parents in the aggregation tree.	
 	Each internal sensor node in the aggregation tree also constructs their leaf vertex.
 	In addition, internal sensor node receives the payload from each of its children, which impacts its forest.
@@ -56,7 +56,7 @@
 	\end{figure}
 	In this example, $A$ has three children.
 	$A$ receives one payload from each of its children, which impacts $A$'s forest.
-	After verifying all the signatures from each child's payload, $A$ uses the data-items in its forest to create its payload, which is sent to the base station.
+	After verifying all the signatures from each child's payload, $A$ uses the data-items in its forest to constructs its payload, which is sent to the base station.
 	We describe the payload generation process for sensor nodes $B,C,D$ and $A$ in order.
 
 	The sensor node $B$ constructs its payload from its forest. 
@@ -103,91 +103,91 @@
 		\label{fig:b-forest-payload}
 	\end{figure}
 
-		In similar way, the sensor node $C$ in the aggregation tree receives $G_{pay}$ from $G$ which is defined as follows:
-		\begin{equation*}
-			\begin{array}{l}
-				G_{pay} =\ <G_{1},\textcolor{red}{\textsf{Sign}_{\sk_{G}}(G_{1})}, \textsf{Sign}_{\sk_{G}}(G_{\tau})>\ where\ G_{\tau} =\ <G_{0} || H_{0}>\\
-				G_{1} =\ < G_{id}, 2, G_{1value}, H(N||2||G_{1value}||G_{0}||H_{0})>;\ G_{1value} = G_{value} + H_{value} \\
-				G_{0} =\ <G_{id}, 1, G_{value}, H(N||1||G_{value})>\\
-				H_{0} =\ <H_{id}, 1, H_{value}, H(N||1||H_{value})>
-			\end{array}
-		\end{equation*}
-		$C$ verifies all the signatures in the received payload $G_{pay}$ and constructs $C_{0}$.
-		Now, $C$ has $C_{0},G_{1}$ in its forest as shown in Figure \ref{fig:c-forest-payload}. 
-		As none of the data-items have the same count value, $C$ does not merge those two data-items.
-		But $C$ removes the old signature on $G_{1}$ and signs $G_{1}$ with its secret key.
-		So, $C$ constructs its payload $C_{pay}$ and sends it to $A$ as follows:
-		\begin{figure}[h!]
-			\centering
-			\includegraphics{images/c-forest-payload.png}
-			\caption{$C$'s forest aggregation creating its payload.}
-			\label{fig:c-forest-payload}
-		\end{figure}
-		\begin{equation*}
-			\begin{array}{l}
-				C_{pay} =\ <C_{0},\textsf{Sign}_{\sk_{C}}(C_{0}),G_{1},\textcolor{red}{\textsf{Sign}_{\sk_{C}}(G_{1})}, \textsf{Sign}_{\sk_{C}}(C_{\tau})>\ where\ C_{\tau} =\ <C_{0} || G_{1}>\\
-				C_{0} =\ <C_{id}, 1, C_{value}, H(N||1||C_{value})>
-			\end{array}
-			%\label{eq:c-payload}
-		\end{equation*}
+	In similar way, the sensor node $C$ in the aggregation tree receives $G_{pay}$ from $G$ which is defined as follows:
+	\begin{equation*}
+		\begin{array}{l}
+			G_{pay} =\ <G_{1},\textcolor{red}{\textsf{Sign}_{\sk_{G}}(G_{1})}, \textsf{Sign}_{\sk_{G}}(G_{\tau})>\ where\ G_{\tau} =\ <G_{0} || H_{0}>\\
+			G_{1} =\ < G_{id}, 2, G_{1value}, H(N||2||G_{1value}||G_{0}||H_{0})>;\ G_{1value} = G_{value} + H_{value} \\
+			G_{0} =\ <G_{id}, 1, G_{value}, H(N||1||G_{value})>\\
+			H_{0} =\ <H_{id}, 1, H_{value}, H(N||1||H_{value})>
+		\end{array}
+	\end{equation*}
+	$C$ verifies all the signatures in the received payload $G_{pay}$ and constructs $C_{0}$.
+	Now, $C$ has $C_{0},G_{1}$ in its forest as shown in Figure \ref{fig:c-forest-payload}. 
+	As none of the data-items have the same count value, $C$ does not merge those two data-items.
+	But $C$ removes the old signature on $G_{1}$ and signs $G_{1}$ with its secret key.
+	So, $C$ constructs its payload $C_{pay}$ and sends it to $A$ as follows:
+	\begin{figure}[h!]
+		\centering
+		\includegraphics{images/c-forest-payload.png}
+		\caption{$C$'s forest aggregation creating its payload.}
+		\label{fig:c-forest-payload}
+	\end{figure}
+	\begin{equation*}
+		\begin{array}{l}
+			C_{pay} =\ <C_{0},\textsf{Sign}_{\sk_{C}}(C_{0}),G_{1},\textcolor{red}{\textsf{Sign}_{\sk_{C}}(G_{1})}, \textsf{Sign}_{\sk_{C}}(C_{\tau})>\ where\ C_{\tau} =\ <C_{0} || G_{1}>\\
+			C_{0} =\ <C_{id}, 1, C_{value}, H(N||1||C_{value})>
+		\end{array}
+		%\label{eq:c-payload}
+	\end{equation*}
 
-		The sensor node $D$ constructs its payload $D_{pay}$ and sends it to $A$ as follows:
+	The sensor node $D$ constructs its payload $D_{pay}$ and sends it to $A$ as follows:
+	\begin{equation*}
+		\begin{array}{l}
+			D_{pay} =\ <D_{0}, \textsf{Sign}_{\sk_{D}}(D_{0}), \textsf{Sign}_{\sk_{D}}(D_{\tau})>;\ where\ D_{\tau} =\ <D_{0}>\\
+			D_{0} =\ <D_{id},1,D_{value},H(N||1||D_{value})>
+		\end{array}
+		%\label{eq:d-payload}
+	\end{equation*}
+
+	The root node of the aggregation tree $A$ receives the payloads $B_{pay}, C_{pay}$ and $D_{pay}$ from $B,C$ and $D$ respectively.
+	% Equations \ref{eq:b-payload},\ref{eq:c-payload},\ref{eq:d-payload} 
+	$A$ verifies all the signatures in the received payloads and constructs $A_{0}$.
+	Now, $A$ has $G_{1},C_{0},B_{1},B_{0},D_{0}$ and $A_{0}$ in its forest as shown in Figure \ref{fig:a-forest}.
+	\begin{figure}[h!]
+		\centering
+		\includegraphics{images/a-forest.png}
+		\caption{$A$'s forest: $A$ receives three payloads from $C,B,D$ and constructs $A_{0}$}
+		\label{fig:a-forest}
+	\end{figure}
+	\begin{figure}[h!]
+		\centering
+		\includegraphics{images/a-forest-first-merge.png}
+		\caption{$A$'s forest: after first merge}
+		\label{fig:a-forest-first-merge}
+	\end{figure}
+	\begin{figure}[h!]
+		\centering
+		\includegraphics{images/a-forest-second-merge.png}
+		\caption{$A$'s forest: after second merge}
+		\label{fig:a-forest-second-merge}
+	\end{figure}
+	$A$ has four data-items with count value of $1$.
+	In the first merge, $A$ aggregates those data-items and constructs $A_{10}$ and $A_{11}$ as shown in Figure \ref{fig:a-forest-first-merge}.
+	Now, $A$ has four data-items with count value of $2$.
+	In the second merge, $A$ aggregates those data-items and constructs $A_{20}$ and$A_{21}$ as shown in Figure \ref{fig:a-forest-second-merge}.
+	Finally, $A$ has two data-items with count value of $4$.
+	In the final merge, $A$ aggregates those data-items and constructs $A_{3}$ as shown in Figure \ref{fig:a-payload}.
+	Then $A$ constructs payload and sends it to the base station as follows:
+	% 		
 		\begin{equation*}
 			\begin{array}{l}
-				D_{pay} =\ <D_{0}, \textsf{Sign}_{\sk_{D}}(D_{0}), \textsf{Sign}_{\sk_{D}}(D_{\tau})>;\ where\ D_{\tau} =\ <D_{0}>\\
-				D_{0} =\ <D_{id},1,D_{value},H(N||1||D_{value})>
+				A_{pay} =\ <A_{3},\textsf{Sign}_{\sk_{A}}(A_{3}),\textsf{Sign}_{\sk_{A}}(A_{\tau})>\ where\ A_{\tau} =\ <A_{3}>\\
+				A_{3} =\ <A_{id}, 8, A_{3value}, H(N||8||A_{3value}||A_{20}||A_{21})>;\ A_{3value} =\ A_{20value} + A_{21value}\\
+				A_{20} =\ <A_{id},4,A_{20value},H(N||4||A_{20value}||G_{1}||B_{1})>;\ A_{20value} =\ G_{1value} + B_{1value}\\ 
+				A_{21} =\ <A_{id},4,A_{21value},H(N||4||A_{21value}||A_{10}||A_{11})>;\ A_{21value} =\ A_{10value} + A_{11value}\\ 
+				A_{10} =\ <A_{id},2,A_{10value},H(N||2||A_{10value}||B_{0}||C_{0})>;\ A_{10value} =\ B_{value} + C_{value}\\
+				A_{11} =\ <A_{id},2,A_{11value},H(N||2||A_{11value}||D_{0}||A_{0})>;\ A_{11value} =\ D_{value} + A_{value}\\
+				A_{0} =\ <A_{id},1,A_{value},H(N||1||A_{value})>
 			\end{array}
-			%\label{eq:d-payload}
 		\end{equation*}
-
-		The root node of the aggregation tree $A$ receives the payloads $B_{pay}, C_{pay}$ and $D_{pay}$ from $B,C$ and $D$ respectively.
-		% Equations \ref{eq:b-payload},\ref{eq:c-payload},\ref{eq:d-payload} 
-		$A$ verifies all the signatures in the received payloads and constructs $A_{0}$.
-		Now, $A$ has $G_{1},C_{0},B_{1},B_{0},D_{0}$ and $A_{0}$ in its forest as shown in Figure \ref{fig:a-forest}.
-		\begin{figure}[h!]
-			\centering
-			\includegraphics{images/a-forest.png}
-			\caption{$A$'s forest: $A$ receives three payloads from $C,B,D$ and constructs $A_{0}$}
-			\label{fig:a-forest}
-		\end{figure}
-		\begin{figure}[h!]
-			\centering
-			\includegraphics{images/a-forest-first-merge.png}
-			\caption{$A$'s forest: after first merge}
-			\label{fig:a-forest-first-merge}
-		\end{figure}
-		\begin{figure}[h!]
-			\centering
-			\includegraphics{images/a-forest-second-merge.png}
-			\caption{$A$'s forest: after second merge}
-			\label{fig:a-forest-second-merge}
-		\end{figure}
-		$A$ has four data-items with count value of $1$.
-		In the first merge, $A$ aggregates those data-items and constructs $A_{10}$ and $A_{11}$ as shown in Figure \ref{fig:a-forest-first-merge}.
-		Now, $A$ has four data-items with count value of $2$.
-		In the second merge, $A$ aggregates those data-items and constructs $A_{20}$ and$A_{21}$ as shown in Figure \ref{fig:a-forest-second-merge}.
-		Finally, $A$ has two data-items with count value of $4$.
-		In the final merge, $A$ aggregates those data-items and constructs $A_{3}$ as shown in Figure \ref{fig:a-payload}.
-		Then $A$ constructs payload and sends it to the base station as follows:
-		% 		
-			\begin{equation*}
-				\begin{array}{l}
-					A_{pay} =\ <A_{3},\textsf{Sign}_{\sk_{A}}(A_{3}),\textsf{Sign}_{\sk_{A}}(A_{\tau})>\ where\ A_{\tau} =\ <A_{3}>\\
-					A_{3} =\ <A_{id}, 8, A_{3value}, H(N||8||A_{3value}||A_{20}||A_{21})>;\ A_{3value} =\ A_{20value} + A_{21value}\\
-					A_{20} =\ <A_{id},4,A_{20value},H(N||4||A_{20value}||G_{1}||B_{1})>;\ A_{20value} =\ G_{1value} + B_{1value}\\ 
-					A_{21} =\ <A_{id},4,A_{21value},H(N||4||A_{21value}||A_{10}||A_{11})>;\ A_{21value} =\ A_{10value} + A_{11value}\\ 
-					A_{10} =\ <A_{id},2,A_{10value},H(N||2||A_{10value}||B_{0}||C_{0})>;\ A_{10value} =\ B_{value} + C_{value}\\
-					A_{11} =\ <A_{id},2,A_{11value},H(N||2||A_{11value}||D_{0}||A_{0})>;\ A_{11value} =\ D_{value} + A_{value}\\
-					A_{0} =\ <A_{id},1,A_{value},H(N||1||A_{value})>
-				\end{array}
-			\end{equation*}
-		% 
-		\begin{figure}[h!]
-			\centering
-			\includegraphics{images/a-payload.png}
-			\caption{$A$'s payload : $A$ sends this to the base station.}
-			\label{fig:a-payload}
-		\end{figure}
+	% 
+	\begin{figure}[h!]
+		\centering
+		\includegraphics{images/a-payload.png}
+		\caption{$A$'s payload : $A$ sends this to the base station.}
+		\label{fig:a-payload}
+	\end{figure}
 
 	Once the base station receives the payload from the root of the aggregation tree, it verifies all the signatures in the payload.
 	In the previous example, the base station receives $A_{pay}$ from the sensor node $A$.
@@ -198,7 +198,7 @@
 	The purpose of the \textit{result checking} phase is to require that all the sensor nodes verify their individual contributions to the final aggregate value.
 	If there is any inconsistency in the aggregation process then with the help of the base station, trace down the node responsible for causing the inconsistency in the aggregation process.
 
-	\subsection{Dissemination Final Payload by the Base Station}
+	\subsection{Dissemination of Final Payload by the Base Station}
 		Once the base station receives the payloads of the root node of the aggregation tree, it verifies all the signatures in the payload and then sends each of the data-items in the payload to the entire sensor network using authenticated broadcast.
 		The authenticated broadcast allows the sensor nodes to verify that the data-items are sent by the base station. 
 		The authentication ensures no one else is masquerading the base station.
@@ -209,7 +209,6 @@
 				\textsf{B}_{pay} =\ <A_{3}, \textsf{Sign}_{\sk_{\textsf{B}}}(A_{3}), \textsf{Sign}_{\sk_{\textsf{B}}}(\textsf{B}_{\tau})>\ where\ \textsf{B}_{\tau} =\ <A_{3}>.
 			\end{equation*}
 		
-
 	\subsection{Dissemination of Off-Path Values}
 		To enable verification each sensor node must receive all of its off-path values.
 		The off-path values of the sensor nodes can be determined according to the Definition \ref{def:off-path}.
@@ -492,24 +491,44 @@
 		Finally, concludes that node $4 $ is complaining.
 		
 		In general, to find $k$\ complainers the base station needs to do $C_{(n,k)}$ \footnote{$C_{(n,k)}$ = $ n \choose k$ = $n!/(k! \cdot (n-k)!)$} calculations and the same number of comparisons to find $k$\ complainers.
-		If there are more than one complainer in the network then the base station uses the following recursive algorithm to find all the complainers in the network.
-
-		Divide and conquer
+		Suppose, there are more than one complainer in the network then the base station uses the following recursive algorithm to find all the complainers in the network.
 		
 		\begin{algorithm}
-			\caption{Pseudo algorithm to detect more than one complainer}
-			\label{algo:detect-a-complainer}
+			\caption{Finding complainer tree in a given forest}
+			\label{algo:detect-a-complainer-tree}
 			\begin{algorithmic}[1]
-				\STATE BS simulates the commitment trees with authentication codes of ACK messages.
-				\STATE BS asks the root of an aggregation tree to send the authentication codes of all the roots in its forest.
-				\STATE BS compares the received authentication codes with simulated authentication codes, identifies the complainer trees and constructs \textsf{T} = $\{\textsf{T}_{1},\textsf{T}_{2},\dotsc,\textsf{T}_{n}\}$.
-				\STATE BS repeats the process until it finds all the leaves who sent authentication codes with NACK messages. 
+				\STATE BS requests authentication codes of all the tree roots in the aggregation tree root's forest.
+				\STATE BS simulates authentication codes of all the tree roots in the aggregation tree root's forest with ACK message.
+				\STATE BS compares the requested and simulated authentication codes.
+				\STATE BS constructs \textsf{T} = $\{\textsf{T}_{1},\textsf{T}_{2},\dotsc,\textsf{T}_{n}\}$ whose authentication codes do not match.
+				\FORALL {$t \in \textsf{T}$}
+					\STATE Call Algorithm \ref{algo:detect-a-complainer} with ($t$)			
+				\ENDFOR 
 			\end{algorithmic}
 		\end{algorithm}
 
+		\begin{algorithm}
+			\caption{Finding complainer node in a given tree}
+			\label{algo:detect-a-complainer}
+			\begin{algorithmic}[1]
+				\STATE BS requests the authentication codes of each child $C_{1}$ and $C_{2}$ of the given tree.
+				\STATE BS simulates the authentication codes of the given tree's each child with ACK message.
+				\STATE BS compares the requested and simulated authentication codes and identifies $C'$ whose authentication codes do not match.
+				\IF {$C'$ is a leaf vertex}
+					\STATE Add $C'$ to \sf{C} 
+				\ELSE
+					\STATE Call Algorithm \ref{algo:detect-a-complainer} with ($C'$)			
+				\ENDIF
+			\end{algorithmic}
+		\end{algorithm}
+		Note the fact that, in Algorithm \ref{algo:detect-a-complainer}, one of the child nodes will not match with the simulated authentication codes of the base station.
+		These algorithms are recursive and runs in exponentially time.
+		This algorithm detects complainers faster if there are more complainers in the same commitment tree.
+		Hence, we expect this algorithm to run in linear time.
+
 	\subsection{Detecting An Adversary}
 		Once the base station finds the node who sent NACK during the verification of inclusion phase, it interacts with the nodes in the network to trace an adversary responsible for it. 
-		The base station tries to create a set of possible adversaries based on a set of possible cheaters.
+		The base station tries to constructs a set of possible adversaries based on a set of possible cheaters.
 		The following example demonstrates that if the base station knows the commitment tree topology and the complainers in the network then it can guess the possible adversaries.
 		For simplicity, we selected the commitment tree where all the vertices are unique. 
 		This analysis holds true for any commitment tree topology. 
