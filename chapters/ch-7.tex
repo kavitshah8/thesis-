@@ -39,7 +39,7 @@
 	As the querier knows $n, r$ and it gets SUM from the root of the aggregation tree.
 	If \textbf{SUM} $> \textbf{n} \cdot \textbf{r}$ , then the base station knows some node or nodes in the network reported out of range readings.
 
-	The second difference between SHIA's label structure and our data-item structure is that we include unique ID of the node in its data-item.
+	Another difference between SHIA's label and our data-item structure is that we include unique ID of the node in its data-item.
 	SHIA does not have the ID field in their label structure as they do not do internal verification while creating a commitment tree and while distributing off-path values.
 	Also, in the label format ID of the node is hashed in the commitment field after the first aggregation and virtually gets lost.
 	Hence, SHIA can not provide security services such as authenticity, non-repudiation and is vulnerable to all sorts of active attacks.
