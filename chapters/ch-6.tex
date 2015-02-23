@@ -1,4 +1,4 @@
-\chapter{System Design} % (folit
+\chapter{SYSTEM DESIGN} % (folit
 \label{cha:System Design}
 	
 	This chapter describes the rationale behind the design specifications of our secure aggregation protocol for sensor networks, the mechanism used to achieve it and implementation details.
@@ -195,14 +195,14 @@
 	SHIA limits the adversary’s ability to manipulate the aggregation result with the tightest bound possible, with no knowledge of the distribution of sensor data values.
 	SHIA provides data-integrity service for any hierarchical sensor networks because of that it can detect malicious activity in the network.
 
-	The third most significant aspect in the design of secure data aggregation protocol is \textit{Data Integrity}.
-	The protocol collects the data from the sensors and aggregates the reading on the way to the base station.
+	The third most significant aspect is \textit{Data Integrity}.
+	The data collected from the sensors gets aggregated on the way to the base station.
 	The base station takes an important decision based on the received value.
-	For example, if the sensor network is deployed to measure the certain harmful chemical levels in the lab atmosphere and raise an alarm if the it increases above certain level.
+	Suppose, the sensor network is deployed to measure the certain harmful chemical levels in the lab atmosphere and raise an alarm if the it increases above certain level.
 	If the base station fails to raise an alarm because of the false aggregated data, can create catastrophic and lethal situation.
-	Hence, the data integrity is so important.
-
-	As we know, data integrity can be achieved with the error detection and error correction techniques.
+	% Hence, the data integrity is so important.
+	
+	Data integrity can be achieved with the error detection and error correction techniques.
 	The first step towards achieving the data integrity in the sensor network is to \textit{detect any malicious activity} in the network.
 	The second step is the ability to \textit{locate the malicious node or an adversary} in the network.
 	We think detecting a malicious activity without tracing down the malicious node responsible for it, is of no value.

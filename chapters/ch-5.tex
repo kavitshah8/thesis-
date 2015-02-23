@@ -1,4 +1,4 @@
-\chapter{Data Aggregation Without Internal Verification} % (fold)
+\chapter{DATA AGGREGATION WITHOUT INTERNAL VERIFICATION} % (fold)
 	\label{cha:Data Aggregation Without Internal Verification}
 
 	Secure hierarchical in-network aggregation (SHIA) \cite{chan2006secure} presents the first and provably secure sensor network data aggregation protocol without internal verification.
@@ -76,14 +76,14 @@
 	A hash chain is constructed by repeatedly evaluating a pre-image resistant hash function $h$\ on some initial random value, the final value (or ``anchor value'') is preloaded on the nodes in the network.
 	The base station uses the pre-image of the last used  value as the nonce for the next broadcast.
 	For example, if the last known value of the hash chain is $h^i(X)$, then the next broadcast uses $h^{i-1}(X)$ as the nonce; $X$ is the initial random value.
-	When a node receives a new nonce $N^{'}$, it verifies that $N^{'}$ is a precursor to the most recently received (and authenticated) nonce $N$ on the hash chain, i.e., $h^{i}(N^{'}) = N$ for some $i$ bounded by a fixed $k$ of number of hash applications.  
-	A hash chain prevents an adversary from predicting the query nonce for future queries as it has to reverse the hash chain computation to get an acceptable pre-image.
-	\begin{figure}[h!]
+	When a node receives a new nonce $N^{'}$, it verifies that $N^{'}$ is a precursor to the most recently received (and authenticated) nonce $N$ on the hash chain, i.e., $h^{i}(N^{'}) = N$ for some $i$ bounded by a fixed $k$ of number of hash applications.
+	\begin{figure}[h]
 		\centering
 		\includegraphics[scale = 1]{images/aggregation-tree.png}
 		\caption{Simplified Aggregation tree for network graph in Figure \ref{fig:ng}}
 		\label{fig:at}
 	\end{figure}		
+	A hash chain prevents an adversary from predicting the query nonce for future queries as it has to reverse the hash chain computation to get an acceptable pre-image.
 
 \section{Aggregate Commit} 
 	% (fold)
@@ -252,9 +252,8 @@
 \section{Result Checking} % (fold)
 	\label{sec:result_checking}
 	SHIA presents novel distributed verification algorithm, achieving provably optimal security while maintaining sublinear edge congestion.
-	In our work, we take similar approach and add new capabilities to help find an adversary.
-	Here, we describe the SHIA's result checking phase to build the basis for our work.
-
+	% In our work, we take similar approach and add new capabilities to help find an adversary.
+	% Here, we describe the SHIA's result checking phase to build the basis for our work.
 	The purpose of the result checking phase is to enable each sensor node $I$ to independently verify that its data value ($I_{value}$) was added into the SUM aggregate, and the complement $\overline{I_{value}}$ of its data value was added into the COMPLEMENT aggregate.
 	First, the base station sends the aggregation results from the aggregation commit phase to every sensor node in the network using authenticated broadcast.
 	Each sensor node then individually verifies that its contributions to the respective SUM and COMPLEMENT aggregates were indeed counted.
@@ -262,7 +261,7 @@
 	The authentication code is also aggregated for communication efficiency. 
 	When the base station has received all the authentication codes, it is then able to verify that all sensor nodes have checked that their contribution to the aggregate has been correctly counted.
 	The result checking process has the following phases.
-
+	\newpage
 	\begin{description}
 		\item[Distributing Final Commitment Values]
 			In this phase, the base station sends each of the received commitment labels to the entire network using authenticated broadcast.

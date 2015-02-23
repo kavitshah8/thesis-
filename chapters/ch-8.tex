@@ -1,4 +1,4 @@
-\chapter{Our Protocol}
+\chapter{OUR PROTOCOL}
 	In this chapter, we describe our protocol with FSwRD approach beginning from query dissemination phase till the detecting an adversary.
 	Our protocol using FSwRD can also be applied using FSwoRD with the obvious modifications. 
 	We briefly describe the differences along the way.
@@ -268,7 +268,7 @@
 			\begin{figure}[t]
 				\centering
 				\includegraphics{images/commitment-tree-2.png}
-				\caption{Smallest Possible Commitment Tree}
+				\caption{One Possible Commitment Tree}
 				\label{fig:malicious-activity}
 			\end{figure}
 
@@ -500,7 +500,7 @@
 				\STATE BS requests authentication codes of all the tree roots in the aggregation tree root's forest.
 				\STATE BS simulates authentication codes of all the tree roots in the aggregation tree root's forest with ACK message.
 				\STATE BS compares the requested and simulated authentication codes.
-				\STATE BS constructs \textsf{T} = $\{\textsf{T}_{1},\textsf{T}_{2},\dotsc,\textsf{T}_{n}\}$ whose authentication codes do not match.
+				\STATE BS constructs \textsf{T} = $\{\textsf{T}_{1},\textsf{T}_{2},\dotsc,\textsf{T}_{\lg n}\}$ whose authentication codes do not match.
 				\FORALL {$t \in \textsf{T}$}
 					\STATE Call Algorithm \ref{algo:detect-a-complainer} with ($t$)			
 				\ENDFOR 
