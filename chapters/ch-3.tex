@@ -1,5 +1,5 @@
-\chapter{NETWORKING AND CRYPTOGRAPHY TOOLS} % (fold)
-\label{cha:Networking and Cryptography tools}
+\chapter{CRYPTOGRAPHY TOOLS} % (fold)
+\label{cha:Cryptography tools}
 	% We discuss the networking and cryptographic tools used in our work.
 	% referred from \cite{menezes2010handbook,stinson2005cryptography}.
 	% For example, we describe the Hash function, its properties and how it helps us achieve data integrity.
@@ -27,7 +27,7 @@
 	\begin{figure}[h!]
 	 	\centering
 	 	\includegraphics{images/symmetric-key.png}
-	 	\caption{Two party communication using encryption, with a secure channel for key exchange. The decryption key $d$ can be efficiently computed from the encryption key $e$. }
+	 	\caption{Two party communication using encryption, with a secure channel for key exchange and the decryption key $d$ can be efficiently computed from the encryption key $e$. }
 	 	\label{fig:symmetric-key}
 	 \end{figure} 
 
@@ -47,15 +47,15 @@
 	Bob selects the key pair $(e, d)$. 
 	Bob sends the encryption key $e$ (called the \textit{public key}) to Alice over any channel but keeps the decryption key $d$ (called the \textit{private key}) secure and secret.
 	Alice may subsequently send a message $m$ to Bob and applying the encryption transformation determined by Bob's public key to get $c = E_{e}(m)$.
-	Bob decrypts the ciphertext $c$ by applying the inverse transformation $D_{d}$ uniquely determined by $d$.
-	Here the encryption key is transmitted to Alice over an unsecured channel.
-	Since, the encryption key $e$ need not be kept secret, it may be made public.
-	\begin{figure}[h!]
+	\begin{figure}[h]
 		\centering
 		\includegraphics{images/public-key.png}
 		\caption{Encryption using public key techniques}
 		\label{fig:public-key}
 	\end{figure}
+	Bob decrypts the ciphertext $c$ by applying the inverse transformation $D_{d}$ uniquely determined by $d$.
+	Here the encryption key is transmitted to Alice over an unsecured channel.
+	Since, the encryption key $e$ need not be kept secret, it may be made public.
 
 \section{Hash Function}
 	A hash function takes a message as its input and outputs a fixed length message called hash code.
@@ -114,14 +114,14 @@
 	where the probability space is determine by the $\mathcal {M, S, K, K^{'}}$ and perhaps the signing and verification algorithms.
 	The ``overwhelming probability'' for the signature scheme determines the probability that the scheme allows for a forgery.
 	In Figure \ref{fig:digita-signature}, we show the steps for signing and verifying the hashed message \cite{DigitalSignature}. 
-	The message is hashed before its being signed to reduce the message size. 
-	If the message is not hashed before signing then the signature can be longer than the message which is problematic for the longer messages.
-	\begin{figure}[h!]
+	\begin{figure}[h]
 		\centering
 		\includegraphics[scale = 0.4]{images/Digital_Signature_diagram.png}
 		\caption{ Signing and verification of digital signatures}
 		\label{fig:digita-signature}
 	\end{figure}
+	The message is hashed before its being signed to reduce the message size. 
+	If the message is not hashed before signing then the signature can be longer than the message which is problematic for the longer messages.
 
 	In the Digital Signature scheme only the owner of the secret key can generate a valid signature.
 	The digital signature is easily verified by other parties as long as they know the public key.
@@ -138,6 +138,7 @@
 	The main difference between the various primitives stems from identifying who can generate the code and who can verify it.
 	This determines the suitability of the construction for a given purpose.
 	\begin{table}[!htb]	
+		\caption{A comparison of integrity-protecting primitives}
 		\begin{center}
 			\begin{tabular}{ |l || l| l| }
 		    \hline
@@ -152,7 +153,6 @@
 		    \hline
 			\end{tabular}
 		\end{center}
-		\caption{A comparison of integrity-protecting primitives}
 	  \label{table:summary}
 	\end{table}
 

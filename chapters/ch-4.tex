@@ -43,7 +43,7 @@
 		\label{fig:star-network}
 	\end{figure}
 
-	According to \cite{zareafifi2012secure}, \textbf{data aggregation} can be defined as follows.
+	According to \cite{zareafifi2012secure}, data aggregation can be defined as follows.
 	Consider a sensor network with $n$ sensors collecting data, the data will be propagated in some fashion to the base station.
 	At the base station, the data is aggregated and processed into information. 
 	This can be represented as
@@ -70,7 +70,8 @@
 	\end{definition}
 	The goal of the aggregation process is to achieve the lowest possible information-rate.
 	In the following sections, we show that lowering information rate makes the intermediate sensor nodes (aggregator) more powerful.
-	Also, it makes aggregated payload more fragile and vulnerable to various security attacks.
+	In addition to that, it makes aggregated payload more fragile and vulnerable to various security attacks.
+	Hence, to provide security services to data aggregation protocol is very critical. 
 
 \section{Bandwidth Analysis}
 	Congestion is a widely used parameter while doing bandwidth analysis of networking applications.
@@ -116,7 +117,7 @@
 		\label{def:direct-data-injection}
 		\cite{chan2006secure} A \textbf{Direct Data Injection} attack occurs when an adversary modifies the data readings reported by the nodes under its direct control, under the constraint that only legal readings in $[0, r]$ are reported.
 	\end{definition}
-	An \textbf{estimator} is an algorithm $ f :\ \R^n \rightarrow \rm I\!R$\ where $f(x_{1},\dotsc, x_{n})$\ is intended as an estimate of some real valued function of $\theta$.
+	An estimator is an algorithm $ f :\ \R^n \rightarrow \rm I\!R$\ where $f(x_{1},\dotsc, x_{n})$\ is intended as an estimate of some real valued function of $\theta$.
 	We assume that $\theta$ is real-valued and that we wish to estimate $\theta$ itself.
 	Next, we define $\widehat{\Theta} := f(X_{1},\dotsc,X_{n})$, where $X_{1},\dotsc,X_{n}$\ are $n$ random variables. We can define the root-mean-square(r.m.s)  error (at $\theta$):
 	\begin{equation}
@@ -125,7 +126,7 @@
 	Note that r.m.s($f$) is a function of $\theta$; we compare functions pointwise. 
 	Also, an unbiased estimator is one for which $E[\widehat{\Theta} | \theta] = \theta $ for all $\theta$.
 
-	Wagner in \cite{wagner2004resilient} defines \textbf{resilient estimators and resilient aggregation } as follows.
+	Wagner \cite{wagner2004resilient} defines resilient estimators and resilient aggregation as follows.
 	A \textbf{\textit{k}-node attack \textit{A}} is an algorithm that is allowed to change up to $k$ of the values $X_{1}, \dotsc, X_{n}$ before the estimator is applied.
 	In particular, the attack $A$ is specified by a function $\tau_{A} : \R^n \rightarrow  \R^n $ with the property that the vectors $x$ and $\tau_{A}(x)$ never differ at more than $k$ positions.
 	We can define the r.m.s error associated with $A$ as follows:
@@ -145,11 +146,11 @@
 	Note that $rms^* (f, 0) = rms(f)$.
 	We think of an aggregation function $f$ as an instance of the resilient aggregation paradigm if $rms^* (f, k)$ grows slowly as a function of $k$.
 	\begin{definition}
-		\cite{wagner2004resilient} An aggregation function $f$ is \textbf{$(k, \alpha)$-resilient} (with respect to a parameterized distribution $p(X_{i} | \theta))$ if $rms^*(f, k) \le \alpha \cdot rms(f)$ for the estimator $f$.
+		\cite{wagner2004resilient} An aggregation function $f$ is $(k, \alpha)$-resilient (with respect to a parameterized distribution $p(X_{i} | \theta))$ if $rms^*(f, k) \le \alpha \cdot rms(f)$ for the estimator $f$.
 		\label{def:resilient}
 	\end{definition}
 	The intuition is that the $(k, \alpha)$-resilient functions, for small values of $\alpha$, are the ones that can be computed meaningfully and securely in the presence of up to $k$ compromised or malicious nodes.
-	According to this quantitative study measuring the effects of direct data injection on various aggregates, concludes that the \textbf{aggregates (truncated SUM and AVERAGE ) can be resilient} under such attacks.
+	According to this quantitative study measuring the effects of direct data injection on various aggregates, concludes that the aggregates (truncated SUM and AVERAGE) can be resilient under such attacks.
 	Wagner's work is summarized in the following Table.
 	\begin{table}[!htb]	
 		\begin{center}
@@ -222,11 +223,11 @@
 	Secure Information Aggregation (SIA) of \cite{przydatek2003sia} enables secure information aggregation such that the user accepts the data with high probability if the aggregated result is within a desired bound, but that the user detects cheating with high probability and rejects the result if it is outside of the bound.
 	The SIA provides probabilistic security for the network topology with a single-aggregate model.
 
-	An approach to detection and diagnosis of multiple failures in a dynamic system is proposed in \cite{zhang1998detection}. 
-	It is based on the Interacting Multiple-Model (IMM) estimation algorithm, which is one of the most cost-effective adaptive estimation techniques for systems involving structural as well as parametric changes. 
-	The proposed approach provides an integrated framework for fault detection, diagnosis, and state estimation. 
-	It is able to detect and isolate multiple faults substantially more quickly and more reliably than many existing approaches. 
-	Its superiority is illustrated in two aircraft examples for single and double faults of both sensors and actuators, in the forms of total, partial, and simultaneous failures. 
+	% An approach to detection and diagnosis of multiple failures in a dynamic system is proposed in \cite{zhang1998detection}. 
+	% It is based on the Interacting Multiple-Model (IMM) estimation algorithm, which is one of the most cost-effective adaptive estimation techniques for systems involving structural as well as parametric changes. 
+	% The proposed approach provides an integrated framework for fault detection, diagnosis, and state estimation. 
+	% It is able to detect and isolate multiple faults substantially more quickly and more reliably than many existing approaches. 
+	% Its superiority is illustrated in two aircraft examples for single and double faults of both sensors and actuators, in the forms of total, partial, and simultaneous failures. 
 
 	Secure hierarchical in-network aggregation (SHIA) in sensor networks \cite{chan2006secure} presents the first and provably secure sensor network data aggregation protocol for general networks and multiple adversaries. 
 	We discuss the details of the protocol in the next chapter. 

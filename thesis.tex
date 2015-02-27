@@ -29,7 +29,7 @@
 % See http://www.ecn.purdue.edu/~mark/puthesis/#Options
 % for documentclass options.
 % CHANGE NEXT LINE?
-\documentclass[ece,thesis]{class/puthesis}
+\documentclass[ece,thesis,letterpaper]{class/puthesis}
 
 % Define "align" environment used in demo-mathematics.tex.
 % CHANGE NEXT LINE?
@@ -47,6 +47,8 @@
 \usepackage[noend]{styles/algorithmic}
 \usepackage{url}
 % \usepackage{hyperref}
+\pdfpagewidth=8.5in
+\pdfpageheight=11in
 
 % Title of thesis (used on cover and in abstract). The title shown must be the full, official title of the thesis.
 % Superscripts and subscripts are not permitted in the title. Reference: TM 26.
@@ -69,7 +71,7 @@
 % CHANGE NEXT TWO LINES.
 %\author{Mark Senn}{Senn, Mark}
 %\author{Mark D. Senn}{Senn, Mark D.}
-\author{Kavit Shah}{Shah, Kavit}
+\author{Kavit Shah}{Shah, Kavit.}
 
 % First is long title of degree (used on cover).
 % Second is abbreviation for degree (used in abstract).
@@ -166,7 +168,6 @@
 \include{chapters/ch-7}
 \include{chapters/ch-8}
 \include{chapters/ch-9}
-\include{chapters/ch-10}
 % \include{chapters/before-december/cheating}
 % \include{chapters/notes}
 % Summary and/or conclusions are optional but often used.

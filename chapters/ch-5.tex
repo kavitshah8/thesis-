@@ -11,15 +11,17 @@
 
 \section{Network Assumptions}
 	We assume a multi hop network with a set $ S = \{S_{1},...,S_{n}\} $ of $n$ sensor nodes where all sensor nodes are alive and reachable. 
-	The network is organized in a rooted tree topology.
-	The trusted base station resides outside of the network and has more computation, storage capacity then the sensor nodes in the network. 
-	\textbf{Note}: SHIA names the base station as the querier and the root of the tree as the base station. 
+	The rooted tree topology is constructed from the given network graph which can be constructed using any tree generation algorithms.
+	The trusted base station resides outside of the network.
+	The base station has more computation power, storage capacity then the sensor nodes in the network 
+	\footnote{SHIA names the base station as the querier and the root of the tree as the base station.}. 
 	The base station knows total number of sensor nodes in the network and the network topology. 
 	It also has the capacity to directly communicate with every sensor node in the network using authenticated broadcast.
-	All the wireless communications between the nodes are peer-to-peer and we do not consider the local wireless broadcast.
-	Each sensor node $S$ has a unique ID and shares a unique secret symmetric key $K_{S}$ with the base station.
-	The keys enable message authentication between sensor node and the base station.
-	And it also allows encryption if the data confidentiality is required.
+	All the wireless communications between the sensor nodes are peer-to-peer.
+	We do not consider the local wireless broadcast happening in the network.
+	Each sensor node $S$ has a unique ID and it shares a unique secret symmetric key $K_{S}$ with the base station.
+	The symmetric keys enable message authentication between the sensor node and the base station.
+	It also allows data encryption in the network if the data confidentiality is required.
 	All the sensor nodes are capable of doing symmetric key encryption and symmetric key decryption.
 	They are also capable of computing collision resistant cryptographic hash function. 
 
@@ -32,17 +34,17 @@
 	Since in many applications the information received by the base station provides a basis for critical decisions, false information could have ruinous consequences as described in Section \ref{sec:security-issues}.
 	However, we do not want to limit ourselves to just a few specific selected adversarial models. 
 	Instead, we assume that the adversary can misbehave in any arbitrary way, and the only limitations we put on the adversary are its computational resources (polynomial in terms of the security parameter) and the fraction of nodes that it can have control over. 
-	We focus on \textbf{stealthy attacks} \cite{przydatek2003sia}, where the goal of an adversary is to make the base station accept false aggregation results, which are significantly different from the true results determined by the measured values, while not being detected by the base station.
+	We focus on stealthy attacks \cite{przydatek2003sia}, where the goal of an adversary is to make the base station accept false aggregation results, which are significantly different from the true results determined by the measured values, while not being detected by the base station.
 	In this setting, denial-of-service (DoS) attacks such as not responding to the queries or always responding with negative acknowledgment at the end of verification phase clearly indicates to the base station that something is wrong in the network and therefore is not a stealthy attack.
 	One of the security goals of SHIA is to detect the stealthy attacks.
 	One of the security goals of our work is to detect an adversary who caused the stealthy attacks and remove it from the network to prevent these attacks in the future.
 	
 % \section{Security Goal}
 	Without precise knowledge of application, the direct data injection attacks are indistinguishable from the malicious sensor readings.
-	The goal of SHIA is to design an \textbf{optimally secure} aggregation algorithm with only \textbf{sublinear edge congestion}.
+	The goal of SHIA is to design an optimally secure aggregation algorithm with only sublinear edge congestion.
 	\begin{definition}
 		\label{def:optimally-secure}
-		\cite{chan2006secure} An aggregation algorithm is \textbf{optimally secure} if, by tampering with the aggregation process, an adversary is unable to induce the base station to accept any aggregation result which is not already achievable by direct data injection.
+		\cite{chan2006secure} An aggregation algorithm is optimally secure if, by tampering with the aggregation process, an adversary is unable to induce the base station to accept any aggregation result which is not already achievable by direct data injection.
 	\end{definition}
 
 \section{The SUM Aggregate Algorithm of SHIA}
@@ -92,7 +94,7 @@
 	These commitments are then passed on to the base station by the root of an aggregation tree.
 	The base station then rebroadcasts the commitments to the sensor network using an authenticated broadcast so that the rest of the sensor nodes in the network can verify that their respective data values have been incorporated into the final aggregate value.
 	The commitment tree is a logical tree built on top of an aggregation tree.
-	The commitment tree is defined as follows:
+	% The commitment tree is defined as follows:
 	\begin{definition}
 		\cite{chan2006secure}
 		A commitment tree is a tree where each vertex has an associated label representing the data that is passed on to its parent. The labels have the following format:
@@ -144,13 +146,14 @@
 		\begin{equation*}
 			\begin{array}{l}
 				I_{0} =\ <1, I_{value}, \overline{I_{value}}, I_{id}>\\
-				H_{1} =\ <2, H_{1value}, \overline{H_{1value}}, H [ N || 2 || H_{1value} || \overline{H_{1value}} || H_{0} || I_{0} ] > ; H_{1value} = I_{value} + H_{value}\\
+				H_{1} =\ <2, H_{1value}, \overline{H_{1value}}, H [ N || 2 || H_{1value} || \overline{H_{1value}} || H_{0} || I_{0} ] > ;\\
+				\textcolor{white}{XXXXX} H_{1value} = I_{value} + H_{value}\\
 				B_{1} =\ <3, B_{1value}, \overline{B_{1value}}, H [ N || 3 || B_{1value} || \overline{B_{1value}} || B_{0} || E_{0} || F_{0} ] > ; \\ 
-				B_{1value} = B_{value} + E_{value} + F_{value}. \\
-				C_{1} =\ <4, C_{1value}, \overline{C_{1value}}, H [ N || 4 || C_{1value} || \overline{C_{1value}} || C_{0} || G_{0} || H_{1} ] > \\
-				C_{1value} = C_{value} + G_{value} + H_{1value} \\
-				A_{1} =\ <9, A_{1value}, \overline{A_{1value}}, H [ N || 9 || A_{1value} || \overline{A_{1value}} || A_{0} || D_{0} || B_{1} || C_{1} ] >\\
-				A_{1value} = A_{value} + D_{value} + B_{1value} + C_{1value}.
+				\textcolor{white}{XXXXX} B_{1value} = B_{value} + E_{value} + F_{value} \\
+				C_{1} =\ <4, C_{1value}, \overline{C_{1value}}, H [ N || 4 || C_{1value} || \overline{C_{1value}} || C_{0} || G_{0} || H_{1} ] >; \\
+				\textcolor{white}{XXXXX} C_{1value} = C_{value} + G_{value} + H_{1value} \\
+				A_{1} =\ <9, A_{1value}, \overline{A_{1value}}, H [ N || 9 || A_{1value} || \overline{A_{1value}} || A_{0} || D_{0} || B_{1} || C_{1} ] >;\\
+				\textcolor{white}{XXXXX} A_{1value} = A_{value} + D_{value} + B_{1value} + C_{1value}.
 			\end{array}
 		\end{equation*}
 		\begin{figure}[h!]
@@ -214,8 +217,8 @@
 		\end{figure}
 		\begin{equation*}
 			\begin{array}{l}
-				A_{1} =\  < 2, A_{1value}, \overline{A_{1value}}, H(N || 2 || A_{1value}|| \overline{A_{1value}} || A_{0} || D_{0})>\\
-				A_{1value} =\  A_{value} + D_{value};\ \overline{A_{1value}} = \overline{A_{value}} + \overline{D_{value}}
+				A_{1} =\  < 2, A_{1value}, \overline{A_{1value}}, H(N || 2 || A_{1value}|| \overline{A_{1value}} || A_{0} || D_{0})>;\\
+				\textcolor{white}{XXX} A_{1value} =\  A_{value} + D_{value};\ \overline{A_{1value}} = \overline{A_{value}} + \overline{D_{value}}.
 			\end{array}
 		\end{equation*}
 		\begin{figure}[h!]
@@ -226,8 +229,8 @@
 		\end{figure}
 		\begin{equation*}
 			\begin{array}{l}
-				A_{2} = <4, A_{2value}, \overline{A_{2value}}, H(N || 4 || A_{2value} || \overline{A_{2value}} || B_{1} ||A_{1}) >\\
-				A_{2value} = A_{1value} + B_{1value};\ \overline{A_{2value}} = \overline{A_{1value}} + \overline{B_{1value}} .
+				A_{2} =\ <4, A_{2value}, \overline{A_{2value}}, H(N || 4 || A_{2value} || \overline{A_{2value}} || B_{1} ||A_{1}) >;\\
+				\textcolor{white}{XXX} A_{2value} = A_{1value} + B_{1value};\ \overline{A_{2value}} = \overline{A_{1value}} + \overline{B_{1value}} .
 			\end{array}
 		\end{equation*}
 		\begin{figure}[h!]
@@ -238,8 +241,8 @@
 		\end{figure}
 		\begin{equation*}
 			\begin{array}{l}
-				A_{3} = <8, A_{3value}, \overline{A_{3value}}, H(N || 8 || A_{3value} || \overline{A_{3value}} || C_{2} ||A_{2}) >\\
-				A_{3value} = A_{2value} + C_{2value};\ \overline{A_{3value}} = \overline{A_{2value}} + \overline{C_{2value}}
+				A_{3} =\ <8, A_{3value}, \overline{A_{3value}}, H(N || 8 || A_{3value} || \overline{A_{3value}} || C_{2} ||A_{2}) >;\\
+				\textcolor{white}{XXX} A_{3value} = A_{2value} + C_{2value};\ \overline{A_{3value}} = \overline{A_{2value}} + \overline{C_{2value}}
 			\end{array}
 		\end{equation*}
 		

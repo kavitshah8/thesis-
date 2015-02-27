@@ -19,7 +19,7 @@
 		\label{def:data-item}
 		A commitment tree is a binary tree where each vertex has an associated data-item representing the data that is passed on to its parent. The data-items have the following format:
 
-		$\hspace{100pt}$ \textbf{$<\ $id, count, value, commitment$\ >$}\\
+		$\hspace{100pt}$ $<\ $id, count, value, commitment$\ >$\\
 		Where $id$ is the unique ID of the node; $count$ is the number of leaf vertices in the subtree rooted at this vertex; $value$ is the SUM aggregate computed over all the leaves in the subtree and $commitment$ is a cryptographic commitment.
 	\end{definition}
 	Each sensor node creates its own data-item during commitment tree generation process which is called the leaf vertex of the node.
@@ -34,10 +34,10 @@
 	The first difference between SHIA's label structure and our data-item structure is that we remove the $complement$ field from the label structure see Definition \ref{def:label}. 
 	The complement field is redundant information in the label. 
 	The complement field is used by the base station (the querier in SHIA), before the result checking phase.
-	It is used to verify \textbf{SUM + COMPLEMENT =} $\textbf{n} \cdot \textbf{r}$ where $\textbf{n}$ is the number of nodes in the network, $\textbf{r}$ is the upper bound on the allowed sensor readings.
+	It is used to verify SUM + COMPLEMENT = $n \cdot r$ where $n$ is the number of nodes in the network, $r$ is the upper bound on the allowed sensor readings.
 	We can achieve the same upper bound without the complement field.
 	As the querier knows $n, r$ and it gets SUM from the root of the aggregation tree.
-	If \textbf{SUM} $> \textbf{n} \cdot \textbf{r}$ , then the base station knows some node or nodes in the network reported out of range readings.
+	If SUM $> n \cdot r$ , then the base station knows some node or nodes in the network reported out of range readings.
 
 	Another difference between SHIA's label and our data-item structure is that we include unique ID of the node in its data-item.
 	SHIA does not have the ID field in their label structure as they do not do internal verification while creating a commitment tree and while distributing off-path values.
@@ -74,10 +74,10 @@
 				    \hline
 				\end{tabular}
 			% \end{center}
-	  \end{table}
-	  From the digital certificate the parent node receives the public-key of its child, which is used to decipher the signature.
-	  For example, the parent node of $B$ verifies $\textsf{Sign}_{\sk_{A}}(A_{0})$ as follows:
-	  \begin{equation}
+	 	\end{table}
+		From the digital certificate the parent node receives the public-key of its child, which is used to decipher the signature.
+		For example, the parent node of $B$ verifies $\textsf{Sign}_{\sk_{A}}(A_{0})$ as follows:
+	  	\begin{equation}
 			\textsf{Verify}_{\pk_{A}}(A_{0},\textsf{S}) = 
 			\begin{cases}
 			 \textbf{true}\ \mbox{with probability of 1} & \mbox{if}\ \textsf{S} = \textsf{Sign}_{\sk_{A}}(A_{0})\\
@@ -85,8 +85,9 @@
 			\end{cases}
 			\label{eq:verification}
 		\end{equation}
-	  where $\pk_{A}$ is the public key of $A$, $\textsf{Verify}$ is the verification algorithm.
-	
+	  	where $\pk_{A}$ is the public key of $A$, $\textsf{Verify}$ is the verification algorithm.
+		In this protocol, the certification authority is the base station.
+
 	\subsection{Security Benefits}
 		\label{subsec:security benefits of signing the data-item}
 		% \textcolor{red}{remove payload}
@@ -122,9 +123,10 @@
 	\end{figure}
 	While creating the commitment tree $A$ creates its data-item $A_{0}$ according to Equation \ref{eq:data-item}.
 	$A$ sends only one data-item to $B$ therefore $A$'s payload ($A_{pay}$), transmit-payload ($A_{\tau}$) are given as follows:
-	\begin{equation*}
+	\begin{equation}
 		A_{pay} =\ <A_{0}, \textsf{Sign}_{\sk_{A}}(A_{0}), \textsf{Sign}_{\sk_{A}}(A_{\tau}) >\ where\ A_{\tau} =\ < A_{0} > 
-	\end{equation*}
+		\label{eq:signing-payload}
+	\end{equation}
 	The sensor node $C$'s payload is shown in Figure \ref{fig:Commitment payload of C}.
 	The commitment tree generation process is described in the later sections. 
 	The sensor node $C$ sends two data-items to $D$ therefore $C$'s payload ($C_{pay}$), transmit-payload ($C_{\tau}$) are given as follows:
@@ -184,11 +186,10 @@
   	\end{table}
 	If one uses Elliptic Curve Digital Signature Algorithm (ECDSA) then the size of signature is $500$ bits \cite{ecdsa2009186}.
 	And the certificate size is $1500$ bits.
-	So, at max we have to send additional $2000$ bits with the data-item.
-	We think it is worthwhile to send these additional bits.
-	Because of all the security benefits we gain from it. 
-	\textbf{Note:} The packets size are close approximate to the actual packet size. 
-	The actual packet size may differ based on the implementation.
+	So, at max we have to send additional $2000$ bits with the data-item
+	\footnote{ The packets size are close approximate to the actual packet size. 
+	The actual packet size may differ based on the implementation.}.
+	We think it is worthwhile to send these additional bits because of all the security benefits we gain from it. 
 
 \section{Two Ways of Forwarding Payload}	
 	
@@ -198,7 +199,6 @@
 	In both the approaches, the sensor node $C$ sends all the data-items in its payload with their respective signatures to its parent sensor node $D$ along with the signature of its transmit-payload $C_{\tau}$.
 
 	In the first approach, $C$ verifies $\textsf{Sign}_{\sk_{B}}(B_{1})$ and sends it to $D$ without any modifications as follows:
-	
 	\begin{footnotesize}
 		\begin{equation}	
 			\begin{array}{l}
@@ -209,13 +209,11 @@
 			\label{eq:forwarding-payload-without-resigning}
 		\end{equation}
 	\end{footnotesize}
-
 	% The sensor node $C$ has two data-items $C_{0},B_{1}$ in its payload. 
 	The sensor node $C$ sends three signatures $\textsf{Sign}_{\sk_{B}}(B_{1})$, $\textsf{Sign}_{\sk_{C}}(C_{0}) $ and $\textsf{Sign}_{\sk_{C}}(C_{\tau})$ to its parent $D$.
 	It requires the parent node $D$ to know the public key of the sensor nodes $C$ and $B$, hence two certificates.
 
 	In the second approach, the sensor node $C$ can verify the $\textsf{Sign}_{\sk_{B}}(B_{1})$ then remove the old signature and creates new signature $\textsf{Sign}_{\sk_{C}}(B_{1})$ and sends to $D$ as follows:
-
 	\begin{footnotesize}
 		\begin{equation}	
 			\begin{array}{l}
@@ -226,7 +224,6 @@
 			\label{eq:forwarding-payload-with-resigning}
 		\end{equation}
 	\end{footnotesize}
-	
 	The sensor node $C$ sends three signatures $\textsf{Sign}_{\sk_{C}}(B_{1})$, $\textsf{Sign}_{\sk_{C}}(C_{0}) $ and $\textsf{Sign}_{\sk_{C}}(C_{\tau})$ to its parent $D$.
 	But all the signatures are signed by the sensor node $C$, it requires the parent node $D$ to know the public key of only the sensor node $C$, hence $D$ need to know only one certificate.
 
@@ -269,6 +266,6 @@
 	In the end, the customer needs to verify only one signature of the city level retailer using retailer's certificate.
 	This approach requires very few number of certificates overall in the supply chain.
 
-	We call these two approaches \textbf{Forwarding signatures without resigning the data-items (FSwoRD)}, \textbf{Forwarding signatures with resigning the data-items (FSwRD)} as shown in Equations \ref{eq:forwarding-payload-without-resigning} and \ref{eq:forwarding-payload-with-resigning} respectively.
+	We call these two approaches Forwarding signatures without resigning the data-items (FSwoRD), Forwarding signatures with resigning the data-items (FSwRD) as shown in Equations \ref{eq:forwarding-payload-without-resigning} and \ref{eq:forwarding-payload-with-resigning} respectively.
 	Both the approaches have their pros and cons and the perfect approach depends heavily on the application.
 	The various aspects of both the approaches for sensor nodes are discussed in the following sections.

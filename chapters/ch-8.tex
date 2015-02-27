@@ -62,13 +62,6 @@
 	The sensor node $B$ constructs its payload from its forest. 
 	It's forest consists of payloads received from $E$ and $F$.
 	The leaf sensor nodes $E$ and $F$ constructs their payloads according to Equation \ref{eq:signing-payload} as follows:
-	% \begin{figure}[h!]
-	% 	\centering
-	% 	\includegraphics{images/e-payload.png}
-	% 	\caption{E's payload}
-	% 	\label{fig:e-payload}
-	% \end{figure}
-
 	\begin{equation*}
 		\begin{array}{l}
 		E_{pay} =\ <E_{0}, \textsf{Sign}_{\sk_{E}}(E_{0}), \textsf{Sign}_{\sk_{E}}(E_{\tau}) >\ where\ E_{\tau} =\ <E_{0}>\\
@@ -90,7 +83,7 @@
 		\begin{array}{l}
 			B_{pay} =\ < B_{0}, \textsf{Sign}_{\sk_{B}}(B_{0}), B_{1}, \textsf{Sign}_{\sk_{B}}(B_{1}), \textsf{Sign}_{\sk_{B}}(B_{\tau}) >\ where\ B_{\tau} =\ <B_{0} || B_{1}>\\
 			B_{1} =\ < B_{id}, 2, B_{1value}, H(N||2||B_{1value}||E_{0}||F_{0})>;\ B_{1value} = E_{value} + F_{value} \\
-			B_{0} =\ <B_{id}, 1, B_{value}, H(N||1||B_{value})>
+			B_{0} =\ <B_{id}, 1, B_{value}, H(N||1||B_{value})>.
 		\end{array}
 		\label{eq:b-payload}
 	\end{equation*}
@@ -109,7 +102,7 @@
 			G_{pay} =\ <G_{1},\textcolor{red}{\textsf{Sign}_{\sk_{G}}(G_{1})}, \textsf{Sign}_{\sk_{G}}(G_{\tau})>\ where\ G_{\tau} =\ <G_{0} || H_{0}>\\
 			G_{1} =\ < G_{id}, 2, G_{1value}, H(N||2||G_{1value}||G_{0}||H_{0})>;\ G_{1value} = G_{value} + H_{value} \\
 			G_{0} =\ <G_{id}, 1, G_{value}, H(N||1||G_{value})>\\
-			H_{0} =\ <H_{id}, 1, H_{value}, H(N||1||H_{value})>
+			H_{0} =\ <H_{id}, 1, H_{value}, H(N||1||H_{value})>.
 		\end{array}
 	\end{equation*}
 	$C$ verifies all the signatures in the received payload $G_{pay}$ and constructs $C_{0}$.
@@ -126,7 +119,7 @@
 	\begin{equation*}
 		\begin{array}{l}
 			C_{pay} =\ <C_{0},\textsf{Sign}_{\sk_{C}}(C_{0}),G_{1},\textcolor{red}{\textsf{Sign}_{\sk_{C}}(G_{1})}, \textsf{Sign}_{\sk_{C}}(C_{\tau})>\ where\ C_{\tau} =\ <C_{0} || G_{1}>\\
-			C_{0} =\ <C_{id}, 1, C_{value}, H(N||1||C_{value})>
+			C_{0} =\ <C_{id}, 1, C_{value}, H(N||1||C_{value})>.
 		\end{array}
 		%\label{eq:c-payload}
 	\end{equation*}
@@ -135,7 +128,7 @@
 	\begin{equation*}
 		\begin{array}{l}
 			D_{pay} =\ <D_{0}, \textsf{Sign}_{\sk_{D}}(D_{0}), \textsf{Sign}_{\sk_{D}}(D_{\tau})>;\ where\ D_{\tau} =\ <D_{0}>\\
-			D_{0} =\ <D_{id},1,D_{value},H(N||1||D_{value})>
+			D_{0} =\ <D_{id},1,D_{value},H(N||1||D_{value})>.
 		\end{array}
 		%\label{eq:d-payload}
 	\end{equation*}
@@ -178,7 +171,7 @@
 				A_{21} =\ <A_{id},4,A_{21value},H(N||4||A_{21value}||A_{10}||A_{11})>;\ A_{21value} =\ A_{10value} + A_{11value}\\ 
 				A_{10} =\ <A_{id},2,A_{10value},H(N||2||A_{10value}||B_{0}||C_{0})>;\ A_{10value} =\ B_{value} + C_{value}\\
 				A_{11} =\ <A_{id},2,A_{11value},H(N||2||A_{11value}||D_{0}||A_{0})>;\ A_{11value} =\ D_{value} + A_{value}\\
-				A_{0} =\ <A_{id},1,A_{value},H(N||1||A_{value})>
+				A_{0} =\ <A_{id},1,A_{value},H(N||1||A_{value})>.
 			\end{array}
 		\end{equation*}
 	% 
@@ -301,7 +294,7 @@
 			\end{equation*}
 			Hence, during the collection of authentication codes phase, either $A$ or $B$ sends its authentication codes with NACK message.
 		\end{exmp}
-			Above example shows how the commitment field in the data-item provides \textbf{data-integrity} to the protocol.
+			Above example shows how the commitment field in the data-item provides data-integrity to the protocol.
 			It makes it nearly impossible for an adversary to tamper with the data-items while creating commitment tree and/or while distributing off-path values.
 			This malicious activity can be detected by the commitment filed in the data-item.
 			Later, we show that the adversary can be detected with the provided signature infrastructure.
@@ -327,7 +320,7 @@
 		\begin{equation}
 			\begin{array}{l}
 				\mbox{Positive : } \mbox{MAC}_{\sk_{I}}(\mbox{N} || \mbox{ACK})\\
-				\mbox{Negative : } \mbox{MAC}_{\sk_{I}}(\mbox{N} || \mbox{NACK})
+				\mbox{Negative : } \mbox{MAC}_{\sk_{I}}(\mbox{N} || \mbox{NACK}).
 			\end{array}
 		\end{equation}
 
@@ -378,10 +371,10 @@
 			If there are four nodes ${s_{1},s_{2},s_{3},s_{4}}$ in an aggregation tree and their authentication codes with ACK, NACK message in the binary format are defined as follows:
 			\begin{equation*}
 				\begin{array}{l}
-					\mbox{MAC}_{\sk_{1}}(\mbox{N}\ ||\ \mbox{ACK}) = (1001)_{2};\ \mbox{MAC}_{\sk_{1}}(\mbox{N}\ ||\ \mbox{NACK}) = (1101)_{2}\\
-					\mbox{MAC}_{\sk_{2}}(\mbox{N}\ ||\ \mbox{ACK}) = (0110)_{2};\ \mbox{MAC}_{\sk_{2}}(\mbox{N}\ ||\ \mbox{NACK}) = (1111)_{2}\\	
-					\mbox{MAC}_{\sk_{3}}(\mbox{N}\ ||\ \mbox{ACK}) = (0101)_{2};\ \mbox{MAC}_{\sk_{3}}(\mbox{N}\ ||\ \mbox{NACK}) = (0111)_{2}\\
-					\mbox{MAC}_{\sk_{4}}(\mbox{N}\ ||\ \mbox{ACK}) = (0011)_{2};\ \mbox{MAC}_{\sk_{4}}(\mbox{N} || \mbox{NACK}) = (1110)_{2}
+					\mbox{MAC}_{\sk_{1}}(\mbox{N}\ || \mbox{ACK}) = (1001)_{2};\ \mbox{MAC}_{\sk_{1}}(\mbox{N}\ || \mbox{NACK}) = (1101)_{2}\\
+					\mbox{MAC}_{\sk_{2}}(\mbox{N}\ || \mbox{ACK}) = (0110)_{2};\ \mbox{MAC}_{\sk_{2}}(\mbox{N}\ || \mbox{NACK}) = (1111)_{2}\\	
+					\mbox{MAC}_{\sk_{3}}(\mbox{N}\ || \mbox{ACK}) = (0101)_{2};\ \mbox{MAC}_{\sk_{3}}(\mbox{N}\ || \mbox{NACK}) = (0111)_{2}\\
+					\mbox{MAC}_{\sk_{4}}(\mbox{N}\ || \mbox{ACK}) = (0011)_{2};\ \mbox{MAC}_{\sk_{4}}(\mbox{N}\ || \mbox{NACK}) = (1110)_{2}.
 				\end{array}
 			\end{equation*}
 			Suppose the root of an aggregation tree computed the $\Delta_{root} = (0100)_{2}$ as described in Subsection \ref{subsection:collection-of-authentication-codes}.
@@ -389,7 +382,7 @@
 			Then it calculates the complainer code $c = (1101)_{2}$ according to the Equation \ref{eq:complainer}.
 			The base station also computes the complainer codes for each sensor node according to the Equation \ref{eq:caomplainer-node} as follows:
 			\begin{equation*}			
-				c_{1} = (0100)_{2}, c_{2} = (1001)_{2}, c_{3} = (0010)_{2}, c_{4} = (1101)_{2}
+				c_{1} = (0100)_{2}, c_{2} = (1001)_{2}, c_{3} = (0010)_{2}, c_{4} = (1101)_{2}.
 			\end{equation*}
 			The base station compares complainer code $c$ with individual complainer code $c_{i}$ and finds that $c=c_{4}$.
 			So, the base station identifies that the $s_{4}$\ complained, during verification of inclusion phase.
@@ -493,7 +486,7 @@
 		In general, to find $k$\ complainers the base station needs to do $C_{(n,k)}$ \footnote{$C_{(n,k)}$ = $ n \choose k$ = $n!/(k! \cdot (n-k)!)$} calculations and the same number of comparisons to find $k$\ complainers.
 		Suppose, there are more than one complainer in the network then the base station uses the following recursive algorithm to find all the complainers in the network.
 		
-		\begin{algorithm}
+		\begin{algorithm}[h!]
 			\caption{Finding complainer tree in a given forest}
 			\label{algo:detect-a-complainer-tree}
 			\begin{algorithmic}[1]
@@ -507,7 +500,7 @@
 			\end{algorithmic}
 		\end{algorithm}
 
-		\begin{algorithm}
+		\begin{algorithm}[h!]
 			\caption{Finding complainer node in a given tree}
 			\label{algo:detect-a-complainer}
 			\begin{algorithmic}[1]
@@ -626,8 +619,87 @@
 			\end{algorithmic}
 		\end{algorithm}
 
-		As the adversaries tempers with the data-item, it reduces the data-integrity of the protocol.
+		If an an adversary tempers with the data-item without being detected then it breaks the data-integrity of the protocol.
 		Once the base station detects adversaries it dispels them from the network for all the future queries.
-		Doing so removes un-necessary communication for debugging purpose in the future which saves bandwidth and increases the life-time of the network.
+		Doing so removes un-necessary communication for debugging purpose in the future.
+		Hence, saves the bandwidth and increases the longevity of the network.
 
-		% Talk About Impact.
+		
+% \section{Analysis}
+% 	In this section, we provide analysis of our protocol.
+	\section{Analysis}
+
+		Our protocol creates a complete binary tree for any given aggregation tree.
+		Hence, if we have $n$ nodes in an aggregation tree, then at max there will be $2^{\lg n + 1} - 1 = 2n-1$ vertices in the commitment tree.
+		In both the approaches FSwRD and FSwoRD, there are at least two signatures associated with all the vertices in the commitment tree.
+		Hence, there are at least $2(2n-1)$ signatures created while creating the commitment tree.
+		In general, an intermediate node with $n$ descendants receives $\lceil \log_2 n \rceil$ trees from its children.
+		As we know, there are at least two signatures associated with each vertex, the node with $n$ descendants receives at least $2 \lceil \log_2 n \rceil $ signatures.
+
+		We claim that the binary representation of a non-negative number $x$ illustrates the payload decomposition of the sensor node $S$, where $x$ = $1$ + number of descendants of $S$.
+		For example, if sensor node $S$ has $22$ descendants then $x =23$, $(x)_{10}$ = $(10111)_{2}$. 
+		This means $S$ has four complete binary trees in its payload, with the height of four, two, one and zero.
+		Note that all the trees in the commitment payload are complete binary trees and no two trees have the same height.
+		The reason $1$ is added to the descendants of $S$ is that the sensor node itself is collecting data.
+
+		In both the approaches FSwRD and FSwoRD, the number of transmitted signatures within the network remain the same as shown in Table \ref{tab:analysis-table-1} (we ignore the signature of the payload ). 
+		But the number of times a data-item is being signed differ in both the approaches which impacts the number of certificates being transmitted in the network.
+		The certificate is large in size and consumes a lot of bandwidth during the transmission.
+		To do the further analysis, we developed a performance matrix based on number of transmitted certificates for commonly used network topologies.
+		We analyzed different network topologies as shown in Table \ref{tab:analysis-table-2}. 
+		\begin{table}[!htb]
+			\begin{center}
+				\caption{Totality of Signatures Transmitted}
+				\label{tab:analysis-table-1}
+				\begin{tabular}{|c||c|c|}
+					\hline
+					Network Topology & FSwRD & FSwoRD \\ 
+					\hline
+					\hline
+					Star & $2n$ & $2n$ \\
+					\hline
+					Palm Tree & $2n$ & $2n$\\
+					\hline
+					Complete Binary & $2n$ & $2n$\\
+					\hline
+				\end{tabular}
+			\end{center}
+		\end{table}
+
+		\begin{table}[!htb]
+			\begin{center}
+				\caption{Totality of Certificates}
+				\label{tab:analysis-table-2}
+				\begin{tabular}{|c||c|c|}
+					\hline
+					Network Topology & FSwRD & FSwoRD \\
+					\hline
+					\hline
+					Star & $n - 1$ & $n -1$ \\
+					\hline
+					Palm Tree & $n - 1$ & $XX$\\
+					\hline
+					Complete Binary & $n - 1$ & $n - 1$\\
+					\hline
+				\end{tabular}
+			\end{center}
+		\end{table}
+		% \newpage
+	The following theorem proves that the complete binary tree structure is optimal for commitment tree generation.
+	\begin{theorem}
+		\label{the:ct}
+		Binary commitment tree is optimal in terms of verification for $m$-ary tree, as it requires minimum number of off-path values.
+	\end{theorem}
+
+	\begin{proof}
+		Consider the case of a tertiary tree, other $m$-ary tree arguments following the same manner.
+		Let $m$ be the number of leaves in a commitment tree.
+		For a given binary commitment tree, each leaf vertex needs $\log_2 m$\ off-path values in the verification phase.
+		The total off-path values needed in a given commitment tree is ${m \log_2 m}$.
+		For the given tertiary commitment tree, each leaf vertex needs $2 \log_3 m$ off-path values in the verification phase.
+		The total off-path values needed in given commitment tree is $2 m \log_3 m$.
+		We know that, $\log_3 m$\  $= \frac{ {\log _2 m } }{{\log _2  3 }}$. 
+		Multiplying both sides with  $2m$  gives, $2m\log_3 m = 2m\frac{ {\log _2 m } }{{\log _2  3 }} = \frac{ {2 } } {{\log _2  3 }}m\log _2 m = (1.2618)\ m\log _2 m$.
+		Hence, $2m\log_3 m > m\log _2 m$. 
+		In totality, the binary commitment tree requires the minimum number of off-path values.
+	\end{proof}
