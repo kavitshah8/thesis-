@@ -690,16 +690,14 @@
 		\label{the:ct}
 		Binary commitment tree is optimal in terms of verification for $m$-ary tree, as it requires minimum number of off-path values.
 	\end{theorem}
-
-	\begin{proof}
-		Consider the case of a tertiary tree, other $m$-ary tree arguments following the same manner.
-		Let $m$ be the number of leaves in a commitment tree.
-		For a given binary commitment tree, each leaf vertex needs $\log_2 m$\ off-path values in the verification phase.
-		The total off-path values needed in a given commitment tree is ${m \log_2 m}$.
-		For the given tertiary commitment tree, each leaf vertex needs $2 \log_3 m$ off-path values in the verification phase.
-		The total off-path values needed in given commitment tree is $2 m \log_3 m$.
-		We know that, $\log_3 m$\  $= \frac{ {\log _2 m } }{{\log _2  3 }}$. 
-		Multiplying both sides with  $2m$  gives, $2m\log_3 m = 2m\frac{ {\log _2 m } }{{\log _2  3 }} = \frac{ {2 } } {{\log _2  3 }}m\log _2 m = (1.2618)\ m\log _2 m$.
-		Hence, $2m\log_3 m > m\log _2 m$. 
-		In totality, the binary commitment tree requires the minimum number of off-path values.
-	\end{proof}
+	\textbf{Proof}
+	Consider the case of a tertiary tree, other $m$-ary tree arguments following the same manner.
+	Let $m$ be the number of leaves in a commitment tree.
+	For a given binary commitment tree, each leaf vertex needs $\log_2 m$\ off-path values in the verification phase.
+	The total off-path values needed in a given commitment tree is ${m \log_2 m}$.
+	For the given tertiary commitment tree, each leaf vertex needs $2 \log_3 m$ off-path values in the verification phase.
+	The total off-path values needed in given commitment tree is $2 m \log_3 m$.
+	We know that, $\log_3 m$\  $= \frac{ {\log _2 m } }{{\log _2  3 }}$. 
+	Multiplying both sides with  $2m$  gives, $2m\log_3 m = 2m\frac{ {\log _2 m } }{{\log _2  3 }} = \frac{ {2 } } {{\log _2  3 }}m\log _2 m = (1.2618)\ m\log _2 m$.
+	Hence, $2m\log_3 m > m\log _2 m$. 
+	In totality, the binary commitment tree requires the minimum number of off-path values.
