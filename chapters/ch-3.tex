@@ -5,89 +5,76 @@
 	% For example, we describe the Hash function, its properties and how it helps us achieve data integrity.
 
 	The word cryptography means ``secret writing''.
-	It is the art and science of concealing meaning.
-	Cryptanalysis is the science breaking of cryptography schemes.
-	Formally, the basic component of cryptography is a cryptosystem \cite{bishop2004introduction}.
+	It is the art and science of hiding the information from malicious parties.
+	Cryptanalysis is the science cracking of cryptography schemes.
+	Formally, the fundamental components of cryptography is a cryptosystem \cite{bishop2004introduction}.
 	\begin{definition}
-		A cryptosystem is a $5$-tuple ($ \mathcal{E,D,M,K,C}$), where $\mathcal{M}$ is the set of \textit{plaintexts}, $\mathcal{K}$ is the set of \textit{keys}, $\mathcal{C}$ is the set of \textit{ciphertexts}, $\mathcal{E}:\mathcal{M} \times \mathcal{K} \rightarrow \mathcal{C}$ is the set of \textit{enciphering functions}, and $\mathcal{D}:\mathcal{C} \times \mathcal{K} \rightarrow \mathcal{M}$ is the set of \textit{deciphering functions}.
+		A cryptosystem is a system consisting of $5$-tuple ($ \mathcal{E,D,M,K,C}$), 
+		where $\mathcal{E}:\mathcal{M} \times \mathcal{K} \rightarrow \mathcal{C}$ is the set of \textit{enciphering functions}, and $\mathcal{D}:\mathcal{C} \times \mathcal{K} \rightarrow \mathcal{M}$ is the set of \textit{deciphering functions}.
+		$\mathcal{M}$ is the set of \textit{plaintexts},
+		$\mathcal{K}$ is the set of \textit{keys},
+		$\mathcal{C}$ is the set of \textit{ciphertexts},
 	\end{definition}
 
 \section{Symmetric Key Encryption}
 	% Classical cryptosystem (also called symmetric cryptosystem or single-key cryptosystem) are cryptosystem that use the same key for encipherment and decipherement.
 	% In these system, for all $E_{k} \in \mathcal{C}$ and $k \in \mathcal{K}$, there is a $D_{k} \in \mathcal{D}$ such that $D_{k} = E_{k}^{-1}$.
 	% \begin{definition}
-	Consider an encryption scheme consisting of the sets of encryption and decryption transformations $\{E_{e}: e \in \mathcal{K}\}$ and $\{D_{d}: d \in \mathcal{K}\}$, respectively, where $\mathcal{K}$ is the key space.
-	The encryption scheme is said to be \textit{symmetric-key} if for each associated encryption/decryption key pair ($e,d$), it is computationally ``easy'' to determine $d$ given $e$, and to determine $e$ from $d$ \cite{menezes2010handbook}.
-	Moreover, most symmetric-key schemes satisfy $e = d$.
+	An encryption scheme made with the sets of encryption set $\{E_{e}: e \in \mathcal{K}\}$ and decryption transformations $\{D_{d}: d \in \mathcal{K}\}$, where $\mathcal{K}$ is the key space.
+	The encryption scheme is said to be \textit{symmetric-key} if for each associated encryption and decryption key pair ($e,d$), it is computationally ``easy'' to determine $d$ given $e$, and to determine $e$ from $d$ \cite{menezes2010handbook}.
+	In many major symmetric-key schemes satisfy $e = d$.
 	% \end{definition}
-
-	A two party communication using symmetric key encryption can be described by the block diagram of Figure \ref{fig:symmetric-key}. 
-	One major issue with symmetric key system is to find an efficient method to agree upon and exchange keys securely, which is known as \textit{key-distribution problem} \cite{menezes2010handbook}. 
+	The communication protocol between two parties Alice and Bob, using symmetric key encryption scheme is shown in Figure \ref{fig:symmetric-key}. 
+	The major road block with symmetric key system is to find an optimal solution to agree upon for securely doing the exchange keys between two entities, which is known as \textit{key-distribution problem} \cite{menezes2010handbook}. 
 
 	\begin{figure}[h!]
 	 	\centering
 	 	\includegraphics{images/symmetric-key.png}
-	 	\caption{Two party communication using encryption, with a secure channel for key exchange and the decryption key $d$ can be efficiently computed from the encryption key $e$. }
+	 	\caption{Two party communication using symmetric key encryption.}
 	 	\label{fig:symmetric-key}
 	 \end{figure} 
 
 \section{Asymmetric/Public Key Encryption}
-	% In asymmetric or public-key cryptosystem, uses a key pair for encipherment and decipherement .
-	% In such systems, for all $E_{K_{1}} \in \mathcal{C}$ and $K_{1} \in \mathcal{K}$, there is a $D_{K_{2}} \in \mathcal{D}$ such that $K_{2} \in \mathcal{K}$ where $\mathcal{K} = K_{1} \times K_{2}$.
-	% For all $k \in \mathcal{K}$,\  there exists $(S_{k},P_{k})$ such that the following is true.
-	% \begin{equation}
-	% 	{D}(\ {E}(\ {M},\ S_{k}\ ),\ P_{k}\ ) =\ {M}
-	% \end{equation}
-	Let $\{E_{e}: e \in \mathcal{K}\}$ be a set of encryption transformations, and let $\{D_{d}: d \in \mathcal{K}\}$ be the set of corresponding decryption transformations, where $\mathcal{K}$ is the key space.
-	Consider any pair of associated encryption/decryption transformations $(E_{e},D_{d})$ and suppose that each pair has the property that knowing $E_{e}$ it is computationally infeasible, given a random ciphertext $c \in \mathcal{C}$, to find the message $m \in \mathcal{M}$ such that $E_{e}(m) = c$.
-	This property implies that given $e$ it is infeasible to determine the corresponding decryption key $d$.
-	This is unlike symmetric key ciphers where $e$ and $d$ are essentially the same\cite{menezes2010handbook}.
-
-	Consider the two party communication between Alice and Bob illustrated in Figure \ref{fig:public-key}. 
-	Bob selects the key pair $(e, d)$. 
-	Bob sends the encryption key $e$ (called the \textit{public key}) to Alice over any channel but keeps the decryption key $d$ (called the \textit{private key}) secure and secret.
-	Alice may subsequently send a message $m$ to Bob and applying the encryption transformation determined by Bob's public key to get $c = E_{e}(m)$.
+	Consider an encryption scheme where $\{E_{e}: e \in \mathcal{K}\}$ is a set of encryption transformations, and $\{D_{d}: d \in \mathcal{K}\}$ be the set of corresponding decryption transformations, where $\mathcal{K}$ is the key space.
+	Any pair of related encryption-decryption transformations $(E_{e},D_{d})$ and assuming that each pair has the property that knowing $E_{e}$ it is computationally infeasible, given a random cipher text $c \in \mathcal{C}$, to find the message $m \in \mathcal{M}$ such that $E_{e}(m) = c$.
+	It implies that given the encryption key $e$, it is impossible for an adversary to determine the related decryption key $d$.
+	This is contrary to the symmetric key schemes in which $e$ and $d$ are the same\cite{menezes2010handbook}.
+	The communication protocol between two parties Alice and Bob, using asymmetric key encryption scheme is shown in Figure \ref{fig:public-key}. 
+	% Bob selects the key pair $(e, d)$. 
+	% Bob sends the encryption key $e$ (called the \textit{public key}) to Alice over any channel but keeps the decryption key $d$ (called the \textit{private key}) secure and secret.
+	% Alice may subsequently send a message $m$ to Bob and applying the encryption transformation determined by Bob's public key to get $c = E_{e}(m)$.
 	\begin{figure}[h]
 		\centering
 		\includegraphics{images/public-key.png}
-		\caption{Encryption using public key techniques}
+		\caption{Two party communication using asymmetric key encryption.}
 		\label{fig:public-key}
 	\end{figure}
-	Bob decrypts the ciphertext $c$ by applying the inverse transformation $D_{d}$ uniquely determined by $d$.
-	Here the encryption key is transmitted to Alice over an unsecured channel.
-	Since, the encryption key $e$ need not be kept secret, it may be made public.
+	% Bob decrypts the ciphertext $c$ by applying the inverse transformation $D_{d}$ uniquely determined by $d$.
+	% Here the encryption key is transmitted to Alice over an unsecured channel.
+	% Since, the encryption key $e$ need not be kept secret, it may be made public.
 
 \section{Hash Function}
 	A hash function takes a message as its input and outputs a fixed length message called hash code.
 	The hash code represents a compact image of the message like a digital fingerprint.
 	Hash functions are essential mathematical tools to achieve data integrity.
-	A hash function $h$ should have the following properties:
-	\begin{description}
-		\item [Compression] A hash function $h$ maps an input $x$ of arbitrary finite bitlength, to an output $h(x)$ of fixed bitlength $n$.
-		\item [Ease of computation] For given $h,x$ it is easy to compute $h(x)$.
-		\item [Preimage resistance] For all pre-specified outputs, it is computationally infeasible to find any input which hashes to that output, i.e., to find any preimage $x'$ such that $h(x') = y$ when given $y$ for which a corresponding input is not known.
-		\item [2nd-preimage resistance] It is computationally infeasible to find any second input which has the same output as any specified input, i.e, given $x$, to find a 2nd-preimage $x' \neq x$ such that $h(x') = h(x)$.
-		\item [Collision resistance] It is computationally to find any two distinct inputs $x,x'$ which hash to the same output, i.e., such that $h(x) = h(x')$.
-	\end{description}
-	SHA-256, is a 256-bit hash and provides $128$ bits of security against collision attacks\cite{SHA256}.
-	And $128$ bits security is adequate for most of the applications.
+	A hash function should have the security properties like Compression, Ease of computation, Preimage resistance, Collision resistance.
+	Compression means a hash function maps an input of arbitrary finite bit length, to an output of fixed bit length $n$.
+	Ease of computation means given the hash function and input, it is easy to compute the output.
+	Preimage resistance means given the outputs, it is impossible to discover any input whose hashed output maps to the given output.
+	Collision resistance means it is hard to construct two unique inputs which hashes to the same value.
+	SHA-256, is a 256-bit hash and assures $128$ bits of security against collision attacks\cite{SHA256}.
+	For most of the applications $128$ bits security is adequate.
 
 \section{Message Authentication Codes}
-	A Message Authentication Code (MAC) is a family of hash functions parameterized by a secret key $k$, also known as keyed hash function ($h_{k}$).
-	It has the following properties:
-	\begin{description}
-		\item [Ease of computation] For a known function $h_{k}$, given a value $k$
-		and an input $x$, $h_{k}(x)$ is easy to compute.
-		This result is called MAC.
-		\item [Compression] The function $h_{k}$ maps an input $x$ of arbitrary finite bitlength to an output $h_{k}(x)$ of fixed length $n$.  
-		\item [Computation-resistance] Given a description of the function family $h$, for every fixed allowable value of $k$ (unknown to an adversary), given zero or more text-MAC pairs ($x_{i}, h_{k}(x_{i})$), it is computationally infeasible to compute any text-MAC pair ($x,h_{k}(x)$) for any new input $x \neq x^{'}$ (including possibly for $h_{k}(x) = h_{k}(x_{i})$ for some $i$). 
-	If computation-resistance does not hold, a MAC algorithm is subject to MAC-forgery.
-	\end{description}
+	A Message Authentication Code (MAC) is a group of hash functions parameterized by a secret key $k$, also known as keyed hash function ($h_{k}$).
+	It should have the security properties similar properties like Ease of computation, Compression, Computation-resistance describe for hash functions. 
+	If all these properties are not satisfied then a MAC algorithm can be attacked with MAC forgery.
 
 \section{Digital Signatures}
 	\label{sec:digital-signature}
-	A digital signature is a cryptographic scheme for demonstrating the authenticity of a digital message. 
-	A valid digital signature gives a recipient strong reason to believe that the message was created by a known sender, such that the sender cannot deny having sent the message (authentication and non-repudiation) and that the message was not altered in transit (integrity).
+	A digital signature is a cryptographic scheme providing the security services of the authenticity, integrity and non-repudiation of a digital message. 
+	A valid digital signature provides a proof to a recipient that the message was created by an authentic sender, such that the sender cannot deny having created and sent the message.
+	It also guarantees that the message was not altered during the transmission.
 	A Digital Signature scheme consists of the following:
 	\begin{enumerate}
 		\item a plain text message space $\mathcal{M}$ (set of strings over alphabets)
@@ -135,10 +122,9 @@
 
 \section{Summary}
 	Three different integrity-protection mechanisms HASH, MAC, Signature can be summarized in a matrix like Table \ref{table:summary} \cite{2002-Stajano-ubiquitous}.
-	The main difference between the various primitives stems from identifying who can generate the code and who can verify it.
-	This determines the suitability of the construction for a given purpose.
+	These primitives differ from the partys' capabilities of generating and verifying the code which depends on the application.
 	\begin{table}[!htb]	
-		\caption{A comparison of integrity-protecting primitives}
+		\caption{A comparison security primitives}
 		\begin{center}
 			\begin{tabular}{ |l || l| l| }
 		    \hline

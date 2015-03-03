@@ -2,27 +2,31 @@
 \label{cha:Sensor Networks/Data Aggregation/Security Background}
 	
 	Sensor networks are becoming ubiquitous in our day to day life. 
-	It is the vision of a world in which computing power and digital communications are extremely inexpensive commodities.
-	So, cheap that they are embedded in all of the everyday objects that surround us \cite{2002-Stajano-ubiquitous}.	
+	It is a scenario in which network and computers are extremely inexpensive objects and they are surrounded to real people all the time \cite{2002-Stajano-ubiquitous}.	
 	In this chapter, we introduce sensor networks and its applications, we define basic terminologies and then we discuss major 
 	barriers to achieve security in sensor networks.
 
 \section{Applications}
 	In sensor networks, thousands of sensor nodes may interact with the physical world and collectively monitor an area, generating a large amount of data to be transmitted and reasoned about.
 	With the recent advances in hardware technologies of sensors, we can use tiny and cheap sensor nodes to obtain significant amount of useful data about physical world.
-	For example, we can use them to discover temperature, humidity, water quality, lightning condition, pressure, noise level, carbon dioxide level, oxygen level, soil moisture, magnetic field, characteristics of objects such as speed, direction, and size, the presence or absence of certain kinds of objects, and all kinds of values about machinery like mechanical stress level or movement \cite{hof2007applications}.
+	For example, we can use them to discover temperature, water quality, lightning condition, humidity and pressure levels. 
+	We can also use them to know certain characteristics of objects such as speed, direction, and size.
+	% noise level, carbon dioxide level, oxygen level, soil moisture, magnetic field, 
+	% the presence or absence of certain kinds of objects, and all kinds of values about machinery like mechanical stress level or movement \cite{hof2007applications}.
 	These versatile types of sensors, allow us to use sensor network in a wide variety of scenarios.
-	For example, sensor networks are used in habitat and environment monitoring, health care, military surveillance, industrial machinery surveillance, home automation, scientific data collection, emergency fire alarm systems, traffic monitoring, wildfire tracking, wildlife monitoring and many other applications.
+	For example, sensor networks are used in military, environmental monitoring, health care, scientific data collection, emergency fire alarm systems, traffic monitoring, wildfire tracking, wildlife monitoring and many other applications.
 	
 	\begin{description}
 		\item[Military Application]
 			Sensor networks can be used for enemy tracking, battlefield surveillance or target classification \cite{li2002detection}.
 			For example, \textit{Palo Alto Research Center} tries to spot ``interesting'' vehicles (the vehicles marked specially) using motes equipped with microphones or steerable cameras \cite{chu2004distributed}.
-			The objective is to coordinate a number of this kind of sensors in order to keep sensing the track of a chosen moving object minimizing any information gaps about the track that may occur.
+			The goal is to synchronize the sensor network to sense the track of a moving object with minimum information loss about the track of a moving object.
 
 		\item[Environmental Monitoring] 
-			Sensor networks can be used to monitor a geographical location. 
-			For example, \textit{Meteorology and Hydrology in Yosemite National Park} \cite{lundquist2003meteorology}, a sensor network was deployed to monitor the water system across and within the Sierra Nevada, especially regarding natural climate fluctuation, global warming, and the growing needs of water consumers.
+			Sensor networks can be utilized to monitor a geographical location. 
+			For example, \textit{Meteorology and Hydrology in Yosemite National Park} \cite{lundquist2003meteorology}, a sensor network was deployed to monitor the water system across and within the Sierra Nevada.
+			The goal was to collect the data and derive information on natural climate fluctuation caused due to global warming.
+			It also provided information on the increasing needs of water consumers.
 			Research of the water system in the Sierra Nevada is difficult, because of its geographical structure.
 			Sensor networks can be very useful in such situations as they can operate with little or no human intervention.
 		
@@ -44,12 +48,12 @@
 			It also allows to extract information from the raw sensor data which has reasonable success in identifying people based on their gait.
 			Authors used Hidden Markov Models based analysis techniques originally developed for speech and face recognition to identify people.
 		
-		\item[Code Blue]
-			is a system to enhance emergency medical care with the goal to have a seamless patient transfer between a disaster area and a hospital\cite{lorincz2004sensor}.
+		% \item[Code Blue]
+		% 	is a system to enhance emergency medical care with the goal to have a seamless patient transfer between a disaster area and a hospital\cite{lorincz2004sensor}.
 	\end{description}
 	
 	The applications of the sensor networks are enormous. 
-	The application of a sensor network determines the design of the sensor nodes, the network protocol and security architecture.
+	The application platform of a sensor network determines the design of the sensor nodes, the network protocol and security architecture.
 	As far as we know, there is no general architecture for such design.
 	Therefore, developing a protocol for sensor networks can certainly be challenging. 
 
@@ -59,51 +63,51 @@
 	\begin{figure}[h!]
 		\centering
 		\includegraphics{images/sensor-node-architecture.png}
-		\caption{Sensor Node Architecture}
+		\caption{Sensor Node Block Diagram}
 		\label{fig:sensor-node-architecture}
 	\end{figure}
 
 	\begin{description}
 	\item[Controller] is the Central Processing Unit (CPU) of the node.
-		It collects data from the sensors, processes this data, decides when and where to send it, receives data from other sensor nodes, and decides on the actuator's behavior.
-		It executes various programs, ranging from time-critical signal processing and communication protocols to application programs.
+		It is responsible for collecting data from the sensors and processing it to deriving useful information from it. 
+		It also decides nodes for end to end communications and affects the actuator's behavior.
+		It executes variety of  algorithms, ranging from time-critical signal processing and communication protocols to application algorithms.
 	
-	\item[Communication Device] is used to exchange data between individual nodes at radio frequency.
-		Radio Frequency(RF)-based communication is widely used in sensor networks as it best fits the requirements of numerous applications.
-		It provides relatively long range and high data rates, acceptable error rates at reasonable energy expenditure, and does not require line of sight between sender and receiver.
-		Both a transmitter and a receiver are required in a sensor node. 
-		The essential task for the devices is to convert a bit stream coming from a micro-controller (or a sequence of bytes or frames) and convert them to and from radio waves. 
-		It is convenient to use a device that combines these two tasks in a single entity, called transceivers. 
-		Usually, half-duplex operation is realized since transmitting and receiving at the same time on a wireless medium is impractical in most cases.
+	\item[Communication Device] is utilized for trans receiving data between end hosts at radio frequency.
+		Radio Frequency(RF)-based communication is widely used in sensor networks.
+		RF based communications does not require line of sight between sender and receiver.
+		It also provides relatively long range communications capabilities and high data rates.
+		It has an acceptable error rates at reasonable energy consumption.
+		All these characteristics, best fits the requirements of many sensor network applications.
+		The most important function for the communication devices is to convert a bit stream to radio waves. 
+		% It is convenient to use a device that combines these two tasks in a single entity, called transceivers. 
+		% Usually, half-duplex operation is realized since transmitting and receiving at the same time on a wireless medium is impractical in most cases.
 
-	\item[Sensors] can be roughly categorized into three categories.
-		\textit{Passive, omnidirectional sensors} can measure a physical quantity at the point of the sensor node without actually manipulating the environment by active probing in this sense, they are passive. 
-		Moreover, some of these sensors actually are self-powered in the sense that they obtain the energy they need from the environment – energy is only needed to amplify their analog signal. 
-		There is no notion of ``direction'' involved in these measurements.
-		Typical examples for such sensors include thermometer, light sensors, vibration, microphones, humidity, mechanical stress or tension in materials, chemical sensors sensitive for given substances, smoke detectors, air pressure, and so on.
-		\textit{Passive, narrow-beam sensors} are passive as well, but have a well-defined notion of direction of measurement. 
-		A typical example is a camera, which can ``take measurements'' in a given direction, but has to be rotated if need be.
-		\textit{Active sensors} are the last group of sensors actively probes the environment, for example, a sonar or radar sensor or some types of seismic sensors, which generate shock waves by small explosions.
-		These are quite specific - triggering an explosion is certainly not a lightly undertaken action - and require quite special attention.
+	\item[Sensors] are the nodes generating raw data to be transmitted and analyzed by the network.
+		% It can be temperature, pressure, light, humidity or gas sensor depending on the application.
+		% The sensors can be either \textit{Passive} or  \textit{Active}.
+		\textit{Passive sensors} can measure a physical quantity without affecting the environment at the point of deployment. 
+		For example, vibration, chemical sensors sensitive for given substances and smoke detectors.
+		\textit{Active sensors} actively probes the environment and generates raw information to be analyzed.
+		For example, a radar sensor or some types of seismic sensors creates shock waves by small explosions into the sea to get the details about the earth.  
+		These are very specific explosions and requires quite special permissions to carry out such experiments.
 
-	\item[Power Supply of Sensor Nodes] is a crucial system component which has two main aspects.
-		First, storing energy and providing power in the required form; second, attempting to replenish consumed energy by ``scavenging'' it from some node-external power source over time.
-		Storing power is conventionally done using batteries, the normal AA battery stores about 2.2 - 2.5 Ah at 1.5 V.
-		To ensure truly long-lasting nodes and wireless sensor networks, such a limited energy store is unreliable. 
-		We can use energy from a node’s environment ``energy scavenging''.
-		For example, \textit{Vibrations} is almost pervasive form of mechanical energy: walls or windows in buildings are resonating with cars or trucks passing in the streets, machinery often has low frequency vibrations, ventilations also cause it, and so on.
-		The available energy depends on both amplitude and frequency of the vibration.
-		\textit{Pressure variations} is similar to vibrations, a variation of pressure can also be used as a power source. 
-		Such piezoelectric generators are in fact used already. 
-		One well-known example is the inclusion of a piezoelectric generator in the heel of a shoe, to generate power as a human walks about \cite{shenck2001energy}. 
-		This device can produce, on average, 330 $\mu W / cm^{2}$. 
-		\textit{Photovoltaics} effect is used in the solar cells can be used to power sensor nodes.
-		\textit{Temperature gradients} effect utilizing the differences in temperature can be directly converted to electrical energy.
+	\item[Power Supply of Sensor Nodes] is an important system component, too.
+		Sensor nodes can be powered by using normal AA battery which stores about 2.2 - 2.5 Ah at 1.5 V.
+		To increase the longevity of the nodes and wireless sensor networks we can use energy from a node’s environment ``energy scavenging''.
+		% For example, \textit{Vibrations} is almost pervasive form of mechanical energy: walls or windows in buildings are resonating with cars or trucks passing in the streets, machinery often has low frequency vibrations, ventilations also cause it, and so on.
+		% The available energy depends on both amplitude and frequency of the vibration.
+		% \textit{Pressure variations} is similar to vibrations, a variation of pressure can also be used as a power source. 
+		% Such piezoelectric generators are in fact used already. 
+		% One well-known example is the inclusion of a piezoelectric generator in the heel of a shoe, to generate power as a human walks about \cite{shenck2001energy}. 
+		% This device can produce, on average, 330 $\mu W / cm^{2}$. 
+		For example, \textit{Photovoltaics} effect is used in the solar cells, can be applied to power supply module of the sensor nodes.
+		\textit{Temperature gradients} effect utilizing the differences in temperature can be converted to electrical energy and can be used to power sensor nodes.
 
 	\item[The Memory Component] is fairly straightforward. 
 		Random Access Memory (RAM) can be used to store sensor readings, and temporary data. 
-		Program code can be stored in Read-Only Memory (ROM). 
-		Correctly dimensioning memory sizes, can be crucial with respect to manufacturing costs and power consumption.
+		The operating system code can be stored in Read-Only Memory (ROM). 
+		It is important to dimension RAM and ROM precisely, to reduce the manufacturing cost and power consumption.
 	\end{description}
 
 \section{Energy Consumption}
@@ -133,7 +137,7 @@
 	For example, the networking algorithm for routing should be such that it minimizes the distance $d$\ between the nodes.
 	The signal processing algorithm should be such that it process the networking packets with less computations.
 	It is shown in \cite{wang2002energy} that by using Fast Fourier Transform (FFT) algorithm in the devices requires less communication between the sensor nodes.
-	Also, for minimal energy dissipation, a processor should operate at the lowest voltage for a given clock frequency.
+	To minimize the energy dissipation, a processor should operate at the lowest possible voltage for a given clock frequency.
 
 \section{Resource Constraints}
 	\label{sec:aggregate-adversary}
@@ -141,10 +145,12 @@
 	These parameters can constrain the protocol designer's choices within the protocol.
 
 	\subsection{Physical Limitations}
-		Sensor nodes are often deployed in open, hostile and unattended environments, so they are vulnerable to physical tampering due to the lower physical security.
-		An adversary can obtain the confidential information from a compromised sensor and reprogram it with malicious software.
-		The compromised node may then report an arbitrary false sensor readings to its parent node in the tree hierarchy, making the sensor readings unreliable and irrelevant	.
-		This attack becomes more damaging when multiple adversaries succeeds in injecting false data into the network which may cause catastrophic consequences \cite{wagner2007algorithms}.	
+		Sensor nodes are often used in open, hostile and unattended environments.
+		They are vulnerable to physical attacks due to the lack of physical security available in their environment.
+		It allows an adversary to gain the secret information from a compromised sensor node.
+		An adversary can reprogram the sensor node with virus(malicious software).
+		The compromised node then report an arbitrary false sensor readings to its parent node in the tree hierarchy, making the sensor readings unreliable and irrelevant	.
+		These attacks become more damaging when multiple adversaries succeeds in injecting false data into the network which may cause catastrophic consequences \cite{wagner2007algorithms}.	
 
 	\subsection{Hardware Limitations}
 		As far as we know, one of the first hardware platform for developing sensor network application is MICA \cite{hill2002mica} developed by University of Berkeley.
@@ -186,7 +192,7 @@
 
 	\subsection{Mobility}
 		As we know, sensor nodes communicate via radio and the availability of the transmission medium changes over time due to link failure, bandwidth limitations or change in network topology.
-		Nodes may be able to move, which further contributes to the instability of the communication link.
+		Nodes may be mobile creating the instability of the network link, which require the reconfiguration and special protocol to redesign the network.
 		The mobility issue makes difficult to do the routing in the network with the directional antennas in place.
 		It also requires network to be agile enough to do the reconfiguration for the newer network topology.
 		It impedes while doing the quality of service in the network. 

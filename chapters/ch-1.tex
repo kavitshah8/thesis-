@@ -1,17 +1,20 @@
 \chapter{INTRODUCTION} % (fold)
 \label{cha:introduction}
 	
-	Mark Weiser of Xerox PARC \cite{weiser1991computer} coined the term ubiquitous computing in $1988$ today which is known as Internet of Things (IoT). 
-	It is the scenario in which computing is omnipresent, and particularly in which devices that do not look like computers are endowed with computing capabilities.
-	For example, light switches, door locks, fridges and shoes have data processing power in them.
-	It is the situation in which all these devices are note only capable of computing but also of communicating.
-	The synergy between these devices make the whole worth more than the sum of the parts.
-	A wireless infrastructure looks more plausible for communication in such networks: as happens with mobile telephones, a base station could cover a cell, and a network of suitable positioned base stations could cover a larger area.
-	But we are interested in a broader picture, in which even this arrangement may not always be possible: think of a photographer taking pictures in the desert and whose camera wants to ask the Global Positioning Systems (GPS) unit what coordinates and time stamp to associate with the picture.
-	The computing and the communications may be ubiquitous, but the network infrastructure might not be.
-	In such cases, the devices will have to communicate as peers and form a local network as needed when they recognize each other's presence.
-	This is what we mean by ad hoc networking.
-	The wireless network formed by the camera and the GPS receiver is ad hoc in the sense that it was established just for that specific situation instead of being a permanent infrastructural fixture \cite{2002-Stajano-ubiquitous}.
+	Mark Weiser of Xerox PARC \cite{weiser1991computer} invented the term ubiquitous computing in $1988$ today which is known as Internet of Things (IoT). 
+	It is the scenario in which computing is everywhere.
+	It represents the scenario where devices that do not look like computers have computational power.
+	For example, street lights, door locks, kitchen utensils and clothing have data processing power in them.
+	% It is the situation in which all these devices are note only capable of computing but also of communicating.
+	The synergy between these devices make the network do useful work and powerful work.
+	A wireless infrastructure is essential for communications in such networks.
+
+	% But we are interested in a broader picture, in which even this arrangement may not always be possible: think of a photographer taking pictures in the desert and whose camera wants to ask the Global Positioning Systems (GPS) unit what coordinates and time stamp to associate with the picture.
+	% The computing and the communications may be ubiquitous, but the network infrastructure might not be.
+	% In such cases, the devices will have to communicate as peers and form a local network as needed when they recognize each other's presence.
+	% This is what we mean by ad hoc networking.
+	% The wireless network formed by the camera and the GPS receiver is ad hoc in the sense that it was established just for that specific situation instead of being a permanent infrastructural fixture \cite{2002-Stajano-ubiquitous}.
+
 	Kevin Ashton is a British technology pioneer who co-founded the Auto-ID Center at the Massachusetts Institute of Technology, which created a global standard system for RFID and other sensors.
 	He is known for inventing the term Internet of Things (IoT) to describe a system where the Internet is connected to the physical world via ubiquitous sensors \cite{ashton2009internet}.
 	IoT means putting all kinds of devices on the Internet and gaining efficiency from it. 
@@ -20,12 +23,10 @@
 	An Uber passenger knows when the taxi will show up.
 	It is about eliminating slack time and worry.
 	It connects passengers, taxi drivers, smart phones and GPS in a way that it provides an efficient and flexible way of transportation.
-	In addition to, the trend in consumer electronics is to embed a microprocessor in everything-cellphones, car stereos,  televisions, watches, GPS receivers, digital cameras.
-	In some specific environments such as avionics, electronic devices are already becoming networked; in others, work is underway.
-	Medical device manufacturers want instruments such as thermometers, heart monitors and blood oxygen meters to report to a nursing station; kitchen appliance vendors envisage a future in which the oven will talk to the fridge, which will reorder food over the Internet. 
-	It is to be expected that, in the near future, this networking will become much more general.
-	The next step is to embed a short range wireless transceiver into everything; then many gadgets can become more useful and effective by communicating and cooperating with each other.
-	In such scenario, each device by becoming a network node, may take advantage of the services offered by other nearby devices instead of having to duplicate their functionality \cite{2002-Stajano-ubiquitous}.
+	In addition to that, the Medical device manufacturers want medical instruments to report to analyze the data and report it to a nursing station in timely fashion. 
+	% The next step is to embed a short range wireless transceiver into everything; then many gadgets can become more useful and effective by communicating and cooperating with each other.
+	In such scenario, each device by becomes a network node.
+	It takes advantage of the services offered by other nodes in the network, instead of duplicating their work \cite{2002-Stajano-ubiquitous}.
 	At the core of ubiquitous computing and IoT, are the sensors generating data and wireless network providing transmission medium for communications. 
 	Collectively, we refer these concepts as Sensor Networks which enable economically viable solutions to a variety of applications.
 
@@ -43,28 +44,32 @@
 	The error at any stage in the process can create catastrophic situations.
 	For example, speed sensor failure led to crash of Air France flight - Airbus A$330$-$203$ AF $447$ on $1$st June $2009$.
 	France's Bureau of Investigation and Analysis (BEA) released the Airbus final report \cite{final-report}.
-	According to an official report, the pilots could not reclaim control as the plane dropped out of the sky at a rate of $10,000$ feet per minute.
-	The findings from the flight's black boxes, which were found intact at the bottom of the Atlantic in early May, and their analysis paints a harrowing picture of Air France flight $447$'s literal dropping out of the sky.
-	The co-pilots encountered trouble with the speed sensors four hours and $10$ minutes into the flight. 
-	The flight was on autopilot as the pilot in command took a routine rest out of the cockpit. 
+	According to an official report `` the pilots could not reclaim control as the plane dropped out of the sky at a rate of $10,000$ feet per minute.
+	The flight's black boxes which were found intact at the bottom of the Atlantic in early May.
+	Their analysis reveals the terrifying details of Air France flight $447$'s literal dropping out of the sky.
+	The co-pilots encountered problem with the speed sensors four hours and $10$ minutes into the flight. 
+	The flight was operated by autopilot when the pilot took a routine rest according to the schedule and ran out of the cockpit. 
 	They were knowingly headed into a turbulent and storm-ridden spot over the Atlantic, and the black boxes show the pilots attempted to maneuver around the storm slightly.
 	For nearly a minute, as the speed sensors jumped, the pilot was not present in the cockpit. 
 	By the time the pilot returned, the plane had started to fall at $10,000$ feet per minute while violently rolling from side to side.
-	The plane's speed sensors never regained normal functionality as the plane began its three-and-a-half minute freefall.
-	The flight plunged into the Atlantic nose-up, killing all 228 on board.
-	The findings coincide with investigators' earlier theory that the sensors, known as pitot tubes, malfunctioned, possibly because of ice at such a high altitude.
+	The plane's speed sensors never regained normal functionality.
+	The plane began its three-and-a-half minute freefall and plunged into the Atlantic nose-up.
+	This accident killed all 228 passengers in the flight.
+	The findings coincide with investigators' earlier theory that the sensors, known as pitot tubes, malfunctioned, possibly because of ice at such a high altitude.''
 	The sensor failure error generated the bad data, resulting in the flight crash.
 	The bad data can be generated by attacking the sensor network and generating false data purposefully by an adversary. 
 	In addition to, the small error in the system design could result in significant bad consequences.
-	For example, the recent data breach attack on the company Anthem, exposed Social Security numbers and other sensitive details of 80 million customers.
-	It is considers as one of the biggest thefts of medical related customer data in U.S. history \cite{anthem}.
+	For example, the recent data breach attack on the company Anthem, revealed Social Security numbers and lots of private and secure details of approximately 80 million customers of the company.
+	It is considers as one of the biggest data breach in the of medical customer data in the United States history \cite{anthem}.
 
 	In sensor networks, sensors are so blended into the physical world that they are hard to distinguish from the physical objects.
-	The sensors may disappear so well that users lose not just the control but even awareness of what is actually going on.
-	While it is a welcome strategy to hide irrelevant complexity, it can easily become a liability.
+	The sensors may blend into the physical world so well that people will lose awareness of the computations happening behind the scenes.
+	To hide complexity is good from the usability perspective but it is a big liability.
+	% While it is a welcome strategy to hide irrelevant complexity, it can easily become a liability.
 	% The ``reactive room'' built at the University of Toronto \cite{cooperstock1997reactive} was a ubicomp-equipped conference room in which lights, cameras and other equipment went on and off automatically based on user behavior; but there have been informal reports of it providing little feedback to its users as to be nicknamed the ``possessed room''.
-	This is a serious problem, if you can't tell what your computer is doing when you are online, how can you be sure it's not transmitting your documents to a malicious destination? 
-	And if you already can't tell with your visible computer, how can you hope to tell with the invisible ones inside your appliances? 
+	This is a serious problem.
+	% , if you can't tell what your computer is doing when you are online, how can you be sure it's not transmitting your documents to a malicious destination? 
+	% And if you already can't tell with your visible computer, how can you hope to tell with the invisible ones inside your appliances? 
 	Weiser \cite{weiser1999origins} acknowledges: 
 	``If the computational system in invisible as well as extensive, it becomes hard to know what is controlling what, what is connected to what, where information is flowing, how it is being used, what is broken and what are the consequences of any given action?''.
 	The networks where computing is invisible, and it is unclear who is responsible for what, detecting an adversary is a challenging task.
