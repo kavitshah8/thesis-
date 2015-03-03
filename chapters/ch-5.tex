@@ -10,15 +10,15 @@
 	% The goal of the SHIA is to compute the statistical functions while assuming that partially a network is controlled by an adversary which is attempting to skew the final aggregated result.
 
 \section{Network Assumptions}
-	We assume a multi hop network with a set $ S = \{S_{1},...,S_{n}\} $ of $n$ sensor nodes where all sensor nodes are alive and reachable. 
+	We assume a multi hop network with a set $ S = \{S_{1},...,S_{n}\} $ consisted of $n$ sensors where all sensors are  within communication range and generating heartbeats. 
 	The rooted tree topology is constructed from the given network graph which can be constructed using any tree generation algorithms.
-	The trusted base station resides outside of the network.
+	The trusted base station is located in the outskirts of the network.
 	The base station has more computation power, storage capacity then the sensor nodes in the network 
 	\footnote{SHIA names the base station as the querier and the root of the tree as the base station.}. 
-	The base station knows total number of sensor nodes in the network and the network topology. 
+	The base station is aware of the total number of sensor nodes in the network and the network topology. 
 	It also has the capacity to directly communicate with every sensor node in the network using authenticated broadcast.
 	All the wireless communications between the sensor nodes are peer-to-peer.
-	We do not consider the local wireless broadcast happening in the network.
+	We assume absence of the local wireless broadcast in the network.
 	Each sensor node $S$ has a unique ID and it shares a unique secret symmetric key $K_{S}$ with the base station.
 	The symmetric keys enable message authentication between the sensor node and the base station.
 	It also allows data encryption in the network if the data confidentiality is required.
@@ -26,15 +26,16 @@
 	They are also capable of computing collision resistant cryptographic hash function. 
 
 \section{Attacker Model And Security Goal}
-	We consider a model with a polynomially bounded adversary \cite{przydatek2003sia}, which has a complete control over some of the sensor nodes in the network.
-	Most significantly, the adversary can change the measured values reported by sensor nodes under its control.
-	An adversary can perform a wide variety of attacks.
-	For example, an adversary could report fictitious values (probably completely independent of the measured reported values), instead of the real aggregate values.
+	We assume that the malicious or compromised node can misconduct in any random way.
+	We assume that the adversary has computational resources no more than polynomial in terms of the security parameter. 
+	Hence, it is called polynomially bounded attacker model \cite{przydatek2003sia}.
+	It can full control over any fraction of nodes in the network. 
+	For example, the adversary can tamper with the reported data by the sensors under its control and forward false aggregated result.
+	In addition to that, an adversary could ignore its children's reading completely and aggregate fictitious values and forward the garbage aggregated result.
 	In such a case, the base station receives the inaccurate aggregated data. 
-	Since in many applications the information received by the base station provides a basis for critical decisions, false information could have ruinous consequences as described in Section \ref{sec:security-issues}.
-	However, we do not want to limit ourselves to just a few specific selected adversarial models. 
-	Instead, we assume that the adversary can misbehave in any arbitrary way, and the only limitations we put on the adversary are its computational resources (polynomial in terms of the security parameter) and the fraction of nodes that it can have control over. 
-	We focus on stealthy attacks \cite{przydatek2003sia}, where the goal of an adversary is to make the base station accept false aggregation results, which are significantly different from the true results determined by the measured values, while not being detected by the base station.
+	Many applications rely on the information received or derived by the base station to take critical decision and act upon it.
+
+	We concentrate on stealthy attacks. According to  \cite{przydatek2003sia} in stealthy attacks ``an adversary has the goal of to make the base station accept false aggregation results, which are significantly different from the true results determined by the measured values, while not being detected by the base station.''
 	In this setting, denial-of-service (DoS) attacks such as not responding to the queries or always responding with negative acknowledgment at the end of verification phase clearly indicates to the base station that something is wrong in the network and therefore is not a stealthy attack.
 	One of the security goals of SHIA is to detect the stealthy attacks.
 	One of the security goals of our work is to detect an adversary who caused the stealthy attacks and remove it from the network to prevent these attacks in the future.
@@ -48,7 +49,7 @@
 	\end{definition}
 
 \section{The SUM Aggregate Algorithm of SHIA}
-	In this algorithm, the aggregate function $f$\ is summation meaning that we want to compute $a_{1} + a_{2} + \dotsc + a_{n}$, where $a_{i}$\ is the reading of the sensor node $i$.
+	In this algorithm, the aggregate function $f$\ is summation meaning that we want to calculate $a_{1} + a_{2} + \dotsc + a_{n}$, where $a_{i}$\ is the reading of the sensor node $i$.
 	The algorithm has the following three main phases.
 	\begin{description}
 		\item [Query dissemination,] initiates the aggregation process.
@@ -70,29 +71,29 @@
 		\caption{Network graph}
 		\label{fig:ng}
 	\end{figure}
-
 	To initiate the query dissemination phase, the base station broadcasts the query request message with the query nonce $N$\ in the aggregation tree. 
 	The query request message contains new query nonce $N$\ for each query.
 	The fresh nonce is used for each new query to prevent replay attacks in the network.
-	SHIA uses \textbf{hash chain} to generate new nonce for each query. 
-	A hash chain is constructed by repeatedly evaluating a pre-image resistant hash function $h$\ on some initial random value, the final value (or ``anchor value'') is preloaded on the nodes in the network.
-	The base station uses the pre-image of the last used  value as the nonce for the next broadcast.
-	For example, if the last known value of the hash chain is $h^i(X)$, then the next broadcast uses $h^{i-1}(X)$ as the nonce; $X$ is the initial random value.
-	When a node receives a new nonce $N^{'}$, it verifies that $N^{'}$ is a precursor to the most recently received (and authenticated) nonce $N$ on the hash chain, i.e., $h^{i}(N^{'}) = N$ for some $i$ bounded by a fixed $k$ of number of hash applications.
-	\begin{figure}[h]
+	\begin{figure}[h!]
 		\centering
 		\includegraphics[scale = 1]{images/aggregation-tree.png}
 		\caption{Simplified Aggregation tree for network graph in Figure \ref{fig:ng}}
 		\label{fig:at}
 	\end{figure}		
-	A hash chain prevents an adversary from predicting the query nonce for future queries as it has to reverse the hash chain computation to get an acceptable pre-image.
+	% SHIA uses \textbf{hash chain} to generate new nonce for each query. 
+	% A hash chain is constructed by repeatedly evaluating a pre-image resistant hash function $h$\ on some initial random value, the final value (or ``anchor value'') is preloaded on the nodes in the network.
+	% The base station uses the pre-image of the last used  value as the nonce for the next broadcast.
+	% For example, if the last known value of the hash chain is $h^i(X)$, then the next broadcast uses $h^{i-1}(X)$ as the nonce; $X$ is the initial random value.
+	% When a node receives a new nonce $N^{'}$, it verifies that $N^{'}$ is a precursor to the most recently received (and authenticated) nonce $N$ on the hash chain, i.e., $h^{i}(N^{'}) = N$ for some $i$ bounded by a fixed $k$ of number of hash applications.
+	% A hash chain prevents an adversary from predicting the query nonce for future queries as it has to reverse the hash chain computation to get an acceptable pre-image.
 
 \section{Aggregate Commit} 
 	% (fold)
 	\label{sub:aggregate_commit}
-	The aggregate commit phase constructs cryptographic commitments to the data values and to the intermediate aggregated data-values.
-	These commitments are then passed on to the base station by the root of an aggregation tree.
-	The base station then rebroadcasts the commitments to the sensor network using an authenticated broadcast so that the rest of the sensor nodes in the network can verify that their respective data values have been incorporated into the final aggregate value.
+	The aggregate commit phase constructs logical commitment tree to the data values and to the intermediate aggregated data-values on top of the aggregation tree.
+	These logical commitment trees are then propagated to the base station by the root node in an aggregation tree.
+	The base station then broadcasts the logical commitment trees in the aggregation tree using an authenticated broadcast.
+	Using these commitment values the rest of the network can verify that their respective data values have been incorporated into the final aggregate value.
 	The commitment tree is a logical tree built on top of an aggregation tree.
 	% The commitment tree is defined as follows:
 	\begin{definition}
@@ -103,11 +104,11 @@
 		where count is the number of leaf vertices in the subtree rooted at this vertex; value is the SUM aggregate computed over all the leaves in the subtree; complement is the aggregate over the COMPLEMENT of the data values; and commitment is a cryptographic commitment.
 		\label{def:label}
 	\end{definition}
-	The sensor node $A$ creates the label for the leaf vertex $A_{0}$ is given as follows :
-	\begin{equation*}
-		A_{0} =\ <A_{count}, A_{value}, \overline{A_{value}}, A_{commitment}>
-	\end{equation*}
-	where $A_{value}$ is the sensor data collected by $A$, $\overline{A_{value}}$ = $r - A_{value}$ with $r$ being the upper bound on allowable data values.
+	For example, the sensor node $A$ creates the label for the leaf vertex $A_{0}$ as follows :
+	% \begin{equation*}
+		$\textcolor{white}{XXXXXXXXXX} A_{0} =\ <A_{count}, A_{value}, \overline{A_{value}}, A_{commitment}>$\\
+	% \end{equation*}
+	where $A_{value}$ is the sensor data collected by $A$, $\overline{A_{value}}$ = $r - A_{value}$ with $r$ being the upper bound on legal data values in the accepted range.
 	The values of $A_{count} = 1$, and $A_{commitment}$ = $A_{id}$ which is unique ID of $A$ as $A_{0}$ is the leaf vertex of $A$.
 	Internal vertices in the commitment tree represent aggregation operations, and have labels that are defined based on their children. 
 	Suppose an internal node $I$ has child vertices with the following labels : $A_{1}$, $A_{2}$, $\dotsc$ , $A_{q}$, where $A_{i}$ = $<$ $A_{icount}$, $A_{ivalue}$, $\overline{A_{ivalue}}$, $A_{icommitment}$$>$. 
@@ -130,19 +131,21 @@
 	\subsection{Aggregate Commit: Naive Approach}
 	% (fold)
 		\label{sub:aggregate_commit_naive_approach}
-		In the naive approach, during aggregation process each sensor node computes a cryptographic hash of all its inputs (including its own data value).
+		In the naive approach, during aggregation process each sensor node calculates the cryptographic hash of all its inputs which includes its own data value.
 		The aggregation result along with the hash value called a label, is then passed on to the parent in the aggregation tree.
-		Conceptually, a commitment tree is a logical tree built on top of an aggregation tree, with additional aggregate information attached to the nodes. 
+		% Conceptually, a commitment tree is a logical tree built on top of an aggregation tree, with additional aggregate information attached to the nodes. 
 		% , to help in the result checking phase.
 		% The label is format is described in Definition \ref{def:label}.
 		The commitment tree for the aggregation tree of Figure \ref{fig:at} is  shown in Figure \ref{fig:naive-commitment-tree} .
+		
 		In this example, the node $B$ receives $E_{0}$ from $E$, $F_{0}$ from $F$ and has its own leaf vertex $B_{0}$.
 		The node $B$ aggregates all three vertices by creating a new vertex $B_{1}$ and sends $B_{1}$ to its parent node $A$.
-		The label of an internal vertex $B_{1}$ is defined as follows:
-		\begin{equation*}
-			B_{1} =\ <3, B_{1value}, \overline{B_{1value}}, H[N || 3 || B_{1value} || \overline{B_{1value}} ||B_{0}||E_{0}||F_{0}]>.
-		\end{equation*}
-		The labels of the vertices on the path of node $I$ to the root for the commitment tree $A$ are given as follows:
+		The label of an internal vertex $B_{1}$ is defined as follows:\\
+		% \begin{equation*}
+			$\textcolor{white}{XXXXX}B_{1} =\ <3, B_{1value}, \overline{B_{1value}}, H[N || 3 || B_{1value} || \overline{B_{1value}} ||B_{0}||E_{0}||F_{0}]>.$\\
+		% \end{equation*}
+		All the intermediate nodes receives labels from their children and aggregates them including its own data item. 
+		The labels of all the intermediate vertices on the path of the leaf node to the root node for the commitment tree are given as follows:
 		\begin{equation*}
 			\begin{array}{l}
 				I_{0} =\ <1, I_{value}, \overline{I_{value}}, I_{id}>\\
@@ -159,22 +162,22 @@
 		\begin{figure}[h!]
 			\centering
 			\includegraphics[scale = 1]{images/naive-commitment-tree.png}
-			\caption{Naive commitment tree for Figure \ref{fig:at}. For each sensor node $S$, $S_{0}$ is its leaf vertex, while $S_{1}$ is the internal vertex representing the aggregate computation at $S$ (if any). The internal vertices are represented by dashed box.}
+			\caption{Naive commitment tree for Figure \ref{fig:at}.}
 			\label{fig:naive-commitment-tree}
 		\end{figure}
 		In the naive approach the information rate is $1/n$ where $n$ is the number of children for the given node.
 		As each node aggregates all the labels into one label before sending it to the parent node.  
-	\subsection{Aggregate Commit: Improved Approach} 
+	\subsection{Aggregate Commit: SHIA's Approach} 
 	% (fold)
 		\label{sub:aggregate_commit_improved_approach}
-		The aggregation tree is a subgraph of the network graph so it may be randomly unbalanced.
-		This approach tries to separate the structure of the commitment tree from the structure of the aggregation tree.
-		So, the commitment tree can be perfectly balanced.
+		The aggregation tree is a subset of the network graph so it can be unbalanced meaning not having uniform distribution of nodes.
+		This approach tries to isolate the the commitment tree from the aggregation tree by making a commitment tree protocol independent of the input network tree.
+		This approach constructs the commitment tree which are complete binary trees.
 		In the naive approach, each sensor node always computes the aggregate sum of all its inputs which is a greedy approach.
-		SHIA uses delayed aggregation approach, which performs an aggregation operation if and only if it results in a complete, binary commitment tree.
+		SHIA uses delayed aggregation approach, which performs an aggregation operation if and only if it results in a balanced binary commitment tree.
 
-		We now describe SHIA's delayed aggregation algorithm for producing balanced commitment trees.
-		In the naive commitment tree, each sensor node passes to its parent a single message containing the label of the root vertex of its commitment subtree $T_{s}$.
+		SHIA's elaborates aggregation algorithm for producing balanced commitment trees is as follows \cite{chan2006secure}: 
+		`` In the naive commitment tree, each sensor node passes to its parent a single message containing the label of the root vertex of its commitment subtree $T_{s}$.
 		In the delayed aggregation algorithm, each sensor node passes on the labels of the root vertices of a set of commitment subtrees $F = \{ T_{1}, \dotsc, T_{q} \}$.
 		We call this set a commitment forest, and we enforce the condition that the trees in the forest must be complete binary trees, and no two trees have the same height. 
 		These constraints are enforced by continually combining equal-height trees into complete binary trees of greater height.
@@ -193,11 +196,12 @@
 		Note that since all commitment trees are complete binary trees, tree heights can be determined by inspecting the count field of the root vertex.
 		We let the intermediate result be $F$ $=$ $F_{1}$ $\cup$ $\dotsc$ $\cup$ $F_{q}$, and repeat the following until no two trees are the same height in $F$.
 		Let $h$ be the smallest height such that more than one tree in $F$ has height $h$.
-		Find two commitment trees $T_{1}$ and $T_{2}$ of height $h$ in $F$, and merge them into a tree of height $h + 1$ by creating a new vertex that is the parent of both the roots of $T_{1}$ and $T_{2}$ according to the inductive rule in Definition \ref{def:label}.
+		Find two commitment trees $T_{1}$ and $T_{2}$ of height $h$ in $F$, and merge them into a tree of height $h + 1$ by creating a new vertex that is the parent of both the roots of $T_{1}$ and $T_{2}$ according to the inductive rule in Definition \ref{def:label}''.
+		
 		The following example illustrates the commitment tree generation process for the node $A$ of Figure \ref{fig:at}.
 		\begin{figure}[h!]
 			\includegraphics{images/commitment-tree-example-1-shia.png}
-			\caption{$A$ receives $C_{2}$ from $C$, $(B_{1},B_{0})$ from $B$, $D_{0}$ from $D$ and generates $A_{0}$. The commitment forest received from a given sensor node is indicated by dashed-line box.}
+			\caption{$A$ receives $C_{2}$ from $C$, $(B_{1},B_{0})$ from $B$, $D_{0}$ from $D$ and generates $A_{0}$. The received commitment forest  are indicated by dashed-line box.}
 			\label{fig:commitment-tree-example-1-shia}
 		\end{figure}
 		\begin{equation*}
@@ -246,25 +250,24 @@
 			\end{array}
 		\end{equation*}
 		
-		Once the base station has received the final commitment forest from the root node, it checks that none of the SUM or COMPLEMENT aggregates of the roots of the trees in the forest are negative. 
-		If any aggregates are negative, the base station rejects the result and raises an alarm: a negative aggregate is a sure sign of tampering since all the data values (and their complements) are non-negative. 
-		Otherwise, the base station then computes the final pair of aggregates SUM and COMPLEMENT. 
-		The base station verifies that SUM + COMPLEMENT = $nr$ where $r$ is the upper bound on the range of allowable data values on each node. 
-		If this verifies correctly, the base station then initiates the result checking phase.
+		Once the base station has received the all the logical commitment trees also known as the final commitment forest from the root node, it verifies that none of the SUM or COMPLEMENT are negative. 
+		If any of those are negative then the base station does not accept the aggregated result and alerts the network notifying that it has detected tampering of data values. 
+		If both the fields are positive then the base station then proceeds further, and verifies that SUM + COMPLEMENT = $nr$ where $r$ is the largest allowed legal data value for each node.
+		On successful verification, the base station then begin the next phase of result checking.
 
 \section{Result Checking} % (fold)
 	\label{sec:result_checking}
 	SHIA presents novel distributed verification algorithm, achieving provably optimal security while maintaining sublinear edge congestion.
-	% In our work, we take similar approach and add new capabilities to help find an adversary.
-	% Here, we describe the SHIA's result checking phase to build the basis for our work.
-	The purpose of the result checking phase is to enable each sensor node $I$ to independently verify that its data value ($I_{value}$) was added into the SUM aggregate, and the complement $\overline{I_{value}}$ of its data value was added into the COMPLEMENT aggregate.
-	First, the base station sends the aggregation results from the aggregation commit phase to every sensor node in the network using authenticated broadcast.
-	Each sensor node then individually verifies that its contributions to the respective SUM and COMPLEMENT aggregates were indeed counted.
-	If so, it sends an authentication code to the base station.
-	The authentication code is also aggregated for communication efficiency. 
-	When the base station has received all the authentication codes, it is then able to verify that all sensor nodes have checked that their contribution to the aggregate has been correctly counted.
+	In our work, we take similar approach and add new capabilities to help find an adversary.
+	SHIA's result checking phase is given as follows :
+	``The purpose of the result checking phase is to enable each sensor node $I$ to independently verify that its data value ($I_{value}$) was added into the SUM aggregate, and the complement $\overline{I_{value}}$ of its data value was added into the COMPLEMENT aggregate.
+		First, the base station sends the aggregation results from the aggregation commit phase to every sensor node in the network using authenticated broadcast.
+		Each sensor node then individually verifies that its contributions to the respective SUM and COMPLEMENT aggregates were indeed counted.
+		If so, it sends an authentication code to the base station.
+		The authentication code is also aggregated for communication efficiency. 
+		When the base station has received all the authentication codes, it is then able to verify that all sensor nodes have checked that their contribution to the aggregate has been correctly counted.''
 	The result checking process has the following phases.
-	\newpage
+	% \newpage
 	\begin{description}
 		\item[Distributing Final Commitment Values]
 			In this phase, the base station sends each of the received commitment labels to the entire network using authenticated broadcast.
@@ -280,13 +283,13 @@
 			\begin{figure}[h!]
 				\centering
 				\includegraphics[scale = 1]{images/off-path.png}
-				\caption{Off-path vertices of $u$ are highlighted in bold.}
+				\caption{Off-path values of node $u$ are highlighted with bold outline.}
 				\label{fig:commitment-tree-example-2-shia}
 			\end{figure}
 			Vertex receives its off-path values from its parent.
 			Each internal vertex has two children.
 			For example, an internal vertex $k$\ has two children $k_{1},k_{2}$.
-			$k$\ sends the label of $k_{1}$\ to $k_{2}$\ and vice versa.
+			$k$\ transmits the label of $k_{1}$\ to $k_{2}$\ and vice versa.
 			$k$\ tags the relevant information of its left and right child.
 			Once a vertex receives all of its off-path values it begins the verification phase.
 		\item[Verification of Contribution]
@@ -295,19 +298,19 @@
 			If those two labels match then it proceeds to the next step with Acknowledgment (ACK) message or with Negative Acknowledgment (NACK) message.
 			This allows the leaf to verify that its label was not modified on the path to the root during the aggregation commit phase.
 		\item[Collection of Authentication Codes] 
-			Once each sensor node verifies its contribution to the root label it sends the relevant authentication code to its parent.
-			The authentication code for sensor node $A$\ with ACK and NACK message is given as follows :
-			\begin{equation*}
-				\begin{array}{l}
-					\mbox{MAC}_{\sk_{A}}( \mbox{N} || \mbox{ACK})\\
-					\mbox{MAC}_{\sk_{A}}( \mbox{N} || \mbox{NACK})	
-				\end{array}
-			\end{equation*}
-			Where ACK, NACK are unique message identifier for positive and negative acknowledgment respectively, 
+			Once each sensor node verifies its contribution to the root label it proceeds further to transmit the relevant message authentication code to its parent in the aggregation tree.
+			The message authentication codes (MAC) for sensor node $A$\ with ACK and NACK are given as follows :
+			% \begin{equation*}
+				% \begin{array}{l}
+$					\mbox{MAC}_{\sk_{A}}( \mbox{N} || \mbox{ACK}),
+						\mbox{MAC}_{\sk_{A}}( \mbox{N} || \mbox{NACK})$	
+				% \end{array}
+			% \end{equation*}
+			where ACK and NACK unique message identifier for positive and negative acknowledgment respectively,
 			MAC is  the message authentication algorithm, 
 			N is the query nonce and $\sk_{A}$\ is secret key that node $A$\ shares with the base station.
 			Collection of authentication code starts with the leaf nodes in the aggregation tree.
-			Leaf nodes in the aggregation tree send their authentication codes to their parent.
+			The leaf nodes in the aggregation tree transmit their authentication codes to their parent.
 			Once the parent node has received the authentication from all of its children it does XOR operation on all the authentication codes including its own authentication code and sends it to its parent in the aggregation tree hierarchy.
 			Each internal node in the aggregation tree repeats the process.
 			Finally, the root of an aggregation tree sends a single authentication code to the base station which is an XOR of all the authentication codes of the aggregation tree.  
@@ -320,14 +323,14 @@
 			If those two codes match, then the base station accepts the aggregation result.
 	\end{description}
 
-	\begin{theorem}
-		\cite{chan2006secure}
-		Let the final SUM aggregate received by the base station be $S$.
-		If the base station accepts $S$, then $S_{L} \leq S \leq (S_{L} + \mu \cdot r)$ where $S_{L}$ is the sum of the data values of all the legitimate nodes, $\mu$ is the total number of malicious nodes, and $r$ is the upper bound on the range of allowable values on each node.
-	\end{theorem}
-	The proof for the above theorem is given in \cite{chan2006secure}.
-	The theorem gives the proof of correctness of the SHIA protocol.
-	It proves that if the final aggregated value is accepted by the base station then it has to be in the given range. 
+	% \begin{theorem}
+	% 	\cite{chan2006secure}
+	% 	Let the final SUM aggregate received by the base station be $S$.
+	% 	If the base station accepts $S$, then $S_{L} \leq S \leq (S_{L} + \mu \cdot r)$ where $S_{L}$ is the sum of the data values of all the legitimate nodes, $\mu$ is the total number of malicious nodes, and $r$ is the upper bound on the range of allowable values on each node.
+	% \end{theorem}
+	% The proof for the above theorem is given in \cite{chan2006secure}.
+	% The theorem gives the proof of correctness of the SHIA protocol.
+	% It proves that if the final aggregated value is accepted by the base station then it has to be in the given range. 
 	Hence, SHIA achieves security over the Truncated SUM which is a resilient aggregator according to Wagner\cite{wagner2004resilient}.
 	Our protocol enhances SHIA to achieve desired security over the SUM which is non-resilient aggregate.
 % section result_checking (end)
